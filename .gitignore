@@ -7,6 +7,6 @@ target/
 # MacOS
 .DS_Store
 
-# Node
-node-modules/
-
+# Dependency directories
+node_modules/
+jspm_packages/
