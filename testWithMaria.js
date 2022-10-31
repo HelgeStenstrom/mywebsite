@@ -9,38 +9,49 @@ const pool = mariadb.createPool({
     user: 'root',
     password: 'root1234',
     port: 3307,
-    connectionLimit: 5});
-
-/*pool.getConnection()
-    .then(conn => {
-        conn.query("SELECT 1 as val")
-            .then((rows) => {
-                console.log(rows); //[ {val: 1}, meta: ... ]
-                return conn.query("INSERT INTO medlemmar value ('id','Förnamn', 'Efternamn')",
-                    [1, "Helge", "Stenström"]);
-            })
-            .then((res) => {
-                console.log(res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-                conn.end();
-            })
-            .catch(err => {
-                //handle error
-                conn.end();
-            })
-    }).catch(err => {
-    //not connected
-});*/
+    connectionLimit: 5
+});
 
 app.get('/members', async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
-        let promise = conn.query('select * from hartappat.medlemmar');
+        let sql = `select * from hartappat.members`;
+        let promise = conn.query(sql);
         promise.then((x) => res.json(x));
     } catch (e) {
         console.error(e);
     }
+});
 
-})
+app.get('/wines', async (req, res) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        let sql = `
+            select w.Name, c.name, wt.sv
+            from hartappat.wines w
+                     join hartappat.winetypes wt
+                          on w.winetype = wt.id
+                     join hartappat.countries c
+                          on w.country = c.id;
+        `;
+        let promise = conn.query(sql);
+        promise.then((x) => res.json(x));
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+app.get('/countries', async (req, res) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        let promise = conn.query('select * from hartappat.countries');
+        promise.then((x) => res.json(x));
+    } catch (e) {
+        console.error(e);
+    }
+});
 
 app.listen(3000);
