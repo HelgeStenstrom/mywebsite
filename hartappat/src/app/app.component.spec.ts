@@ -26,6 +26,16 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('.content span')?.textContent).toContain('hartappat app is running!');
+    let actual = compiled.querySelector('.content span')?.textContent;
+    expect(actual).toContain('Hartappat');
+    expect(compiled.querySelector('.content span')?.textContent).toContain('Hartappat');
   });
+
+  it('is expected to pass', () => {
+    // const fixture = TestBed.createComponent(AppComponent);
+    // fixture.detectChanges();
+    // const compiled = fixture.nativeElement as HTMLElement;
+    expect(2 === 2).toBeTruthy();
+  });
+
 });
