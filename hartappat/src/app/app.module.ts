@@ -14,6 +14,8 @@ import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { AboutComponent } from './about/about.component';
+import {HttpClientModule} from "@angular/common/http";
+import { WinesComponent } from './wines/wines.component';
 
 @NgModule({
   declarations: [
@@ -24,11 +26,13 @@ import { AboutComponent } from './about/about.component';
     HomeComponent,
     NotFoundComponent,
     NavbarComponent,
-    AboutComponent
+    AboutComponent,
+    WinesComponent
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    HttpClientModule,
     MatMenuModule,
     MatIconModule,
     MatButtonModule,

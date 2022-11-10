@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {BackendService} from "../backend.service";
 
 @Component({
   selector: 'app-druvor',
@@ -10,6 +11,7 @@ export class DruvorComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
+    // let backendService = new BackendService();
   }
 
 }
