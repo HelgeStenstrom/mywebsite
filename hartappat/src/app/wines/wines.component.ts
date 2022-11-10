@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {BackendService} from "../backend.service";
+import {BackendService, Wine} from "../backend.service";
 
 @Component({
   selector: 'app-wines',
@@ -8,13 +8,19 @@ import {BackendService} from "../backend.service";
 })
 export class WinesComponent implements OnInit {
   private service: BackendService;
+  wines : Wine[] = [];
 
   constructor(service: BackendService) {
     this.service = service;
+
   }
 
   ngOnInit(): void {
-    this.service.getData().then(console.log);
+    this.service.getData().then((w: Wine[]) => {
+      console.log("Wine: ", w);
+      this.wines = w;
+
+    });
     console.log('WinesComponent initialized')
 
   }

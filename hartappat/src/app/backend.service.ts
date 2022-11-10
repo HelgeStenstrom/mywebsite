@@ -9,7 +9,7 @@ export class BackendService {
 
   constructor(private http:HttpClient) { }
 
-  getData() {
+  getData(): Promise<Wine[]> {
     console.log('BackendService.getData() called');
     let url: string;
     url = 'http://localhost:3000/wines';
@@ -19,7 +19,7 @@ export class BackendService {
   }
 }
 
-type Wine = {
+export type Wine = {
   name: number;
   country:string;
   vinkategori:string;

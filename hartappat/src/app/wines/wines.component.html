@@ -1,1 +1,13 @@
-<p>wines works!</p>
+<h2>Viner vi känner till</h2>
+Viner som finns i databasen
+
+<table>
+  <th>Namn</th>
+  <th>Land</th>
+  <th>Typ</th>
+  <tr *ngFor="let w of wines">
+    <td>{{w.name}}</td>
+    <td>{{w.country}}</td>
+    <td>{{w.vinkategori}}</td>
+  </tr>
+</table>

@@ -31,7 +31,7 @@ app.get('/wines', async (req, res) => {
     try {
         conn = await pool.getConnection();
         let sql = `
-            select w.Name as name, c.name as country, wt.sv as vinkategori, wt.en as 'wine category'
+            select w.Name as name, c.name as country, wt.sv as vinkategori
             from hartappat.wines w
                      join hartappat.winetypes wt
                           on w.winetype = wt.id
