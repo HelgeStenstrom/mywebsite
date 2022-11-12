@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "devStart": "nodemon server.js",
-    "mariatart": "nodemon testWithMaria.js"
+    "mariatart": "nodemon startMariaDb.js",
+    "sajten": "cd hartappat && sudo ng serve --host 192.168.1.89 --host localhost --host 127.0.0.1 --host helges-mbp-2  --port 80"
   },
   "keywords": [],
   "author": "",

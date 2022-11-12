@@ -16,6 +16,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { AboutComponent } from './about/about.component';
 import {HttpClientModule} from "@angular/common/http";
 import { WinesComponent } from './wines/wines.component';
+import { TravelsComponent } from './travels/travels.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { WinesComponent } from './wines/wines.component';
     NotFoundComponent,
     NavbarComponent,
     AboutComponent,
-    WinesComponent
+    WinesComponent,
+    TravelsComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +42,8 @@ import { WinesComponent } from './wines/wines.component';
       {path: '', component: HomeComponent},
       {path: 'druvor/:druva', component: DruvaComponent},
       {path: 'druvor', component: DruvorComponent},
+      {path: 'viner', component: WinesComponent},
+      {path: 'resor', component: TravelsComponent},
       {path: 'about', component: AboutComponent},
       {path: '**', component: NotFoundComponent},
     ])

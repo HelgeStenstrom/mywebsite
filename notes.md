@@ -99,13 +99,13 @@ sudo behöver inte användas.
 ### Start
 
 * run configuration "mariastart"
-  * Definieras i package.json som `"mariatart": "nodemon testWithMaria.js"`
-  * testWithMaria.js definierar åtminstone några endpoints. Andra 
+  * Definieras i package.json som `"mariatart": "nodemon startMariaDb.js"`
+  * startMariaDb.js definierar åtminstone några endpoints. Andra 
     hierarkiska nivåer, om det blir några, definieras kanske i andra filer. 
 
 ### Endpoints
 
-* testWithMaria.js definierar åtminstone några endpoints. Andra
+* startMariaDb.js definierar åtminstone några endpoints. Andra
   hierarkiska nivåer, om det blir några, definieras kanske i andra filer.
 * http://localhost:3000/
   * countries
