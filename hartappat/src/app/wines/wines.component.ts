@@ -16,7 +16,7 @@ export class WinesComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.service.getData().then((w: Wine[]) => {
+    this.service.getWines().then((w: Wine[]) => {
       console.log("Wine: ", w);
       this.wines = w;
 

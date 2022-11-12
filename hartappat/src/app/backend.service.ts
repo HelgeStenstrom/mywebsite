@@ -9,7 +9,7 @@ export class BackendService {
 
   constructor(private http:HttpClient) { }
 
-  getData(): Promise<Wine[]> {
+  getWines(): Promise<Wine[]> {
     console.log('BackendService.getData() called');
     let url: string;
     url = 'http://localhost:3000/wines';
@@ -17,10 +17,26 @@ export class BackendService {
     const req: Observable<Wine[]> = this.http.get(url) as Observable<Wine[]> ;
     return firstValueFrom(req);
   }
+
+   getGrapes(): Promise<Grape[]> {
+    console.log('BackendService.getData() called');
+    let url: string;
+    url = 'http://localhost:3000/grapes';
+    url = 'http://helges-mbp-2:3000/grapes'
+    const req: Observable<Grape[]> = this.http.get(url) as Observable<Grape[]> ;
+    return firstValueFrom(req);
+  }
+
+
 }
 
 export type Wine = {
-  name: number;
-  country:string;
-  vinkategori:string;
-}
+  name: string;
+  country: string;
+  vinkategori: string;
+};
+
+export type Grape = {
+  name: string;
+  color: string;
+};

@@ -1,5 +1,9 @@
-<h2>Druvor</h2>
-<p>Här är alla druvor vi känner till.</p>
+<h2>Druvor som vi känner till</h2>
+<p>Druvor i databasen.</p>
 
-<app-druva druvnamn="Riesling"></app-druva>
-<app-druva druvnamn="Syrah"></app-druva>
+<table>
+  <th>Namn</th>
+  <tr *ngFor="let druva of grapes">
+    <td>{{druva.name}}</td>
+  </tr>
+</table>

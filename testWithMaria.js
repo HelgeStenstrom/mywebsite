@@ -21,6 +21,7 @@ app.get('/members', async (req, res) => {
         let sql = `select * from hartappat.members`;
         let promise = conn.query(sql);
         promise.then((x) => res.json(x));
+        await conn.end();
     } catch (e) {
         console.error(e);
     }
@@ -40,6 +41,23 @@ app.get('/wines', async (req, res) => {
         `;
         let promise = conn.query(sql);
         promise.then((x) => res.json(x));
+        await conn.end();
+    } catch (e) {
+        console.error(e);
+    }
+});
+
+app.get('/grapes', async (req, res) => {
+    let conn;
+    try {
+        conn = await pool.getConnection();
+        let sql = `
+            select w.name, w.color
+            from hartappat.grapes w
+        `;
+        let promise = conn.query(sql);
+        promise.then((x) => res.json(x));
+        await conn.end();
     } catch (e) {
         console.error(e);
     }
@@ -51,9 +69,12 @@ app.get('/countries', async (req, res) => {
         conn = await pool.getConnection();
         let promise = conn.query('select * from hartappat.countries');
         promise.then((x) => res.json(x));
+        await conn.end();
     } catch (e) {
         console.error(e);
     }
 });
+
+
 
 app.listen(3000);

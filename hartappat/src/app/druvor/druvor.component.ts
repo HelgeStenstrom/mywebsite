@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {BackendService} from "../backend.service";
+import {BackendService, Grape} from "../backend.service";
 
 @Component({
   selector: 'app-druvor',
@@ -7,11 +7,18 @@ import {BackendService} from "../backend.service";
   styleUrls: ['./druvor.component.css']
 })
 export class DruvorComponent implements OnInit {
+  private service: BackendService;
+  grapes: Grape[] = [];
 
-  constructor() {}
-
-  ngOnInit(): void {
-    // let backendService = new BackendService();
+  constructor(service: BackendService) {
+    this.service = service;
   }
 
+  ngOnInit(): void {
+    this.service.getGrapes()
+      .then((g:Grape[]) => {
+        console.log("Druva: ", g);
+        this.grapes = g;
+      })
+  }
 }
