@@ -17,7 +17,7 @@ export class WinesComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getWines()
-      .then((w: Wine[]) => {
+      .subscribe((w: Wine[]) => {
       console.log("Wine: ", w);
       this.wines = w;
 
