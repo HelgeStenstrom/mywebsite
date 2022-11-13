@@ -18,6 +18,7 @@ import { AboutComponent } from './about/about.component';
 import { WinesComponent } from './wines/wines.component';
 import { TravelsComponent } from './travels/travels.component';
 import { VinmonopoletComponent } from './vinmonopolet/vinmonopolet.component';
+import { WikipediaComponent } from './wikipedia/wikipedia.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { VinmonopoletComponent } from './vinmonopolet/vinmonopolet.component';
     AboutComponent,
     WinesComponent,
     TravelsComponent,
-    VinmonopoletComponent
+    VinmonopoletComponent,
+    WikipediaComponent
   ],
   imports: [
     BrowserModule,
