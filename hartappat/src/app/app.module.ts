@@ -17,6 +17,7 @@ import { AboutComponent } from './about/about.component';
 import {HttpClientModule} from "@angular/common/http";
 import { WinesComponent } from './wines/wines.component';
 import { TravelsComponent } from './travels/travels.component';
+import { VinmonopoletComponent } from './vinmonopolet/vinmonopolet.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +30,8 @@ import { TravelsComponent } from './travels/travels.component';
     NavbarComponent,
     AboutComponent,
     WinesComponent,
-    TravelsComponent
+    TravelsComponent,
+    VinmonopoletComponent
   ],
   imports: [
     BrowserModule,

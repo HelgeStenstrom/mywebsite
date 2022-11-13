@@ -128,3 +128,46 @@ pw: root1234
 
 ### Tabeller
 
+
+
+## Externa API:n
+
+### Systembolaget
+
+Det verkar inte som om man kan få särskilt mycket användbar information från 
+Systembolaget, sedan 1 november 2022. Har med deras policy att göra; inte 
+främja konsumtion. 
+
+Deras API finns kvar, men är det dokumenterat? 
+
+| Användarnamn | h.stenstrom@gmail.com |
+|--------------|----------------------|
+| lösen        |                      |
+
+### Vinmonopolet
+
+Username: h.stenstrom@gmail.com
+Subscription key: 1ff26063efff409eb6200d72ac584c04
+
+
+
+URL: http://api.vinmonopolet.no/
+
+* [Learn about the API](http://api.vinmonopolet.no/docs/services?product=open)
+* [Authorization Management](http://api.vinmonopolet.no/blog/authorization-management)
+
+
+#### Examples
+
+GET https://apis.vinmonopolet.no/products/v0/details-normal?maxResults=10 HTTP/1.1
+
+Cache-Control: no-cache
+Ocp-Apim-Subscription-Key: 1ff26063efff409eb6200d72ac584c04
+
+
+
+### Alko
+
+Hela deras prislista finns som en Excel-fil som man kan ladda ner. Det finns 
+ett eller ett par projet på GitHub, för att skapa ett API från dessa filer. 
+Filen uppdateras dagligen.
