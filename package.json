@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "devStart": "nodemon server.js",
     "mariatart": "nodemon startMariaDb.js",
+    "externalEndpointProxy": "nodemon externalEndpointProxy.js",
     "sajten": "cd hartappat && sudo ng serve --host 192.168.1.89 --host localhost --host 127.0.0.1 --host helges-mbp-2  --port 80"
   },
   "keywords": [],
@@ -17,7 +18,8 @@
     "cors": "^2.8.5",
     "express": "^4.18.2",
     "mariadb": "^3.0.2",
-    "mysql": "^2.18.1"
+    "mysql": "^2.18.1",
+    "request": "^2.88.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

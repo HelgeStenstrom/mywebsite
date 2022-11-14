@@ -171,3 +171,18 @@ Ocp-Apim-Subscription-Key: 1ff26063efff409eb6200d72ac584c04
 Hela deras prislista finns som en Excel-fil som man kan ladda ner. Det finns 
 ett eller ett par projet på GitHub, för att skapa ett API från dessa filer. 
 Filen uppdateras dagligen.
+
+## CORS-problemet
+
+* https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
+  * Beskriver problemet, och tre lösningar, där den föredragna är en lokal 
+    proxy. Proxyn är en liten JS-funktion som använder Express, precis som 
+    den som servar MariaDB backend nu.
+  * Behöver jag en proxy per extern endpoint? Det verkar overkill!
+  * Nej, det är inte värre än befintlig startMariaDb.js; en kort sektion per 
+    endpoint, bara. I fallet startMariaDb.js, har jag en endpoint per tabell 
+    i databasen. 
+  * Det är förmodligen inte fullt så enkelt.
+  * För Vinmonopolet måste rätt Headers och rätt URL överföras via proxyn 
+    till vinmonopolet.no.
+  * Värt att pröva proxyn på det enklare fallet Wikipedia.

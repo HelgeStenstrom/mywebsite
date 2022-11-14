@@ -22,15 +22,21 @@ export class WikipediaService {
   }
 
   getFeatured(): Observable<Featured> {
-    const now = Date.now();
-    const today = new Date(now);
-    console.log("Idag är det ", today);
-    let year = today.getFullYear();
-    let month = today.getMonth() + 1;
-    let date = today.getDate();
-    console.log("YMD: ", year, month, date);
-    const url: string = `https://sv.wikipedia.org/api/rest_v1/feed/featured/${year}/${month}/${date}`;
-    return this.http.get<Featured>(url);
+    function makeDirectUrl() {
+      const now = Date.now();
+      const today = new Date(now);
+      let year = today.getFullYear();
+      let month = today.getMonth() + 1;
+      let date = today.getDate();
+      console.log("Idag är det ", today);
+      console.log("YMD: ", year, month, date);
+      const url: string = `https://sv.wikipedia.org/api/rest_v1/feed/featured/${year}/${month}/${date}`;
+      return url;
+    }
+
+    const urlDirect1 = makeDirectUrl();
+    const urlViaProxy = 'http://helges-mbp-2:3001/featured';
+    return this.http.get<Featured>(urlViaProxy);
   }
 }
 
