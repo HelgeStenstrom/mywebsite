@@ -1,6 +1,8 @@
 const express = require('express');
 const request = require('request');
 
+// TODO: replace request, see https://nodesource.com/blog/express-going-into-maintenance-mode
+
 const app = express();
 
 app.use((req, res, next) => {
@@ -43,6 +45,33 @@ app.get('/featured', (req, res) => {
                 return res.status(500).json({ type: 'error', message: err.message });
             }
 
+            res.json(JSON.parse(body));
+        }
+    )
+});
+
+
+app.get('/vinmonopolet', (req, res) => {
+
+    const headers = {
+        'Cache-Control': 'no-cache',
+        'Ocp-Apim-Subscription-Key': '1ff26063efff409eb6200d72ac584c04',
+    };
+
+    const url1  = 'https://apis.vinmonopolet.no/products/v0/details-normal?maxResults=10';
+    //const url1  = `https://sv.wikipedia.org/api/rest_v1/feed/featured/${2022}/${11}/${14}`;
+    console.log("External proxy skickar vidare: ", url1);
+    request(
+        {url: url1,
+            headers: headers},
+        (error, response, body) => {
+            if (error || response.statusCode !== 200) {
+                console.log("Error: ", error);
+                console.log("Response: ", response);
+                //console.log("Status code: ", response.statusCode);
+                //return res.status(500).json({ type: 'error', message: err.message });
+                return res.status(500).json({ type: 'error', message: "err.message is 'it went wrong'" });
+            }
             res.json(JSON.parse(body));
         }
     )
