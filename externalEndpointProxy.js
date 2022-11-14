@@ -1,9 +1,14 @@
 const express = require('express');
 const request = require('request');
+const cors = require("cors");
+
+// Code from https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
+// which uses deprecated 'request'.
 
 // TODO: replace request, see https://nodesource.com/blog/express-going-into-maintenance-mode
 
 const app = express();
+app.use(cors());
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Origin', '*');

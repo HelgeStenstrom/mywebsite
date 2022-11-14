@@ -16,8 +16,11 @@ export class VinmonopoletComponent implements OnInit {
 
   ngOnInit(): void {
     this.service.getProductDetails()
-      .subscribe((p: ProductDetail[]) => {
-        console.log("VinMono product: ", p)
+      .subscribe((ps: ProductDetail[]) => {
+        console.log("VinMono product: ", ps)
+        for (const p of ps) {
+          this.products.push(p);
+        }
       })
   }
 
