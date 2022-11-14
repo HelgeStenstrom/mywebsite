@@ -1,1 +1,18 @@
 <p>En druva som heter {{druvnamn}}.</p>
+
+<input>
+<button>Lägg till</button>
+<mat-form-field>
+  <mat-select>
+    <mat-option *ngFor="let col of ['blue', 'green']">{{col}}</mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-radio-group>
+  <div>
+    <mat-radio-button value="blue">blå</mat-radio-button>
+  </div>
+  <div>
+    <mat-radio-button value="green">grön</mat-radio-button>
+  </div>
+</mat-radio-group>
