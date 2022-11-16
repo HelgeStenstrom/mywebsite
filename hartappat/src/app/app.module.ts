@@ -19,9 +19,10 @@ import { WinesComponent } from './wines/wines.component';
 import { TravelsComponent } from './travels/travels.component';
 import { VinmonopoletComponent } from './vinmonopolet/vinmonopolet.component';
 import { WikipediaComponent } from './wikipedia/wikipedia.component';
-import {ReactiveFormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatSelectModule} from "@angular/material/select";
 import {MatRadioModule} from "@angular/material/radio";
+import {MatInputModule} from "@angular/material/input";
 
 @NgModule({
   declarations: [
@@ -56,7 +57,9 @@ import {MatRadioModule} from "@angular/material/radio";
     ]),
     ReactiveFormsModule,
     MatSelectModule,
-    MatRadioModule
+    MatRadioModule,
+    FormsModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

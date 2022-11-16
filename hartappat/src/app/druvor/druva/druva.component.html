@@ -1,18 +1,33 @@
-<p>En druva som heter {{druvnamn}}.</p>
+<p>En druva.</p>
 
-<input>
-<button>Lägg till</button>
-<mat-form-field>
-  <mat-select>
-    <mat-option *ngFor="let col of ['blue', 'green']">{{col}}</mat-option>
-  </mat-select>
-</mat-form-field>
+<form [formGroup]="grapeForm">
+  <mat-form-field class="example-full-width" appearance="fill">
+    <mat-label>Druvans namn</mat-label>
+    <input id="name" formControlName="name" type="text" required minlength="3" matInput placeholder="Ex. Solaris">
+  </mat-form-field>
 
-<mat-radio-group>
-  <div>
-    <mat-radio-button value="blue">blå</mat-radio-button>
-  </div>
-  <div>
-    <mat-radio-button value="green">grön</mat-radio-button>
-  </div>
-</mat-radio-group>
+  <mat-radio-group
+    class="example-radio-group"
+    name="color"
+    formControlName="color"
+    required>
+    <mat-label id="color-label">Druvans färg</mat-label>
+    <mat-radio-button
+      class="example-radio-button"
+      *ngFor="let color of ['blå', 'röd']"
+      [value]="color">
+      {{color}}
+    </mat-radio-button>
+  </mat-radio-group>
+  <div>Druvan heter {{grapeForm.value.name}} och färgen är {{grapeForm.value.color}}.</div>
+
+  <button mat-raised-button
+          type="submit"
+          color="primary"
+          [disabled]="!grapeForm.valid"
+          (click)="addGrape()"
+  >Lägg till
+  </button>
+</form>
+
+

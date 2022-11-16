@@ -1,6 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {ActivatedRoute, ParamMap} from "@angular/router";
-import {Observable} from "rxjs";
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from "@angular/router";
+import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 
 @Component({
   selector: 'app-druva',
@@ -9,17 +9,28 @@ import {Observable} from "rxjs";
 })
 export class DruvaComponent implements OnInit {
 
-  @Input() druvnamn: string = "";
+  grapeForm = new FormGroup({
+    color: new FormControl<string>(''),
+    name: new FormControl<string>('')
+  });
 
-  constructor(private route: ActivatedRoute) {}
+  valid = true;
+
+
+  constructor() {}
 
   ngOnInit(): void {
-    const paramMap: Observable<ParamMap> = this.route.paramMap;
-    paramMap.subscribe(params => {
-      if (this.druvnamn === "") {
-        this.druvnamn = params.get('druva') as string;
-      }
-    });
   }
 
+  addGrape() {
+    console.log("Klickade 'Lägg till'")
+    console.log(this.grapeForm);
+  }
 }
+
+type Grape = {
+  name: string;
+  color: string;
+}
+
+
