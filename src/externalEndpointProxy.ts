@@ -1,6 +1,7 @@
-const express = require('express');
-const request = require('request');
-const cors = require("cors");
+import request from "request";
+import express from "express";
+import cors from "cors";
+
 
 // Code from https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
 // which uses deprecated 'request'.

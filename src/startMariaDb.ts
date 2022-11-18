@@ -1,7 +1,8 @@
-const express = require("express");
-const app = express();
+import express from "express";
 
-const cors = require("cors");
+import cors from "cors";
+
+const app = express();
 app.use(cors());
 
 const mariadb = require('mariadb');

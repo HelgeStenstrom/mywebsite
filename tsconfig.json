@@ -3,10 +3,11 @@
     "outDir": "./built",
     "allowJs": true,
     "target": "es2020",
-    "module": "es2020",
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "moduleResolution": "node",
     "lib": [
       "es2020",
-      "dom"
     ]
   },
   "include": ["./src/**/*"]
