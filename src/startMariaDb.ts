@@ -1,13 +1,14 @@
 import express from "express";
 
 import cors from "cors";
+import {Pool, PoolConnection} from "mariadb";
 
-const app = express();
+const app: any = express();
 app.use(cors());
 
 const mariadb = require('mariadb');
 
-const pool = mariadb.createPool({
+const pool: Pool = mariadb.createPool({
     host: 'localhost',
     user: 'root',
     password: 'root1234',
@@ -16,11 +17,11 @@ const pool = mariadb.createPool({
 });
 
 app.get('/members', async (req, res) => {
-    let conn;
+    let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
-        let sql = `select * from hartappat.members`;
-        let promise = conn.query(sql);
+        let sql: string = `select *from hartappat.members`;
+        let promise: Promise<any> = conn.query(sql);
         promise.then((x) => res.json(x));
         await conn.end();
     } catch (e) {
@@ -29,10 +30,10 @@ app.get('/members', async (req, res) => {
 });
 
 app.get('/wines', async (req, res) => {
-    let conn;
+    let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
-        let sql = `
+        let sql: string = `
             select w.Name as name, c.name as country, wt.sv as vinkategori
             from hartappat.wines w
                      join hartappat.winetypes wt
@@ -40,7 +41,7 @@ app.get('/wines', async (req, res) => {
                      join hartappat.countries c
                           on w.country = c.id;
         `;
-        let promise = conn.query(sql);
+        let promise: Promise<any> = conn.query(sql);
         promise.then((x) => res.json(x));
         await conn.end();
     } catch (e) {
@@ -49,10 +50,10 @@ app.get('/wines', async (req, res) => {
 });
 
 app.get('/grapes', async (req, res) => {
-    let conn;
+    let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
-        let sql = `
+        let sql: string = `
             select g.name, g.color
             from hartappat.grapes g;
         `;
@@ -64,7 +65,7 @@ app.get('/grapes', async (req, res) => {
     }
 });
 
-function postGrapeHandler() {
+function postGrapeHandler(): (req, res) => void {
     // TODO: Check POST for code at work
     return (req, res) => {
         //console.log("postGrapeHandler called", req.query);
@@ -74,21 +75,15 @@ function postGrapeHandler() {
         } catch (e) {
             res.status(418).send("unacceptable Wine/color combo");
         }
-        // //console.log("result: ", res);
-        // if (res.sdfsd) {
-        //     res.status(201).send("postGrapeHandler called");
-        // } else {
-        //     res.status(418).send("unacceptable Wine/color combo");
-        // }
     };
 }
 
-async function insertGrape(grapeName, grapeColor) {
-    let conn;
+async function insertGrape(grapeName, grapeColor): Promise<any> {
+    let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
-        const sql = "insert into hartappat.grapes (name, color) value (?, ?);"
-        const res = await conn.query(sql, [grapeName, grapeColor]);
+        const sql: string = "insert into hartappat.grapes (name, color) value (?, ?);"
+        const res: any = await conn.query(sql, [grapeName, grapeColor]);
 
         console.log("InsertGrape response: ",  res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
         return res;
@@ -107,14 +102,14 @@ app.post('/g2',  postGrapeHandler());
 
 app.post('/grapes', async (req, res) => {
     //res.send("PUT Request Called")
-    let conn;
+    let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
-        const grapeName = 'Name';
-        const grapeColor = 'green';
-        const sql = `insert into hartappat.grapes (name, color) value (${grapeName}, ${grapeColor});`;
+        const grapeName: string = 'Name';
+        const grapeColor: string = 'green';
+        const sql: string = `insert into hartappat.grapes (name, color) value (${grapeName}, ${grapeColor});`;
 
-        let promise = conn.query(sql);
+        let promise: Promise<any> = conn.query(sql);
 
         promise.then((x) => res.json(x));
         await conn.end();
