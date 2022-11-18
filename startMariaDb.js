@@ -52,10 +52,8 @@ app.get('/grapes', async (req, res) => {
     try {
         conn = await pool.getConnection();
         let sql = `
-            select w.name, w.color, d.sv as farg
-            from hartappat.grapes w
-                     join hartappat.dictionary d
-                          on w.color = d.en;
+            select g.name, g.color
+            from hartappat.grapes g;
         `;
         let promise = conn.query(sql);
         promise.then((x) => res.json(x));
