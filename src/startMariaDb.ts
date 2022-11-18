@@ -1,13 +1,10 @@
 import express from "express";
 
 import cors from "cors";
-import {Pool, PoolConnection} from "mariadb";
+import mariadb, {Pool, PoolConnection} from "mariadb";
 
-const app: any = express();
+const app = express();
 app.use(cors());
-
-const mariadb = require('mariadb');
-
 const pool: Pool = mariadb.createPool({
     host: 'localhost',
     user: 'root',
@@ -20,8 +17,8 @@ app.get('/members', async (req, res) => {
     let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
-        let sql: string = `select *from hartappat.members`;
-        let promise: Promise<any> = conn.query(sql);
+        const sql = `select *from hartappat.members`;
+        const promise: Promise<any> = conn.query(sql);
         promise.then((x) => res.json(x));
         await conn.end();
     } catch (e) {
@@ -33,7 +30,7 @@ app.get('/wines', async (req, res) => {
     let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
-        let sql: string = `
+        const sql = `
             select w.Name as name, c.name as country, wt.sv as vinkategori
             from hartappat.wines w
                      join hartappat.winetypes wt
@@ -41,7 +38,7 @@ app.get('/wines', async (req, res) => {
                      join hartappat.countries c
                           on w.country = c.id;
         `;
-        let promise: Promise<any> = conn.query(sql);
+        const promise: Promise<any> = conn.query(sql);
         promise.then((x) => res.json(x));
         await conn.end();
     } catch (e) {
@@ -53,11 +50,11 @@ app.get('/grapes', async (req, res) => {
     let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
-        let sql: string = `
+        const sql = `
             select g.name, g.color
             from hartappat.grapes g;
         `;
-        let promise = conn.query(sql);
+        const promise = conn.query(sql);
         promise.then((x) => res.json(x));
         await conn.end();
     } catch (e) {
@@ -68,7 +65,6 @@ app.get('/grapes', async (req, res) => {
 function postGrapeHandler(): (req, res) => void {
     // TODO: Check POST for code at work
     return (req, res) => {
-        //console.log("postGrapeHandler called", req.query);
         try {
             insertGrape(req.query.name, req.query.color);
             res.status(201).send("postGrapeHandler called");
@@ -82,8 +78,8 @@ async function insertGrape(grapeName, grapeColor): Promise<any> {
     let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
-        const sql: string = "insert into hartappat.grapes (name, color) value (?, ?);"
-        const res: any = await conn.query(sql, [grapeName, grapeColor]);
+        const sql = "insert into hartappat.grapes (name, color) value (?, ?);"
+        const res = await conn.query(sql, [grapeName, grapeColor]);
 
         console.log("InsertGrape response: ",  res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
         return res;
@@ -105,11 +101,11 @@ app.post('/grapes', async (req, res) => {
     let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
-        const grapeName: string = 'Name';
-        const grapeColor: string = 'green';
-        const sql: string = `insert into hartappat.grapes (name, color) value (${grapeName}, ${grapeColor});`;
+        const grapeName = 'Name';
+        const grapeColor = 'green';
+        const sql = `insert into hartappat.grapes (name, color) value (${grapeName}, ${grapeColor});`;
 
-        let promise: Promise<any> = conn.query(sql);
+        const promise: Promise<any> = conn.query(sql);
 
         promise.then((x) => res.json(x));
         await conn.end();
@@ -122,13 +118,13 @@ app.delete('/grapes/:id', async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
-        let sql = `
+        const sql = `
             select w.name, w.color, d.sv as farg
             from hartappat.grapes w
                      join hartappat.dictionary d
                           on w.color = d.en;
         `;
-        let promise = conn.query(sql);
+        const promise = conn.query(sql);
         promise.then((x) => res.json(x));
         await conn.end();
     } catch (e) {
@@ -140,7 +136,7 @@ app.get('/countries', async (req, res) => {
     let conn;
     try {
         conn = await pool.getConnection();
-        let promise = conn.query('select * from hartappat.countries');
+        const promise = conn.query('select * from hartappat.countries');
         promise.then((x) => res.json(x));
         await conn.end();
     } catch (e) {

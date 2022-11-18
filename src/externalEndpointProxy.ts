@@ -65,7 +65,6 @@ app.get('/vinmonopolet', (req, res) => {
     };
 
     const url1  = 'https://apis.vinmonopolet.no/products/v0/details-normal?maxResults=10';
-    //const url1  = `https://sv.wikipedia.org/api/rest_v1/feed/featured/${2022}/${11}/${14}`;
     console.log("External proxy skickar vidare: ", url1);
     request(
         {url: url1,
@@ -74,8 +73,6 @@ app.get('/vinmonopolet', (req, res) => {
             if (error || response.statusCode !== 200) {
                 console.log("Error: ", error);
                 console.log("Response: ", response);
-                //console.log("Status code: ", response.statusCode);
-                //return res.status(500).json({ type: 'error', message: err.message });
                 return res.status(500).json({ type: 'error', message: "err.message is 'it went wrong'" });
             }
             res.json(JSON.parse(body));
