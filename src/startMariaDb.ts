@@ -89,7 +89,7 @@ async function insertGrape(grapeName, grapeColor) {
         const sql = "insert into hartappat.grapes (name, color) value (?, ?);"
         const res = await conn.query(sql, [grapeName, grapeColor]);
 
-        console.log("InsertGrape resonse: ",  res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+        console.log("InsertGrape response: ",  res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
         return res;
 
     } catch (err) {
