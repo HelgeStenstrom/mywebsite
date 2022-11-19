@@ -1,5 +1,4 @@
 import express from "express";
-
 import cors from "cors";
 import mariadb, {Pool, PoolConnection} from "mariadb";
 
@@ -18,13 +17,22 @@ app.get('/members', async (req, res) => {
     try {
         conn = await pool.getConnection();
         const sql = `select *from hartappat.members`;
-        const promise: Promise<any> = conn.query(sql);
-        promise.then((x) => res.json(x));
+        const promise: Promise<Member> = conn.query(sql);
+        promise.then((x: Member) => {
+            return res.json(x);
+        });
         await conn.end();
     } catch (e) {
         console.error(e);
     }
 });
+
+
+interface Member extends NodeJS.ReadableStream {
+    id: number,
+    givenName: string,
+    surname: string
+}
 
 app.get('/wines', async (req, res) => {
     let conn: PoolConnection;
@@ -38,13 +46,22 @@ app.get('/wines', async (req, res) => {
                      join hartappat.countries c
                           on w.country = c.id;
         `;
-        const promise: Promise<any> = conn.query(sql);
-        promise.then((x) => res.json(x));
+        const promise: Promise<Wine> = conn.query(sql);
+        promise.then((x) => {
+            return res.json(x);
+        });
         await conn.end();
     } catch (e) {
         console.error(e);
     }
 });
+
+
+interface Wine extends NodeJS.ReadableStream {
+    name: string,
+    country: string,
+    category: string
+}
 
 app.get('/grapes', async (req, res) => {
     let conn: PoolConnection;
@@ -54,42 +71,42 @@ app.get('/grapes', async (req, res) => {
             select g.name, g.color
             from hartappat.grapes g;
         `;
-        const promise = conn.query(sql);
-        promise.then((x) => res.json(x));
+        const promise: Promise<Grape> = conn.query(sql);
+        promise.then((x) => {
+            return res.json(x);
+        });
         await conn.end();
     } catch (e) {
         console.error(e);
     }
 });
 
+interface Grape extends NodeJS.ReadableStream {
+    name: string,
+    color: string;
+}
+
 function postGrapeHandler(): (req, res) => void {
     // TODO: Check POST for code at work
     return (req, res) => {
-        try {
-            insertGrape(req.query.name, req.query.color);
-            res.status(201).send("postGrapeHandler called");
-        } catch (e) {
-            res.status(418).send("unacceptable Wine/color combo");
-        }
+        insertGrape(req.query.name, req.query.color)
+            .then(() => res.status(201).send("postGrapeHandler called"))
+            .catch(() => res.status(418).send("It failed"));
     };
 }
 
-async function insertGrape(grapeName, grapeColor): Promise<any> {
+async function insertGrape(grapeName, grapeColor): Promise<unknown> {
     let conn: PoolConnection;
     try {
         conn = await pool.getConnection();
         const sql = "insert into hartappat.grapes (name, color) value (?, ?);"
-        const res = await conn.query(sql, [grapeName, grapeColor]);
+        const res: unknown = await conn.query(sql, [grapeName, grapeColor]);
 
         console.log("InsertGrape response: ",  res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
         return res;
-
-    } catch (err) {
-        console.error(err);
-        throw err;
     } finally {
         if (conn) {
-            conn.end();
+            await conn.end();
         }
     }
 }
@@ -105,9 +122,11 @@ app.post('/grapes', async (req, res) => {
         const grapeColor = 'green';
         const sql = `insert into hartappat.grapes (name, color) value (${grapeName}, ${grapeColor});`;
 
-        const promise: Promise<any> = conn.query(sql);
+        const promise: Promise<unknown> = conn.query(sql);
 
-        promise.then((x) => res.json(x));
+        promise.then((x) => {
+            return res.json(x);
+        });
         await conn.end();
     } catch (e) {
         console.error(e);
