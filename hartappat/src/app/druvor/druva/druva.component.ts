@@ -36,7 +36,7 @@ export class DruvaComponent implements OnInit {
         color: formValue.color
       };
       console.log("Calling this.service.addGrape(g);");
-      const observable = this.service.addGrape2(g);
+      const observable = this.service.addGrape(g);
       observable.subscribe(() => {
         console.log("Grape added?");
         //console.log( x.color, x.name);

@@ -23,7 +23,7 @@ export class BackendService {
       });
   }
 
-   getGrapes(): Observable<Grape[]> {
+  getGrapes(): Observable<Grape[]> {
      console.log('BackendService.getData() called');
      const url: string = this.urlBase + 'grapes';
      return this.http
@@ -34,8 +34,8 @@ export class BackendService {
        ;
   }
 
-  addGrape(grape: Grape): Observable<void> {
-    const url = `${this.urlBase}g3`;
+  addGrape(grape: Grape): Observable<unknown> {
+    const url = `${this.urlBase}g2`;
 // ?name=${grape.name}&color=${grape.color}
     console.log("Adding a grape: ", grape, url);
 
@@ -46,9 +46,10 @@ export class BackendService {
     };
 
     // const httpOptions = {'Content-Type': 'application/json'};
+    const hh = {'Content-Type': 'application/json'};
 
-    const objectObservable: Observable<void> = this.http.post<void>(url, grape);
-    const objectObservable1: Observable<void> = objectObservable.pipe(catchError(this.handleError));
+    const objectObservable = this.http.post<void>(url, grape);
+    const objectObservable1: Observable<unknown> = objectObservable.pipe(catchError(this.handleError));
     return objectObservable1;
   }
 
@@ -61,9 +62,10 @@ export class BackendService {
     const  httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
-      })
+      }).set('Content-Typex',  'application/json')
     };
 
+    const headers = httpOptions.headers;
     // const httpOptions = {'Content-Type': 'application/json'};
     const body = grape;
 
@@ -71,6 +73,25 @@ export class BackendService {
     const objectObservable: Observable<void> = this.http.post<void>(url, grape);
     const objectObservable1: Observable<void> = objectObservable.pipe(catchError(this.handleError));
     return objectObservable1;
+  }
+
+  addGrape3(grape: Grape) : Observable<Grape> {
+    const url = `${this.urlBase}g2`;
+    console.log("addGrape3", grape, url);
+
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/json',
+        Authorization: 'my-auth-token'
+      })
+    };
+
+
+    return this.http.post<Grape>(url, grape, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+
   }
 
   private handleError(error: HttpErrorResponse) { // From https://angular.io/guide/http#getting-error-details
