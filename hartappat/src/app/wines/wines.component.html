@@ -5,10 +5,12 @@
   <th>Namn</th>
   <th>Land</th>
   <th>Typ</th>
+  <th>Systembolaget</th>
   <tr *ngFor="let w of wines">
     <td>{{w.name}}</td>
     <td>{{w.country}}</td>
-    <td>{{w.vinkategori}}</td>
+    <td>{{w.category}}</td>
+    <td>{{w.systembolaget}}</td>
   </tr>
 </table>
 

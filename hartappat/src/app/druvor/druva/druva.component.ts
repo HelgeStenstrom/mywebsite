@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
-import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup} from "@angular/forms";
+import {BackendService, Grape} from "../../backend.service";
 
 @Component({
   selector: 'app-druva',
@@ -15,22 +15,35 @@ export class DruvaComponent implements OnInit {
   });
 
   valid = true;
+  private service: BackendService;
 
 
-  constructor() {}
+  constructor(service: BackendService) {
+    this.service = service;
+  }
 
   ngOnInit(): void {
+    // Nothing to do
   }
 
   addGrape() {
     console.log("Klickade 'Lägg till'")
     console.log(this.grapeForm);
-  }
-}
+    const formValue = this.grapeForm.value;
+    if (formValue.name && formValue.color) {
+      const g:Grape = {
+        name: formValue.name,
+        color: formValue.color
+      };
+      console.log("Calling this.service.addGrape(g);");
+      const observable = this.service.addGrape2(g);
+      observable.subscribe(() => {
+        console.log("Grape added?");
+        //console.log( x.color, x.name);
+      });
+    }
 
-type Grape = {
-  name: string;
-  color: string;
+  }
 }
 
 
