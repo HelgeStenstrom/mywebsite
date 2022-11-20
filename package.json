@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "devStart": "nodemon src/server.js",
-    "mariatart": "nodemon src/startMariaDb.ts",
+    "backend": "nodemon src/backend.ts",
     "externalEndpointProxy": "nodemon src/externalEndpointProxy.ts",
     "sajten": "cd hartappat && sudo ng serve --host 192.168.1.89 --host localhost --host 127.0.0.1 --host helges-mbp-2  --port 80"
   },

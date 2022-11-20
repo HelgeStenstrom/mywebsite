@@ -144,12 +144,10 @@ function setupEndpoints(router) {
         console.log("post g3 req: ", req);
         console.log("post g3 req.query: ", req.query);
         console.log("post g3 res: ", res);
-        let conn: PoolConnection;
-        try{
-            conn = await pool.getConnection();
-        } finally {
-            await conn.end();
-        }
+        console.log("post g3 params: ", req.params);
+        console.log("post g3 body: ", req.body);
+
+        res.status(200).send(`post /g3 done; ${req.query.name}, ${req.query.color}`);
 
     });
 
@@ -170,6 +168,9 @@ function setupEndpoints(router) {
         console.log("put g3 req: ", req);
         console.log("put g3 req.query: ", req.query);
         console.log("put g3 res: ", res);
+        console.log("put g3 params: ", req.params);
+        console.log("put g3 body: ", req.body);
+        res.status(200).send("put /g3 done");
     });
 
     router.post('/grapes', async (req, res) => {
