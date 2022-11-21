@@ -103,25 +103,41 @@ function setupEndpoints(router) {
         };
     }
 
-    router.get('/membersX', getMembers());
-    router.get('/members', innerGetMembers);
-    router.get('/wines', getWines());
-    router.get('/grapes', getGrapes());
-    router.post('/g2', postGrapeHandler());
-
     function postGrapeHandler(): (req, res) => void {
         // TODO: Check POST for code at work
         return (req, res) => {
-            console.log("postGrapeHandler(): ", req.query.name, req.query.color);
+            //console.log("postGrapeHandler(): ", req.query.name, req.query.color);
+            const body: any = req.body;
             console.log("postGrapeHandler() body: ", req.body);
-            insertGrape(req.query.name, req.query.color)
-                .then(() => res.status(201).send("postGrapeHandler called"))
+            insertGrape(body.name, body.color)
+                .then(() => res.status(201).json("postGrapeHandler called"))
                 .catch(() => {
-                    return res.status(418).send("It failed");
+                    return res.status(418).json("It failed");
                 });
         };
     }
 
+    function addGrapeV1() {
+        return async (req, res) => {
+            //res.send("PUT Request Called")
+            let conn: PoolConnection;
+            try {
+                conn = await pool.getConnection();
+                const grapeName = 'Name';
+                const grapeColor = 'green';
+                const sql = `insert into hartappat.grapes (name, color) value (${grapeName}, ${grapeColor});`;
+
+                const promise: Promise<unknown> = conn.query(sql);
+
+                promise.then((x) => {
+                    return res.json(x);
+                });
+                await conn.end();
+            } catch (e) {
+                console.error(e);
+            }
+        };
+    }
 
     async function insertGrape(grapeName, grapeColor): Promise<unknown> {
         console.log("insertGrape: ", grapeName, grapeColor);
@@ -140,58 +156,34 @@ function setupEndpoints(router) {
         }
     }
 
-    router.post('/g3', async (req, res): Promise<void> => {
-        console.log("post g3 req: ", req);
-        console.log("post g3 req.query: ", req.query);
-        console.log("post g3 res: ", res);
-        console.log("post g3 params: ", req.params);
-        console.log("post g3 body: ", req.body);
+    function printReqAndRes(message: string): (req, res) => Promise<void> {
+        return async (req, res): Promise<void> => {
+            console.log(`${message} req: `, req);
+            console.log(`${message} req.query: `, req.query);
+            console.log(`${message} req.params: `, req.params);
+            console.log(`${message} res: `, res);
+            console.log(`${message} req.body: `, req.body);
+            res.status(200).json(`${message}, ${req.query.name}, ${req.query.color}`);
 
-        res.status(200).send(`post /g3 done; ${req.query.name}, ${req.query.color}`);
-
-    });
-
-    function gBodyMethod() {
-        return async (req, res) => {
-            console.log("/gbody req", req);
-            //console.log("/gbody res", res);
-            console.log("/gbody req.body", req.body);
-            console.log("/gbody req.params", req.params);
-
-            res.status(200).send("gBodyMethod sent this");
         };
     }
+    router.get('/membersX', getMembers());
 
-    router.post('/gbody', gBodyMethod())
+    router.get('/members', innerGetMembers);
 
-    router.put('/g3', async (req, res) => {
-        console.log("put g3 req: ", req);
-        console.log("put g3 req.query: ", req.query);
-        console.log("put g3 res: ", res);
-        console.log("put g3 params: ", req.params);
-        console.log("put g3 body: ", req.body);
-        res.status(200).send("put /g3 done");
-    });
 
-    router.post('/grapes', async (req, res) => {
-        //res.send("PUT Request Called")
-        let conn: PoolConnection;
-        try {
-            conn = await pool.getConnection();
-            const grapeName = 'Name';
-            const grapeColor = 'green';
-            const sql = `insert into hartappat.grapes (name, color) value (${grapeName}, ${grapeColor});`;
+    router.get('/wines', getWines());
 
-            const promise: Promise<unknown> = conn.query(sql);
+    router.get('/grapes', getGrapes());
 
-            promise.then((x) => {
-                return res.json(x);
-            });
-            await conn.end();
-        } catch (e) {
-            console.error(e);
-        }
-    });
+    router.post('/g2', postGrapeHandler());
+
+    router.post('/g3', printReqAndRes('post /g3'));
+    router.put('/g3', printReqAndRes("put /g3"));
+
+    router.post('/gbody', printReqAndRes("post /gbody"))
+
+    router.post('/grapes', addGrapeV1());
 
     router.delete('/grapes/:id', async (req, res) => {
         const id = req.params.id;
