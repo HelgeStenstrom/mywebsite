@@ -17,7 +17,6 @@ export class DruvorComponent implements OnInit {
   ngOnInit(): void {
     this.service.getGrapes()
       .subscribe((g: Grape[]) => {
-        console.log("Druva: ", g);
         this.grapes = g;
       });
   }

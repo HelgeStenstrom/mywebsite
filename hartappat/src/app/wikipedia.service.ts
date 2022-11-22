@@ -12,7 +12,7 @@ export class WikipediaService {
   constructor(private http:HttpClient) { }
 
   getAnnounce(): Observable<WikiAnnounce> {
-    const url: string = 'https://en.wikipedia.org/api/rest_v1/feed/announcements';
+    const url = 'https://en.wikipedia.org/api/rest_v1/feed/announcements';
     return this.http.get<WikiAnnounce>(url);
   }
 
@@ -25,12 +25,12 @@ export class WikipediaService {
     function makeDirectUrl() {
       const now = Date.now();
       const today = new Date(now);
-      let year = today.getFullYear();
-      let month = today.getMonth() + 1;
-      let date = today.getDate();
-      console.log("Idag är det ", today);
-      console.log("YMD: ", year, month, date);
-      const url: string = `https://sv.wikipedia.org/api/rest_v1/feed/featured/${year}/${month}/${date}`;
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      const date = today.getDate();
+      // console.log("Idag är det ", today);
+      // console.log("YMD: ", year, month, date);
+      const url = `https://sv.wikipedia.org/api/rest_v1/feed/featured/${year}/${month}/${date}`;
       return url;
     }
 

@@ -13,7 +13,7 @@ export class BackendService {
   constructor(private http:HttpClient) { }
 
   getWines(): Observable<Wine[]> {
-    console.log('BackendService.getData() called');
+    // console.log('BackendService.getData() called');
     const url: string = this.urlBase + 'wines';
     return this.http.get<Wine[]>(url,
       { // Options are not needed in this case; the defaults are OK.
@@ -24,7 +24,7 @@ export class BackendService {
   }
 
   getGrapes(): Observable<Grape[]> {
-     console.log('BackendService.getData() called');
+     //console.log('BackendService.getData() called');
      const url: string = this.urlBase + 'grapes';
      return this.http
        .get<Grape[]>(url)
@@ -37,7 +37,7 @@ export class BackendService {
   addGrape(grape: Grape): Observable<unknown> {
     const url = `${this.urlBase}g2`;
 // ?name=${grape.name}&color=${grape.color}
-    console.log("Adding a grape: ", grape, url);
+    //console.log("Adding a grape: ", grape, url);
 
     const  httpOptions = {
       headers: new HttpHeaders({
@@ -57,7 +57,7 @@ export class BackendService {
   addGrape2(grape: Grape): Observable<void> {
     const url = `${this.urlBase}g3`;
 // ?name=${grape.name}&color=${grape.color}
-    console.log("Test: Adding a grape: ", grape, url);
+    // console.log("Test: Adding a grape: ", grape, url);
 
     const  httpOptions = {
       headers: new HttpHeaders({
@@ -77,7 +77,7 @@ export class BackendService {
 
   addGrape3(grape: Grape) : Observable<Grape> {
     const url = `${this.urlBase}g2`;
-    console.log("addGrape3", grape, url);
+    // console.log("addGrape3", grape, url);
 
     const httpOptions = {
       headers: new HttpHeaders({
