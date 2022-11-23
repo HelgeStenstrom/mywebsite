@@ -25,13 +25,15 @@ describe('DruvorComponent', () => {
 });
 
 describe('DruvorComponent test with mock', () => {
-  let component: DruvorComponent;
+  let druvorComponent: DruvorComponent;
   let fixture: ComponentFixture<DruvorComponent>;
+
+  const cs: Grape = {name:'Cabernet Sauvignon', color:'blå'};
 
   const backendServiceStub: Partial<BackendService> = {
     getGrapes(): Observable<Grape[]> {
       const r: Grape = {name:'Riesling', color:'grön'};
-      const cs: Grape = {name:'Cabernet Saugvignon', color:'blå'};
+
       return of([r, cs]);
     }
   };
@@ -44,17 +46,20 @@ describe('DruvorComponent test with mock', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(DruvorComponent);
-    component = fixture.componentInstance;
+    druvorComponent = fixture.componentInstance;
     fixture.detectChanges();
   });
 
   it('should create', () => {
-    expect(component).toBeTruthy();
+    expect(druvorComponent).toBeTruthy();
   });
 
   it('should have Riesling', () => {
     const r: Grape = {name: 'Riesling', color: 'grön'};
-    expect(component.grapes).toContain(r);
+    expect(druvorComponent.grapes).toContain(r);
+  });
+  it('should have Cab', () => {
+    expect(druvorComponent.grapes).toContain(cs);
   });
 
 });
