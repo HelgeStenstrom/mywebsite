@@ -14,7 +14,6 @@ export class DruvaComponent implements OnInit {
     name: new FormControl<string>('')
   });
 
-  valid = true;
   private service: BackendService;
 
 
@@ -27,18 +26,18 @@ export class DruvaComponent implements OnInit {
   }
 
   addGrape() {
-    console.log("Klickade 'Lägg till'")
-    console.log(this.grapeForm);
+    // console.log("Klickade 'Lägg till'")
+    // console.log(this.grapeForm);
     const formValue = this.grapeForm.value;
     if (formValue.name && formValue.color) {
       const g:Grape = {
         name: formValue.name,
         color: formValue.color
       };
-      console.log("Calling this.service.addGrape(g);");
+      //console.log("Calling this.service.addGrape(g);");
       const observable = this.service.addGrape(g);
       observable.subscribe(() => {
-        console.log("Grape added?");
+        //console.log("Grape added?");
         //console.log( x.color, x.name);
       });
     }
