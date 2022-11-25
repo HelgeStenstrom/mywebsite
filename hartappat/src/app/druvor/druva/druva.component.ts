@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {BackendService, Grape} from "../../backend.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-druva',
@@ -35,7 +36,7 @@ export class DruvaComponent implements OnInit {
         color: formValue.color
       };
       //console.log("Calling this.service.addGrape(g);");
-      const observable = this.service.addGrape(g);
+      const observable: Observable<unknown> = this.service.addGrape(g);
       observable.subscribe(() => {
         //console.log("Grape added?");
         //console.log( x.color, x.name);

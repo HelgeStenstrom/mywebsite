@@ -8,7 +8,8 @@
     "devStart": "nodemon src/server.js",
     "backend": "nodemon src/backend.ts",
     "externalEndpointProxy": "nodemon src/externalEndpointProxy.ts",
-    "sajten": "cd hartappat && sudo ng serve --host 192.168.1.89 --host localhost --host 127.0.0.1 --host helges-mbp-2  --port 80"
+    "sajten": "cd hartappat && sudo ng serve --host 192.168.1.89 --host localhost --host 127.0.0.1 --host helges-mbp-2  --port 80",
+    "sajten8080": "cd hartappat && ng serve --host 192.168.1.89 --host localhost --host 127.0.0.1 --host helges-mbp-2  --port 8080"
   },
   "keywords": [],
   "author": "",

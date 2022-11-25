@@ -2,11 +2,11 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DruvaComponent} from './druva.component';
 import {BackendService, Grape, Wine} from "../../backend.service";
-import {Observable, of, NEVER} from "rxjs";
+import {Observable, of, NEVER, EMPTY} from "rxjs";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {FormControl, FormGroup} from "@angular/forms";
-import jasmine from "jasmine";
+// import jasmine from "jasmine";
 
 // Informative: https://testing-angular.com/testing-components-with-children/
 
@@ -109,7 +109,6 @@ describe('DruvaComponent with hand-made stub', () => {
     fixture = TestBed.createComponent(DruvaComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-
   });
 
   it('renders without errors', () => {
@@ -122,4 +121,50 @@ describe('DruvaComponent with hand-made stub', () => {
 
 });
 
+describe('DruvaComponent with jasmine spies', () => {
 
+  let component: DruvaComponent;
+  let fixture: ComponentFixture<DruvaComponent>;
+
+  let fakeBackend: BackendService;
+
+  beforeEach( async() => {
+
+    // Create fake backend
+    //jasmine.createSpyObj()
+    // const x = jasmine.createSpyObj('Basename', {})
+    fakeBackend = jasmine.createSpyObj<BackendService>(
+      'BackendService', {
+        getWines: undefined,
+        getGrapes: undefined,
+        addGrape: of(EMPTY),
+      }
+    );
+
+    await TestBed.configureTestingModule({
+      declarations: [DruvaComponent],
+      providers: [{provide: BackendService, useValue: fakeBackend}],
+      schemas: [NO_ERRORS_SCHEMA]})
+      .compileComponents();
+
+    fixture = TestBed.createComponent(DruvaComponent);
+    component = fixture.componentInstance;
+    fixture.detectChanges();
+  });
+
+  it('Doesnt call the backend when adding a grape, if there is no grape definition', () => {
+
+    component.addGrape();
+    expect(fakeBackend.addGrape).toHaveBeenCalledTimes(0);  // Fails now; why?
+    expect(fakeBackend.getGrapes).toHaveBeenCalledTimes(0);
+  });
+
+  it('calls the backend when adding a grape', () => {
+    component.grapeForm.setValue({name: 'saf', color: 'sdf'});
+
+    component.addGrape();
+    expect(fakeBackend.addGrape).toHaveBeenCalled();  // Fails now; why?
+    expect(fakeBackend.getGrapes).toHaveBeenCalledTimes(0);
+  });
+
+});
