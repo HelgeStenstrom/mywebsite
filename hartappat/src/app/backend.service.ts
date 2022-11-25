@@ -8,7 +8,7 @@ import {catchError} from "rxjs/operators";
 })
 export class BackendService {
 
-  urlBase = 'http://helges-mbp-2:3000/';
+  private urlBase = 'http://helges-mbp-2:3000/';
 
   constructor(private http:HttpClient) { }
 
@@ -54,7 +54,7 @@ export class BackendService {
   }
 
 
-  addGrape2(grape: Grape): Observable<void> {
+/*  addGrape2(grape: Grape): Observable<void> {
     const url = `${this.urlBase}g3`;
 // ?name=${grape.name}&color=${grape.color}
     // console.log("Test: Adding a grape: ", grape, url);
@@ -92,9 +92,9 @@ export class BackendService {
         catchError(this.handleError)
       );
 
-  }
+  }*/
 
-  private handleError(error: HttpErrorResponse) { // From https://angular.io/guide/http#getting-error-details
+  private handleError(error: HttpErrorResponse): Observable<never> { // From https://angular.io/guide/http#getting-error-details
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error);
