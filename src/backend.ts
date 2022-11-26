@@ -201,9 +201,9 @@ function setupEndpoints(router) {
             promise.then((x) => {
                 const affectedRows = x.affectedRows;
                 if (affectedRows) {
-                    return res.status(200).send("Deletion done");
+                    return res.status(200).json("Deletion done");
                 } else {
-                    return res.status(418).send("Nothing deleted");
+                    return res.status(418).json("Nothing deleted");
                 }
             });
         } catch (e) {
