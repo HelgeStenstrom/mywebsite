@@ -20,4 +20,13 @@ export class DruvorComponent implements OnInit {
         this.grapes = g;
       });
   }
+
+  deleteGrape(grape: Grape) {
+    console.log("Would delete: ", grape.name);
+    this.service.deleteGrape(grape)
+      .subscribe(() => {
+        console.log("I think the grape might have been deleted.");
+      });
+
+  }
 }

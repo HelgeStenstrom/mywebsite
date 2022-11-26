@@ -23,6 +23,14 @@ export class BackendService {
       });
   }
 
+  deleteGrape(grape: Grape): Observable<Grape> {
+    const url: string = this.urlBase + `grapes/${grape.name}`;
+
+    console.log("BackendService.deleteGrape() called with ", grape.name);
+    const grapeObservable: Observable<Grape> = this.http.delete<Grape>(url);
+    return grapeObservable;
+  }
+
   getGrapes(): Observable<Grape[]> {
      //console.log('BackendService.getData() called');
      const url: string = this.urlBase + 'grapes';
@@ -33,6 +41,7 @@ export class BackendService {
        )
        ;
   }
+
 
   addGrape(grape: Grape): Observable<unknown> {
     const url = `${this.urlBase}g2`;
@@ -52,7 +61,6 @@ export class BackendService {
     const objectObservable1: Observable<unknown> = objectObservable.pipe(catchError(this.handleError));
     return objectObservable1;
   }
-
 
 /*  addGrape2(grape: Grape): Observable<void> {
     const url = `${this.urlBase}g3`;

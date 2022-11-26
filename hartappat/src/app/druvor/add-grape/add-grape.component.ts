@@ -4,11 +4,11 @@ import {BackendService, Grape} from "../../backend.service";
 import {Observable} from "rxjs";
 
 @Component({
-  selector: 'app-druva',
-  templateUrl: './druva.component.html',
-  styleUrls: ['./druva.component.css']
+  selector: 'app-add-grape',
+  templateUrl: './add-grape.component.html',
+  styleUrls: ['./add-grape.component.css']
 })
-export class DruvaComponent implements OnInit {
+export class AddGrapeComponent implements OnInit {
 
   grapeForm = new FormGroup({
     color: new FormControl<string>(''),

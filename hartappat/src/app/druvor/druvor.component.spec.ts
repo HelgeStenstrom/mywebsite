@@ -49,13 +49,13 @@ describe('DruvorComponent test with mock', () => {
   it('should have a Druva subcomponent', () => {
     const { debugElement } = fixture;
 
-    const druva = debugElement.query(By.css('app-druva'));
+    const druva = debugElement.query(By.css('app-add-grape'));
 
     expect(druva).toBeTruthy();
   });
 
   it('renders the Druva subcomponent', () => {
-    const druva = findComponent(fixture, 'app-druva');
+    const druva = findComponent(fixture, 'app-add-grape');
     expect(druva).toBeTruthy();
   });
 

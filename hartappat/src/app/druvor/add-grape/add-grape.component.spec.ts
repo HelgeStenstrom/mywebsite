@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {DruvaComponent} from './druva.component';
+import {AddGrapeComponent} from './add-grape.component';
 import {BackendService, Grape, Wine} from "../../backend.service";
 import {Observable, of, NEVER, EMPTY} from "rxjs";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
@@ -11,8 +11,8 @@ import {FormControl, FormGroup} from "@angular/forms";
 // Informative: https://testing-angular.com/testing-components-with-children/
 
 describe('DruvaComponent test with mock', () => {
-  let component: DruvaComponent;
-  let fixture: ComponentFixture<DruvaComponent>;
+  let component: AddGrapeComponent;
+  let fixture: ComponentFixture<AddGrapeComponent>;
 
   const cs: Grape = {name: 'Cabernet Sauvignon', color: 'blå'};
   const backendServiceStub: Partial<BackendService> = {
@@ -24,12 +24,12 @@ describe('DruvaComponent test with mock', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [DruvaComponent],
+      declarations: [AddGrapeComponent],
       providers: [{provide: BackendService, useValue: backendServiceStub}],
       schemas: [NO_ERRORS_SCHEMA]})
       .compileComponents();
 
-    fixture = TestBed.createComponent(DruvaComponent);
+    fixture = TestBed.createComponent(AddGrapeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -50,7 +50,7 @@ describe('DruvaComponent test with mock', () => {
 
     //console.log("debugElement.properties: ", debugElement.properties);
     //const grapeForm: any = debugElement.properties.grapeForm;
-    const componentInstance: DruvaComponent = fixture.componentInstance;
+    const componentInstance: AddGrapeComponent = fixture.componentInstance;
     const grapeForm: FormGroup<{
       color: FormControl<string | null>;
       name: FormControl<string | null> }>
@@ -79,8 +79,8 @@ describe('DruvaComponent test with mock', () => {
 describe('DruvaComponent with hand-made stub', () => {
 // https://testing-angular.com/testing-components-depending-on-services/#faking-service-dependencies
 
-  let component: DruvaComponent;
-  let fixture: ComponentFixture<DruvaComponent>;
+  let component: AddGrapeComponent;
+  let fixture: ComponentFixture<AddGrapeComponent>;
 
   const fakeBackend: Pick<BackendService, keyof BackendService> = {
 
@@ -101,12 +101,12 @@ describe('DruvaComponent with hand-made stub', () => {
   beforeEach( async() => {
 
     await TestBed.configureTestingModule({
-      declarations: [DruvaComponent],
+      declarations: [AddGrapeComponent],
       providers: [{provide: BackendService, useValue: fakeBackend}],
       schemas: [NO_ERRORS_SCHEMA]})
       .compileComponents();
 
-    fixture = TestBed.createComponent(DruvaComponent);
+    fixture = TestBed.createComponent(AddGrapeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
@@ -123,8 +123,8 @@ describe('DruvaComponent with hand-made stub', () => {
 
 describe('DruvaComponent with jasmine spies', () => {
 
-  let component: DruvaComponent;
-  let fixture: ComponentFixture<DruvaComponent>;
+  let component: AddGrapeComponent;
+  let fixture: ComponentFixture<AddGrapeComponent>;
 
   let fakeBackend: BackendService;
 
@@ -142,12 +142,12 @@ describe('DruvaComponent with jasmine spies', () => {
     );
 
     await TestBed.configureTestingModule({
-      declarations: [DruvaComponent],
+      declarations: [AddGrapeComponent],
       providers: [{provide: BackendService, useValue: fakeBackend}],
       schemas: [NO_ERRORS_SCHEMA]})
       .compileComponents();
 
-    fixture = TestBed.createComponent(DruvaComponent);
+    fixture = TestBed.createComponent(AddGrapeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

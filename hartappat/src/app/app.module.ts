@@ -10,7 +10,7 @@ import {HttpClientModule} from "@angular/common/http";
 import { AppComponent } from './app.component';
 import { VinprovningComponent } from './vinprovning/vinprovning.component';
 import { DruvorComponent } from './druvor/druvor.component';
-import { DruvaComponent } from './druvor/druva/druva.component';
+import { AddGrapeComponent } from './druvor/add-grape/add-grape.component';
 import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -29,7 +29,7 @@ import {MatInputModule} from "@angular/material/input";
     AppComponent,
     VinprovningComponent,
     DruvorComponent,
-    DruvaComponent,
+    AddGrapeComponent,
     HomeComponent,
     NotFoundComponent,
     NavbarComponent,
@@ -48,7 +48,7 @@ import {MatInputModule} from "@angular/material/input";
     MatButtonModule,
     RouterModule.forRoot([
       {path: '', component: HomeComponent},
-      {path: 'druvor/:druva', component: DruvaComponent},
+      {path: 'druvor/:add-grape', component: AddGrapeComponent},
       {path: 'druvor', component: DruvorComponent},
       {path: 'viner', component: WinesComponent},
       {path: 'resor', component: TravelsComponent},

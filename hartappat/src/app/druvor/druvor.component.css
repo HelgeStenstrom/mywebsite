@@ -3,4 +3,5 @@ td {
   padding: 3px;
   margin: 2px;
   border: 4px solid white;
+  vertical-align: baseline;
 }

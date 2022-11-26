@@ -7,9 +7,9 @@
   <tr *ngFor="let grape of grapes">
     <td>{{grape.name}}</td>
     <td>{{grape.color}}</td>
-    <button>Ta bort</button>
+    <button (click)="deleteGrape(grape)">Ta bort</button>
   </tr>
 </table>
 
 
-<app-druva></app-druva>
+<app-add-grape></app-add-grape>

@@ -194,7 +194,7 @@ function setupEndpoints(router) {
             const sql = `
                 delete
                 from hartappat.grapes
-                where id = ${id};
+                where name = '${id}';
             `;
             console.log(sql);
             const promise = conn.query(sql);
