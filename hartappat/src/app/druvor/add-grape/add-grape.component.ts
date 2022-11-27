@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {BackendService, Grape} from "../../backend.service";
-import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-add-grape',
@@ -27,15 +26,14 @@ export class AddGrapeComponent implements OnInit {
   }
 
   addGrape() {
-    // console.log("Klickade 'Lägg till'")
-    // console.log(this.grapeForm);
+
     const formValue = this.grapeForm.value;
     if (formValue.name && formValue.color) {
       const g:Grape = {
         name: formValue.name,
         color: formValue.color
       };
-      //console.log("Calling this.service.addGrape(g);");
+
       this.service.addGrape(g).subscribe(() => {
         this.service.newEvent(g);
       });

@@ -5,4 +5,10 @@
 - Gör uppdateringen tillförlitlig; nu fungerar den bara "oftast".
 - Lista av druvor ska uppdateras direkt när druva läggs till
 - ======= klart hit ==========
+- Sluta använda endpoint /g2 
+- Redigera druva
+  - endpoint
+  - anrop från komponent
+- Få bort loggat fel då koden uppdateras
+  - Gissningsvis relaterat till saker som inte utförs i förväntad ordning
 - 

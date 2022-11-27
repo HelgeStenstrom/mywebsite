@@ -38,7 +38,7 @@ export class BackendService {
 
     console.log("BackendService.deleteGrape() called with ", grape.name);
     const grapeObservable: Observable<Grape> = this.http.delete<Grape>(url);
-    this.newEvent(grape); // Creates an event that can be used to trigger a read of all grapes
+    //this.newEvent(grape); // Creates an event that can be used to trigger a read of all grapes
     return grapeObservable;
   }
 
@@ -54,62 +54,12 @@ export class BackendService {
   }
 
 
-  addGrape(grape: Grape): Observable<unknown> {
+  addGrape(grape: Grape): Observable<void> {
     const url = `${this.urlBase}g2`;
-// ?name=${grape.name}&color=${grape.color}
-    //console.log("Adding a grape: ", grape, url);
-
-    const  httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      })
-    };
-
-    this.newEvent(grape); // Creates an event that can be used to trigger a read of all grapes
-    const objectObservable = this.http.post<void>(url, grape);
-    const objectObservable1: Observable<unknown> = objectObservable.pipe(catchError(this.handleError));
-    return objectObservable1;
-  }
-
-/*  addGrape2(grape: Grape): Observable<void> {
-    const url = `${this.urlBase}g3`;
-// ?name=${grape.name}&color=${grape.color}
-    // console.log("Test: Adding a grape: ", grape, url);
-
-    const  httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json'
-      }).set('Content-Typex',  'application/json')
-    };
-
-    const headers = httpOptions.headers;
-    // const httpOptions = {'Content-Type': 'application/json'};
-    const body = grape;
-
-    //const objectObservable: Observable<void> = this.http.post<void>(url, grape, httpOptions);
     const objectObservable: Observable<void> = this.http.post<void>(url, grape);
-    const objectObservable1: Observable<void> = objectObservable.pipe(catchError(this.handleError));
-    return objectObservable1;
+    return objectObservable.pipe(catchError(this.handleError));
   }
 
-  addGrape3(grape: Grape) : Observable<Grape> {
-    const url = `${this.urlBase}g2`;
-    // console.log("addGrape3", grape, url);
-
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/json',
-        Authorization: 'my-auth-token'
-      })
-    };
-
-
-    return this.http.post<Grape>(url, grape, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-
-  }*/
 
   private handleError(error: HttpErrorResponse): Observable<never> { // From https://angular.io/guide/http#getting-error-details
     if (error.status === 0) {
