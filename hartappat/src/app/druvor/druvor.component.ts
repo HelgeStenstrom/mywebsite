@@ -35,7 +35,15 @@ export class DruvorComponent implements OnInit {
     this.service.deleteGrape(grape)
       .subscribe(() => {
         console.log("I think the grape might have been deleted.");
+        this.service.getGrapes()
+          .subscribe((g: Grape[]) => {
+            this.grapes = g;
+          })
       });
 
+  }
+
+  editGrape(grape: Grape) {
+    console.log("Not implemented");
   }
 }

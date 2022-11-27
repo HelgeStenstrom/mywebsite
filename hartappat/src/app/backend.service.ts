@@ -14,7 +14,7 @@ export class BackendService {
   // Subject baserat på https://stackoverflow.com/questions/40313770/how-to-trigger-function-from-one-component-to-another-in-angular2
   private grapesSubject: Subject<Grape> = new Subject<Grape>();
 
-  newEvent(event: Grape) {
+  newEvent(event: Grape): void {
     this.grapesSubject.next(event);
   }
 
@@ -65,9 +65,7 @@ export class BackendService {
       })
     };
 
-    // const httpOptions = {'Content-Type': 'application/json'};
-    const hh = {'Content-Type': 'application/json'};
-
+    this.newEvent(grape); // Creates an event that can be used to trigger a read of all grapes
     const objectObservable = this.http.post<void>(url, grape);
     const objectObservable1: Observable<unknown> = objectObservable.pipe(catchError(this.handleError));
     return objectObservable1;

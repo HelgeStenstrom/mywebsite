@@ -1,13 +1,18 @@
 <h2>Druvor som vi känner till</h2>
-<p>Druvor i databasen.</p>
 
 <table>
+  <caption>Druvor i databasen</caption>
   <th>Namn</th>
   <th>Färg</th>
   <tr *ngFor="let grape of grapes">
     <td>{{grape.name}}</td>
     <td>{{grape.color}}</td>
-    <button (click)="deleteGrape(grape)">Ta bort</button>
+    <button mat-icon-button color="warn" (click)="deleteGrape(grape)">
+    <mat-icon>delete</mat-icon>
+    </button>
+    <button mat-icon-button color="primary" (click)="editGrape(grape)">
+      <mat-icon>edit</mat-icon>
+      </button>
   </tr>
 </table>
 

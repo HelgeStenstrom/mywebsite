@@ -36,10 +36,8 @@ export class AddGrapeComponent implements OnInit {
         color: formValue.color
       };
       //console.log("Calling this.service.addGrape(g);");
-      const observable: Observable<unknown> = this.service.addGrape(g);
-      observable.subscribe(() => {
-        //console.log("Grape added?");
-        //console.log( x.color, x.name);
+      this.service.addGrape(g).subscribe(() => {
+        this.service.newEvent(g);
       });
     }
 
