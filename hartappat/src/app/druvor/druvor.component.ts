@@ -19,6 +19,15 @@ export class DruvorComponent implements OnInit {
       .subscribe((g: Grape[]) => {
         this.grapes = g;
       });
+
+    this.service.events.forEach(event => {
+      console.log("Druvor fick event från backend: ", event);
+      this.service.getGrapes()
+        .subscribe((g: Grape[]) => {
+          this.grapes = g;
+        });
+    });
+
   }
 
   deleteGrape(grape: Grape) {

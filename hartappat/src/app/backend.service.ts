@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
-import {Observable, throwError} from "rxjs";
+import {Observable, Subject, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 @Injectable({
@@ -9,8 +9,18 @@ import {catchError} from "rxjs/operators";
 export class BackendService {
 
   private urlBase = 'http://helges-mbp-2:3000/';
-
   constructor(private http:HttpClient) { }
+
+  // Subject baserat på https://stackoverflow.com/questions/40313770/how-to-trigger-function-from-one-component-to-another-in-angular2
+  private grapesSubject: Subject<Grape> = new Subject<Grape>();
+
+  newEvent(event: Grape) {
+    this.grapesSubject.next(event);
+  }
+
+  get events () {
+    return this.grapesSubject.asObservable();
+  }
 
   getWines(): Observable<Wine[]> {
     // console.log('BackendService.getData() called');
@@ -28,6 +38,7 @@ export class BackendService {
 
     console.log("BackendService.deleteGrape() called with ", grape.name);
     const grapeObservable: Observable<Grape> = this.http.delete<Grape>(url);
+    this.newEvent(grape); // Creates an event that can be used to trigger a read of all grapes
     return grapeObservable;
   }
 
