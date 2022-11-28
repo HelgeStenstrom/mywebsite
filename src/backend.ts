@@ -117,25 +117,18 @@ function setupEndpoints(router) {
         };
     }
 
-    function addGrapeV1() {
-        return async (req, res) => {
-            //res.send("PUT Request Called")
-            let conn: PoolConnection;
-            try {
-                conn = await pool.getConnection();
-                const grapeName = 'Name';
-                const grapeColor = 'green';
-                const sql = `insert into hartappat.grapes (name, color) value (${grapeName}, ${grapeColor});`;
+    function patchGrapeHandler(): (req, res) => void {
+        // TODO: Check POST for code at work
+        return (req, res) => {
+            //console.log("postGrapeHandler(): ", req.query.name, req.query.color);
+            const {from, to} = req.body;
+            console.log("patchGrapeHandler() body: ", req.body);
 
-                const promise: Promise<unknown> = conn.query(sql);
-
-                promise.then((x) => {
-                    return res.json(x);
+            updateGrape(from, to)
+                .then(() => res.status(201).json("postGrapeHandler called"))
+                .catch(() => {
+                    return res.status(400).json(`Updating ${from.name} failed`);
                 });
-                await conn.end();
-            } catch (e) {
-                console.error(e);
-            }
         };
     }
 
@@ -155,35 +148,37 @@ function setupEndpoints(router) {
             }
         }
     }
+    async function updateGrape(from, to): Promise<unknown> {
+        console.log(`updateGrape: ${from.name} to ${to.name} `);
+        let conn: PoolConnection;
+        try {
+            conn = await pool.getConnection();
+            const sql = `update hartappat.grapes
+                         set name='${to.name}',
+                             color='${to.color}'
+                         where name = '${from.name}';`;
+            const res: unknown = await conn.query(sql);
 
-    function printReqAndRes(message: string): (req, res) => Promise<void> {
-        return async (req, res): Promise<void> => {
-            console.log(`${message} req: `, req);
-            console.log(`${message} req.query: `, req.query);
-            console.log(`${message} req.params: `, req.params);
-            console.log(`${message} res: `, res);
-            console.log(`${message} req.body: `, req.body);
-            res.status(200).json(`${message}, ${req.query.name}, ${req.query.color}`);
-
-        };
+            console.log("InsertGrape response: ", res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
+            return res;
+        } finally {
+            if (conn) {
+                await conn.end();
+            }
+        }
     }
+
+
     router.get('/membersX', getMembers());
 
     router.get('/members', innerGetMembers);
-
 
     router.get('/wines', getWines());
 
     router.get('/grapes', getGrapes());
 
-    router.post('/g2', postGrapeHandler());
-
-    router.post('/g3', printReqAndRes('post /g3'));
-    router.put('/g3', printReqAndRes("put /g3"));
-
-    router.post('/gbody', printReqAndRes("post /gbody"))
-
-    router.post('/grapes', addGrapeV1());
+    router.post('/grapes', postGrapeHandler());
+    router.patch('/grapes', patchGrapeHandler());
 
     router.delete('/grapes/:id', async (req, res) => {
         const id = req.params.id;

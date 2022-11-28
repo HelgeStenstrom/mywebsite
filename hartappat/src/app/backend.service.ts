@@ -55,7 +55,7 @@ export class BackendService {
 
 
   addGrape(grape: Grape): Observable<void> {
-    const url = `${this.urlBase}g2`;
+    const url = `${this.urlBase}grapes`;
     const objectObservable: Observable<void> = this.http.post<void>(url, grape);
     return objectObservable.pipe(catchError(this.handleError));
   }
