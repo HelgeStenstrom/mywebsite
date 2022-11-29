@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpHeaders} from "@angular/common/http";
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable, Subject, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
@@ -37,9 +37,7 @@ export class BackendService {
     const url: string = this.urlBase + `grapes/${grape.name}`;
 
     console.log("BackendService.deleteGrape() called with ", grape.name);
-    const grapeObservable: Observable<Grape> = this.http.delete<Grape>(url);
-    //this.newEvent(grape); // Creates an event that can be used to trigger a read of all grapes
-    return grapeObservable;
+    return this.http.delete<Grape>(url);
   }
 
   getGrapes(): Observable<Grape[]> {
@@ -57,6 +55,13 @@ export class BackendService {
   addGrape(grape: Grape): Observable<void> {
     const url = `${this.urlBase}grapes`;
     const objectObservable: Observable<void> = this.http.post<void>(url, grape);
+    return objectObservable.pipe(catchError(this.handleError));
+  }
+
+
+  patchGrape(from: Grape, to:Grape): Observable<void> {
+    const url = `${this.urlBase}grapes`;
+    const objectObservable: Observable<void> = this.http.patch<void>(url, {from, to});
     return objectObservable.pipe(catchError(this.handleError));
   }
 

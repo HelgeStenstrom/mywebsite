@@ -45,5 +45,13 @@ export class DruvorComponent implements OnInit {
 
   editGrape(grape: Grape) {
     console.log("Not implemented");
+    this.service.patchGrape(grape, {name: 'Pinot Vadå', color: 'blå'})
+      .subscribe(() => {
+        this.service.getGrapes()
+          .subscribe((g: Grape[]) => {
+            this.grapes = g;
+          })
+      });
+//    open(AddGrapeComponent, "target string argument"); // TODO: make the form callable with an argument.
   }
 }
