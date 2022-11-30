@@ -42,7 +42,7 @@ describe('DruvaComponent test with mock', () => {
     const {debugElement} = fixture;
     const counter = debugElement.query(By.css('app-counter'));
 
-    expect(counter).toBeTruthy();
+    expect(counter).toBeFalsy();
   });
 
   it('it should have a grapeform', () => {
@@ -57,7 +57,7 @@ describe('DruvaComponent test with mock', () => {
       = componentInstance.grapeForm;
     const actual: boolean = grapeForm.valid;
     console.log("is valid? ", actual);
-    expect(actual).toBeFalsy();
+    expect(actual).toBeTruthy();
 
     const hasColorControl: boolean = grapeForm.contains('color');
     console.log("has color control: ", hasColorControl);
@@ -84,8 +84,8 @@ describe('DruvaComponent with hand-made stub', () => {
 
   const fakeBackend: Pick<BackendService, keyof BackendService> = {
 
-    addGrape(grape: Grape): Observable<unknown> {
-      return of("");
+    addGrape(grape: Grape): Observable<void> {
+      return of(void 0);
     },
 
     getGrapes(): Observable<Grape[]> {
@@ -95,6 +95,21 @@ describe('DruvaComponent with hand-made stub', () => {
 
     getWines(): Observable<Wine[]> {
       return of([]);
+    },
+
+    deleteGrape(grape: Grape): Observable<Grape> {
+      throw Error("not implemented");
+    },
+    patchGrape(from: Grape, to: Grape): Observable<void> {
+      throw Error("not implemented");
+    },
+
+    newEvent(event: Grape) {
+      throw Error("not implemented");
+    },
+
+    get events(): Observable<Grape> {
+      throw Error("not implemented");
     }
   };
 
@@ -130,14 +145,16 @@ describe('DruvaComponent with jasmine spies', () => {
 
   beforeEach( async() => {
 
-    // Create fake backend
-    //jasmine.createSpyObj()
-    // const x = jasmine.createSpyObj('Basename', {})
+
+    // from https://testing-angular.com/testing-components-depending-on-services/#faking-service-dependencies
     fakeBackend = jasmine.createSpyObj<BackendService>(
-      'BackendService', {
-        getWines: undefined,
+      'BackendService',
+      {
+        addGrape: of(void 1),
+        deleteGrape: undefined,
         getGrapes: undefined,
-        addGrape: of(EMPTY),
+        getWines: undefined,
+        patchGrape: undefined,
       }
     );
 

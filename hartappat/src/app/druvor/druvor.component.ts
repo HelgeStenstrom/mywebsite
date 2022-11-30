@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {BackendService, Grape} from "../backend.service";
 import {MatDialog} from "@angular/material/dialog";
+import {AddGrapeComponent} from "./add-grape/add-grape.component";
 
 @Component({
   selector: 'app-druvor',
@@ -8,10 +9,9 @@ import {MatDialog} from "@angular/material/dialog";
   styleUrls: ['./druvor.component.css']
 })
 export class DruvorComponent implements OnInit {
-  private service: BackendService;
   grapes: Grape[] = [];
 
-  constructor(private dialog: MatDialog, service: BackendService) {
+  constructor(private dialog: MatDialog, private service: BackendService) {
     this.service = service;
   }
 
@@ -46,13 +46,19 @@ export class DruvorComponent implements OnInit {
 
   editGrape(grape: Grape) {
     console.log("Not implemented");
-    this.service.patchGrape(grape, {name: 'Pinot Vadå', color: 'blå'})
-      .subscribe(() => {
-        this.service.getGrapes()
-          .subscribe((g: Grape[]) => {
-            this.grapes = g;
-          })
-      });
+
+    if (true) {
+      this.service.patchGrape(grape, {name: 'Pinot Vadå', color: 'blå'})
+        .subscribe(() => {
+          this.service.getGrapes()
+            .subscribe((g: Grape[]) => {
+              this.grapes = g;
+            })
+        });
+    } else {
+      // const matDialogRef = this.dialog.open(AddGrapeComponent, grape);
+    }
+
 //    open(AddGrapeComponent, "target string argument"); // TODO: make the form callable with an argument.
   }
 }

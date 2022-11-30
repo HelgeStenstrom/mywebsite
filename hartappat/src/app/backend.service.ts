@@ -22,15 +22,10 @@ export class BackendService {
     return this.grapesSubject.asObservable();
   }
 
-  getWines(): Observable<Wine[]> {
-    // console.log('BackendService.getData() called');
-    const url: string = this.urlBase + 'wines';
-    return this.http.get<Wine[]>(url,
-      { // Options are not needed in this case; the defaults are OK.
-        responseType: 'json',
-        observe: 'body',
-        reportProgress: false
-      });
+  addGrape(grape: Grape): Observable<void> {
+    const url = `${this.urlBase}grapes`;
+    const objectObservable: Observable<void> = this.http.post<void>(url, grape);
+    return objectObservable.pipe(catchError(this.handleError));
   }
 
   deleteGrape(grape: Grape): Observable<Grape> {
@@ -41,21 +36,26 @@ export class BackendService {
   }
 
   getGrapes(): Observable<Grape[]> {
-     //console.log('BackendService.getData() called');
-     const url: string = this.urlBase + 'grapes';
-     return this.http
-       .get<Grape[]>(url)
-       .pipe(
-         catchError(this.handleError)
-       )
-       ;
+    //console.log('BackendService.getData() called');
+    const url: string = this.urlBase + 'grapes';
+    return this.http
+      .get<Grape[]>(url)
+      .pipe(
+        catchError(this.handleError)
+      )
+      ;
   }
 
 
-  addGrape(grape: Grape): Observable<void> {
-    const url = `${this.urlBase}grapes`;
-    const objectObservable: Observable<void> = this.http.post<void>(url, grape);
-    return objectObservable.pipe(catchError(this.handleError));
+  getWines(): Observable<Wine[]> {
+    // console.log('BackendService.getData() called');
+    const url: string = this.urlBase + 'wines';
+    return this.http.get<Wine[]>(url,
+      { // Options are not needed in this case; the defaults are OK.
+        responseType: 'json',
+        observe: 'body',
+        reportProgress: false
+      });
   }
 
 

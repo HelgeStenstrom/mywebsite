@@ -14,10 +14,7 @@ export class AddGrapeComponent implements OnInit {
     name: new FormControl<string>('')
   });
 
-  private service: BackendService;
-
-
-  constructor(service: BackendService) {
+  constructor(private service: BackendService) {
     this.service = service;
   }
 
@@ -25,7 +22,7 @@ export class AddGrapeComponent implements OnInit {
     // Nothing to do
   }
 
-  addGrape() {
+  addGrape(): void {
 
     const formValue = this.grapeForm.value;
     if (formValue.name && formValue.color) {

@@ -22,13 +22,20 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('hartappat');
   });
 
+
+  // Taking inspiration from
+  // https://www.digitalocean.com/community/tutorials/angular-introduction-unit-testing
+  // but my html is different, and the test is not really applicable.
+
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    let actual = compiled.querySelector('.content span')?.textContent;
-    expect(actual).toContain('Hartappat');
-    expect(compiled.querySelector('.content span')?.textContent).toContain('Hartappat');
+    const compiled = fixture.debugElement.nativeElement;
+    const querySelectorBody = compiled.querySelector('app-navbar');
+    const actual = querySelectorBody?.textContent;
+    console.log("actual: ", actual);
+    expect(actual).toContain('Den här texten syns');
+    //expect(compiled.querySelector('body h1')?.textContent).toContain('Härtappat');
   });
 
   it('is expected to pass', () => {
