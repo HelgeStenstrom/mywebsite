@@ -11,4 +11,6 @@
   - anrop från komponent
 - Få bort loggat fel då koden uppdateras
   - Gissningsvis relaterat till saker som inte utförs i förväntad ordning
+- Använd SQL parametrisering med ? istället för backticks
+  - ska vara säkrare mot injection.
 - 
