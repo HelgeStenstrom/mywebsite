@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {BackendService, Grape} from "../backend.service";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-druvor',
@@ -10,7 +11,7 @@ export class DruvorComponent implements OnInit {
   private service: BackendService;
   grapes: Grape[] = [];
 
-  constructor(service: BackendService) {
+  constructor(private dialog: MatDialog, service: BackendService) {
     this.service = service;
   }
 
