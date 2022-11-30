@@ -23,7 +23,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatSelectModule} from "@angular/material/select";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatInputModule} from "@angular/material/input";
-import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 
 @NgModule({
   declarations: [
@@ -64,7 +64,9 @@ import {MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule} from "@angular/material/dia
     MatDialogModule
   ],
   providers: [
-    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
+    {provide: MatDialogRef, useValue:{}},
+    {provide: MAT_DIALOG_DATA, useValue:{}},
   ],
   bootstrap: [AppComponent]
 })

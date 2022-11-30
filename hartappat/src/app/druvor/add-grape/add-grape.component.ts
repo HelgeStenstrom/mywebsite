@@ -1,6 +1,7 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, OnInit} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {BackendService, Grape} from "../../backend.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-add-grape',
@@ -14,12 +15,20 @@ export class AddGrapeComponent implements OnInit {
     name: new FormControl<string>('')
   });
 
-  constructor(private service: BackendService) {
-    this.service = service;
+  constructor(
+    private service: BackendService,
+    public dialogRef: MatDialogRef<AddGrapeComponent>,
+    @Inject(MAT_DIALOG_DATA) public grapeToEdit: Grape
+  ) {
   }
 
   ngOnInit(): void {
-    // Nothing to do
+    if (this.dialogRef) {
+      console.log("AddGrapeComponent called for edit.");
+      console.log(this.grapeToEdit.name, this.grapeToEdit.color);
+      this.grapeForm.controls.name.setValue(this.grapeToEdit.name);
+      this.grapeForm.controls.color.setValue(this.grapeToEdit.color);
+    }
   }
 
   addGrape(): void {
@@ -31,11 +40,22 @@ export class AddGrapeComponent implements OnInit {
         color: formValue.color
       };
 
-      this.service.addGrape(g).subscribe(() => {
-        this.service.newEvent(g);
-      });
-    }
+      if (this.dialogRef) {
+        this.service.patchGrape(this.grapeToEdit, g).subscribe(() => {
+          this.service.newEvent(g);
+        });
+        this.closeDialog();
+      } else {
+        this.service.addGrape(g).subscribe(() => {
+          this.service.newEvent(g);
+        });
 
+      }
+    }
+  }
+
+  closeDialog() {
+    this.dialogRef.close('Pizza!'); // https://material.angular.io/components/dialog/overview
   }
 }
 

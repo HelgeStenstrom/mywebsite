@@ -47,7 +47,7 @@ export class DruvorComponent implements OnInit {
   editGrape(grape: Grape) {
     console.log("Not implemented");
 
-    if (true) {
+    if (false) {
       this.service.patchGrape(grape, {name: 'Pinot Vadå', color: 'blå'})
         .subscribe(() => {
           this.service.getGrapes()
@@ -56,7 +56,14 @@ export class DruvorComponent implements OnInit {
             })
         });
     } else {
-      // const matDialogRef = this.dialog.open(AddGrapeComponent, grape);
+
+      // https://material.angular.io/components/dialog/overview
+      const dialogRef = this.dialog.open(AddGrapeComponent, {data: grape});
+
+      dialogRef.afterClosed().subscribe(result => {
+        console.log("Grape dialog resultat: ", result);
+      })
+
     }
 
 //    open(AddGrapeComponent, "target string argument"); // TODO: make the form callable with an argument.
