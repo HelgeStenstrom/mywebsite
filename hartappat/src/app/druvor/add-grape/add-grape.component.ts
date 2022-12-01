@@ -23,12 +23,16 @@ export class AddGrapeComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    if (this.dialogRef) {
+    if (this.isEditCall()) {
       console.log("AddGrapeComponent called for edit.");
       console.log(this.grapeToEdit.name, this.grapeToEdit.color);
       this.grapeForm.controls.name.setValue(this.grapeToEdit.name);
       this.grapeForm.controls.color.setValue(this.grapeToEdit.color);
     }
+  }
+
+  private isEditCall() {
+    return Object.keys(this.dialogRef).length !== 0;
   }
 
   addGrape(): void {
@@ -40,7 +44,7 @@ export class AddGrapeComponent implements OnInit {
         color: formValue.color
       };
 
-      if (this.dialogRef) {
+      if (this.isEditCall()) {
         this.service.patchGrape(this.grapeToEdit, g).subscribe(() => {
           this.service.newEvent(g);
         });

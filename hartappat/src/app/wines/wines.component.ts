@@ -10,6 +10,8 @@ export class WinesComponent implements OnInit {
   private service: BackendService;
   wines : Wine[] = [];
 
+
+
   constructor(service: BackendService) {
     this.service = service;
 
