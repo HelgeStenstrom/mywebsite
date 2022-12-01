@@ -144,6 +144,15 @@ Deras API finns kvar, men är det dokumenterat?
 |--------------|----------------------|
 | lösen        |                      |
 
+Intressant nummer: 5cd7c7d6ed1c2b121ce45b91
+
+
+#### Exempelkod Curl
+
+`curl -v -X GET "https://api-extern.systembolaget.se/site/V2/Search/Site?q=omnipollo" -H "Ocp-Apim-Subscription-Key: {subscription key}" --data-ascii "{body}"`
+
+`curl -v -X GET "https://api-extern.systembolaget.se/site/V2/Search/Site?q=omnipollo" -H "Ocp-Apim-Subscription-Key: 5cd7c7d6ed1c2b121ce45b91" --data-ascii "{body}"`
+
 ### Vinmonopolet
 
 Username: h.stenstrom@gmail.com
