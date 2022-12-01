@@ -30,13 +30,14 @@ app.get('/jokes/random', (req, res) => {
 });
 
 app.get('/featured', (req, res) => {
+    const zeroPad = (num, places) => String(num).padStart(places, '0')
     function makeUrl() {
         const now = Date.now();
         const today = new Date(now);
         const year = today.getFullYear();
         const month = today.getMonth() + 1;
         const date = today.getDate();
-        const url = `https://sv.wikipedia.org/api/rest_v1/feed/featured/${year}/${month}/${date}`;
+        const url = `https://sv.wikipedia.org/api/rest_v1/feed/featured/${year}/${month}/${zeroPad(date, 2)}`;
         console.log("EP: Idag är det ", today);
         console.log("EP YMD: ", year, month, date);
         return url;
@@ -48,7 +49,7 @@ app.get('/featured', (req, res) => {
         { url: url1 },
         (error, response, body) => {
             if (error || response.statusCode !== 200) {
-                return res.status(500).json({ type: 'error', message: error.message });
+                return res.status(500).json({ type: 'error', message: error?.message });
             }
 
             res.json(JSON.parse(body));
