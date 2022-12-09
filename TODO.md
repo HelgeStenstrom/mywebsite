@@ -12,6 +12,17 @@
 - Få bort loggat fel då koden uppdateras
   - Gissningsvis relaterat till saker som inte utförs i förväntad ordning
 - https
-- Login/autenticiering
+- Login/autentisering
 - Använd SQL parametrisering med ? istället för backticks
   - ska vara säkrare mot injection.
+- Tabell för användare
+  - username
+  - hashed salted password
+    - bara om ingen extern service används.
+  - logged in or not
+  - för- och efternamn
+  - annat intressant?
+  - Förmodligen bör tabellen hållas liten. Information som inte behövs för 
+    autentisering ska finnas i andra tabeller.
+- installera och testa bcrypt
+- Lär mig om JWT, Json Web Tokens
