@@ -24,6 +24,9 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatInputModule} from "@angular/material/input";
 import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
+import { FiledropComponent } from './filedrop/filedrop.component';
+import { DndDirective } from './dnd.directive';
+import { TestbenchComponent } from './testbench/testbench.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +41,10 @@ import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogR
     WinesComponent,
     TravelsComponent,
     VinmonopoletComponent,
-    WikipediaComponent
+    WikipediaComponent,
+    FiledropComponent,
+    DndDirective,
+    TestbenchComponent
   ],
   imports: [
     BrowserModule,
@@ -54,6 +60,7 @@ import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogR
       {path: 'viner', component: WinesComponent},
       {path: 'resor', component: TravelsComponent},
       {path: 'about', component: AboutComponent},
+      {path: 'tests', component: TestbenchComponent},
       {path: '**', component: NotFoundComponent},
     ]),
     ReactiveFormsModule,
