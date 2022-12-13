@@ -1,0 +1,15 @@
+
+/*
+Most parts from https://medium.com/@tarekabdelkhalek/how-to-create-a-drag-and-drop-file-uploading-in-angular-78d9eba0b854
+*/
+
+.dropzone {
+  width: 450px;
+  height: 200px;
+  padding: 2rem;
+  text-align: center;
+  border: dashed 1px #999999;
+  position: relative;
+  margin: 0 auto;
+  background-color: #E8E8E8;
+}
