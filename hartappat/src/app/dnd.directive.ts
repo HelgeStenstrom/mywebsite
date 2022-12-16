@@ -1,4 +1,4 @@
-import {Directive, HostBinding, HostListener} from '@angular/core';
+import {Directive, EventEmitter, HostBinding, HostListener, Output} from '@angular/core';
 
 @Directive({
   selector: '[appDnd]'
@@ -7,15 +7,20 @@ export class DndDirective {
 
   @HostBinding('class.fileover')
   fileOver = false;
+  @Output() fileDropped = new EventEmitter<any>();
 
-  constructor() { }
+  constructor() {
+    // Nothing to do yet
+  }
+
+
   // Dragover listener
   @HostListener('dragover', ['$event'])
   onDragOver(evt: { preventDefault: () => void; stopPropagation: () => void; }) {
     evt.preventDefault();
     evt.stopPropagation();
 
-    console.log('Drag over');
+    // console.log('Drag over');
   }
 
   // Dragleave listener
@@ -33,20 +38,15 @@ export class DndDirective {
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = false;
-    const files: FileList = evt.dataTransfer.files;
+    const dataTransfer: DataTransfer = evt.dataTransfer;
+    const files: FileList = dataTransfer.files;
+    console.log('dnd files: ', files);
+    console.log('dnd items: ', dataTransfer.items);
+    console.log('dnd evt.dataTransfer: ', dataTransfer);
+
     if (files.length > 0) {
-      // Do some stuff here
-      console.log(`You dropped ${files.length} file(s).`);
-      console.log(files);
-      for (let i = 0; i < files.length; i++) { // NOSONAR
-        const file = files[i];
-        console.log(file.name);
-        console.log(file.webkitRelativePath);
-        console.log(file.type);
-        console.log(file.size);
-        // It's unclear to me how we can find the actual file, since we only have the name, not the full path.
-        // And it's in the client machine, not in the browser.
-      }
+
+      this.fileDropped.emit(files);
     }
   }
 }

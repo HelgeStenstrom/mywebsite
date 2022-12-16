@@ -1,6 +1,7 @@
 <p>filedrop works!</p>
 
-<div class="dropzone" appDnd>
+<div class="dropzone" appDnd (fileDropped)="onFileDropped($event)" >
 
 
+  <div id="preview"></div>
 </div>
