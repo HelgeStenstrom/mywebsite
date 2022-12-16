@@ -65,6 +65,10 @@ export class BackendService {
     return objectObservable.pipe(catchError(this.handleError));
   }
 
+  validateFile(file: File): Observable<void> {
+    console.log('BackendService.validateFile() called');
+    return new Observable<void>(observer => observer.complete());
+  }
 
   private handleError(error: HttpErrorResponse): Observable<never> { // From https://angular.io/guide/http#getting-error-details
     if (error.status === 0) {

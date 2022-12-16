@@ -1,4 +1,6 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {BackendService} from "../backend.service";
+import {Observable, Observer} from "rxjs";
 
 /**
  Most parts are from <a href="https://medium.com/@tarekabdelkhalek/how-to-create-a-drag-and-drop-file-uploading-in-angular-78d9eba0b854">
@@ -25,7 +27,7 @@ import {Component, HostListener, OnInit} from '@angular/core';
 export class FiledropComponent implements OnInit {
   private preview: HTMLElement | null = null;
 
-  constructor() {
+  constructor(private service: BackendService) {
     // Nothing to do yet
   }
 
@@ -34,10 +36,10 @@ export class FiledropComponent implements OnInit {
     this.preview = document.getElementById('preview');
   }
 
-  onFileDropped($event: any) {
+  onFileDropped($event: FileList) {
     console.log('FiledropComponent got onFileDropped event: ', $event);
 
-    const files: any = $event
+    const files = $event;
     // Do some stuff here
     console.log(`You dropped ${files.length} file(s).`);
     console.log(files);
@@ -57,23 +59,44 @@ export class FiledropComponent implements OnInit {
   /**
    * https://developer.mozilla.org/en-US/docs/Web/API/File_API/Using_files_from_web_applications
    */
-   handleFiles(files: any[]) {
+   handleFiles(files: FileList) {
     for (let i = 0; i < files.length; i++) {
-      const file = files[i];
+      const file: File = files[i];
 
       if (file.type.startsWith('image/')) {
-        const img: any = document.createElement("img");
-        img.classList.add("obj");
-        img.file = file;
-        this.preview?.appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          img.src = e.target?.result;
-        };
-        reader.readAsDataURL(file);
-      } else {
-        // Nothing to do
+        this.addImageToPage(file);
       }
+      console.log('FiledropComponent sending file for validation');
+      const observable: Observable<void> = this.service.validateFile(file);
+      observable.subscribe(new ValidationObserver());
     }
   }
+
+  private addImageToPage(file: File) {
+    const img: any = document.createElement("img");
+    img.classList.add("obj");
+    img.file = file;
+    this.preview?.appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      img.src = e.target?.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+
+class ValidationObserver implements Observer<void> {
+  complete(): void {
+    console.log('Completed!');
+  }
+
+  error(err: any): void {
+    console.error('There was an error: ', err);
+  }
+
+  next(value: void): void {
+    console.log('My Observer next!', value);
+  }
+
 }
