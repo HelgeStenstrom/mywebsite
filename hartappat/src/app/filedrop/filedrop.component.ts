@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BackendService} from "../backend.service";
-import {Observable, Observer} from "rxjs";
+import {Observer} from "rxjs";
+import {ValidatorService} from "../validator.service";
 
 /**
  Most parts are from <a href="https://medium.com/@tarekabdelkhalek/how-to-create-a-drag-and-drop-file-uploading-in-angular-78d9eba0b854">
@@ -27,7 +28,7 @@ import {Observable, Observer} from "rxjs";
 export class FiledropComponent implements OnInit {
   private preview: HTMLElement | null = null;
 
-  constructor(private service: BackendService) {
+  constructor(private backendService: BackendService, private validatorService: ValidatorService) {
     // Nothing to do yet
   }
 
@@ -44,7 +45,7 @@ export class FiledropComponent implements OnInit {
     console.log(`You dropped ${files.length} file(s).`);
     console.log(files);
     for (let i = 0; i < files.length; i++) { // NOSONAR
-      const file = files[i];
+      const file: File = files[i];
       console.log('Name: ', file.name);
       console.log('webkitRelativePath: ', file.webkitRelativePath);
       console.log('type: ', file.type);
@@ -67,8 +68,8 @@ export class FiledropComponent implements OnInit {
         this.addImageToPage(file);
       }
       console.log('FiledropComponent sending file for validation');
-      const observable: Observable<void> = this.service.validateFile(file);
-      observable.subscribe(new ValidationObserver());
+      const observable = this.validatorService.validateFile(file);
+      observable.subscribe(new ValidatingObserver());
     }
   }
 
@@ -83,20 +84,29 @@ export class FiledropComponent implements OnInit {
     };
     reader.readAsDataURL(file);
   }
+
+  onValidate() {
+    console.log('FiledropComponent.onValidate() called');
+    const file = new File(["first line", "second line"], "filename.txt");
+    this.validatorService
+      .validateFile(file)
+      .subscribe(new ValidatingObserver());
+  }
 }
 
 
-class ValidationObserver implements Observer<void> {
+class ValidatingObserver implements Observer<Object> {
   complete(): void {
-    console.log('Completed!');
+    console.log('ValidatingObserver.complete(); Filedrop Completed!');
+
   }
 
   error(err: any): void {
-    console.error('There was an error: ', err);
+    console.error('ValidatingObserver: There was an error in the validation backend: ', err);
   }
 
-  next(value: void): void {
-    console.log('My Observer next!', value);
+  next(value: any): void {
+    console.log('ValidatingObserver next!', value);
   }
 
 }

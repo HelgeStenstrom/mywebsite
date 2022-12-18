@@ -9,10 +9,11 @@ import {catchError} from "rxjs/operators";
 export class BackendService {
 
   private urlBase = 'http://helges-mbp-2:3000/';
-  constructor(private http:HttpClient) { }
-
-  // Subject baserat på https://stackoverflow.com/questions/40313770/how-to-trigger-function-from-one-component-to-another-in-angular2
+  /**
+   * Subject baserat på https://stackoverflow.com/questions/40313770/how-to-trigger-function-from-one-component-to-another-in-angular2
+   */
   private grapesSubject: Subject<Grape> = new Subject<Grape>();
+  constructor(private http:HttpClient) { }
 
   newEvent(event: Grape): void {
     this.grapesSubject.next(event);
@@ -34,6 +35,7 @@ export class BackendService {
     console.log("BackendService.deleteGrape() called with ", grape.name);
     return this.http.delete<Grape>(url);
   }
+
 
   getGrapes(): Observable<Grape[]> {
     //console.log('BackendService.getData() called');
@@ -58,16 +60,10 @@ export class BackendService {
       });
   }
 
-
   patchGrape(from: Grape, to:Grape): Observable<void> {
     const url = `${this.urlBase}grapes`;
     const objectObservable: Observable<void> = this.http.patch<void>(url, {from, to});
     return objectObservable.pipe(catchError(this.handleError));
-  }
-
-  validateFile(file: File): Observable<void> {
-    console.log('BackendService.validateFile() called');
-    return new Observable<void>(observer => observer.complete());
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> { // From https://angular.io/guide/http#getting-error-details
