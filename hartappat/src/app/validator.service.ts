@@ -13,12 +13,28 @@ export class ValidatorService {
   constructor(private http: HttpClient) {
   }
 
-  validateFile(file: File): Observable<Object> {
+  validateFile(file: File): PostReturn {
     console.log('ValidatorService.validateFile() called');
     const url = this.validatorHostPort + 'api/v1/validate/val1';
-    const objectObservable: Observable<Object> = this.http.post(url, file );
-    //const objectObservable1 = objectObservable.pipe(x => null);
+    const objectObservable: PostReturn = this.http.post(url, file );
     return objectObservable;
-    //return new Observable<void>(observer => observer.complete());
   }
+
+  uploadMultipart(file: File): PostReturn {
+
+    console.log('ValidatorService.validateFile() called');
+
+    const formData = new FormData();
+    formData.append('name', 'fileForValidation');
+    formData.append('file', file);
+
+    const url = this.validatorHostPort + 'api/v1/validate/multipart';
+    const objectObservable: PostReturn = this.http.post(url, formData );
+    return objectObservable;
+
+  }
+
+  // type PostReturn = Observable<Object>;
 }
+
+type PostReturn = Observable<Object>;

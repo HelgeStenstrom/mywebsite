@@ -1,6 +1,7 @@
 <p>filedrop works!</p>
 
-<button (click) = "onValidate()">Validate file</button>
+<button (click) = "onValidateFake()">Validate faked file</button>
+<button (click) = "onUploadMultipart()">Upload multipart faked file</button>
 <div class="dropzone" appDnd (fileDropped)="onFileDropped($event)" >
 
 

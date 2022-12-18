@@ -63,18 +63,24 @@ export class FiledropComponent implements OnInit {
    handleFiles(files: FileList) {
     for (let i = 0; i < files.length; i++) {
       const file: File = files[i];
-
-      if (file.type.startsWith('image/')) {
-        this.addImageToPage(file);
-      }
-      console.log('FiledropComponent sending file for validation');
-      const observable = this.validatorService.validateFile(file);
-      observable.subscribe(new ValidatingObserver());
+      this.handleFile(file);
     }
   }
 
+  private handleFile(file: File) {
+    if (file.type.startsWith('image/')) {
+      this.addImageToPage(file);
+    }
+    console.log('FiledropComponent sending file for validation');
+    //const observable = this.validatorService.validateFile(file);
+    const observable = this.validatorService.uploadMultipart(file);
+    observable.subscribe(new ValidatingObserver());
+  }
+
   private addImageToPage(file: File) {
-    const img: any = document.createElement("img");
+    const htmlImageElement: HTMLImageElement = document.createElement("img");
+    htmlImageElement.width = 100;
+    const img: any = htmlImageElement;
     img.classList.add("obj");
     img.file = file;
     this.preview?.appendChild(img); // Assuming that "preview" is the div output where the content will be displayed.
@@ -85,11 +91,19 @@ export class FiledropComponent implements OnInit {
     reader.readAsDataURL(file);
   }
 
-  onValidate() {
-    console.log('FiledropComponent.onValidate() called');
+  onValidateFake() {
+    console.log('FiledropComponent.onValidateFake() called');
     const file = new File(["first line", "second line"], "filename.txt");
     this.validatorService
       .validateFile(file)
+      .subscribe(new ValidatingObserver());
+  }
+
+  onUploadMultipart() {
+    console.log('FiledropComponent.onUploadMultipart() called');
+    const file = new File(["first line", "second line"], "filename.txt");
+    this.validatorService
+      .uploadMultipart(file)
       .subscribe(new ValidatingObserver());
   }
 }
