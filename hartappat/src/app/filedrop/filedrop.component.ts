@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BackendService} from "../backend.service";
 import {Observer} from "rxjs";
-import {ValidatorService} from "../validator.service";
+import {ValidationReply, ValidatorService} from "../validator.service";
 
 /**
  Most parts are from <a href="https://medium.com/@tarekabdelkhalek/how-to-create-a-drag-and-drop-file-uploading-in-angular-78d9eba0b854">
@@ -109,7 +109,7 @@ export class FiledropComponent implements OnInit {
 }
 
 
-class ValidatingObserver implements Observer<Object> {
+class ValidatingObserver implements Observer<ValidationReply> {
   complete(): void {
     console.log('ValidatingObserver.complete(); Filedrop Completed!');
 
@@ -119,7 +119,7 @@ class ValidatingObserver implements Observer<Object> {
     console.error('ValidatingObserver: There was an error in the validation backend: ', err);
   }
 
-  next(value: any): void {
+  next(value: ValidationReply): void {
     console.log('ValidatingObserver next!', value);
   }
 

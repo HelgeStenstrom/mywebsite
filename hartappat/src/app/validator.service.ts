@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 
@@ -13,14 +13,13 @@ export class ValidatorService {
   constructor(private http: HttpClient) {
   }
 
-  validateFile(file: File): PostReturn {
+  validateFile(file: File): ValidationObservable {
     console.log('ValidatorService.validateFile() called');
     const url = this.validatorHostPort + 'api/v1/validate/val1';
-    const objectObservable: PostReturn = this.http.post(url, file );
-    return objectObservable;
+    return this.http.post(url, file) as ValidationObservable;
   }
 
-  uploadMultipart(file: File): PostReturn {
+  uploadMultipart(file: File): ValidationObservable {
 
     console.log('ValidatorService.validateFile() called');
 
@@ -29,12 +28,22 @@ export class ValidatorService {
     formData.append('file', file);
 
     const url = this.validatorHostPort + 'api/v1/validate/multipart';
-    const objectObservable: PostReturn = this.http.post(url, formData );
-    return objectObservable;
+    return this.http.post(url, formData) as ValidationObservable;
 
   }
 
   // type PostReturn = Observable<Object>;
 }
 
-type PostReturn = Observable<Object>;
+export type ValidationObservable = Observable<ValidationReply>;
+
+/**
+ * This type should match what is being returned from the (Java/Spring) backend.
+ */
+export type ValidationReply = {
+  verdict:string
+  "length": number,
+  "ctrVersion": string,
+  "failureReason": string,
+  "originalFilename": string
+}
