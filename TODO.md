@@ -19,7 +19,7 @@
   - username
   - hashed salted password
     - bara om ingen extern service används.
-  - logged in or not
+  - logged in or not?
   - för- och efternamn
   - annat intressant?
   - Förmodligen bör tabellen hållas liten. Information som inte behövs för 

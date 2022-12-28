@@ -1,12 +1,168 @@
 openapi: "3.0.2"
 info:
-  title: API Title
+  title: Härtappat backend API
   version: "1.0"
 servers:
-  - url: https://api.server.test/v1
+  - url: http://helges-mbp-2:3000
 paths:
   /test:
     get:
       responses:
         '200':
-          description: OK
+          description: Pipe-cleaner. This endpoint will be removed some day, it's just for learning.
+
+  /members:
+    get:
+      description: Returns a list of the members of the club.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                    Förnamn:
+                      type: string
+                      example: Helge
+                    Efternamn:
+                      type: string
+                      example: Stenström
+
+  /membersX:
+    get:
+      description: Returns a list of the members of the club.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Member'
+
+  /wines:
+    get:
+      description: Returns a list of the wines in the database. Currently the length of the list is unlimited; that may change.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - name
+                  properties:
+                    name:
+                      type: string
+                      description: The name of the wine, as stated by Systembolaget or by the label.
+                    country:
+                      type: string
+                      description: The name of the country of origin, in Swedish
+                    category:
+                      type: string
+                      description: The currently used categories are 'rött', 'rosé' and 'vitt'.
+                    systembolaget:
+                      description: The item product number used by Systembolaget.
+                      type: integer
+
+
+  /grapes:
+    get:
+      description: Returns a list of the grapes in the database. Currently the length of the list is unlimited; that may change.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  required:
+                    - name
+                  properties:
+                    name:
+                      description: The name of the grape.
+                      type: string
+                    color:
+                      description: The color of the grape, in Swedish. One of 'grön' or 'blå'.
+                      type: string
+
+    post:
+      responses:
+        '200':
+          description: TODO describe me
+    patch:
+      responses:
+        '200':
+          description: TODO describe me
+    delete:
+      responses:
+        '200':
+          description: TODO describe me
+  /countries:
+    get:
+      description: Returns a list of known countries in the database. Used to ensure that countries are spelled consistently.
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      example: 17
+                    name:
+                      type: string
+                      example: Österrike
+
+
+components:
+  schemas:
+    Member:
+      type: object
+      properties:
+        id:
+          type: integer
+        Förnamn:
+          type: string
+          example: Helge
+        Efternamn:
+          type: string
+          example: Stenström
+    Vinprovning:
+      type: object
+      required:
+        - titel
+      properties:
+        titel:
+          type: string
+          example: 'Röda viner från Danmark'
+        notes:
+          type: string
+          example: 'Vi provade viner som vi drack i somras. Det var jättetrevligt. Jag skriver mer senare.'
+        date:
+          type: string
+          description: The date the tasting was taking place. In ISO notation.
+          example: 2023-01-06
+        hosts:
+          type: string
+          example: Åke och Åsa
+
+
+
+
+
