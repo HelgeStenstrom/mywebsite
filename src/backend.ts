@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import mariadb, {Pool, PoolConnection} from "mariadb";
+import {MariaWrapper} from "./MariaWrapper";
 
 function getConfiguredApp() {
     const app = express();
@@ -46,6 +47,12 @@ function setupEndpoints(router) {
         let conn: PoolConnection;
         try {
             conn = await pool.getConnection();
+
+            // TODO: I want the MariaWrapper to have a method query,
+            //  with the same signature as conn.query().
+            //  How can I do that?
+            new MariaWrapper(pool);
+
             const sql = `select *
                          from hartappat.members`;
             const promise: Promise<Member> = conn.query(sql);
