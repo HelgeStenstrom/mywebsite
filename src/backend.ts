@@ -102,14 +102,6 @@ function setupEndpoints(router) {
         };
     }
 
-    function getTasting() {
-        return async (req, res) => {
-
-            const id = req.params.id;
-            console.log('getting Tasting');
-        };
-    }
-
     function postGrapeHandler(): (req, res) => void {
         // TODO: Check POST for code at work
         return (req, res) => {
@@ -184,7 +176,12 @@ function setupEndpoints(router) {
 
     router.get('/grapes', getGrapes());
 
-    router.get('/vinprovning/:id', getTasting());
+    router.get('/api/v1/vinprovning/:id', (req, res) => {
+
+        const id: number = req.params.id;
+        console.log('Vinprovning', id);
+        return res.send();
+    });
 
     router.post('/grapes', postGrapeHandler());
     router.patch('/grapes', patchGrapeHandler());
