@@ -6,11 +6,10 @@ function getConfiguredApp() {
     const app = express();
     app.use(cors());
     app.use(express.json());
-    app.listen(3000);
     return app;
 }
 
-const app = getConfiguredApp();
+export const app = getConfiguredApp();
 
 const pool: Pool = mariadb.createPool({
     host: 'localhost',

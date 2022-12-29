@@ -2,6 +2,7 @@ import {describe, expect, test, afterEach, beforeEach} from "@jest/globals";
 
 import {agent as request} from "supertest";
 import express from "express";
+import {app} from "../backend";
 
 
 
@@ -11,31 +12,25 @@ describe('sdf', () => {
     });
 });
 
-describe('backend', () => {
+describe('real backend', () => {
 
-    let app;
-    let listen;
-
+    let connection;
     beforeEach(() => {
-        app = express();
-        listen = app.listen(3003, () => {
+        connection = app.listen(3003, () => {
             console.log('app is running');
         });
     });
 
     afterEach(() => {
         console.log('afterEach is run');
-        listen.close();
+        connection.close();
     });
 
     test('it returns 200 OK ', (done) => {
 
-        request(app)
+        request(connection)
             .get('/api/v1/vinprovning/13')
-            //.send()
             .expect(200, done);
     });
-
-
 
 });
