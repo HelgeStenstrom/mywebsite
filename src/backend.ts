@@ -103,6 +103,14 @@ function setupEndpoints(router) {
         };
     }
 
+    function getTasting() {
+        return async (req, res) => {
+
+            const id = req.params.id;
+            console.log('getting Tasting');
+        };
+    }
+
     function postGrapeHandler(): (req, res) => void {
         // TODO: Check POST for code at work
         return (req, res) => {
@@ -131,7 +139,6 @@ function setupEndpoints(router) {
                 });
         };
     }
-
     async function insertGrape(grapeName, grapeColor): Promise<unknown> {
         console.log("insertGrape: ", grapeName, grapeColor);
         let conn: PoolConnection;
@@ -148,6 +155,8 @@ function setupEndpoints(router) {
             }
         }
     }
+
+
     async function updateGrape(from, to): Promise<unknown> {
         console.log(`updateGrape: ${from.name} to ${to.name} `);
         let conn: PoolConnection;
@@ -168,7 +177,6 @@ function setupEndpoints(router) {
         }
     }
 
-
     router.get('/membersX', getMembers());
 
     router.get('/members', innerGetMembers);
@@ -176,6 +184,8 @@ function setupEndpoints(router) {
     router.get('/wines', getWines());
 
     router.get('/grapes', getGrapes());
+
+    router.get('/vinprovning/:id', getTasting());
 
     router.post('/grapes', postGrapeHandler());
     router.patch('/grapes', patchGrapeHandler());
