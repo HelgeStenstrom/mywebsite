@@ -178,9 +178,18 @@ function setupEndpoints(router) {
 
     router.get('/api/v1/vinprovning/:id', (req, res) => {
 
+        function isValidTastingId() {
+            return isNaN(+maybeNumber);
+        }
+
+        const maybeNumber = +(req.params.id);
+
+        if ( isValidTastingId()) {
+            return res.status(404).send();
+        }
+
         const id: number = req.params.id;
-        console.log('Vinprovning', id);
-        return res.send();
+        return res.json({'id': +id});
     });
 
     router.post('/grapes', postGrapeHandler());

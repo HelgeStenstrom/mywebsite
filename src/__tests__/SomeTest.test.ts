@@ -29,4 +29,22 @@ describe('real backend', () => {
             });
     });
 
+    test('it returns the requested id', (done) => {
+        request(connection)
+            .get('/api/v1/vinprovning/14')
+            .then((response) => {
+                expect(response.body.id).toBe(14);
+                done();
+            });
+    });
+
+    test('it returns 404 when the id is invalid', (done) => {
+        request(connection)
+            .get('/api/v1/vinprovning/xyz')
+            .expect(404, done);
+    });
+
+    // TODO: connect to a testing database, maybe mocked
+    // TODO: test getting a non-existing wine tasting
+
 });
