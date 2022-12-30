@@ -13,6 +13,7 @@ function getConfiguredApp() {
 
 export const app = getConfiguredApp();
 
+// TODO: Sluta använda pool, annat än i sqlWrapper.
 const pool: Pool = mariadb.createPool({
     host: 'localhost',
     user: 'root',
@@ -108,7 +109,6 @@ function setupEndpoints(router) {
     function patchGrapeHandler(): (req, res) => void {
         return (req, res) => {
             const {from, to} = req.body;
-            console.log("patchGrapeHandler() body: ", req.body);
 
             updateGrape(from, to)
                 .then(() => res.status(201).json("postGrapeHandler called"))
@@ -118,15 +118,11 @@ function setupEndpoints(router) {
         };
     }
     async function insertGrape(grapeName, grapeColor): Promise<unknown> {
-        console.log("insertGrape: ", grapeName, grapeColor);
         let conn: PoolConnection;
         try {
             conn = await pool.getConnection();
             const sql = "insert into hartappat.grapes (name, color) value (?, ?);"
-            const res: unknown = await conn.query(sql, [grapeName, grapeColor]);
-
-            console.log("InsertGrape response: ", res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-            return res;
+            return await conn.query(sql, [grapeName, grapeColor]);
         } finally {
             if (conn) {
                 await conn.end();
@@ -136,7 +132,6 @@ function setupEndpoints(router) {
 
 
     async function updateGrape(from, to): Promise<unknown> {
-        console.log(`updateGrape: ${from.name} to ${to.name} `);
         let conn: PoolConnection;
         try {
             conn = await pool.getConnection();
@@ -144,10 +139,7 @@ function setupEndpoints(router) {
                          set name='${to.name}',
                              color='${to.color}'
                          where name = '${from.name}';`;
-            const res: unknown = await conn.query(sql);
-
-            console.log("InsertGrape response: ", res); // { affectedRows: 1, insertId: 1, warningStatus: 0 }
-            return res;
+            return await conn.query(sql);
         } finally {
             if (conn) {
                 await conn.end();
@@ -184,31 +176,28 @@ function setupEndpoints(router) {
 
     router.delete('/grapes/:id', async (req, res) => {
         const id = req.params.id;
-        console.log("Deleting: ", id);
-        let conn;
         const sql = `
                 delete
                 from hartappat.grapes
                 where name = '${id}';
             `;
-        console.log(sql);
-        try {
-            conn = await pool.getConnection();
-            const promise = conn.query(sql);
-            // const promise1 = sqlWrapper.query(sql);
-            promise.then((x) => {
+
+        sqlWrapper
+            .query(sql)
+            .then((x) => {
                 const affectedRows = x.affectedRows;
                 if (affectedRows) {
                     return res.status(200).json("Deletion done");
                 } else {
                     return res.status(418).json("Nothing deleted");
                 }
+            })
+            .then(() => sqlWrapper.end())
+            .catch((e) => {
+                console.error('An badly handled error happened: ', e);
+                sqlWrapper.end();
             });
-        } catch (e) {
-            console.error(e);
-        } finally {
-            await conn.end();
-        }
+
 
     });
 
