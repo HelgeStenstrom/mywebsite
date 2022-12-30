@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import mariadb, {Pool, PoolConnection} from "mariadb";
 import {MariaWrapper} from "./MariaWrapper";
+import {SqlWrapper} from "./SqlWrapper";
 
 function getConfiguredApp() {
     const app = express();
@@ -19,6 +20,8 @@ const pool: Pool = mariadb.createPool({
     port: 3307,
     connectionLimit: 5
 });
+
+const sqlWrapper: SqlWrapper = new MariaWrapper(pool);
 
 interface Member extends NodeJS.ReadableStream {
     id: number,
@@ -44,22 +47,12 @@ function setupEndpoints(router) {
     }
 
     async function innerGetMembers(req, res) {
-        let conn: PoolConnection;
-        try {
-            conn = await pool.getConnection();
-
-            // TODO: I want the MariaWrapper to have a method query,
-            //  with the same signature as conn.query().
-            //  How can I do that?
-            new MariaWrapper(pool);
-
-            const sql = `select *
+        const sql = `select *
                          from hartappat.members`;
-            const promise: Promise<Member> = conn.query(sql);
-            promise.then((x: Member) => {
-                return res.json(x);
-            });
-            await conn.end();
+        try {
+            sqlWrapper.query(sql)
+                .then((x: Member) => res.json(x));
+            await sqlWrapper.end();
         } catch (e) {
             console.error(e);
         }
@@ -67,10 +60,7 @@ function setupEndpoints(router) {
 
     function getWines() {
         return async (req, res) => {
-            let conn: PoolConnection;
-            try {
-                conn = await pool.getConnection();
-                const sql = `
+            const sql = `
                 select w.Name as name, c.name as country, wt.sv as category, w.systembolaget as systembolaget
                 from hartappat.wines w
                          join hartappat.winetypes wt
@@ -78,11 +68,10 @@ function setupEndpoints(router) {
                          join hartappat.countries c
                               on w.country = c.id;
             `;
-                const promise: Promise<Wine> = conn.query(sql);
-                promise.then((x) => {
-                    return res.json(x);
-                });
-                await conn.end();
+            try {
+                sqlWrapper.query(sql)
+                    .then((x: Wine) => res.json(x));
+                await sqlWrapper.end();
             } catch (e) {
                 console.error(e);
             }
@@ -91,18 +80,14 @@ function setupEndpoints(router) {
 
     function getGrapes() {
         return async (req, res) => {
-            let conn: PoolConnection;
-            try {
-                conn = await pool.getConnection();
-                const sql = `
+            const sql = `
                 select g.name, g.color
                 from hartappat.grapes g;
             `;
-                const promise: Promise<Grape> = conn.query(sql);
-                promise.then((x) => {
-                    return res.json(x);
-                });
-                await conn.end();
+            try {
+                sqlWrapper.query(sql)
+                    .then((x: Grape) => res.json(x));
+                await sqlWrapper.end();
             } catch (e) {
                 console.error(e);
             }
@@ -110,11 +95,8 @@ function setupEndpoints(router) {
     }
 
     function postGrapeHandler(): (req, res) => void {
-        // TODO: Check POST for code at work
         return (req, res) => {
-            //console.log("postGrapeHandler(): ", req.query.name, req.query.color);
-            const body: any = req.body;
-            console.log("postGrapeHandler() body: ", req.body);
+            const body = req.body;
             insertGrape(body.name, body.color)
                 .then(() => res.status(201).json("postGrapeHandler called"))
                 .catch(() => {
@@ -124,9 +106,7 @@ function setupEndpoints(router) {
     }
 
     function patchGrapeHandler(): (req, res) => void {
-        // TODO: Check POST for code at work
         return (req, res) => {
-            //console.log("postGrapeHandler(): ", req.query.name, req.query.color);
             const {from, to} = req.body;
             console.log("patchGrapeHandler() body: ", req.body);
 
@@ -206,15 +186,16 @@ function setupEndpoints(router) {
         const id = req.params.id;
         console.log("Deleting: ", id);
         let conn;
-        try {
-            conn = await pool.getConnection();
-            const sql = `
+        const sql = `
                 delete
                 from hartappat.grapes
                 where name = '${id}';
             `;
-            console.log(sql);
+        console.log(sql);
+        try {
+            conn = await pool.getConnection();
             const promise = conn.query(sql);
+            // const promise1 = sqlWrapper.query(sql);
             promise.then((x) => {
                 const affectedRows = x.affectedRows;
                 if (affectedRows) {
@@ -233,9 +214,10 @@ function setupEndpoints(router) {
 
     router.get('/countries', async (req, res) => {
         let conn;
+        const sql = 'select * from hartappat.countries';
         try {
             conn = await pool.getConnection();
-            const promise = conn.query('select * from hartappat.countries');
+            const promise = conn.query(sql);
             promise.then((x) => res.json(x));
             await conn.end();
         } catch (e) {

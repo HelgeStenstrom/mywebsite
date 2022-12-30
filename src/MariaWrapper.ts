@@ -11,12 +11,11 @@ export class MariaWrapper implements SqlWrapper {
 
 
     query(sql: string): Promise<any> {
-        let x;
-        this.connection
+        return this.connection
             .then((c) => {
-                x =  c.query(sql);
+                return c.query(sql);
             });
-        return x;
+
     }
 
     end(): Promise<void> {
