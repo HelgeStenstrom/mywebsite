@@ -1,6 +1,6 @@
 import express from "express";
 import cors from "cors";
-import mariadb, {Pool, PoolConnection} from "mariadb";
+import mariadb, {Pool} from "mariadb";
 import {MariaWrapper} from "./MariaWrapper";
 import {SqlWrapper} from "./SqlWrapper";
 
