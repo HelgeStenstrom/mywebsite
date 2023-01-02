@@ -13,7 +13,7 @@ function getConfiguredApp() {
 
 export const app = getConfiguredApp();
 
-// TODO: Sluta använda pool, annat än i sqlWrapper.
+
 const pool: Pool = mariadb.createPool({
     host: 'localhost',
     user: 'root',
@@ -22,6 +22,7 @@ const pool: Pool = mariadb.createPool({
     connectionLimit: 5
 });
 
+// TODO: Injicera MariaWrapper, mend sin pool.
 const sqlWrapper: SqlWrapper = new MariaWrapper(pool);
 
 interface Member extends NodeJS.ReadableStream {
@@ -118,32 +119,24 @@ function setupEndpoints(router) {
         };
     }
     async function insertGrape(grapeName, grapeColor): Promise<unknown> {
-        let conn: PoolConnection;
         try {
-            conn = await pool.getConnection();
             const sql = "insert into hartappat.grapes (name, color) value (?, ?);"
-            return await conn.query(sql, [grapeName, grapeColor]);
+            return await sqlWrapper.query(sql, [grapeName, grapeColor]);
         } finally {
-            if (conn) {
-                await conn.end();
-            }
+            await sqlWrapper.end();
         }
     }
 
 
     async function updateGrape(from, to): Promise<unknown> {
-        let conn: PoolConnection;
-        try {
-            conn = await pool.getConnection();
-            const sql = `update hartappat.grapes
+        const sql = `update hartappat.grapes
                          set name='${to.name}',
                              color='${to.color}'
                          where name = '${from.name}';`;
-            return await conn.query(sql);
+        try {
+            return await sqlWrapper.query(sql);
         } finally {
-            if (conn) {
-                await conn.end();
-            }
+            await sqlWrapper.end();
         }
     }
 
@@ -202,13 +195,11 @@ function setupEndpoints(router) {
     });
 
     router.get('/countries', async (req, res) => {
-        let conn;
         const sql = 'select * from hartappat.countries';
         try {
-            conn = await pool.getConnection();
-            const promise = conn.query(sql);
+            const promise = sqlWrapper.query(sql);
             promise.then((x) => res.json(x));
-            await conn.end();
+            await sqlWrapper.end();
         } catch (e) {
             console.error(e);
         }
