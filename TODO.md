@@ -19,10 +19,15 @@
   - username
   - hashed salted password
     - bara om ingen extern service används.
-  - logged in or not
+  - logged in or not?
   - för- och efternamn
   - annat intressant?
   - Förmodligen bör tabellen hållas liten. Information som inte behövs för 
     autentisering ska finnas i andra tabeller.
+- Service för lagring av bilder och andra stora filer
 - installera och testa bcrypt
-- Lär mig om JWT, Json Web Tokens
+- autentisering
+  - Lär mig om JWT, Json Web Tokens
+  - undersök BankID
+  - Logga in med Google?
+  - Logga in med Facebook?
