@@ -43,9 +43,13 @@ export type ValidationObservable = Observable<ValidationReply>;
  * This type should match what is being returned from the (Java/Spring) backend.
  */
 export type ValidationReply = {
-  verdict:string
-  "length": number,
-  "ctrVersion": string,
-  "failureReason": string,
-  "originalFilename": string
+  verdict:ValidationVerdict
+  length: number,
+  ctrVersion: string,
+  failureReason: string,
+  filename: string,
+  stackTrace: string
 }
+
+export enum ValidationVerdict {PASS, FAIL, NOT_VALIDATED,}
+
