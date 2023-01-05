@@ -75,6 +75,8 @@ export class FiledropComponent implements OnInit {
     //const observable = this.validatorService.validateFile(file);
     const observable = this.validatorService.uploadMultipart(file);
     observable.subscribe(new ValidatingObserver());
+    console.log('handleFile(): added subscription on returned result');
+
   }
 
   private addImageToPage(file: File) {
