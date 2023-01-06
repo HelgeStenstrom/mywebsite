@@ -8,7 +8,7 @@ import {Observable} from "rxjs";
 export class ValidatorService {
 
   aField = "a field";
-  private validatorHostPort = 'http://localhost:8081/';
+  private validatorHostPort = 'http://localhost:8082/';
 
   constructor(private http: HttpClient) {
   }
@@ -28,7 +28,9 @@ export class ValidatorService {
     formData.append('file', file);
 
     const url = this.validatorHostPort + 'api/v1/validate/multipart';
-    return this.http.post(url, formData) as ValidationObservable;
+    const objectObservable: ValidationObservable = this.http.post(url, formData) as ValidationObservable;
+    console.log("Result back from Validator: ", objectObservable);
+    return objectObservable;
 
   }
 
@@ -41,9 +43,13 @@ export type ValidationObservable = Observable<ValidationReply>;
  * This type should match what is being returned from the (Java/Spring) backend.
  */
 export type ValidationReply = {
-  verdict:string
-  "length": number,
-  "ctrVersion": string,
-  "failureReason": string,
-  "originalFilename": string
+  verdict:ValidationVerdict
+  length: number,
+  ctrVersion: string,
+  failureReason: string,
+  filename: string,
+  stackTrace: string
 }
+
+export enum ValidationVerdict {PASS, FAIL, NOT_VALIDATED,}
+

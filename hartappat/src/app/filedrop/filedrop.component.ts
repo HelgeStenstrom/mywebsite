@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BackendService} from "../backend.service";
 import {Observer} from "rxjs";
-import {ValidationReply, ValidatorService} from "../validator.service";
+import {ValidationReply, ValidationVerdict, ValidatorService} from "../validator.service";
 
 /**
  Most parts are from <a href="https://medium.com/@tarekabdelkhalek/how-to-create-a-drag-and-drop-file-uploading-in-angular-78d9eba0b854">
@@ -75,6 +75,8 @@ export class FiledropComponent implements OnInit {
     //const observable = this.validatorService.validateFile(file);
     const observable = this.validatorService.uploadMultipart(file);
     observable.subscribe(new ValidatingObserver());
+    console.log('handleFile(): added subscription on returned result');
+
   }
 
   private addImageToPage(file: File) {
@@ -120,7 +122,32 @@ class ValidatingObserver implements Observer<ValidationReply> {
   }
 
   next(value: ValidationReply): void {
-    console.log('ValidatingObserver next!', value);
+    const verdict: ValidationVerdict = value.verdict;
+    value.filename;
+
+    console.log('ValidatingObserver next!', verdict);
+    if (verdict.valueOf() === ValidationVerdict.FAIL.valueOf()) {
+      console.log(`Verdict: ${verdict}`);
+    } else {
+      console.log(`Not fail, but: ${verdict}`);
+      console.log(verdict.valueOf(), ValidationVerdict.FAIL.valueOf());
+      console.log(value.stackTrace);
+    }
+
+    switch (verdict.valueOf()) {
+      case ValidationVerdict.PASS:
+        console.log("IT's pass!", value.filename);
+        break;
+      case ValidationVerdict.FAIL:
+        console.log("IT's fail!");
+        break;
+      default:
+        console.log("It's", verdict.valueOf(), value.filename);
+        console.log("It's", verdict, value.filename);
+        console.log("Lenght: ", value.length);
+
+    }
+
   }
 
 }
