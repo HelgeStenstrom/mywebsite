@@ -9,6 +9,8 @@ import {catchError} from "rxjs/operators";
 export class BackendService {
 
   private urlBase = 'http://helges-mbp-2:3000/';
+  private apiBase = this.urlBase + 'api/v1/';
+
   /**
    * Subject baserat på https://stackoverflow.com/questions/40313770/how-to-trigger-function-from-one-component-to-another-in-angular2
    */
@@ -79,6 +81,20 @@ export class BackendService {
     // Return an observable with a user-facing error message.
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
+
+  getLatestTasting() : Observable<Tasting[]>{
+
+    const url = `${this.apiBase}vinprovning`;
+    return this.http.get<Tasting[]>(url);
+
+    // const observable = new Observable<Tasting>((subscriber) => {
+    //   const value: Tasting = {title: 'En provning som kommer från backend.service.ts', notes: 'lite text om den'};
+    //   subscriber.next(value);
+    // });
+    //
+    // return observable;
+
+  }
 }
 
 export type Wine = {
@@ -92,3 +108,8 @@ export type Grape = {
   name: string;
   color: string;
 };
+
+export type Tasting = {
+  title: string;
+  notes: string;
+}

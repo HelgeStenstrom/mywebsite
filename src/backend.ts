@@ -127,6 +127,62 @@ function setupEndpoints(router) {
         }
     }
 
+    function getTasting() {
+        return async (req, res) => {
+
+            const sql = `select *
+                         from hartappat.tasting t
+                         where t.id = ?`;
+
+            console.log('got a valid id');
+            sqlWrapper.query(sql, [+(req.params.id)])
+                .then((t) => res.json(t));
+            await sqlWrapper.end();
+        };
+    }
+
+    function getAllTastings() {
+        return async (req, res) => {
+
+            const sql = `select *
+                         from hartappat.tasting t`;
+
+            console.log('got a valid id');
+            sqlWrapper.query(sql)
+                .then((t) => res.json(t));
+            await sqlWrapper.end();
+        };
+    }
+
+    function deleteGrapeById() {
+        return async (req, res) => {
+            const id = req.params.id;
+            const sql = `
+                delete
+                from hartappat.grapes
+                where name = '${id}';
+            `;
+
+            sqlWrapper
+                .query(sql)
+                .then((x) => {
+                    const affectedRows = x.affectedRows;
+                    if (affectedRows) {
+                        return res.status(200).json("Deletion done");
+                    } else {
+                        return res.status(418).json("Nothing deleted");
+                    }
+                })
+                .then(() => sqlWrapper.end())
+                .catch((e) => {
+                    console.error('An badly handled error happened: ', e);
+                    sqlWrapper.end();
+                });
+
+
+        };
+    }
+
 
     async function updateGrape(from, to): Promise<unknown> {
         const sql = `update hartappat.grapes
@@ -148,51 +204,15 @@ function setupEndpoints(router) {
 
     router.get('/grapes', getGrapes());
 
-    router.get('/api/v1/vinprovning/:id', (req, res) => {
-
-        function isValidTastingId() {
-            return isNaN(+maybeNumber);
-        }
-
-        const maybeNumber = +(req.params.id);
-
-        if ( isValidTastingId()) {
-            return res.status(404).send();
-        }
-
-        const id: number = req.params.id;
-        return res.json({'id': +id});
-    });
+    router.get('/api/v1/vinprovning/:id', getTasting());
+    router.get('/api/v1/vinprovning/', getAllTastings());
 
     router.post('/grapes', postGrapeHandler());
     router.patch('/grapes', patchGrapeHandler());
 
-    router.delete('/grapes/:id', async (req, res) => {
-        const id = req.params.id;
-        const sql = `
-                delete
-                from hartappat.grapes
-                where name = '${id}';
-            `;
-
-        sqlWrapper
-            .query(sql)
-            .then((x) => {
-                const affectedRows = x.affectedRows;
-                if (affectedRows) {
-                    return res.status(200).json("Deletion done");
-                } else {
-                    return res.status(418).json("Nothing deleted");
-                }
-            })
-            .then(() => sqlWrapper.end())
-            .catch((e) => {
-                console.error('An badly handled error happened: ', e);
-                sqlWrapper.end();
-            });
 
 
-    });
+    router.delete('/grapes/:id', deleteGrapeById());
 
     router.get('/countries', async (req, res) => {
         const sql = 'select * from hartappat.countries';
