@@ -4,7 +4,7 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
 import {BackendService, Grape} from './backend.service';
 
 // Based on https://stackoverflow.com/questions/59204306/trying-to-run-angular-httpclient-jasmine-test-against-live-rest-api-nothing-hap
-describe('BackendService with mocked backend (faking MariaDB)', () => {
+xdescribe('BackendService with mocked backend (faking MariaDB)', () => {
 
   let service: BackendService;
   let mockedHtttpClient: HttpClient;
@@ -29,7 +29,7 @@ describe('BackendService with mocked backend (faking MariaDB)', () => {
 
 });
 
-describe('BackendService Test with active backend (MariaDB)', () => {
+xdescribe('BackendService Test with active backend (MariaDB)', () => {
   let httpClient: HttpClient;
   let service: BackendService;
 

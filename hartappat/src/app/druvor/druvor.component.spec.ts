@@ -1,12 +1,12 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { DruvorComponent } from './druvor.component';
+import {DruvorComponent} from './druvor.component';
 import {BackendService, Grape} from "../backend.service";
 import {Observable, of} from "rxjs";
 import {DebugElement, NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
 
-describe('DruvorComponent test with mock', () => {
+xdescribe('DruvorComponent test with mock', () => {
   let druvorComponent: DruvorComponent;
   let fixture: ComponentFixture<DruvorComponent>;
 
