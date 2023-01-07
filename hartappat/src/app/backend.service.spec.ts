@@ -1,4 +1,4 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 import {BackendService, Grape} from './backend.service';
@@ -66,6 +66,8 @@ describe('BackendService Test with active backend (MariaDB)', () => {
   });
 
 
+  // TODO: Testa att backend anropas när vi anropar BackendService, men mocka själva backend,
+  //  så att inte databasen manipuleras.
   it('should add a grape', (done) => {
     const g: Grape = {name: "Ris2", color: "grön"}
     service

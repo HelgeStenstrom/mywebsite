@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { HomeComponent } from './home.component';
+import {HomeComponent} from './home.component';
+import {Component} from "@angular/core";
 
 describe('HomeComponent', () => {
   let component: HomeComponent;
@@ -8,7 +9,13 @@ describe('HomeComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ HomeComponent ]
+      declarations: [HomeComponent,
+        MockAboutComponent,
+        MockAppWinesComponent,
+        MockDruvorComponent,
+        MockVinmonopoletComponent,
+        MockVinprovningComponent,
+        MockWikipediaComponent]
     })
     .compileComponents();
 
@@ -21,3 +28,45 @@ describe('HomeComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+@Component({
+  selector: 'app-about',
+  template: ''
+})
+class MockAboutComponent {
+}
+
+@Component({
+  selector: 'app-vinprovning',
+  template: ''
+})
+class MockVinprovningComponent {
+}
+
+@Component({
+  selector: 'app-wikipedia',
+  template: ''
+})
+class MockWikipediaComponent {
+}
+
+@Component({
+  selector: 'app-vinmonopolet',
+  template: ''
+})
+class MockVinmonopoletComponent {
+}
+
+@Component({
+  selector: 'app-druvor',
+  template: ''
+})
+class MockDruvorComponent {
+}
+
+@Component({
+  selector: 'app-wines',
+  template: ''
+})
+class MockAppWinesComponent {
+}

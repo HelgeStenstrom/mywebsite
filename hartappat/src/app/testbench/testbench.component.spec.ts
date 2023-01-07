@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { TestbenchComponent } from './testbench.component';
+import {TestbenchComponent} from './testbench.component';
+import {Component} from "@angular/core";
 
 describe('TestbenchComponent', () => {
   let component: TestbenchComponent;
@@ -8,7 +9,7 @@ describe('TestbenchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TestbenchComponent ]
+      declarations: [ TestbenchComponent, MockFiledropComponent ]
     })
     .compileComponents();
 
@@ -21,3 +22,10 @@ describe('TestbenchComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+@Component({
+  selector: 'app-filedrop',
+  template: ''
+})
+class MockFiledropComponent {
+}

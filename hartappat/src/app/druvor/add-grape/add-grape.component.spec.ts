@@ -1,12 +1,12 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AddGrapeComponent} from './add-grape.component';
-import {BackendService, Grape, Wine} from "../../backend.service";
-import {Observable, of, NEVER, EMPTY} from "rxjs";
+import {BackendService, Grape, Tasting, Wine} from "../../backend.service";
+import {Observable, of} from "rxjs";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {FormControl, FormGroup} from "@angular/forms";
-// import jasmine from "jasmine";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
 
 // Informative: https://testing-angular.com/testing-components-with-children/
 
@@ -24,6 +24,7 @@ describe('DruvaComponent test with mock', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       declarations: [AddGrapeComponent],
       providers: [{provide: BackendService, useValue: backendServiceStub}],
       schemas: [NO_ERRORS_SCHEMA]})
@@ -83,6 +84,9 @@ describe('DruvaComponent with hand-made stub', () => {
   let fixture: ComponentFixture<AddGrapeComponent>;
 
   const fakeBackend: Pick<BackendService, keyof BackendService> = {
+    getLatestTasting(): Observable<Tasting[]> {
+      return of([]);
+    },
 
     addGrape(grape: Grape): Observable<void> {
       return of(void 0);

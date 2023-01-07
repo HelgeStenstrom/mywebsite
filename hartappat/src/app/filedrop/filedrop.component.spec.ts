@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FiledropComponent } from './filedrop.component';
+import {FiledropComponent} from './filedrop.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
 
 describe('FiledropComponent', () => {
   let component: FiledropComponent;
@@ -8,6 +9,7 @@ describe('FiledropComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule],
       declarations: [ FiledropComponent ]
     })
     .compileComponents();
@@ -21,3 +23,4 @@ describe('FiledropComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
-import {catchError, Observable} from "rxjs";
-import {tap} from "rxjs/operators";
+import {Observable} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -17,8 +16,7 @@ export class VinmonopoletService {
       'Ocp-Apim-Subscription-Key': '1ff26063efff409eb6200d72ac584c04',
     };
 
-    //const url : string = 'https://apis.vinmonopolet.no/products/v0/details-normal?maxResults=2';
-    const url : string = 'http://helges-mbp-2:3001/vinmonopolet';
+    const url  = 'http://helges-mbp-2:3001/vinmonopolet';
     return this.http.get<ProductDetail[]>(url, {headers: headers});
   }
 }
