@@ -84,7 +84,7 @@ xdescribe('AddGrapeComponent with hand-made stub', () => {
   let fixture: ComponentFixture<AddGrapeComponent>;
 
   const fakeBackend: Pick<BackendService, keyof BackendService> = {
-    getLatestTasting(): Observable<Tasting[]> {
+    getTastings(): Observable<Tasting[]> {
       return of([]);
     },
 

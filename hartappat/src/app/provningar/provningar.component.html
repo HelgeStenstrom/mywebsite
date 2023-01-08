@@ -3,14 +3,11 @@
 <h2>Våra vinprovningar</h2>
 
 <div data-test="tasting-list">
-  <div  *ngFor="let t of tastings">
+  <div  *ngFor="let t of tastings$ | async">
   <!--  TODO: Flytta titel och noter till sub-komponenten.
          Parametrisera den med t: Tasting -->
     <h3>{{t.title}}</h3>
     <div>{{t.notes}}</div>
     <app-tasting data-test="tasting"></app-tasting>
   </div>
-  <app-tasting data-test="tasting"></app-tasting>
-  <app-tasting data-test="tasting"></app-tasting>
-  <app-tasting data-test="tasting"></app-tasting>
 </div>

@@ -82,7 +82,7 @@ export class BackendService {
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
-  getLatestTasting() : Observable<Tasting[]>{
+  getTastings() : Observable<Tasting[]>{
 
     const url = `${this.apiBase}vinprovning`;
     return this.http.get<Tasting[]>(url);

@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BackendService, Tasting} from "../backend.service";
+import {Observable, of} from "rxjs";
 
 @Component({
   selector: 'app-provningar',
@@ -7,19 +8,14 @@ import {BackendService, Tasting} from "../backend.service";
   styleUrls: ['./provningar.component.css']
 })
 export class ProvningarComponent implements OnInit {
-  tasting: Tasting =  {title: 'Platshållare för provningsrubrik', notes: 'Plats för noteringar'};
-  tastings: Tasting[] = [];
+
+  tastings$: Observable<Tasting[]> = of([]);
 
   constructor(private service: BackendService) { }
 
   ngOnInit(): void {
 
-    this.service.getLatestTasting().subscribe(
-      (t) => {
-        this.tasting = t[0];
-        this.tastings = t;
-      }
-    );
+    this.tastings$ = this.service.getTastings();
   }
 
 }
