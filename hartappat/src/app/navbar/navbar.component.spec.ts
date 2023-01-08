@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { NavbarComponent } from './navbar.component';
+import {NavbarComponent} from './navbar.component';
+import {RouterModule} from "@angular/router";
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -8,7 +9,8 @@ describe('NavbarComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ NavbarComponent ]
+      declarations: [ NavbarComponent ],
+      imports:[    RouterModule.forRoot([])]
     })
     .compileComponents();
 
@@ -20,4 +22,13 @@ describe('NavbarComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should show logo', () => {
+    expect(fixture.nativeElement.querySelector('[data-test="logo"]')).toBeTruthy();
+  });
+
+  it('should show menu', () => {
+    expect(fixture.nativeElement.querySelector('[data-test="menu"]')).toBeTruthy();
+  });
+
 });

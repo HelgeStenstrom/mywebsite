@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService} from "../backend.service";
+import {BackendService, Tasting} from "../backend.service";
 
 @Component({
   selector: 'app-provningar',
@@ -7,8 +7,8 @@ import {BackendService} from "../backend.service";
   styleUrls: ['./provningar.component.css']
 })
 export class ProvningarComponent implements OnInit {
-  aTastingTitle = "Platshållare för provningsrubrik";
-  aTastingNotes= '';
+  tasting: Tasting =  {title: 'Platshållare för provningsrubrik', notes: 'Plats för noteringar'};
+  tastings: Tasting[] = [];
 
   constructor(private service: BackendService) { }
 
@@ -16,8 +16,8 @@ export class ProvningarComponent implements OnInit {
 
     this.service.getLatestTasting().subscribe(
       (t) => {
-        this.aTastingTitle = t[0].title;
-        this.aTastingNotes = t[0].notes;
+        this.tasting = t[0];
+        this.tastings = t;
       }
     );
   }

@@ -28,6 +28,7 @@ import {FiledropComponent} from './filedrop/filedrop.component';
 import {DndDirective} from './dnd.directive';
 import {TestbenchComponent} from './testbench/testbench.component';
 import {ProvningarComponent} from './provningar/provningar.component';
+import {TastingComponent} from './provningar/tasting/tasting.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {ProvningarComponent} from './provningar/provningar.component';
     FiledropComponent,
     DndDirective,
     TestbenchComponent,
-    ProvningarComponent
+    ProvningarComponent,
+    TastingComponent
   ],
   imports: [
     BrowserModule,

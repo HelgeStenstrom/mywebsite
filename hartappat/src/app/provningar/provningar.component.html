@@ -1,7 +1,16 @@
 <p>provningar works!</p>
 
-<h2>En av våra vinprovningar</h2>
+<h2>Våra vinprovningar</h2>
 
-<h3>{{aTastingTitle}}</h3>
-<div>{{aTastingNotes}}</div>
-
+<div data-test="tasting-list">
+  <div  *ngFor="let t of tastings">
+  <!--  TODO: Flytta titel och noter till sub-komponenten.
+         Parametrisera den med t: Tasting -->
+    <h3>{{t.title}}</h3>
+    <div>{{t.notes}}</div>
+    <app-tasting data-test="tasting"></app-tasting>
+  </div>
+  <app-tasting data-test="tasting"></app-tasting>
+  <app-tasting data-test="tasting"></app-tasting>
+  <app-tasting data-test="tasting"></app-tasting>
+</div>
