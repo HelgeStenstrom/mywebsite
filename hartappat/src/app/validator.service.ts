@@ -21,7 +21,7 @@ export class ValidatorService {
 
   uploadMultipart(file: File): ValidationObservable {
 
-    console.log('ValidatorService.validateFile() called');
+    // console.log('ValidatorService.validateFile() called');
 
     const formData = new FormData();
     formData.append('name', 'fileForValidation');
@@ -29,7 +29,7 @@ export class ValidatorService {
 
     const url = this.validatorHostPort + 'api/v1/validate/multipart';
     const objectObservable: ValidationObservable = this.http.post(url, formData) as ValidationObservable;
-    console.log("Result back from Validator: ", objectObservable);
+    // console.log("Result back from Validator: ", objectObservable);
     return objectObservable;
 
   }
@@ -43,7 +43,7 @@ export type ValidationObservable = Observable<ValidationReply>;
  * This type should match what is being returned from the (Java/Spring) backend.
  */
 export type ValidationReply = {
-  verdict:ValidationVerdict
+  verdict:string
   length: number,
   ctrVersion: string,
   failureReason: string,
