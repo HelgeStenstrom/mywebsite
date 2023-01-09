@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {BackendService} from "../backend.service";
 import {Observer} from "rxjs";
-import {ValidationReply, ValidationVerdict, ValidatorService} from "../validator.service";
+import {ValidationReply, ValidatorService} from "../validator.service";
 
 /**
  Most parts are from <a href="https://medium.com/@tarekabdelkhalek/how-to-create-a-drag-and-drop-file-uploading-in-angular-78d9eba0b854">
@@ -27,6 +27,11 @@ import {ValidationReply, ValidationVerdict, ValidatorService} from "../validator
 })
 export class FiledropComponent implements OnInit {
   private preview: HTMLElement | null = null;
+  // passOrFail = "pof";
+  // exceptionName = "en";
+  // message = "m";
+
+  text = {verdict: "pof", exceptionName: "en", message: 'm'}
 
   constructor(private backendService: BackendService, private validatorService: ValidatorService) {
     // Nothing to do yet
@@ -38,18 +43,18 @@ export class FiledropComponent implements OnInit {
   }
 
   onFileDropped($event: FileList) {
-    console.log('FiledropComponent got onFileDropped event: ', $event);
+    // console.log('FiledropComponent got onFileDropped event: ', $event);
 
     const files = $event;
     // Do some stuff here
-    console.log(`You dropped ${files.length} file(s).`);
-    console.log(files);
+    // console.log(`You dropped ${files.length} file(s).`);
+    // console.log(files);
     for (let i = 0; i < files.length; i++) { // NOSONAR
       const file: File = files[i];
-      console.log('Name: ', file.name);
-      console.log('webkitRelativePath: ', file.webkitRelativePath);
-      console.log('type: ', file.type);
-      console.log('size: ', file.size);
+      // console.log('Name: ', file.name);
+      // console.log('webkitRelativePath: ', file.webkitRelativePath);
+      // console.log('type: ', file.type);
+      // console.log('size: ', file.size);
       // It's unclear to me how we can find the actual file, since we only have the name, not the full path.
       // And it's in the client machine, not in the browser.
     }
@@ -71,10 +76,10 @@ export class FiledropComponent implements OnInit {
     if (file.type.startsWith('image/')) {
       this.addImageToPage(file);
     }
-    console.log('FiledropComponent sending file for validation');
+    // console.log('FiledropComponent sending file for validation');
     //const observable = this.validatorService.validateFile(file);
     const observable = this.validatorService.uploadMultipart(file);
-    observable.subscribe(new ValidatingObserver());
+    observable.subscribe(new ValidatingObserver(this.text));
     console.log('handleFile(): added subscription on returned result');
 
   }
@@ -94,26 +99,33 @@ export class FiledropComponent implements OnInit {
   }
 
   onValidateFake() {
-    console.log('FiledropComponent.onValidateFake() called');
+    // console.log('FiledropComponent.onValidateFake() called');
     const file = new File(["first line", "second line"], "filename.txt");
     this.validatorService
       .validateFile(file)
-      .subscribe(new ValidatingObserver());
+      .subscribe(new ValidatingObserver({verdict:"", message:"", exceptionName: ""}));
   }
 
   onUploadMultipart() {
-    console.log('FiledropComponent.onUploadMultipart() called');
+    // console.log('FiledropComponent.onUploadMultipart() called');
     const file = new File(["first line", "second line"], "filename.txt");
     this.validatorService
       .uploadMultipart(file)
-      .subscribe(new ValidatingObserver());
+      .subscribe(new ValidatingObserver({verdict:"", message:"", exceptionName: ""}));
   }
+
+
 }
 
 
 class ValidatingObserver implements Observer<ValidationReply> {
+  private text: { verdict: string; message: string; exceptionName: string };
+  constructor(text: { verdict: string; message: string; exceptionName: string }) {
+    this.text = text;
+  }
+
   complete(): void {
-    console.log('ValidatingObserver.complete(); Filedrop Completed!');
+    // console.log('ValidatingObserver.complete(); Filedrop Completed!');
 
   }
 
@@ -122,32 +134,39 @@ class ValidatingObserver implements Observer<ValidationReply> {
   }
 
   next(value: ValidationReply): void {
-    const verdict: ValidationVerdict = value.verdict;
+    const verdict: string = value.verdict;
     value.filename;
 
-    console.log('ValidatingObserver next!', verdict);
-    if (verdict.valueOf() === ValidationVerdict.FAIL.valueOf()) {
+    // console.log('ValidatingObserver next!', verdict);
+    if (verdict === 'FAIL') {
       console.log(`Verdict: ${verdict}`);
     } else {
       console.log(`Not fail, but: ${verdict}`);
-      console.log(verdict.valueOf(), ValidationVerdict.FAIL.valueOf());
-      console.log(value.stackTrace);
+      // console.log(verdict.valueOf(), ValidationVerdict.FAIL.valueOf());
+      // console.log(value.stackTrace);
     }
 
-    switch (verdict.valueOf()) {
-      case ValidationVerdict.PASS:
+    switch (verdict) {
+      case 'PASS':
         console.log("IT's pass!", value.filename);
+        this.text.message = "No problems!";
+        this.text.exceptionName = "";
         break;
-      case ValidationVerdict.FAIL:
+      case 'FAIL':
         console.log("IT's fail!");
+        console.log(value.failureReason)
+        console.log(value.stackTrace);
+        this.text.message = value.stackTrace;
+        this.text.exceptionName = value.failureReason;
         break;
       default:
         console.log("It's", verdict.valueOf(), value.filename);
-        console.log("It's", verdict, value.filename);
-        console.log("Lenght: ", value.length);
-
+        // console.log("It's", verdict, value.filename);
+        // console.log("Lenght: ", value.length);
+        console.log(value.failureReason);
+        break;
     }
+    this.text.verdict = verdict;
 
   }
-
 }
