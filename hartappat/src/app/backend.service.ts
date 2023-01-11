@@ -40,7 +40,7 @@ export class BackendService {
 
 
   getGrapes(): Observable<Grape[]> {
-    //console.log('BackendService.getData() called');
+    console.log('BackendService.getData() called');
     const url: string = this.urlBase + 'grapes';
     return this.http
       .get<Grape[]>(url)

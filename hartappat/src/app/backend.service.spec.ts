@@ -1,13 +1,11 @@
-import {TestBed} from '@angular/core/testing';
+import {getTestBed, TestBed} from '@angular/core/testing';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 import {BackendService, Grape} from './backend.service';
-import {HttpTestingController} from "@angular/common/http/testing";
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 
 // Based on https://stackoverflow.com/questions/59204306/trying-to-run-angular-httpclient-jasmine-test-against-live-rest-api-nothing-hap
-xdescribe('BackendService with mocked backend (faking MariaDB)', () => {
-
-  let service: BackendService;
+describe('BackendService with mocked backend (faking MariaDB)', () => {
 
   // Läs mera https://stackoverflow.com/questions/46930581/how-to-mock-httpclient-in-a-provided-service-in-a-component-test-in-angular
   // https://medium.com/netscape/testing-with-the-angular-httpclient-api-648203820712
@@ -15,44 +13,46 @@ xdescribe('BackendService with mocked backend (faking MariaDB)', () => {
   // https://www.thecodebuzz.com/angular-unit-test-and-mock-httpclient-get-request/
   // https://ng-mocks.sudo.eu/guides/http-request
 
-  const httpClientStub: Partial<HttpClient> = {
-/*
-    get(url: string): Observable<Grape[]> {
-      const aGrape: Grape = {name: 'Riesling?', color:'grön'};
-      const someGrapes: Grape[] = [aGrape];
-      const observable: Observable<Grape[]> = of(someGrapes);
-      return observable;
-    }
-*/
-  };
-
-   let httpMock: HttpTestingController;
+  let service: BackendService;
+  let httpMock: HttpTestingController;
+  let httpClient: HttpClient;
 
   beforeEach(() => {
-    httpMock = TestBed.inject(HttpTestingController);
-    TestBed.configureTestingModule({
 
-      providers: [{provide: HttpClient, useValue: httpClientStub}],
+    TestBed.configureTestingModule({
+      imports:[HttpClientTestingModule],
+      providers: [BackendService,],
     });
-    // TODO: Read about mocking HttpClient
+
     service = TestBed.inject(BackendService);
+    httpMock = TestBed.inject(HttpTestingController);
+    httpClient = TestBed.inject(HttpClient);
+    // TODO: Read about mocking HttpClient
   });
 
   afterEach(() => {
-    throw new Error("this shouldn't be executed!");
-    console.log("This should not be called if the test is xdescribe");
+    httpMock.verify();
   });
 
   it('should contain Riesling', (done) => {
-    throw new Error("this shouldn't be executed!");
+
+    const riesling: Grape = {"name": "Riesling", "color": "grön"};
+    const grapes: Grape[] = [riesling];
 
     service
       .getGrapes()
-      .subscribe((result) => {
+      .subscribe({
+          next: result => {
+            expect(result).toContain({name: 'Riesling', color: 'grön'});
+            done();
+          },
+          error: done.fail
+        }
+      );
 
-        expect(result).toContain({name: 'Riesling', color: 'grön'});
-        done();
-      });
+    const req = httpMock.expectOne('http://helges-mbp-2:3000/grapes');
+    req.flush(grapes);
+
   });
 
 });
