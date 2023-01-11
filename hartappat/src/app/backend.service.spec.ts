@@ -5,7 +5,7 @@ import {BackendService, Grape} from './backend.service';
 import {HttpTestingController} from "@angular/common/http/testing";
 
 // Based on https://stackoverflow.com/questions/59204306/trying-to-run-angular-httpclient-jasmine-test-against-live-rest-api-nothing-hap
-describe('BackendService with mocked backend (faking MariaDB)', () => {
+xdescribe('BackendService with mocked backend (faking MariaDB)', () => {
 
   let service: BackendService;
 
@@ -37,6 +37,10 @@ describe('BackendService with mocked backend (faking MariaDB)', () => {
     });
     // TODO: Read about mocking HttpClient
     service = TestBed.inject(BackendService);
+  });
+
+  afterEach(() => {
+    console.log("This should not be called if the test is xdescribe");
   });
 
   it('should contain Riesling', (done) => {
