@@ -26,11 +26,10 @@ xdescribe('BackendService with mocked backend (faking MariaDB)', () => {
 */
   };
 
-  const httpMock: HttpTestingController = TestBed.get(
-    HttpTestingController,
-  );
+   let httpMock: HttpTestingController;
 
   beforeEach(() => {
+    httpMock = TestBed.inject(HttpTestingController);
     TestBed.configureTestingModule({
 
       providers: [{provide: HttpClient, useValue: httpClientStub}],
@@ -40,10 +39,13 @@ xdescribe('BackendService with mocked backend (faking MariaDB)', () => {
   });
 
   afterEach(() => {
+    throw new Error("this shouldn't be executed!");
     console.log("This should not be called if the test is xdescribe");
   });
 
   it('should contain Riesling', (done) => {
+    throw new Error("this shouldn't be executed!");
+
     service
       .getGrapes()
       .subscribe((result) => {
@@ -54,6 +56,8 @@ xdescribe('BackendService with mocked backend (faking MariaDB)', () => {
   });
 
 });
+
+
 
 xdescribe('BackendService Test with active backend (MariaDB)', () => {
   let httpClient: HttpClient;
@@ -105,4 +109,10 @@ xdescribe('BackendService Test with active backend (MariaDB)', () => {
       });
   });
 
+});
+
+describe('A test that can be made to fail or pass', () => {
+  it('should fail', () => {
+    expect(1 + 1).toBe(2);
+  });
 });
