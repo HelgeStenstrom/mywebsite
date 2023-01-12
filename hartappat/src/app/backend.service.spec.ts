@@ -1,8 +1,8 @@
-import {getTestBed, TestBed} from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 import {HttpClient, HttpClientModule} from "@angular/common/http";
 
 import {BackendService, Grape} from './backend.service';
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {HttpClientTestingModule, HttpTestingController, TestRequest} from "@angular/common/http/testing";
 
 // Based on https://stackoverflow.com/questions/59204306/trying-to-run-angular-httpclient-jasmine-test-against-live-rest-api-nothing-hap
 describe('BackendService with mocked backend (faking MariaDB)', () => {
@@ -16,6 +16,9 @@ describe('BackendService with mocked backend (faking MariaDB)', () => {
   let service: BackendService;
   let httpMock: HttpTestingController;
   let httpClient: HttpClient;
+
+  const riesling: Grape = {"name": "Riesling", "color": "grön"};
+  const grapes: Grape[] = [riesling];
 
   beforeEach(() => {
 
@@ -34,23 +37,19 @@ describe('BackendService with mocked backend (faking MariaDB)', () => {
     httpMock.verify();
   });
 
-  it('should contain Riesling', (done) => {
+  it('should return the wanted grapes', (done) => {
 
-    const riesling: Grape = {"name": "Riesling", "color": "grön"};
-    const grapes: Grape[] = [riesling];
+    service.getGrapes().subscribe({
+        next: result => {
+          expect(result).toEqual(grapes);
+          done();
+        },
+        error: done.fail
+      }
+    );
 
-    service
-      .getGrapes()
-      .subscribe({
-          next: result => {
-            expect(result).toContain({name: 'Riesling', color: 'grön'});
-            done();
-          },
-          error: done.fail
-        }
-      );
-
-    const req = httpMock.expectOne('http://helges-mbp-2:3000/grapes');
+    const url = service.urlBase + 'grapes';
+    const req: TestRequest = httpMock.expectOne(url);
     req.flush(grapes);
 
   });
@@ -111,8 +110,3 @@ xdescribe('BackendService Test with active backend (MariaDB)', () => {
 
 });
 
-describe('A test that can be made to fail or pass', () => {
-  it('should fail', () => {
-    expect(1 + 1).toBe(2);
-  });
-});
