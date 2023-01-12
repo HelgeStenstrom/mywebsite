@@ -11,9 +11,7 @@ import {AddGrapeComponent} from "./add-grape/add-grape.component";
 export class DruvorComponent implements OnInit {
   grapes: Grape[] = [];
 
-  constructor(private dialog: MatDialog, private service: BackendService) {
-    this.service = service;
-  }
+  constructor(private dialog: MatDialog, private service: BackendService) {}
 
   ngOnInit(): void {
     this.service.getGrapes()
@@ -32,7 +30,7 @@ export class DruvorComponent implements OnInit {
   }
 
   deleteGrape(grape: Grape) {
-    console.log("Would delete: ", grape.name);
+    console.log("Would delete: " + grape.name);
     this.service.deleteGrape(grape)
       .subscribe(() => {
         console.log("I think the grape might have been deleted.");
@@ -45,27 +43,10 @@ export class DruvorComponent implements OnInit {
   }
 
   editGrape(grape: Grape) {
-    console.log("Not implemented");
-
-    if (false) {
-      this.service.patchGrape(grape, {name: 'Pinot Vadå', color: 'blå'})
-        .subscribe(() => {
-          this.service.getGrapes()
-            .subscribe((g: Grape[]) => {
-              this.grapes = g;
-            })
-        });
-    } else {
-
-      // https://material.angular.io/components/dialog/overview
-      const dialogRef = this.dialog.open(AddGrapeComponent, {data: grape});
-
-      dialogRef.afterClosed().subscribe(result => {
-        console.log("Grape dialog resultat: ", result);
-      })
-
-    }
-
-//    open(AddGrapeComponent, "target string argument"); // TODO: make the form callable with an argument.
+    // https://material.angular.io/components/dialog/overview
+    const dialogRef = this.dialog.open(AddGrapeComponent, {data: grape});
+    dialogRef.afterClosed().subscribe(result => {
+      console.log("Grape dialog resultat: ", result);
+    })
   }
 }

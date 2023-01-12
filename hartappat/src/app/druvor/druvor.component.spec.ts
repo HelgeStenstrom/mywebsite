@@ -5,8 +5,9 @@ import {BackendService, Grape} from "../backend.service";
 import {Observable, of} from "rxjs";
 import {DebugElement, NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
+import {MatDialog} from "@angular/material/dialog";
 
-xdescribe('DruvorComponent test with mock', () => {
+describe('DruvorComponent test with mock', () => {
   let druvorComponent: DruvorComponent;
   let fixture: ComponentFixture<DruvorComponent>;
 
@@ -16,13 +17,24 @@ xdescribe('DruvorComponent test with mock', () => {
     getGrapes(): Observable<Grape[]> {
       const r: Grape = {name:'Riesling', color:'grön'};
       return of([r, cs]);
+    },
+
+    get events(): Observable<Grape> {
+      return of({name:'a name', color: 'a color'})
+    },
+
+    deleteGrape(grape: Grape): Observable<Grape> {
+      return of({name:'Name', color:'color'});
     }
   };
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [ DruvorComponent ],
-      providers: [{provide: BackendService, useValue: backendServiceStub}],
+      providers: [
+        {provide: BackendService, useValue: backendServiceStub},
+        {provide: MatDialog, useValue: {}}
+      ],
       schemas:[NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -57,6 +69,29 @@ xdescribe('DruvorComponent test with mock', () => {
   it('renders the Druva subcomponent', () => {
     const druva = findComponent(fixture, 'app-add-grape');
     expect(druva).toBeTruthy();
+  });
+
+  it('should pass', () => {
+    expect(1 + 1).toBe(2);
+  });
+
+  describe('edit', () => {
+
+    beforeEach(() => {
+      spyOn(backendServiceStub, 'deleteGrape');
+    });
+
+    it('should pass too', () => {
+      expect(1 + 1).toBe(2);
+    });
+
+    it('should call delete', () => {
+      const grape = {name: 'NAME', color: 'COLOR'};
+      druvorComponent.deleteGrape(grape);
+
+      expect(backendServiceStub.deleteGrape).toHaveBeenCalled();
+    });
+
   });
 
 });
