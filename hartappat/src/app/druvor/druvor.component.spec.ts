@@ -24,6 +24,7 @@ describe('DruvorComponent test with mock', () => {
     },
 
     deleteGrape(grape: Grape): Observable<Grape> {
+      console.log('deleteGrape() within backendServiceStup was called');
       return of({name:'Name', color:'color'});
     }
   };
