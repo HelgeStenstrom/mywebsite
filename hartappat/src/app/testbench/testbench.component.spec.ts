@@ -9,7 +9,7 @@ describe('TestbenchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TestbenchComponent, MockFiledropComponent ]
+      declarations: [ TestbenchComponent, MockFiledropComponent, MockAltDruvorComponent]
     })
     .compileComponents();
 
@@ -28,4 +28,11 @@ describe('TestbenchComponent', () => {
   template: ''
 })
 class MockFiledropComponent {
+}
+
+@Component({
+  selector: 'app-alt-druvor',
+  template: ''
+})
+class MockAltDruvorComponent {
 }
