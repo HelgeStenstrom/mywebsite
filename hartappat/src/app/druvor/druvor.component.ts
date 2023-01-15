@@ -21,7 +21,7 @@ export class DruvorComponent implements OnInit {
       });
 
     this.service.events.forEach(event => {
-      console.log("Druvor fick event från backend: ", event);
+      // console.log("Druvor fick event från backend: ", event);
       this.service.getGrapes()
         .subscribe((g: Grape[]) => {
           this.grapes = g;
@@ -31,10 +31,10 @@ export class DruvorComponent implements OnInit {
   }
 
   deleteGrape(grape: Grape) {
-    console.log("Would delete: " + grape.name);
+    // console.log("Would delete: " + grape.name);
     this.service.deleteGrape(grape)
       .subscribe(() => {
-        console.log("I think the grape might have been deleted.");
+        // console.log("I think the grape might have been deleted.");
         this.service.getGrapes()
           .subscribe((g: Grape[]) => {
             this.grapes = g;

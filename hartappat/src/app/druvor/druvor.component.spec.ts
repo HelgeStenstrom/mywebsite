@@ -15,7 +15,7 @@ describe('DruvorComponent test with mock', () => {
 
   const backendServiceStub: Partial<BackendService> = {
     getGrapes(): Observable<Grape[]> {
-      console.log('getGrapes() within backendServiceStup was called');
+      // console.log('getGrapes() within backendServiceStup was called');
       const r: Grape = {name:'Riesling', color:'grön'};
       return of([r, cs]);
     },
@@ -25,7 +25,7 @@ describe('DruvorComponent test with mock', () => {
     },
 
     deleteGrape(grape: Grape): Observable<Grape> {
-      console.log('deleteGrape() within backendServiceStup was called');
+      // console.log('deleteGrape() within backendServiceStup was called');
       return of({name:'Name', color:'color'});
     }
   };

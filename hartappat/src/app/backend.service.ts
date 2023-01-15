@@ -40,19 +40,16 @@ export class BackendService {
 
 
   getGrapes(): Observable<Grape[]> {
-    console.log('BackendService.getData() called');
+    // console.log('BackendService.getGrapes() called');
     const url: string = this.urlBase + 'grapes';
     return this.http
       .get<Grape[]>(url)
-      .pipe(
-        catchError(this.handleError)
-      )
-      ;
+      .pipe(catchError(this.handleError));
   }
 
 
   getWines(): Observable<Wine[]> {
-    // console.log('BackendService.getData() called');
+    // console.log('BackendService.getWines() called');
     const url: string = this.urlBase + 'wines';
     return this.http.get<Wine[]>(url,
       { // Options are not needed in this case; the defaults are OK.
