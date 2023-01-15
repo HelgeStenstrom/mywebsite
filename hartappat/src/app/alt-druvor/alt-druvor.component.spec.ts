@@ -1,14 +1,17 @@
-import {ComponentFixture, getTestBed, TestBed} from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import { AltDruvorComponent } from './alt-druvor.component';
+import {BackendService} from "../backend.service";
 
 describe('AltDruvorComponent', () => {
   let component: AltDruvorComponent;
   let fixture: ComponentFixture<AltDruvorComponent>;
 
   beforeEach(async () => {
+    let backendServiceStub;
     await TestBed.configureTestingModule({
-      declarations: [ AltDruvorComponent ]
+      declarations: [ AltDruvorComponent ],
+      providers: [{provide: BackendService, useValue: backendServiceStub}]
     })
     .compileComponents();
 

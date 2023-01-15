@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Observable, of} from "rxjs";
+import {BackendService, Grape} from "../backend.service";
 
 @Component({
   selector: 'app-alt-druvor',
@@ -7,12 +8,12 @@ import {Observable, of} from "rxjs";
   styleUrls: ['./alt-druvor.component.css']
 })
 export class AltDruvorComponent implements OnInit {
-  grapes: Observable<({ color: string; name: string })[]> = of(
+  grapes: Observable<(Grape)[]> = of(
     [
       {name: 'Rondo', color: 'blå'},
       {name: 'Solaris', color: 'grön'}]);
 
-  constructor() { }
+  constructor(private service: BackendService) { }
 
   ngOnInit(): void {
   }
