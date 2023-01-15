@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {BackendService, Grape} from "../backend.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AddGrapeComponent} from "./add-grape/add-grape.component";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-druvor',
@@ -39,7 +40,6 @@ export class DruvorComponent implements OnInit {
             this.grapes = g;
           })
       });
-
   }
 
   editGrape(grape: Grape) {

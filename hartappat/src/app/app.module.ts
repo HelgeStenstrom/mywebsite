@@ -29,6 +29,7 @@ import {DndDirective} from './dnd.directive';
 import {TestbenchComponent} from './testbench/testbench.component';
 import {ProvningarComponent} from './provningar/provningar.component';
 import {TastingComponent} from './provningar/tasting/tasting.component';
+import { AltDruvorComponent } from './alt-druvor/alt-druvor.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {TastingComponent} from './provningar/tasting/tasting.component';
     DndDirective,
     TestbenchComponent,
     ProvningarComponent,
-    TastingComponent
+    TastingComponent,
+    AltDruvorComponent
   ],
   imports: [
     BrowserModule,
