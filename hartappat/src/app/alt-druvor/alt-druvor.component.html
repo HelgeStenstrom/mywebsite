@@ -4,12 +4,8 @@
   <caption>Druvor i databasen</caption>
   <th>Namn</th>
   <th>Färg</th>
-  <tr>
-    <td>Rondo</td>
-    <td>blå</td>
-  </tr>
-  <tr>
-    <td>Solaris</td>
-    <td>grön</td>
+  <tr *ngFor="let grape of grapes | async">
+    <td>{{grape.name}}</td>
+    <td>{{grape.color}}</td>
   </tr>
 </table>
