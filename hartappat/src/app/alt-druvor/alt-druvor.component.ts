@@ -8,12 +8,11 @@ import {BackendService, Grape} from "../backend.service";
   styleUrls: ['./alt-druvor.component.css']
 })
 export class AltDruvorComponent implements OnInit {
-  grapes: Observable<(Grape)[]> = of(
-    [
-      {name: 'Rondo', color: 'blå'},
-      {name: 'Solaris', color: 'grön'}]);
+  grapes: Observable<(Grape)[]>;
 
-  constructor(private service: BackendService) { }
+  constructor(private service: BackendService) {
+    this.grapes = service.getGrapes();
+  }
 
   ngOnInit(): void {
   }

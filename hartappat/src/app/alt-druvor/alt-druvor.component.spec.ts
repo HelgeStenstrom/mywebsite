@@ -1,14 +1,24 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import { AltDruvorComponent } from './alt-druvor.component';
-import {BackendService} from "../backend.service";
+import {BackendService, Grape} from "../backend.service";
+import {Observable, of} from "rxjs";
 
 describe('AltDruvorComponent', () => {
   let component: AltDruvorComponent;
   let fixture: ComponentFixture<AltDruvorComponent>;
 
+  // let backendServiceStub;
+  const backendServiceStub: Partial<BackendService> = {
+    getGrapes(): Observable<Grape[]> {
+      return of([
+        {name: 'Rondo', color: 'blå'},
+        {name: 'Solaris', color: 'grön'}]);
+    }
+  };
+
   beforeEach(async () => {
-    let backendServiceStub;
+
     await TestBed.configureTestingModule({
       declarations: [ AltDruvorComponent ],
       providers: [{provide: BackendService, useValue: backendServiceStub}]
