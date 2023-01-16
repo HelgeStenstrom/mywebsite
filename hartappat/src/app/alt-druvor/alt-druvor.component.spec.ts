@@ -3,19 +3,28 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import { AltDruvorComponent } from './alt-druvor.component';
 import {BackendService, Grape} from "../backend.service";
 import {Observable, of} from "rxjs";
+import createSpy = jasmine.createSpy;
+import createSpyObj = jasmine.createSpyObj;
 
 describe('AltDruvorComponent', () => {
   let component: AltDruvorComponent;
   let fixture: ComponentFixture<AltDruvorComponent>;
 
-  // let backendServiceStub;
-  const backendServiceStub: Partial<BackendService> = {
-    getGrapes(): Observable<Grape[]> {
-      return of([
-        {name: 'Rondo', color: 'blå'},
-        {name: 'Solaris', color: 'grön'}]);
-    }
-  };
+
+  let backendServiceStub: BackendService;
+  beforeEach(() => {
+    backendServiceStub = createSpyObj<BackendService>(
+      'BackendService',
+      {
+        addGrape: of(void 1),
+        deleteGrape: undefined,
+        getGrapes: of([
+          {name: 'Rondo', color: 'blå'},
+          {name: 'Solaris', color: 'grön'}]),
+        getWines: undefined,
+        patchGrape: undefined,
+      })
+  });
 
   beforeEach(async () => {
 
@@ -55,9 +64,14 @@ describe('AltDruvorComponent', () => {
 
   describe('get grapes', () => {
 
+
     it('should call backend getGrapes', () => {
       expect(1 + 1).toBe(2);
+
+      expect(backendServiceStub.getGrapes).toHaveBeenCalled();
     });
+
+
   });
 
 });
