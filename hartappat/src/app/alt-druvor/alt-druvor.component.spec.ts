@@ -1,26 +1,26 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AltDruvorComponent } from './alt-druvor.component';
+import {AltDruvorComponent} from './alt-druvor.component';
 import {BackendService, Grape} from "../backend.service";
 import {Observable, of} from "rxjs";
-import createSpy = jasmine.createSpy;
 import createSpyObj = jasmine.createSpyObj;
 
 describe('AltDruvorComponent', () => {
   let component: AltDruvorComponent;
   let fixture: ComponentFixture<AltDruvorComponent>;
-
+  const defaultGrapes = [
+    {name: 'Rondo', color: 'blå'},
+    {name: 'Solaris', color: 'grön'}];
 
   let backendServiceStub: BackendService;
   beforeEach(() => {
+
     backendServiceStub = createSpyObj<BackendService>(
       'BackendService',
       {
         addGrape: of(void 1),
-        deleteGrape: undefined,
-        getGrapes: of([
-          {name: 'Rondo', color: 'blå'},
-          {name: 'Solaris', color: 'grön'}]),
+        deleteGrape: of({name:'not deleted yet', color:'a color'}),
+        getGrapes: of(defaultGrapes),
         getWines: undefined,
         patchGrape: undefined,
       })
@@ -66,12 +66,22 @@ describe('AltDruvorComponent', () => {
 
 
     it('should call backend getGrapes', () => {
-      expect(1 + 1).toBe(2);
-
       expect(backendServiceStub.getGrapes).toHaveBeenCalled();
     });
 
 
+  });
+
+  it('should call backend deleteGrape when trying to delete', (done: DoneFn) => {
+    const aGrape: Grape = {name: 'a name', color: 'a color'};
+    component.deleteGrape(aGrape)
+      .subscribe((grapes: Grape[]) => {
+          expect(backendServiceStub.deleteGrape).toHaveBeenCalledWith(aGrape);
+          expect(backendServiceStub.getGrapes).toHaveBeenCalledTimes(2); // In constructor, in delete method
+          expect(grapes).toBe(defaultGrapes);
+        });
+
+    done();
   });
 
 });

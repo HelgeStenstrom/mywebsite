@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import {Observable, of} from "rxjs";
+import {Component, OnInit} from '@angular/core';
+import {Observable} from "rxjs";
 import {BackendService, Grape} from "../backend.service";
 
 @Component({
@@ -15,6 +15,13 @@ export class AltDruvorComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Nothing yet
   }
 
+  deleteGrape(grape: Grape) : Observable<Grape[]> {
+
+    return this.service.deleteGrape(grape)
+      .pipe(() => this.service.getGrapes());
+
+  }
 }
