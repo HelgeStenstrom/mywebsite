@@ -26,13 +26,13 @@ export class BackendService {
   }
 
   addGrape(grape: Grape): Observable<void> {
-    const url = `${this.urlBase}grapes`;
+    const url = `${this.apiBase}grapes`;
     const objectObservable: Observable<void> = this.http.post<void>(url, grape);
     return objectObservable.pipe(catchError(this.handleError));
   }
 
   deleteGrape(grape: Grape): Observable<Grape> {
-    const url: string = this.urlBase + `grapes/${grape.name}`;
+    const url: string = this.apiBase + `grapes/${grape.name}`;
 
     console.log("BackendService.deleteGrape() called with ", grape.name);
     return this.http.delete<Grape>(url);
@@ -41,7 +41,7 @@ export class BackendService {
 
   getGrapes(): Observable<Grape[]> {
     // console.log('BackendService.getGrapes() called');
-    const url: string = this.urlBase + 'grapes';
+    const url: string = this.apiBase + 'grapes';
     return this.http
       .get<Grape[]>(url)
       .pipe(catchError(this.handleError));
@@ -50,7 +50,7 @@ export class BackendService {
 
   getWines(): Observable<Wine[]> {
     // console.log('BackendService.getWines() called');
-    const url: string = this.urlBase + 'wines';
+    const url: string = this.apiBase + 'wines';
     return this.http.get<Wine[]>(url,
       { // Options are not needed in this case; the defaults are OK.
         responseType: 'json',
@@ -60,7 +60,7 @@ export class BackendService {
   }
 
   patchGrape(from: Grape, to:Grape): Observable<void> {
-    const url = `${this.urlBase}grapes`;
+    const url = `${this.apiBase}grapes`;
     const objectObservable: Observable<void> = this.http.patch<void>(url, {from, to});
     return objectObservable.pipe(catchError(this.handleError));
   }

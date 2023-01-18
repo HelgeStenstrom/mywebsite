@@ -198,23 +198,29 @@ function setupEndpoints(router) {
 
     router.get('/membersX', getMembers());
 
-    router.get('/members', innerGetMembers);
+   // router.get('/members', innerGetMembers);
+    router.get('/api/v1/members', innerGetMembers);
 
-    router.get('/wines', getWines());
+    //router.get('/wines', getWines());
+    router.get('/api/v1/wines', getWines());
 
-    router.get('/grapes', getGrapes());
+  //  router.get('/grapes', getGrapes());
+    router.get('/api/v1/grapes', getGrapes());
 
     router.get('/api/v1/vinprovning/:id', getTasting());
     router.get('/api/v1/vinprovning/', getAllTastings());
 
-    router.post('/grapes', postGrapeHandler());
-    router.patch('/grapes', patchGrapeHandler());
+   // router.post('/grapes', postGrapeHandler());
+   // router.patch('/grapes', patchGrapeHandler());
+    router.post('/api/v1/grapes', postGrapeHandler());
+    router.patch('/api/v1/grapes', patchGrapeHandler());
 
 
 
-    router.delete('/grapes/:id', deleteGrapeById());
+    //router.delete('/grapes/:id', deleteGrapeById());
+    router.delete('/api/v1/grapes/:id', deleteGrapeById());
 
-    router.get('/countries', async (req, res) => {
+    router.get('/api/v1/countries', async (req, res) => {
         const sql = 'select * from hartappat.countries';
         try {
             const promise = sqlWrapper.query(sql);
