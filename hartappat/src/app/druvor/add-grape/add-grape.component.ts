@@ -24,8 +24,8 @@ export class AddGrapeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isEditCall()) {
-      console.log("AddGrapeComponent called for edit.");
-      console.log(this.grapeToEdit.name, this.grapeToEdit.color);
+      // console.log("AddGrapeComponent called for edit.");
+      // console.log(this.grapeToEdit.name, this.grapeToEdit.color);
       this.grapeForm.controls.name.setValue(this.grapeToEdit.name);
       this.grapeForm.controls.color.setValue(this.grapeToEdit.color);
     }
@@ -59,7 +59,7 @@ export class AddGrapeComponent implements OnInit {
   }
 
   closeDialog() {
-    this.dialogRef.close('Pizza!'); // https://material.angular.io/components/dialog/overview
+    this.dialogRef.close("dialog closed"); // https://material.angular.io/components/dialog/overview
   }
 }
 
