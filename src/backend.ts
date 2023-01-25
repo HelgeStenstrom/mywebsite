@@ -160,11 +160,11 @@ function setupEndpoints(router) {
             const sql = `
                 delete
                 from hartappat.grapes
-                where name = '${id}';
+                where name = ?;
             `;
 
             sqlWrapper
-                .query(sql)
+                .query(sql, id)
                 .then((x) => {
                     const affectedRows = x.affectedRows;
                     if (affectedRows) {
