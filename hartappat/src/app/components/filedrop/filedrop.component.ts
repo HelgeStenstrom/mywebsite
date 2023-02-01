@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService} from "../services/backend.service";
+import {BackendService} from "../../services/backend.service";
 import {Observer} from "rxjs";
-import {ValidationReply, ValidatorService} from "../services/validator.service";
+import {ValidationReply, ValidatorService} from "../../services/validator.service";
 
 /**
  Most parts are from <a href="https://medium.com/@tarekabdelkhalek/how-to-create-a-drag-and-drop-file-uploading-in-angular-78d9eba0b854">

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {BackendService, Grape} from "../services/backend.service";
+import {BackendService, Grape} from "../../services/backend.service";
 
 @Component({
   selector: 'app-alt-druvor',

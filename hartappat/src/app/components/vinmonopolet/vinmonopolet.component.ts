@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ProductDetail, VinmonopoletService} from "../services/vinmonopolet.service";
+import {ProductDetail, VinmonopoletService} from "../../services/vinmonopolet.service";
 
 @Component({
   selector: 'app-vinmonopolet',
