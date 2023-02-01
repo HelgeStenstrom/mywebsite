@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DruvorComponent} from './druvor.component';
-import {BackendService, Grape} from "../backend.service";
+import {BackendService, Grape} from "../services/backend.service";
 import {Observable, of, Subscription} from "rxjs";
 import {DebugElement, NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";

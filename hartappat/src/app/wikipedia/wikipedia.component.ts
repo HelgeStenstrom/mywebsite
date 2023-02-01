@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {WikipediaService} from "../wikipedia.service";
+import {WikipediaService} from "../services/wikipedia.service";
 
 @Component({
   selector: 'app-wikipedia',

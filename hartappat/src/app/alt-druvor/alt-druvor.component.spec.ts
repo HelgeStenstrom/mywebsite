@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AltDruvorComponent} from './alt-druvor.component';
-import {BackendService, Grape} from "../backend.service";
+import {BackendService, Grape} from "../services/backend.service";
 import {Observable, of} from "rxjs";
 import createSpyObj = jasmine.createSpyObj;
 
