@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {BackendService, Grape} from "../backend.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AddGrapeComponent} from "./add-grape/add-grape.component";
-import {Subscription} from "rxjs";
+import {Observable, of, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-druvor',
@@ -11,21 +11,23 @@ import {Subscription} from "rxjs";
 })
 export class DruvorComponent implements OnInit {
   grapes: Grape[] = [];
+  asyncGrapes: Observable<Grape[]> = of([{name:"Nisse", color:"lila"}]);
 
   constructor(private dialog: MatDialog, private service: BackendService) {}
 
   ngOnInit(): void {
-    this.service.getGrapes()
-      .subscribe((g: Grape[]) => {
-        this.grapes = g;
-      });
+    const grapes1: Observable<Grape[]> = this.service.getGrapes();
+    grapes1.subscribe((g: Grape[]) => {
+      this.grapes = g;
+    });
+
+    this.asyncGrapes = grapes1;
 
     this.service.events.forEach(event => {
       // console.log("Druvor fick event från backend: ", event);
-      this.service.getGrapes()
-        .subscribe((g: Grape[]) => {
-          this.grapes = g;
-        });
+      grapes1.subscribe((g: Grape[]) => {
+        this.grapes = g;
+      });
     });
 
   }

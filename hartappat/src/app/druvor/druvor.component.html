@@ -4,6 +4,10 @@
   <caption>Druvor i databasen</caption>
   <th>Namn</th>
   <th>Färg</th>
+  <tr *ngFor="let grape of asyncGrapes | async">
+    <td>spacer {{grape.name}}</td>
+    <td>spacer {{grape.color}}</td>
+  </tr>
   <tr *ngFor="let grape of grapes">
     <td>{{grape.name}}</td>
     <td>{{grape.color}}</td>
