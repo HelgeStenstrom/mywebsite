@@ -4,6 +4,8 @@ import mariadb, {Pool} from "mariadb";
 import {MariaWrapper} from "./MariaWrapper";
 import {SqlWrapper} from "./SqlWrapper";
 
+import {Orm} from "./orm";
+
 function getConfiguredApp() {
     const app = express();
     app.use(cors());
@@ -91,6 +93,22 @@ function setupEndpoints(router) {
                     .then((x: Grape) => res.json(x));
                 await sqlWrapper.end();
             } catch (e) {
+                console.error(e);
+            }
+        };
+    }
+
+
+    function getGrapesOrm() {
+        const orm = new Orm();
+        return async (req, res) => {
+
+            try {
+
+                orm.querySelect()
+                    .then((x) => res.json(x));
+                await orm.end();
+            }catch (e) {
                 console.error(e);
             }
         };
@@ -206,6 +224,7 @@ function setupEndpoints(router) {
 
   //  router.get('/grapes', getGrapes());
     router.get('/api/v1/grapes', getGrapes());
+    router.get('/api/v1/grapesOrm', getGrapesOrm());
 
     router.get('/api/v1/vinprovning/:id', getTasting());
     router.get('/api/v1/vinprovning/', getAllTastings());
