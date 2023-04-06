@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable, Subject, throwError} from "rxjs";
-import {catchError} from "rxjs/operators";
+import {catchError, tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -41,9 +41,10 @@ export class BackendService {
 
   getGrapes(): Observable<Grape[]> {
     // console.log('BackendService.getGrapes() called');
-    const url: string = this.apiBase + 'grapes';
+    const url: string = this.apiBase + 'grapesOrm';
     return this.http
       .get<Grape[]>(url)
+      .pipe(tap(g => console.log("grape from backend: ", g)))
       .pipe(catchError(this.handleError));
   }
 

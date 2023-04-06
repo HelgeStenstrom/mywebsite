@@ -105,10 +105,10 @@ function setupEndpoints(router) {
 
             try {
 
-                orm.querySelect()
+                orm.findGrapes()
                     .then((x) => res.json(x));
                 await orm.end();
-            }catch (e) {
+            } catch (e) {
                 console.error(e);
             }
         };

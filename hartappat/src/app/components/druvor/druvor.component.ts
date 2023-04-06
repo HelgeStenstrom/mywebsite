@@ -11,7 +11,6 @@ import {Observable, of, Subscription} from "rxjs";
 })
 export class DruvorComponent implements OnInit {
   grapes: Grape[] = [];
-  asyncGrapes: Observable<Grape[]> = of([{name:"Nisse", color:"lila"}]);
 
   constructor(private dialog: MatDialog, private service: BackendService) {}
 
@@ -20,8 +19,6 @@ export class DruvorComponent implements OnInit {
     grapes1.subscribe((g: Grape[]) => {
       this.grapes = g;
     });
-
-    this.asyncGrapes = grapes1;
 
     this.service.events.forEach(event => {
       // console.log("Druvor fick event från backend: ", event);

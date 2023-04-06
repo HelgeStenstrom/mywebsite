@@ -4,18 +4,6 @@
   <caption>Druvor i databasen</caption>
   <th>Namn</th>
   <th>Färg</th>
-  <tr>Först ett async experiment</tr>
-  <tr *ngFor="let grape of asyncGrapes | async">
-    <td>async {{grape.name}}</td>
-    <td>async {{grape.color}}</td>
-    <button mat-icon-button color="warn" (click)="deleteGrape(grape)">
-      <mat-icon>delete</mat-icon>
-    </button>
-    <button mat-icon-button color="primary" (click)="editGrape(grape)">
-      <mat-icon>edit</mat-icon>
-    </button>
-  </tr>
-  <tr>Sedan något som faktiskt fungerar.</tr>
   <tr *ngFor="let grape of grapes">
     <td>{{grape.name}}</td>
     <td>{{grape.color}}</td>
