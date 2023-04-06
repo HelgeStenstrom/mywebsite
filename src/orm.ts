@@ -1,4 +1,4 @@
-import {DataTypes, Model, ModelCtor, ModelStatic, Sequelize} from 'sequelize';
+import {DataTypes, Model, ModelStatic, Sequelize} from 'sequelize';
 
 export class Orm {
 
@@ -31,24 +31,30 @@ export class Orm {
             {
                 name: DataTypes.TEXT,
                 color:DataTypes.TEXT
-            })
+            },
+            {timestamps: false}
+            )
     }
-
-    findGrapes(): Promise<object[]> {
-
-
-        console.log('In Orm.query()');
-        // See https://sequelize.org/api/v6/class/src/sequelize.js~sequelize#instance-method-query
-
-        return this.Grape.findAll({
-            attributes: ['name', 'id', 'color']
-        });
-    }
-
 
     async end() {
         return Promise.resolve(undefined);
     }
 
 
+    findGrapes(): Promise<object[]> {
+
+        //console.log('In Orm.findGrapes()');
+        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll
+        return this.Grape.findAll(
+         //   {attributes: ['name', 'id', 'color'],}   // Not needed if we want all attributes of the table
+        );
+    }
+
+
+    postGrape(grape) {
+
+        //console.log(`In Orm.postGrape(${grape.name})`)
+        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-create
+        return this.Grape.create(grape);
+    }
 }

@@ -125,6 +125,23 @@ function setupEndpoints(router) {
         };
     }
 
+    function postGrapeHandlerOrm(): (req, res) => void {
+        const orm = new Orm();
+        return async (req, res) => {
+
+            const body: Grape = req.body;
+
+            try{
+                orm.postGrape(body)
+                    .then(() => res.status(201).json("postGrapeHandlerOrm called!"));
+                await orm.end()
+            }catch (e) {
+                console.error(e);
+            }
+
+        };
+    }
+
     function patchGrapeHandler(): (req, res) => void {
         return (req, res) => {
             const {from, to} = req.body;
@@ -231,7 +248,8 @@ function setupEndpoints(router) {
 
    // router.post('/grapes', postGrapeHandler());
    // router.patch('/grapes', patchGrapeHandler());
-    router.post('/api/v1/grapes', postGrapeHandler());
+    router.post('/api/v1/grapes', postGrapeHandlerOrm());
+    router.post('/api/v1/grapesOrm', postGrapeHandlerOrm());
     router.patch('/api/v1/grapes', patchGrapeHandler());
 
 
