@@ -57,4 +57,22 @@ export class Orm {
         // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-create
         return this.Grape.create(grape);
     }
+
+    delGrape(name: string) {
+
+        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy
+        return this.Grape.destroy({
+            where: {name: name}
+        });
+    }
+
+    patchGrape(from: any, to: any) {
+
+        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-update
+
+        return this.Grape.update(
+            {name: to.name, color: to.color},
+            {where: {name: from.name}}
+        );
+    }
 }

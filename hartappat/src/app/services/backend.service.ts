@@ -34,23 +34,19 @@ export class BackendService {
   deleteGrape(grape: Grape): Observable<Grape> {
     const url: string = this.apiBase + `grapes/${grape.name}`;
 
-    // console.log("BackendService.deleteGrape() called with ", grape.name);
     return this.http.delete<Grape>(url);
   }
 
 
   getGrapes(): Observable<Grape[]> {
-    // console.log('BackendService.getGrapes() called');
-    const url: string = this.apiBase + 'grapesOrm';
+    const url: string = this.apiBase + 'grapes';
     return this.http
       .get<Grape[]>(url)
-      .pipe(tap(g => console.log("grape from backend: ", g)))
       .pipe(catchError(this.handleError));
   }
 
 
   getWines(): Observable<Wine[]> {
-    // console.log('BackendService.getWines() called');
     const url: string = this.apiBase + 'wines';
     return this.http.get<Wine[]>(url,
       { // Options are not needed in this case; the defaults are OK.

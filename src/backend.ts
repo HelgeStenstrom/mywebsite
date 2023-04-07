@@ -82,23 +82,6 @@ function setupEndpoints(router) {
         };
     }
 
-    function getGrapes() {
-        return async (req, res) => {
-            const sql = `
-                select g.name, g.color
-                from hartappat.grapes g;
-            `;
-            try {
-                sqlWrapper.query(sql)
-                    .then((x: Grape) => res.json(x));
-                await sqlWrapper.end();
-            } catch (e) {
-                console.error(e);
-            }
-        };
-    }
-
-
     function getGrapesOrm() {
         const orm = new Orm();
         return async (req, res) => {
@@ -114,16 +97,6 @@ function setupEndpoints(router) {
         };
     }
 
-    function postGrapeHandler(): (req, res) => void {
-        return (req, res) => {
-            const body = req.body;
-            insertGrape(body.name, body.color)
-                .then(() => res.status(201).json("postGrapeHandler called"))
-                .catch(() => {
-                    return res.status(418).json("It failed");
-                });
-        };
-    }
 
     function postGrapeHandlerOrm(): (req, res) => void {
         const orm = new Orm();
@@ -142,17 +115,38 @@ function setupEndpoints(router) {
         };
     }
 
-    function patchGrapeHandler(): (req, res) => void {
-        return (req, res) => {
-            const {from, to} = req.body;
-
-            updateGrape(from, to)
-                .then(() => res.status(201).json("postGrapeHandler called"))
-                .catch(() => {
-                    return res.status(400).json(`Updating ${from.name} failed`);
-                });
+    function deleteGrapeByNameOrm() {
+        const orm = new Orm();
+        return async (req, res) => {
+            const name = req.params.name;
+            try {
+                orm.delGrape(name)
+                    .then(() => res.status(200).json("delGrapeByIdOrm called!"));
+                await orm.end();
+            } catch (e){
+                console.error(e);
+            }
         };
     }
+
+    function patchGrapeHandlerOrm(): (req, res) => void {
+
+        const orm = new Orm();
+
+        return async (req, res) => {
+            const {from, to} = req.body;
+
+            try {
+                orm.patchGrape(from, to)
+                    .then(() => res.status(200).json("patchGrapeHandlerOrm called!"));
+                await orm.end();
+            } catch (e) {
+                console.error(e);
+            }
+
+        };
+    }
+
     async function insertGrape(grapeName, grapeColor): Promise<unknown> {
         try {
             const sql = "insert into hartappat.grapes (name, color) value (?, ?);"
@@ -189,73 +183,20 @@ function setupEndpoints(router) {
         };
     }
 
-    function deleteGrapeById() {
-        return async (req, res) => {
-            const id = req.params.id;
-            const sql = `
-                delete
-                from hartappat.grapes
-                where name = ?;
-            `;
-
-            sqlWrapper
-                .query(sql, id)
-                .then((x) => {
-                    const affectedRows = x.affectedRows;
-                    if (affectedRows) {
-                        return res.status(200).json("Deletion done");
-                    } else {
-                        return res.status(418).json("Nothing deleted");
-                    }
-                })
-                .then(() => sqlWrapper.end())
-                .catch((e) => {
-                    console.error('An badly handled error happened: ', e);
-                    sqlWrapper.end();
-                });
-
-
-        };
-    }
-
-
-    async function updateGrape(from, to): Promise<unknown> {
-        const sql = `update hartappat.grapes
-                         set name='${to.name}',
-                             color='${to.color}'
-                         where name = '${from.name}';`;
-        try {
-            return await sqlWrapper.query(sql);
-        } finally {
-            await sqlWrapper.end();
-        }
-    }
-
     router.get('/membersX', getMembers());
 
-   // router.get('/members', innerGetMembers);
     router.get('/api/v1/members', innerGetMembers);
 
-    //router.get('/wines', getWines());
     router.get('/api/v1/wines', getWines());
 
-  //  router.get('/grapes', getGrapes());
-    router.get('/api/v1/grapes', getGrapes());
-    router.get('/api/v1/grapesOrm', getGrapesOrm());
 
     router.get('/api/v1/vinprovning/:id', getTasting());
     router.get('/api/v1/vinprovning/', getAllTastings());
 
-   // router.post('/grapes', postGrapeHandler());
-   // router.patch('/grapes', patchGrapeHandler());
+    router.get('/api/v1/grapes', getGrapesOrm());
     router.post('/api/v1/grapes', postGrapeHandlerOrm());
-    router.post('/api/v1/grapesOrm', postGrapeHandlerOrm());
-    router.patch('/api/v1/grapes', patchGrapeHandler());
-
-
-
-    //router.delete('/grapes/:id', deleteGrapeById());
-    router.delete('/api/v1/grapes/:id', deleteGrapeById());
+    router.patch('/api/v1/grapes', patchGrapeHandlerOrm());
+    router.delete('/api/v1/grapes/:name', deleteGrapeByNameOrm());
 
     router.get('/api/v1/countries', async (req, res) => {
         const sql = 'select * from hartappat.countries';
