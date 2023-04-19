@@ -1,5 +1,5 @@
-import request from "request";
 import express from "express";
+import axios from "axios";
 import cors from "cors";
 
 
@@ -22,7 +22,6 @@ function getConfiguredApp() {
 
 const app = getConfiguredApp();
 
-
 // Test this: http://helges-mbp-2:3001/featured
 app.get('/featured', (req, res) => {
     const zeroPad = (num, places) => String(num).padStart(places, '0')
@@ -40,41 +39,28 @@ app.get('/featured', (req, res) => {
 
     const url1 = makeUrl();
     console.log("External proxy skickar vidare: ", url1);
-    request(
-        { url: url1 },
-        (error, response, body) => {
-            if (error || response.statusCode !== 200) {
-                return res.status(500).json({ type: 'error', message: error?.message });
-            }
 
-            res.json(JSON.parse(body));
-        }
-    )
+    axios.get(url1)
+        .then(response => res.json(response.data))
+        .catch(err => console.log("An error with Axios", err));
 });
 
 
+// Test this: http://helges-mbp-2:3001/vinmonopolet
 app.get('/vinmonopolet', (req, res) => {
-
     const headers = {
         'Cache-Control': 'no-cache',
         'Ocp-Apim-Subscription-Key': '1ff26063efff409eb6200d72ac584c04',
     };
+    const url1 = 'https://apis.vinmonopolet.no/products/v0/details-normal?maxResults=10';
 
-    const url1  = 'https://apis.vinmonopolet.no/products/v0/details-normal?maxResults=10';
-    console.log("External proxy skickar vidare: ", url1);
-    request(
-        {url: url1,
-            headers: headers},
-        (error, response, body) => {
-            if (error || response.statusCode !== 200) {
-                console.log("Error: ", error);
-                console.log("Response: ", response);
-                return res.status(500).json({ type: 'error', message: "err.message is 'it went wrong'" });
-            }
-            res.json(JSON.parse(body));
-        }
-    )
-});
+    const reqInstance = axios.create({headers});
+
+    reqInstance.get(url1)
+        .then(response => res.json(response.data))
+        .catch(err => console.log("An error with Axios", err));
+
+})
 
 
 const PORT = process.env.PORT || "3001";
