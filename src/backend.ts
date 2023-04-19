@@ -82,7 +82,7 @@ function setupEndpoints(router) {
         };
     }
 
-    function getGrapesOrm() {
+    function getGrapesOrm(): (req, res) => Promise<void> {
         const orm = new Orm();
         return async (req, res) => {
 

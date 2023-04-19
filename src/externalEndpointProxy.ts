@@ -8,27 +8,22 @@ import cors from "cors";
 
 // TODO: replace request, see https://nodesource.com/blog/express-going-into-maintenance-mode
 
-const app = express();
-app.use(cors());
+function getConfiguredApp() {
+    const app = express();
+    app.use(cors());
 
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-});
+    app.use((req, res, next) => {
+        res.header('Access-Control-Allow-Origin', '*');
+        next();
+    });
 
-app.get('/jokes/random', (req, res) => {
-    request(
-        { url: 'https://joke-api-strict-cors.appspot.com/jokes/random' },
-        (error, response, body) => {
-            if (error || response.statusCode !== 200) {
-                return res.status(500).json({ type: 'error', message: error.message });
-            }
+    return app;
+}
 
-            res.json(JSON.parse(body));
-        }
-    )
-});
+const app = getConfiguredApp();
 
+
+// Test this: http://helges-mbp-2:3001/featured
 app.get('/featured', (req, res) => {
     const zeroPad = (num, places) => String(num).padStart(places, '0')
     function makeUrl() {
@@ -82,5 +77,5 @@ app.get('/vinmonopolet', (req, res) => {
 });
 
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || "3001";
 app.listen(PORT, () => console.log(`listening on ${PORT}`));

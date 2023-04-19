@@ -22,19 +22,6 @@ export class WikipediaService {
   }
 
   getFeatured(): Observable<Featured> {
-    function makeDirectUrl() {
-      const now = Date.now();
-      const today = new Date(now);
-      const year = today.getFullYear();
-      const month = today.getMonth() + 1;
-      const date = today.getDate();
-      // console.log("Idag är det ", today);
-      // console.log("YMD: ", year, month, date);
-      const url = `https://sv.wikipedia.org/api/rest_v1/feed/featured/${year}/${month}/${date}`;
-      return url;
-    }
-
-    const urlDirect1 = makeDirectUrl();
     const urlViaProxy = 'http://helges-mbp-2:3001/featured';
     return this.http.get<Featured>(urlViaProxy);
   }
