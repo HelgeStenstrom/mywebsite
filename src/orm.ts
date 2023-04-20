@@ -1,4 +1,4 @@
-import {DataTypes, Model, ModelStatic, Sequelize} from 'sequelize';
+import {DataTypes, Model, ModelStatic, Options, Sequelize} from 'sequelize';
 
 export class Orm {
 
@@ -12,19 +12,8 @@ export class Orm {
         return "testAuthentication: I'm fine";
     }
 
-    constructor() {
-        this.sequelize = new Sequelize('hartappat', 'root', 'root1234', {
-            dialect: 'mariadb',
-            dialectOptions: {
-                user: 'root',
-                password: 'root1234',
-                host: 'localhost',
-                port: 3307,
-                connectionLimit: 5
-                // Your mariadb options here
-                // connectTimeout: 1000
-            }
-        });
+    constructor(options: Options, database: string, dbUserName: string, dbPassword: string) {
+        this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);
         this.testAuthentication();
 
         this.Grape = this.sequelize.define("grape",

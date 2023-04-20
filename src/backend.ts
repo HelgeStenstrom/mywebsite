@@ -5,6 +5,7 @@ import {MariaWrapper} from "./MariaWrapper";
 import {SqlWrapper} from "./SqlWrapper";
 
 import {Orm} from "./orm";
+import {Options} from "sequelize";
 
 function getConfiguredApp() {
     const app = express();
@@ -14,7 +15,6 @@ function getConfiguredApp() {
 }
 
 export const app = getConfiguredApp();
-
 
 const pool: Pool = mariadb.createPool({
     host: 'localhost',
@@ -43,6 +43,21 @@ interface Grape extends NodeJS.ReadableStream {
 }
 
 function setupEndpoints(router) {
+
+    const mariaDbOptions : Options = {
+        dialect: 'mariadb',
+        dialectOptions: {
+            user: 'root',
+            // password: 'root1234',
+            // host: 'localhost',
+            port: 3307,
+            connectionLimit: 5
+            // Your mariadb options here
+            // connectTimeout: 1000
+        }
+    };
+
+    const orm  = new Orm(mariaDbOptions, 'hartappat', 'root', 'root1234');
 
     function getMembers() {
         return async (req, res) => {
@@ -83,7 +98,7 @@ function setupEndpoints(router) {
     }
 
     function getGrapesOrm(): (req, res) => Promise<void> {
-        const orm = new Orm();
+
         return async (req, res) => {
 
             try {
@@ -99,7 +114,7 @@ function setupEndpoints(router) {
 
 
     function postGrapeHandlerOrm(): (req, res) => void {
-        const orm = new Orm();
+
         return async (req, res) => {
 
             const body: Grape = req.body;
@@ -116,7 +131,7 @@ function setupEndpoints(router) {
     }
 
     function deleteGrapeByNameOrm() {
-        const orm = new Orm();
+
         return async (req, res) => {
             const name = req.params.name;
             try {
@@ -130,8 +145,6 @@ function setupEndpoints(router) {
     }
 
     function patchGrapeHandlerOrm(): (req, res) => void {
-
-        const orm = new Orm();
 
         return async (req, res) => {
             const {from, to} = req.body;
