@@ -12,23 +12,29 @@ export class Orm {
         return "testAuthentication: I'm fine";
     }
 
-    constructor(options: Options, database: string, dbUserName: string, dbPassword: string) {
+    constructor(database: string, dbUserName: string, dbPassword: string, options: Options) {
         this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);
         this.testAuthentication();
 
         this.Grape = this.sequelize.define("grape",
             {
                 name: DataTypes.TEXT,
-                color:DataTypes.TEXT
+                color: DataTypes.TEXT
             },
-            {timestamps: false}
-            )
+            {
+                timestamps: false,
+                tableName: "grapes"
+            }
+        )
     }
 
     async end() {
         return Promise.resolve(undefined);
     }
 
+    createTables() {
+        return this.sequelize.sync();
+    }
 
     findGrapes(): Promise<object[]> {
 

@@ -57,7 +57,7 @@ function setupEndpoints(router) {
         }
     };
 
-    const orm  = new Orm(mariaDbOptions, 'hartappat', 'root', 'root1234');
+    const orm  = new Orm('hartappat', 'root', 'root1234', mariaDbOptions);
 
     function getMembers() {
         return async (req, res) => {
