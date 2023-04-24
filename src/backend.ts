@@ -100,14 +100,9 @@ function setupEndpoints(router) {
     function getGrapesOrm(): (req, res) => Promise<void> {
 
         return async (req, res) => {
-
-            try {
-
-                orm.findGrapes()
-                    .then((x) => res.json(x));
-            } catch (e) {
-                console.error(e);
-            }
+            orm.findGrapes()
+                .then((x) => res.json(x))
+                .catch(e => console.error(e));
         };
     }
 
@@ -118,12 +113,9 @@ function setupEndpoints(router) {
 
             const body: Grape = req.body;
 
-            try{
-                orm.postGrape(body)
-                    .then(() => res.status(201).json("postGrapeHandlerOrm called!"));
-            }catch (e) {
-                console.error(e);
-            }
+            orm.postGrape(body)
+                .then(() => res.status(201).json("postGrapeHandlerOrm called!"))
+                .catch(e => console.error(e));
 
         };
     }
@@ -132,12 +124,11 @@ function setupEndpoints(router) {
 
         return async (req, res) => {
             const name = req.params.name;
-            try {
-                orm.delGrape(name)
-                    .then(() => res.status(200).json("delGrapeByIdOrm called!"));
-            } catch (e){
-                console.error(e);
-            }
+
+            orm.delGrape(name)
+                .then(() => res.status(200).json("delGrapeByIdOrm called!"))
+                .catch(e => console.error(e));
+
         };
     }
 
@@ -146,13 +137,9 @@ function setupEndpoints(router) {
         return async (req, res) => {
             const {from, to} = req.body;
 
-            try {
-                orm.patchGrape(from, to)
-                    .then(() => res.status(200).json("patchGrapeHandlerOrm called!"));
-            } catch (e) {
-                console.error(e);
-            }
-
+            orm.patchGrape(from, to)
+                .then(() => res.status(200).json("patchGrapeHandlerOrm called!"))
+                .catch(e => console.error(e));
         };
     }
 
