@@ -105,7 +105,6 @@ function setupEndpoints(router) {
 
                 orm.findGrapes()
                     .then((x) => res.json(x));
-                await orm.end();
             } catch (e) {
                 console.error(e);
             }
@@ -122,7 +121,6 @@ function setupEndpoints(router) {
             try{
                 orm.postGrape(body)
                     .then(() => res.status(201).json("postGrapeHandlerOrm called!"));
-                await orm.end()
             }catch (e) {
                 console.error(e);
             }
@@ -137,7 +135,6 @@ function setupEndpoints(router) {
             try {
                 orm.delGrape(name)
                     .then(() => res.status(200).json("delGrapeByIdOrm called!"));
-                await orm.end();
             } catch (e){
                 console.error(e);
             }
@@ -152,7 +149,6 @@ function setupEndpoints(router) {
             try {
                 orm.patchGrape(from, to)
                     .then(() => res.status(200).json("patchGrapeHandlerOrm called!"));
-                await orm.end();
             } catch (e) {
                 console.error(e);
             }

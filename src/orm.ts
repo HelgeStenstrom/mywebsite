@@ -28,9 +28,6 @@ export class Orm {
         )
     }
 
-    async end() {
-        return Promise.resolve(undefined);
-    }
 
     createTables() {
         return this.sequelize.sync();
