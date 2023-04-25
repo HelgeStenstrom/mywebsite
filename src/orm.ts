@@ -5,6 +5,7 @@ export class Orm {
 
     sequelize: Sequelize;
     private Grape: ModelStatic<Model>;
+    private Tasting: ModelStatic<Model>;
 
     testAuthentication(): string {
         const promise = this.sequelize.authenticate();
@@ -26,11 +27,33 @@ export class Orm {
                 tableName: "grapes"
             }
         )
+
+        this.Tasting = this.sequelize.define("tasting",
+            {
+                title: DataTypes.TEXT,
+                notes: DataTypes.TEXT,
+                date: DataTypes.TEXT
+            },
+            {
+                timestamps: false,
+                tableName: "tasting"
+            }
+        )
     }
 
 
     createTables() {
         return this.sequelize.sync();
+    }
+
+    allTastings(): Promise<object[]>{
+        return this.Tasting.findAll();
+    }
+
+    getTasting(id:number){
+        return this.Tasting.findOrBuild({
+            where:{id:id}
+        });
     }
 
     findGrapes(): Promise<object[]> {

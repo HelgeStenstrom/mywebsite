@@ -106,6 +106,26 @@ function setupEndpoints(router) {
         };
     }
 
+    function getAllTastingsOrm(): (req, res) => Promise<void> {
+
+        return async (req, res) => {
+            orm.allTastings()
+                .then((x) => res.json(x))
+                .catch(e => console.error(e));
+        };
+    }
+
+    function getTastingOrm(): (req, res) => Promise<void> {
+
+        return async (req, res) => {
+            console.log("get tasting with id=", req.params.id);
+            orm.getTasting(req.params.id)
+                .then((x) => res.json(x))
+                .catch(e => console.error(e));
+        };
+    }
+
+
 
     function postGrapeHandlerOrm(): (req, res) => void {
 
@@ -143,14 +163,6 @@ function setupEndpoints(router) {
         };
     }
 
-    async function insertGrape(grapeName, grapeColor): Promise<unknown> {
-        try {
-            const sql = "insert into hartappat.grapes (name, color) value (?, ?);"
-            return await sqlWrapper.query(sql, [grapeName, grapeColor]);
-        } finally {
-            await sqlWrapper.end();
-        }
-    }
 
     function getTasting() {
         return async (req, res) => {
@@ -159,7 +171,7 @@ function setupEndpoints(router) {
                          from hartappat.tasting t
                          where t.id = ?`;
 
-            console.log('got a valid id');
+            console.log('got a valid id: ', req.params.id);
             sqlWrapper.query(sql, [+(req.params.id)])
                 .then((t) => res.json(t));
             await sqlWrapper.end();
@@ -172,7 +184,6 @@ function setupEndpoints(router) {
             const sql = `select *
                          from hartappat.tasting t`;
 
-            console.log('got a valid id');
             sqlWrapper.query(sql)
                 .then((t) => res.json(t));
             await sqlWrapper.end();
@@ -186,8 +197,9 @@ function setupEndpoints(router) {
     router.get('/api/v1/wines', getWines());
 
 
+    router.get('/api/v1/vinprovningOrm/:id', getTastingOrm());
     router.get('/api/v1/vinprovning/:id', getTasting());
-    router.get('/api/v1/vinprovning/', getAllTastings());
+    router.get('/api/v1/vinprovning/', getAllTastingsOrm());
 
     router.get('/api/v1/grapes', getGrapesOrm());
     router.post('/api/v1/grapes', postGrapeHandlerOrm());

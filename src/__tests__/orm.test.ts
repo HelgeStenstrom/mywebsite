@@ -1,5 +1,5 @@
 import {beforeEach, describe, expect, test} from "@jest/globals";
-import {Orm} from "./orm";
+import {Orm} from "../orm";
 
 describe('block name', () => {
 
