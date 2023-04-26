@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Observable, Subject, throwError} from "rxjs";
-import {catchError, tap} from "rxjs/operators";
+import {interval, Observable, Subject, throwError} from "rxjs";
+import {catchError, map, tap} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -76,6 +76,16 @@ export class BackendService {
     return throwError(() => new Error('Something bad happened; please try again later.'));
   }
 
+  getMembers(): Observable<Member[]> {
+    const url = `${this.apiBase}members`;
+    return this.http.get<Member[]>(url);
+  }
+
+  getMembersExample(): Observable<Member[]>{
+    return interval(500)
+      .pipe(map(() => [{given: 'Adam', surname:'Nescio'}, {given: 'Bertil', surname:'Bbb'}]));
+  }
+
   getTastings() : Observable<Tasting[]>{
 
     const url = `${this.apiBase}vinprovning`;
@@ -106,4 +116,9 @@ export type Grape = {
 export type Tasting = {
   title: string;
   notes: string;
+}
+
+export type Member = {
+  given: string;
+  surname: string;
 }

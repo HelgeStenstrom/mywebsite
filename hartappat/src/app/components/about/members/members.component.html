@@ -1,0 +1,44 @@
+<table>
+  <caption>Medlemmar i Härtappat</caption>
+  <th>Medlem</th>
+  <tr> members</tr>
+  <tr *ngFor="let member of members | async">
+    {{member.given}} {{member.surname}}
+  </tr>
+  <tr>examples</tr>
+  <tr *ngFor="let member of examples | async">
+    {{member.given}} {{member.surname}}
+  </tr>
+  <tr></tr>
+  <tr>Inte async!</tr>
+  <tr *ngFor="let member of memSync">
+    {{member.given}} {{member.surname}}
+  </tr>
+
+  <tr>Viner, som test</tr>
+  <tr *ngFor="let w of wines">
+    {{w.name}} {{w.country}}
+  </tr>
+  <tr>Last row of table</tr>
+</table>
+
+<h1>Medlemmar, synkront</h1>
+<table>
+  <caption>Medlemmar</caption>
+  <th><Medlem></Medlem></th>
+  <tr *ngFor="let m of memSync">
+    {{m.given}} {{m.surname}}
+  </tr>
+  <tr>Last row of table</tr>
+</table>
+
+
+<h1>Viner</h1>
+<table>
+  <caption>Viner</caption>
+  <th>Vin</th>
+  <tr *ngFor="let w of wines">
+    {{w.name}} {{w.country}}
+  </tr>
+  <tr>Last row of table</tr>
+</table>

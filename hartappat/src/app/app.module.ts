@@ -30,6 +30,7 @@ import {TestbenchComponent} from './components/testbench/testbench.component';
 import {ProvningarComponent} from './components/provningar/provningar.component';
 import {TastingComponent} from './components/provningar/tasting/tasting.component';
 import { AltDruvorComponent } from './components/alt-druvor/alt-druvor.component';
+import { MembersComponent } from './components/about/members/members.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { AltDruvorComponent } from './components/alt-druvor/alt-druvor.component
     TestbenchComponent,
     ProvningarComponent,
     TastingComponent,
-    AltDruvorComponent
+    AltDruvorComponent,
+    MembersComponent
   ],
   imports: [
     BrowserModule,
