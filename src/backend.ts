@@ -62,23 +62,14 @@ function setupEndpoints(router) {
 
     const orm  = new Orm('hartappat', 'root', 'root1234', mariaDbOptions);
 
-    function getMembers() {
+    function getMembersOrm(): (req, res) => Promise<void> {
         return async (req, res) => {
-            await innerGetMembers(req, res);
+            orm.findMembers()
+                .then((x) => res.json(x))
+                .catch(e => console.error(e));
         };
     }
 
-    async function innerGetMembers(req, res) {
-        const sql = `select *
-                         from hartappat.members`;
-        try {
-            sqlWrapper.query(sql)
-                .then((x: Member) => res.json(x));
-            await sqlWrapper.end();
-        } catch (e) {
-            console.error(e);
-        }
-    }
 
     function getWines() {
         return async (req, res) => {
@@ -148,14 +139,14 @@ function setupEndpoints(router) {
 
 
 
-    function postGrapeHandlerOrm(): (req, res) => void {
+    function postGrapeOrm(): (req, res) => void {
 
         return async (req, res) => {
 
             const grape: Grape = req.body;
 
             orm.postGrape(grape)
-                .then(() => res.status(201).json("postGrapeHandlerOrm called!"))
+                .then(() => res.status(201).json("postGrapeOrm called!"))
                 .catch(e => console.error(e));
 
         };
@@ -175,6 +166,17 @@ function setupEndpoints(router) {
         };
     }
 
+    function postMemberOrm(): (req, res) => void {
+
+        return async (req, res) => {
+            const member: Member = req.body;
+            orm.postMember(member)
+                .then(() => res.status(201).json("postMemberOrm called!"))
+                .catch(e => console.error(e));
+
+        };
+    }
+
     function deleteGrapeByNameOrm() {
 
         return async (req, res) => {
@@ -187,58 +189,30 @@ function setupEndpoints(router) {
         };
     }
 
-    function patchGrapeHandlerOrm(): (req, res) => void {
+    function patchGrapeOrm(): (req, res) => void {
 
         return async (req, res) => {
             const {from, to} = req.body;
 
             orm.patchGrape(from, to)
-                .then(() => res.status(200).json("patchGrapeHandlerOrm called!"))
+                .then(() => res.status(200).json("patchGrapeOrm called!"))
                 .catch(e => console.error(e));
         };
     }
 
 
-/*    function getTasting() {
-        return async (req, res) => {
-
-            const sql = `select *
-                         from hartappat.tasting t
-                         where t.id = ?`;
-
-            console.log('got a valid id: ', req.params.id);
-            sqlWrapper.query(sql, [+(req.params.id)])
-                .then((t) => res.json(t));
-            await sqlWrapper.end();
-        };
-    }*/
-
-/*    function getAllTastings() {
-        return async (req, res) => {
-
-            const sql = `select *
-                         from hartappat.tasting t`;
-
-            sqlWrapper.query(sql)
-                .then((t) => res.json(t));
-            await sqlWrapper.end();
-        };
-    }*/
-
-    router.get('/membersX', getMembers());
-
-    router.get('/api/v1/members', innerGetMembers);
+    router.get('/api/v1/members', getMembersOrm());
+    router.post('/api/v1/members', postMemberOrm());
 
     router.get('/api/v1/wines', getWines());
     router.get('/api/v1/winesOrm', getWinesOrm());
 
     router.get('/api/v1/vinprovning/:id', getTastingOrm());
-//    router.get('/api/v1/vinprovning/:id', getTasting());
     router.get('/api/v1/vinprovning/', getAllTastingsOrm());
 
     router.get('/api/v1/grapes', getGrapesOrm());
-    router.post('/api/v1/grapes', postGrapeHandlerOrm());
-    router.patch('/api/v1/grapes', patchGrapeHandlerOrm());
+    router.post('/api/v1/grapes', postGrapeOrm());
+    router.patch('/api/v1/grapes', patchGrapeOrm());
     router.delete('/api/v1/grapes/:name', deleteGrapeByNameOrm());
 
     router.get('/api/v1/countries', getCountriesOrm());

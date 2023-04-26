@@ -8,6 +8,7 @@ export class Orm {
     private Tasting: ModelStatic<Model>;
     private Country: ModelStatic<Model>;
     private Wine: ModelStatic<Model>;
+    private Member: ModelStatic<Model>;
 
 
     testAuthentication(): string {
@@ -52,6 +53,17 @@ export class Orm {
                 tableName: "tasting"
             }
         )
+
+        this.Member = this.sequelize.define("member",
+            {
+                Förnamn: DataTypes.TEXT,
+                Efternamn: DataTypes.TEXT,
+            },
+            {
+                timestamps: false,
+                tableName: "members"
+            }
+        )
     }
 
 
@@ -68,19 +80,16 @@ export class Orm {
     }
 
     findGrapes(): Promise<object[]> {
+        return this.Grape.findAll();
+    }
 
-        //console.log('In Orm.findGrapes()');
-        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll
-        return this.Grape.findAll(
-         //   {attributes: ['name', 'id', 'color'],}   // Not needed if we want all attributes of the table
-        );
+    findMembers(): Promise<object[]> {
+
+        return this.Member.findAll();
     }
 
 
     findCountries(): Promise<object[]> {
-
-        //console.log('In Orm.findGrapes()');
-        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll
         return this.Country.findAll();
     }
 
@@ -101,6 +110,10 @@ export class Orm {
 
     postCountry(country) {
         return this.Country.create(country);
+    }
+
+    postMember(member) {
+        return this.Member.create(member);
     }
 
     delGrape(name: string) {
