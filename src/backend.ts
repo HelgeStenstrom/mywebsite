@@ -41,6 +41,9 @@ interface Grape extends NodeJS.ReadableStream {
     name: string,
     color: string;
 }
+interface Country extends NodeJS.ReadableStream {
+    name: string,
+}
 
 function setupEndpoints(router) {
 
@@ -97,6 +100,15 @@ function setupEndpoints(router) {
         };
     }
 
+    function getWinesOrm(): (req, res) => Promise<void> {
+        return async (req, res) => {
+            orm.findWines()
+                .then((x) => res.json(x))
+                .catch(e => console.error(e));
+        };
+    }
+
+
     function getGrapesOrm(): (req, res) => Promise<void> {
 
         return async (req, res) => {
@@ -106,10 +118,19 @@ function setupEndpoints(router) {
         };
     }
 
+    function getCountriesOrm(): (req, res) => Promise<void> {
+
+        return async (req, res) => {
+            orm.findCountries()
+                .then((x) => res.json(x))
+                .catch(e => console.error(e));
+        };
+    }
+
     function getAllTastingsOrm(): (req, res) => Promise<void> {
 
         return async (req, res) => {
-            orm.allTastings()
+            orm.findTastings()
                 .then((x) => res.json(x))
                 .catch(e => console.error(e));
         };
@@ -131,10 +152,24 @@ function setupEndpoints(router) {
 
         return async (req, res) => {
 
-            const body: Grape = req.body;
+            const grape: Grape = req.body;
 
-            orm.postGrape(body)
+            orm.postGrape(grape)
                 .then(() => res.status(201).json("postGrapeHandlerOrm called!"))
+                .catch(e => console.error(e));
+
+        };
+    }
+
+
+    function postCountriesOrm(): (req, res) => void {
+
+        return async (req, res) => {
+
+            const country: Country = req.body;
+
+            orm.postCountry(country)
+                .then(() => res.status(201).json("postCountriesOrm called!"))
                 .catch(e => console.error(e));
 
         };
@@ -164,7 +199,7 @@ function setupEndpoints(router) {
     }
 
 
-    function getTasting() {
+/*    function getTasting() {
         return async (req, res) => {
 
             const sql = `select *
@@ -176,9 +211,9 @@ function setupEndpoints(router) {
                 .then((t) => res.json(t));
             await sqlWrapper.end();
         };
-    }
+    }*/
 
-    function getAllTastings() {
+/*    function getAllTastings() {
         return async (req, res) => {
 
             const sql = `select *
@@ -188,17 +223,17 @@ function setupEndpoints(router) {
                 .then((t) => res.json(t));
             await sqlWrapper.end();
         };
-    }
+    }*/
 
     router.get('/membersX', getMembers());
 
     router.get('/api/v1/members', innerGetMembers);
 
     router.get('/api/v1/wines', getWines());
+    router.get('/api/v1/winesOrm', getWinesOrm());
 
-
-    router.get('/api/v1/vinprovningOrm/:id', getTastingOrm());
-    router.get('/api/v1/vinprovning/:id', getTasting());
+    router.get('/api/v1/vinprovning/:id', getTastingOrm());
+//    router.get('/api/v1/vinprovning/:id', getTasting());
     router.get('/api/v1/vinprovning/', getAllTastingsOrm());
 
     router.get('/api/v1/grapes', getGrapesOrm());
@@ -206,16 +241,9 @@ function setupEndpoints(router) {
     router.patch('/api/v1/grapes', patchGrapeHandlerOrm());
     router.delete('/api/v1/grapes/:name', deleteGrapeByNameOrm());
 
-    router.get('/api/v1/countries', async (req, res) => {
-        const sql = 'select * from hartappat.countries';
-        try {
-            const promise = sqlWrapper.query(sql);
-            promise.then((x) => res.json(x));
-            await sqlWrapper.end();
-        } catch (e) {
-            console.error(e);
-        }
-    });
+    router.get('/api/v1/countries', getCountriesOrm());
+    router.post('/api/v1/countries', postCountriesOrm());
+
 }
 
 setupEndpoints(app);

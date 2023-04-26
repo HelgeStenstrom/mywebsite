@@ -11,7 +11,7 @@ describe('block name', () => {
 
 describe('backend tests', () => {
 
-    test('foo', () => {
+    test('app from the backend is defined', () => {
         expect(app).toBeTruthy();
     });
 });

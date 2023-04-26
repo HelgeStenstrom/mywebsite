@@ -6,6 +6,9 @@ export class Orm {
     sequelize: Sequelize;
     private Grape: ModelStatic<Model>;
     private Tasting: ModelStatic<Model>;
+    private Country: ModelStatic<Model>;
+    private Wine: ModelStatic<Model>;
+
 
     testAuthentication(): string {
         const promise = this.sequelize.authenticate();
@@ -28,6 +31,16 @@ export class Orm {
             }
         )
 
+        this.Country = this.sequelize.define("country",
+            {
+                name: DataTypes.TEXT,
+            },
+            {
+                timestamps: false,
+                tableName: "countries"
+            }
+        )
+
         this.Tasting = this.sequelize.define("tasting",
             {
                 title: DataTypes.TEXT,
@@ -46,14 +59,12 @@ export class Orm {
         return this.sequelize.sync();
     }
 
-    allTastings(): Promise<object[]>{
+    findTastings(): Promise<object[]> {
         return this.Tasting.findAll();
     }
 
     getTasting(id:number){
-        return this.Tasting.findOrBuild({
-            where:{id:id}
-        });
+        return this.Tasting.findByPk(id);
     }
 
     findGrapes(): Promise<object[]> {
@@ -66,11 +77,30 @@ export class Orm {
     }
 
 
+    findCountries(): Promise<object[]> {
+
+        //console.log('In Orm.findGrapes()');
+        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-findAll
+        return this.Country.findAll();
+    }
+
+    findWines() {
+        return this.Wine.findAll();
+    }
+
     postGrape(grape) {
 
         //console.log(`In Orm.postGrape(${grape.name})`)
         // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-create
         return this.Grape.create(grape);
+    }
+
+    postTasting(tasting) {
+        return this.Tasting.create(tasting);
+    }
+
+    postCountry(country) {
+        return this.Country.create(country);
     }
 
     delGrape(name: string) {
