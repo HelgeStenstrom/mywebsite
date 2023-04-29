@@ -8,12 +8,13 @@ export class Orm {
     private Tasting: ModelStatic<Model>;
     private Country: ModelStatic<Model>;
     private Wine: ModelStatic<Model>;
+    private WineType: ModelStatic<Model>;
     private Member: ModelStatic<Model>;
 
 
     testAuthentication(): string {
         const promise = this.sequelize.authenticate();
-        promise.then( x => console.log('maybe i am authenticated', x));
+        promise.then(x => console.log('maybe i am authenticated', x));
         return "testAuthentication: I'm fine";
     }
 
@@ -64,6 +65,17 @@ export class Orm {
                 tableName: "members"
             }
         )
+
+        this.WineType = this.sequelize.define("winetype",
+            {
+                sv: DataTypes.TEXT,
+                en: DataTypes.TEXT
+            },
+            {
+                timestamps: false,
+                tableName: "winetypes"
+            }
+        )
     }
 
 
@@ -75,7 +87,7 @@ export class Orm {
         return this.Tasting.findAll();
     }
 
-    getTasting(id:number){
+    getTasting(id: number) {
         return this.Tasting.findByPk(id);
     }
 
@@ -132,5 +144,13 @@ export class Orm {
             {name: to.name, color: to.color},
             {where: {name: from.name}}
         );
+    }
+
+    async findWineTypes() {
+        return this.WineType.findAll();
+    }
+
+    async postWineType(param: { sv: string; en: string }) {
+        return this.WineType.create(param);
     }
 }

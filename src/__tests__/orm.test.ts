@@ -132,5 +132,24 @@ describe('Database tests', () => {
         });
     });
 
+    describe('Winetype tests', () => {
+        test('Post and read back winetypes', async () => {
+
+            await orm.createTables();
+            await orm.postWineType({sv: "rött", en: "red"});
+            await orm.postWineType({sv: "vitt", en: "white"});
+
+            const wineTypes = await orm.findWineTypes();
+
+            expect(wineTypes[0]["sv"]).toEqual("rött");
+            expect(wineTypes[0]["en"]).toEqual("red");
+            expect(wineTypes[1]["sv"]).toEqual("vitt");
+            expect(wineTypes[1]["en"]).toEqual("white");
+
+        });
+    });
+
+
+
 
 });
