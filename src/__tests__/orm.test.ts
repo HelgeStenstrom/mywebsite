@@ -146,10 +146,42 @@ describe('Database tests', () => {
             expect(wineTypes[1]["sv"]).toEqual("vitt");
             expect(wineTypes[1]["en"]).toEqual("white");
 
+            expect(wineTypes[1]["id"]).toEqual(2);
+
         });
     });
 
 
+    describe('Wine test', () => {
+        test('Post and read back wines', async () => {
+            await orm.createTables();
+
+            // First ensure that we have the needed winetype
+            const wineType0 = await orm.postWineType({sv: "sadf", en: "df"});
+            const wineType = await orm.postWineType({sv: "rött", en: "red"});
+
+            // Then ensure that we have the needed country
+            const country = await orm.postCountry({name: "Sverige"});
+
+            // post the wine
+            const countryId = country['id'];
+            const wineTypeId = wineType['id'];
+            const wine = await orm.postWine({
+                country: countryId,
+                name: 'Rödtjut',
+                systembolaget: 4711,
+                volume: 750,
+                winetype: wineTypeId
+            })
+
+            const wines = await orm.findWines();
+            const first = wines[0];
+            expect(first['name']).toBeTruthy();
+            expect(first['name']).toEqual('Rödtjut');
+
+
+        });
+    });
 
 
 });

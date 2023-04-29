@@ -8,7 +8,8 @@ import {catchError, map, tap} from "rxjs/operators";
 })
 export class BackendService {
 
-  public readonly urlBase = 'http://helges-mbp-2:3000/';
+  public readonly urlBase = 'http://localhost:3000/';
+  //public readonly urlBase = 'http://helges-mbp-2:3000/';
   private apiBase = this.urlBase + 'api/v1/';
 
   /**

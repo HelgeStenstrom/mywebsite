@@ -20,7 +20,7 @@ export class Orm {
 
     constructor(database: string, dbUserName: string, dbPassword: string, options: Options) {
         this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);
-        this.testAuthentication();
+        // this.testAuthentication();
 
         this.Grape = this.sequelize.define("grape",
             {
@@ -76,6 +76,20 @@ export class Orm {
                 tableName: "winetypes"
             }
         )
+
+        this.Wine = this.sequelize.define("wine",
+            {
+                country: DataTypes.TEXT,
+                name: DataTypes.TEXT,
+                systembolaget: DataTypes.INTEGER,
+                volume: DataTypes.INTEGER,
+                winetype: DataTypes.TEXT,
+            },
+            {
+                timestamps: false,
+                tableName: "wines"
+            }
+            )
     }
 
 
@@ -152,5 +166,11 @@ export class Orm {
 
     async postWineType(param: { sv: string; en: string }) {
         return this.WineType.create(param);
+    }
+
+    async postWine(param: {
+        country: number; name: string; systembolaget: number; volume: number; winetype: number
+    }) {
+        return this.Wine.create(param);
     }
 }
