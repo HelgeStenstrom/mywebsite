@@ -12,15 +12,14 @@ export class Orm {
     private Member: ModelStatic<Model>;
 
 
-    testAuthentication(): string {
+    testAuthentication() {
         const promise = this.sequelize.authenticate();
-        promise.then(x => console.log('maybe i am authenticated', x));
-        return "testAuthentication: I'm fine";
+        promise.then(x => console.log('Sequelize authentication passed', x));
     }
 
     constructor(database: string, dbUserName: string, dbPassword: string, options: Options) {
         this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);
-        // this.testAuthentication();
+        this.testAuthentication();
 
         this.Grape = this.sequelize.define("grape",
             {
@@ -33,7 +32,7 @@ export class Orm {
             }
         )
 
-        this.Country = this.sequelize.define("country",
+        this.Country = this.sequelize.define("countryModel",
             {
                 name: DataTypes.TEXT,
             },
@@ -66,7 +65,7 @@ export class Orm {
             }
         )
 
-        this.WineType = this.sequelize.define("winetype",
+        this.WineType = this.sequelize.define("winetypeModel",
             {
                 sv: DataTypes.TEXT,
                 en: DataTypes.TEXT
@@ -79,17 +78,27 @@ export class Orm {
 
         this.Wine = this.sequelize.define("wine",
             {
-                country: DataTypes.TEXT,
+               // country: DataTypes.TEXT,
                 name: DataTypes.TEXT,
                 systembolaget: DataTypes.INTEGER,
                 volume: DataTypes.INTEGER,
-                winetype: DataTypes.TEXT,
+                //winetype: DataTypes.TEXT,
             },
             {
                 timestamps: false,
                 tableName: "wines"
             }
-            )
+        )
+
+        this.Wine.belongsTo(this.Country, {foreignKey: 'country'});
+        this.Country.hasMany(this.Wine, {
+            foreignKey: 'country'
+        });
+
+        this.Wine.belongsTo(this.WineType, {foreignKey: 'winetype'});
+        this.WineType.hasMany(this.Wine, {
+            foreignKey: 'winetype'
+        });
     }
 
 
@@ -119,7 +128,32 @@ export class Orm {
         return this.Country.findAll();
     }
 
+    async postWine(param: {
+        country: number; name: string; systembolaget: number; volume: number; winetype: number
+    }) {
+        return this.Wine.create(param);
+    }
+
     findWines() {
+        return this.Wine.findAll(
+            {
+                include: [
+                    {
+                        model: this.WineType,
+                        attributes: ['sv'],
+                        required: true
+                    },
+                    {
+                        model: this.Country,
+                        attributes: ['name'],
+                        required: true
+                    }
+                ]
+            }
+        );
+    }
+
+    findWinesNoOptions() {
         return this.Wine.findAll();
     }
 
@@ -166,11 +200,5 @@ export class Orm {
 
     async postWineType(param: { sv: string; en: string }) {
         return this.WineType.create(param);
-    }
-
-    async postWine(param: {
-        country: number; name: string; systembolaget: number; volume: number; winetype: number
-    }) {
-        return this.Wine.create(param);
     }
 }

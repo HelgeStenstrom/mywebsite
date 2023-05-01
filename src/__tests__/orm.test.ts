@@ -1,4 +1,5 @@
 import {beforeEach, describe, expect, test} from "@jest/globals";
+import {Model} from "sequelize";
 import {Orm} from "../orm";
 
 describe('block name', () => {
@@ -13,14 +14,14 @@ describe('Database tests', () => {
     let orm: Orm;
 
     beforeEach(() => {
-         orm = new Orm("myDatabase", "myUserName", "mySecret",
+        orm = new Orm("myDatabase", "myUserName", "mySecret",
             {
                 dialect: "sqlite",
             });
     });
 
     describe('Grape tests', () => {
-        test('post and read back grape', async() => {
+        test('post and read back grape', async () => {
 
             await orm.createTables();
 
@@ -81,7 +82,7 @@ describe('Database tests', () => {
 
     describe('Countries tests', () => {
 
-        test('post and read back counries', async() => {
+        test('post and read back counries', async () => {
             await orm.createTables();
 
             await orm.postCountry({name: "Norge"});
@@ -93,11 +94,11 @@ describe('Database tests', () => {
 
     describe('Tastings tests', () => {
 
-        test('post and read back tasting', async() => {
+        test('post and read back tasting', async () => {
             await orm.createTables();
 
-            await orm.postTasting({title: "Till fisk", notes: "hemma hos", date:"2021-03-28"});
-            await orm.postTasting({title: "Till kött", notes: "hemma hos oss", date:"2022-03-28"});
+            await orm.postTasting({title: "Till fisk", notes: "hemma hos", date: "2021-03-28"});
+            await orm.postTasting({title: "Till kött", notes: "hemma hos oss", date: "2022-03-28"});
             const tastings = await orm.findTastings();
 
             expect(tastings[1]["title"]).toEqual("Till kött");
@@ -164,20 +165,95 @@ describe('Database tests', () => {
             const country = await orm.postCountry({name: "Sverige"});
 
             // post the wine
-            const countryId = country['id'];
-            const wineTypeId = wineType['id'];
             const wine = await orm.postWine({
-                country: countryId,
+                country: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
                 volume: 750,
-                winetype: wineTypeId
+                winetype: wineType['id']
             })
 
             const wines = await orm.findWines();
             const first = wines[0];
             expect(first['name']).toBeTruthy();
             expect(first['name']).toEqual('Rödtjut');
+            expect(first['country']).toEqual('Sverige');
+
+
+        });
+    });
+
+    describe('Wine tests with common database setup', () => {
+
+
+        let wineType: Model<any, any>;
+        let country: Model<any, any>;
+
+        beforeEach(async () => {
+            await orm.createTables();
+
+            // First ensure that we have the needed winetype
+            const wineType0 = await orm.postWineType({sv: "sadf", en: "df"});
+            wineType = await orm.postWineType({sv: "rött", en: "red"});
+
+            // Then ensure that we have the needed country
+             country = await orm.postCountry({name: "Sverige"});
+        });
+
+        test('check the setup', async () => {
+            const wineTypes = await orm.findWineTypes();
+            expect(wineTypes[1]["sv"]).toEqual("rött");
+            const countries = await orm.findCountries();
+            expect(countries[0]["name"]).toEqual("Sverige");
+        });
+
+        test('post a wine and check it manually', async () => {
+            const wine = await orm.postWine({
+                country: country['id'],
+                name: 'Rödtjut',
+                systembolaget: 4711,
+                volume: 750,
+                winetype: wineType['id']
+            })
+
+
+            const winesNoOptions = await orm.findWinesNoOptions();
+            expect(winesNoOptions).toBeTruthy();
+            expect(winesNoOptions).not.toHaveLength(0);
+
+            console.log("==== EXERCISE findWines()  ========")
+
+            const allWines = await orm.findWines();
+            expect(allWines).toBeTruthy();
+            expect(allWines).not.toHaveLength(0);
+
+            expect(allWines).toBeTruthy();
+            const postedWine = allWines[0];
+            expect(postedWine).toBeTruthy();
+            console.log('All wines:', postedWine);
+            console.log('All wines:', postedWine);
+            expect(postedWine['name']).toEqual("Rödtjut");
+            expect(postedWine['systembolaget']).toEqual(4711);
+            expect(postedWine.winetype).toEqual("rött");
+            expect(postedWine.country).toEqual("Sverige");
+
+        })
+
+        test('findWinesNoOptions', async () => {
+            const wine = await orm.postWine({
+                country: country['id'],
+                name: 'Rödtjut',
+                systembolaget: 4711,
+                volume: 750,
+                winetype: wineType['id']
+            })
+
+
+            console.log("==== EXERCISE findWinesNoOptions()  ========")
+            const winesNoOptions = await orm.findWinesNoOptions();
+            expect(winesNoOptions).toBeTruthy();
+
+            expect(winesNoOptions).not.toHaveLength(0);
 
 
         });
