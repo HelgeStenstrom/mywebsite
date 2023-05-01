@@ -135,7 +135,7 @@ export class Orm {
     }
 
     findWines() {
-        return this.Wine.findAll(
+        const promise = this.Wine.findAll(
             {
                 include: [
                     {
@@ -151,6 +151,22 @@ export class Orm {
                 ]
             }
         );
+        const promise1 = promise.then(m => {
+                return m.map(x => {
+                    console.log('In model mapping lambda: x.name = ', x.name);
+                    console.log('In model mapping lambda: x.winetypeModel.sv = ', x.winetypeModel.sv);
+                    //return x;
+                    return {
+                        name: x.name,
+                        systembolaget: x.systembolaget,
+                        winetype: x.winetypeModel.sv,
+                        country: x.countryModel.name,
+                        volume: x.volume,
+                    };
+                });
+            }
+        );
+        return promise1;
     }
 
     findWinesNoOptions() {

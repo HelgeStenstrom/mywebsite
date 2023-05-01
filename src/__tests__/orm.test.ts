@@ -233,13 +233,12 @@ describe('Database tests', () => {
             expect(allWines).toBeTruthy();
             const postedWine = allWines[0];
             expect(postedWine).toBeTruthy();
-            console.log('All wines:', postedWine);
+            //console.log('All wines:', postedWine);
             expect(postedWine['name']).toEqual("Rödtjut");
             expect(postedWine['systembolaget']).toEqual(4711);
-            expect(postedWine.winetypeModel.sv).toEqual("rött");
-            expect(postedWine.countryModel.name).toEqual("Sverige");
-            //expect(postedWine['winetype']).toEqual("rött");
-            //expect(postedWine['country']).toEqual("Sverige");
+            expect(postedWine['winetype']).toEqual("rött");
+            expect(postedWine['country']).toEqual("Sverige");
+            expect(postedWine['volume']).toEqual(750);
 
         })
 
