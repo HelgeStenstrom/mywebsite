@@ -1,8 +1,8 @@
 import express from "express";
 import cors from "cors";
 import mariadb, {Pool} from "mariadb";
-import {MariaWrapper} from "./MariaWrapper";
-import {SqlWrapper} from "./SqlWrapper";
+//import {MariaWrapper} from "./MariaWrapper";
+//import {SqlWrapper} from "./SqlWrapper";
 
 import {Orm} from "./orm";
 import {Options} from "sequelize";
@@ -16,6 +16,7 @@ function getConfiguredApp() {
 
 export const app = getConfiguredApp();
 
+/*
 const pool: Pool = mariadb.createPool({
     host: 'localhost',
     user: 'root',
@@ -23,9 +24,10 @@ const pool: Pool = mariadb.createPool({
     port: 3307,
     connectionLimit: 5
 });
+*/
 
 // TODO: Injicera MariaWrapper, mend sin pool.
-const sqlWrapper: SqlWrapper = new MariaWrapper(pool);
+// const sqlWrapper: SqlWrapper = new MariaWrapper(pool);
 
 interface Member extends NodeJS.ReadableStream {
     id: number,
@@ -71,7 +73,7 @@ function setupEndpoints(router) {
     }
 
 
-    function getWines() {
+/*    function getWines() {
         return async (req, res) => {
             const sql = `
                 select w.Name as name, c.name as country, wt.sv as category, w.systembolaget as systembolaget
@@ -89,7 +91,7 @@ function setupEndpoints(router) {
                 console.error(e);
             }
         };
-    }
+    }*/
 
     function getWinesOrm(): (req, res) => Promise<void> {
         return async (req, res) => {
@@ -204,7 +206,7 @@ function setupEndpoints(router) {
     router.get('/api/v1/members', getMembersOrm());
     router.post('/api/v1/members', postMemberOrm());
 
-    router.get('/api/v1/wines', getWines());
+    router.get('/api/v1/wines', getWinesOrm());
     router.get('/api/v1/winesOrm', getWinesOrm());
 
     router.get('/api/v1/vinprovning/:id', getTastingOrm());
