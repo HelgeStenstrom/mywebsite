@@ -31,22 +31,10 @@ interface Country extends NodeJS.ReadableStream {
     name: string,
 }
 
-function setupEndpoints(router) {
+export function setupEndpoints(router, sequelizeDbOptions) {
 
-    const mariaDbOptions : Options = {
-        dialect: 'mariadb',
-        dialectOptions: {
-            user: 'root',
-            // password: 'root1234',
-            // host: 'localhost',
-            port: 3307,
-            connectionLimit: 5
-            // Your mariadb options here
-            // connectTimeout: 1000
-        }
-    };
 
-    const orm  = new Orm('hartappat', 'root', 'root1234', mariaDbOptions);
+    const orm  = new Orm('hartappat', 'root', 'root1234', sequelizeDbOptions);
 
     function getMembers(): (req, res) => Promise<void> {
         return async (req, res) => {
@@ -184,7 +172,7 @@ function setupEndpoints(router) {
 
 }
 
-setupEndpoints(app);
+//setupEndpoints(app);
 
 
 
