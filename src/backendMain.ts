@@ -1,4 +1,4 @@
-import {app, setupEndpoints} from './backend';
+import {app, setupEndpoints} from './backendRouting';
 import {Options} from "sequelize";
 
 const mariaDbOptions : Options = {

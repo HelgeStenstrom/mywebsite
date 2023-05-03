@@ -1,6 +1,6 @@
 import {describe, expect, test, afterEach, beforeEach} from "@jest/globals";
 import {agent as request} from "supertest";
-import {app} from "../backend";
+import {app} from "../backendRouting";
 
 
 describe('non-empty suite', () => {

@@ -1,5 +1,5 @@
 import {describe, expect, test} from "@jest/globals";
-import {app, setupEndpoints} from "../backend";
+import {app, setupEndpoints} from "../backendRouting";
 
 describe('block name', () => {
 

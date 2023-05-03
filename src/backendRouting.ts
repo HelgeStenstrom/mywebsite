@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 
 import {Orm} from "./orm";
+import {EndpointHandlers} from "./endpointHandlers";
 
 function getConfiguredApp() {
     const app = express();
@@ -12,7 +13,7 @@ function getConfiguredApp() {
 
 export const app = getConfiguredApp();
 
-interface Member extends NodeJS.ReadableStream {
+export interface Member extends NodeJS.ReadableStream {
     id: number,
     givenName: string,
     surname: string
@@ -35,17 +36,20 @@ export function setupEndpoints(router, sequelizeDbOptions) {
 
     const orm  = new Orm('hartappat', 'root', 'root1234', sequelizeDbOptions);
 
-    function getMembers(): (req, res) => Promise<void> {
+    const endpointHandlers = new EndpointHandlers(orm);
+
+
+/*    function getMembers(): (req, res) => Promise<void> {
         return async (req, res) => {
             thenJson(orm.findMembers(), res);
         };
-    }
+    }*/
 
-    function getWines(): (req, res) => Promise<void> {
+/*    function getWines(): (req, res) => Promise<void> {
         return async (req, res) => {
             thenJson(orm.findWines(), res);
         };
-    }
+    }*/
 
 
     function getGrapes(): (req, res) => Promise<void> {
@@ -115,7 +119,7 @@ export function setupEndpoints(router, sequelizeDbOptions) {
         };
     }
 
-    function postMember(): (req, res) => void {
+/*    function postMember(): (req, res) => void {
 
         return async (req, res) => {
             const member: Member = req.body;
@@ -124,7 +128,7 @@ export function setupEndpoints(router, sequelizeDbOptions) {
                 .catch(e => console.error(e));
 
         };
-    }
+    }*/
 
     function deleteGrapeByName() {
 
@@ -150,10 +154,10 @@ export function setupEndpoints(router, sequelizeDbOptions) {
     }
 
 
-    router.get('/api/v1/members', getMembers());
-    router.post('/api/v1/members', postMember());
+    router.get('/api/v1/members', endpointHandlers.getMembers());
+    router.post('/api/v1/members', endpointHandlers.postMember());
 
-    router.get('/api/v1/wines', getWines());
+    router.get('/api/v1/wines', endpointHandlers.getWines());
 
     router.get('/api/v1/vinprovning/:id', getTasting());
     router.get('/api/v1/vinprovning/', getAllTastings());
