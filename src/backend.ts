@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 
 import {Orm} from "./orm";
-import {Options} from "sequelize";
 
 function getConfiguredApp() {
     const app = express();

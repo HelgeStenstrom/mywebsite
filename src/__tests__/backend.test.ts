@@ -1,5 +1,5 @@
 import {describe, expect, test} from "@jest/globals";
-import {app} from "../backend";
+import {app, setupEndpoints} from "../backend";
 
 describe('block name', () => {
 
@@ -13,5 +13,13 @@ describe('backend tests', () => {
 
     test('app from the backend is defined', () => {
         expect(app).toBeTruthy();
+    });
+});
+
+
+describe('setupEndpoints', () => {
+
+    test('minimal test', async () => {
+        setupEndpoints(app, {dialect: "sqlite",})
     });
 });
