@@ -37,17 +37,13 @@ export function setupEndpoints(router, sequelizeDbOptions) {
 
     function getMembers(): (req, res) => Promise<void> {
         return async (req, res) => {
-            orm.findMembers()
-                .then((x) => res.json(x))
-                .catch(e => console.error(e));
+            thenJson(orm.findMembers(), res);
         };
     }
 
     function getWines(): (req, res) => Promise<void> {
         return async (req, res) => {
-            orm.findWines()
-                .then((x) => res.json(x))
-                .catch(e => console.error(e));
+            thenJson(orm.findWines(), res);
         };
     }
 
@@ -55,28 +51,29 @@ export function setupEndpoints(router, sequelizeDbOptions) {
     function getGrapes(): (req, res) => Promise<void> {
 
         return async (req, res) => {
-            orm.findGrapes()
-                .then((x) => res.json(x))
-                .catch(e => console.error(e));
+            thenJson(orm.findGrapes(), res);
         };
     }
+
 
     function getCountries(): (req, res) => Promise<void> {
 
         return async (req, res) => {
-            orm.findCountries()
-                .then((x) => res.json(x))
-                .catch(e => console.error(e));
+            thenJson(orm.findCountries(), res);
         };
     }
 
     function getAllTastings(): (req, res) => Promise<void> {
 
         return async (req, res) => {
-            orm.findTastings()
-                .then((x) => res.json(x))
-                .catch(e => console.error(e));
+            thenJson(orm.findTastings(), res);
         };
+    }
+
+    function thenJson(promise: Promise<object[]>, res) {
+        promise
+            .then((x) => res.json(x))
+            .catch(e => console.error(e));
     }
 
     function getTasting(): (req, res) => Promise<void> {
