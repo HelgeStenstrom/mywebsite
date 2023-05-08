@@ -29,8 +29,14 @@ export class EndpointHandlers {
     }
 
     thenJson(promise: Promise<object[]>, res) {
-        promise
-            .then((x) => res.json(x))
-            .catch(e => console.error(e));
+
+        return promise
+            .then((x) => {
+                return res.status(200).json(x);
+            })
+            .catch(() => {
+                res.status(503)
+                    .send("Ingen kontakt med databasen. Är Docker startad?");
+            });
     }
 }

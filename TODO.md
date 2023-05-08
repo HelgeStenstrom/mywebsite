@@ -7,14 +7,12 @@
 - Sluta använda endpoint /g2
 - Redigera druva
   - endpoint
-  - ======= klart hit ==========
   - anrop från komponent
+  - ======= klart hit ==========
 - Få bort loggat fel då koden uppdateras
   - Gissningsvis relaterat till saker som inte utförs i förväntad ordning
 - https
 - Login/autentisering
-- Använd SQL parametrisering med ? istället för backticks
-  - ska vara säkrare mot injection.
 - Tabell för användare
   - username
   - hashed salted password
@@ -31,3 +29,9 @@
   - undersök BankID
   - Logga in med Google?
   - Logga in med Facebook?
+- GUI: vin
+  - lägga till
+  - redigera
+- Backend
+  - Krascha inte om databasen är nere
+  - 
