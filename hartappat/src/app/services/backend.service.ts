@@ -54,7 +54,11 @@ export class BackendService {
         responseType: 'json',
         observe: 'body',
         reportProgress: false
-      });
+      })
+      .pipe(
+        catchError(this.handleError)
+      )
+      ;
   }
 
   patchGrape(from: Grape, to:Grape): Observable<void> {
