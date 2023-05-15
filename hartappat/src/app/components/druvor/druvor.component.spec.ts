@@ -5,7 +5,7 @@ import {BackendService, Grape} from "../../services/backend.service";
 import {Observable, of, Subscription} from "rxjs";
 import {DebugElement, NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
-import {MatDialog} from "@angular/material/dialog";
+import {MatLegacyDialog as MatDialog} from "@angular/material/legacy-dialog";
 
 describe('DruvorComponent test with mock', () => {
   let druvorComponent: DruvorComponent;
