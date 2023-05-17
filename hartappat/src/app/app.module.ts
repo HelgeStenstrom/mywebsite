@@ -1,9 +1,9 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
-import {MatLegacyMenuModule as MatMenuModule} from "@angular/material/legacy-menu";
+import {MatMenuModule} from "@angular/material/menu";
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from "@angular/material/icon";
-import {MatLegacyButtonModule as MatButtonModule} from "@angular/material/legacy-button";
+import {MatButtonModule} from "@angular/material/button";
 import {RouterModule} from "@angular/router";
 import {HttpClientModule} from "@angular/common/http";
 
@@ -20,10 +20,10 @@ import {TravelsComponent} from './components/travels/travels.component';
 import {VinmonopoletComponent} from './components/vinmonopolet/vinmonopolet.component';
 import {WikipediaComponent} from './components/wikipedia/wikipedia.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {MatLegacySelectModule as MatSelectModule} from "@angular/material/legacy-select";
-import {MatLegacyRadioModule as MatRadioModule} from "@angular/material/legacy-radio";
-import {MatLegacyInputModule as MatInputModule} from "@angular/material/legacy-input";
-import {MAT_LEGACY_DIALOG_DATA as MAT_DIALOG_DATA, MAT_LEGACY_DIALOG_DEFAULT_OPTIONS as MAT_DIALOG_DEFAULT_OPTIONS, MatLegacyDialogModule as MatDialogModule, MatLegacyDialogRef as MatDialogRef} from "@angular/material/legacy-dialog";
+import {MatSelectModule} from "@angular/material/select";
+import {MatRadioModule} from "@angular/material/radio";
+import {MatInputModule} from "@angular/material/input";
+import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
 import {FiledropComponent} from './components/filedrop/filedrop.component';
 import {DndDirective} from './dnd.directive';
 import {TestbenchComponent} from './components/testbench/testbench.component';
