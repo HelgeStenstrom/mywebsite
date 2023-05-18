@@ -16,7 +16,7 @@ export class VinmonopoletService {
       'Ocp-Apim-Subscription-Key': '1ff26063efff409eb6200d72ac584c04',
     };
 
-    const url  = 'http://helges-mbp-2:3001/vinmonopolet';
+    const url  = 'http://localhost:3001/vinmonopolet';
     return this.http.get<ProductDetail[]>(url, {headers: headers});
   }
 }

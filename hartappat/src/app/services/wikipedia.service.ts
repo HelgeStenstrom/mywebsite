@@ -22,7 +22,7 @@ export class WikipediaService {
   }
 
   getFeatured(): Observable<Featured> {
-    const urlViaProxy = 'http://helges-mbp-2:3001/featured';
+    const urlViaProxy = 'http://localhost:3001/featured';
     return this.http.get<Featured>(urlViaProxy);
   }
 }
