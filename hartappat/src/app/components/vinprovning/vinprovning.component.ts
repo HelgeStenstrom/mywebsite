@@ -5,11 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './vinprovning.component.html',
   styleUrls: ['./vinprovning.component.css']
 })
-export class VinprovningComponent implements OnInit {
+export class VinprovningComponent {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  // Empty constructor and ngOnInit removed.
 
 }

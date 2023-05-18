@@ -27,9 +27,6 @@ import {ValidationReply, ValidatorService} from "../../services/validator.servic
 })
 export class FiledropComponent implements OnInit {
   private preview: HTMLElement | null = null;
-  // passOrFail = "pof";
-  // exceptionName = "en";
-  // message = "m";
 
   text = {verdict: "pof", exceptionName: "en", message: 'm'}
 
@@ -43,18 +40,11 @@ export class FiledropComponent implements OnInit {
   }
 
   onFileDropped($event: FileList) {
-    // console.log('FiledropComponent got onFileDropped event: ', $event);
 
     const files = $event;
     // Do some stuff here
-    // console.log(`You dropped ${files.length} file(s).`);
-    // console.log(files);
     for (let i = 0; i < files.length; i++) { // NOSONAR
       const file: File = files[i];
-      // console.log('Name: ', file.name);
-      // console.log('webkitRelativePath: ', file.webkitRelativePath);
-      // console.log('type: ', file.type);
-      // console.log('size: ', file.size);
       // It's unclear to me how we can find the actual file, since we only have the name, not the full path.
       // And it's in the client machine, not in the browser.
     }
@@ -76,8 +66,6 @@ export class FiledropComponent implements OnInit {
     if (file.type.startsWith('image/')) {
       this.addImageToPage(file);
     }
-    // console.log('FiledropComponent sending file for validation');
-    //const observable = this.validatorService.validateFile(file);
     const observable = this.validatorService.uploadMultipart(file);
     observable.subscribe(new ValidatingObserver(this.text));
     console.log('handleFile(): added subscription on returned result');
@@ -99,7 +87,6 @@ export class FiledropComponent implements OnInit {
   }
 
   onValidateFake() {
-    // console.log('FiledropComponent.onValidateFake() called');
     const file = new File(["first line", "second line"], "filename.txt");
     this.validatorService
       .validateFile(file)
@@ -107,7 +94,6 @@ export class FiledropComponent implements OnInit {
   }
 
   onUploadMultipart() {
-    // console.log('FiledropComponent.onUploadMultipart() called');
     const file = new File(["first line", "second line"], "filename.txt");
     this.validatorService
       .uploadMultipart(file)
@@ -125,8 +111,7 @@ class ValidatingObserver implements Observer<ValidationReply> {
   }
 
   complete(): void {
-    // console.log('ValidatingObserver.complete(); Filedrop Completed!');
-
+    // Nothing to do?
   }
 
   error(err: any): void {
@@ -135,15 +120,11 @@ class ValidatingObserver implements Observer<ValidationReply> {
 
   next(value: ValidationReply): void {
     const verdict: string = value.verdict;
-    value.filename;
 
-    // console.log('ValidatingObserver next!', verdict);
     if (verdict === 'FAIL') {
       console.log(`Verdict: ${verdict}`);
     } else {
       console.log(`Not fail, but: ${verdict}`);
-      // console.log(verdict.valueOf(), ValidationVerdict.FAIL.valueOf());
-      // console.log(value.stackTrace);
     }
 
     switch (verdict) {
@@ -161,8 +142,6 @@ class ValidatingObserver implements Observer<ValidationReply> {
         break;
       default:
         console.log("It's", verdict.valueOf(), value.filename);
-        // console.log("It's", verdict, value.filename);
-        // console.log("Lenght: ", value.length);
         console.log(value.failureReason);
         break;
     }

@@ -21,20 +21,16 @@ export class ValidatorService {
 
   uploadMultipart(file: File): ValidationObservable {
 
-    // console.log('ValidatorService.validateFile() called');
 
     const formData = new FormData();
     formData.append('name', 'fileForValidation');
     formData.append('file', file);
 
     const url = this.validatorHostPort + 'api/v1/validate/multipart';
-    const objectObservable: ValidationObservable = this.http.post(url, formData) as ValidationObservable;
-    // console.log("Result back from Validator: ", objectObservable);
-    return objectObservable;
+    return this.http.post(url, formData) as ValidationObservable;
 
   }
 
-  // type PostReturn = Observable<Object>;
 }
 
 export type ValidationObservable = Observable<ValidationReply>;

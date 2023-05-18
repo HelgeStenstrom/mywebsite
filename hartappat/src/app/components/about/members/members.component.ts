@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService, Grape, Member, Wine} from "../../../services/backend.service";
-import {interval, Observable, EMPTY} from "rxjs";
-import {map} from "rxjs/operators";
+import {BackendService, Member, Wine} from "../../../services/backend.service";
+import {Observable, EMPTY} from "rxjs";
 
 @Component({
   selector: 'app-members',
@@ -40,7 +39,6 @@ export class MembersComponent implements OnInit {
 
     this.service.getWines()
       .subscribe((w: Wine[]) => {
-        // console.log("Wines: ", w);
         this.wines = w;
 
       });

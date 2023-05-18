@@ -24,8 +24,6 @@ export class AddGrapeComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.isEditCall()) {
-      // console.log("AddGrapeComponent called for edit.");
-      // console.log(this.grapeToEdit.name, this.grapeToEdit.color);
       this.grapeForm.controls.name.setValue(this.grapeToEdit.name);
       this.grapeForm.controls.color.setValue(this.grapeToEdit.color);
     }

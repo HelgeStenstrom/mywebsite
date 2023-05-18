@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {interval, Observable, Subject, throwError} from "rxjs";
-import {catchError, map, tap} from "rxjs/operators";
+import {catchError, map} from "rxjs/operators";
 
 @Injectable({
   providedIn: 'root'
@@ -95,13 +95,6 @@ export class BackendService {
 
     const url = `${this.apiBase}vinprovning`;
     return this.http.get<Tasting[]>(url);
-
-    // const observable = new Observable<Tasting>((subscriber) => {
-    //   const value: Tasting = {title: 'En provning som kommer från backend.service.ts', notes: 'lite text om den'};
-    //   subscriber.next(value);
-    // });
-    //
-    // return observable;
 
   }
 }

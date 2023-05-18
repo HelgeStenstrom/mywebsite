@@ -39,19 +39,6 @@ export function setupEndpoints(router, sequelizeDbOptions) {
     const endpointHandlers = new EndpointHandlers(orm);
 
 
-/*    function getMembers(): (req, res) => Promise<void> {
-        return async (req, res) => {
-            thenJson(orm.findMembers(), res);
-        };
-    }*/
-
-/*    function getWines(): (req, res) => Promise<void> {
-        return async (req, res) => {
-            thenJson(orm.findWines(), res);
-        };
-    }*/
-
-
     function getGrapes(): (req, res) => Promise<void> {
 
         return async (req, res) => {
@@ -119,17 +106,6 @@ export function setupEndpoints(router, sequelizeDbOptions) {
         };
     }
 
-/*    function postMember(): (req, res) => void {
-
-        return async (req, res) => {
-            const member: Member = req.body;
-            orm.postMember(member)
-                .then(() => res.status(201).json("postMember called!"))
-                .catch(e => console.error(e));
-
-        };
-    }*/
-
     function deleteGrapeByName() {
 
         return async (req, res) => {
@@ -171,8 +147,6 @@ export function setupEndpoints(router, sequelizeDbOptions) {
     router.post('/api/v1/countries', postCountries());
 
 }
-
-//setupEndpoints(app);
 
 
 

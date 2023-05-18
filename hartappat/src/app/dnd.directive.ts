@@ -19,8 +19,6 @@ export class DndDirective {
   onDragOver(evt: { preventDefault: () => void; stopPropagation: () => void; }) {
     evt.preventDefault();
     evt.stopPropagation();
-
-    // console.log('Drag over');
   }
 
   // Dragleave listener
@@ -28,8 +26,6 @@ export class DndDirective {
   public onDragLeave(evt: { preventDefault: () => void; stopPropagation: () => void; }) {
     evt.preventDefault();
     evt.stopPropagation();
-
-    // console.log('Drag leave');
   }
 
   // Drop listener
@@ -40,9 +36,6 @@ export class DndDirective {
     this.fileOver = false;
     const dataTransfer: DataTransfer = evt.dataTransfer;
     const files: FileList = dataTransfer.files;
-    // console.log('dnd files: ', files);
-    // console.log('dnd items: ', dataTransfer.items);
-    // console.log('dnd evt.dataTransfer: ', dataTransfer);
 
     if (files.length > 0) {
 

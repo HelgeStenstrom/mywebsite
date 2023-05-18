@@ -1,6 +1,5 @@
 import {Orm} from "./orm";
 import {Member} from "./backendRouting";
-// import {Member} from "../hartappat/src/app/services/backend.service";
 
 export class EndpointHandlers {
     constructor(private orm: Orm) {}

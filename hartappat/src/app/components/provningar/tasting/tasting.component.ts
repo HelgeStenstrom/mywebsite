@@ -1,15 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-tasting',
   templateUrl: './tasting.component.html',
   styleUrls: ['./tasting.component.css']
 })
-export class TastingComponent implements OnInit {
+export class TastingComponent  {
 
-  constructor() { }
-
-  ngOnInit(): void {
-  }
+  // Empty constructor and ngOnInit removed.
 
 }

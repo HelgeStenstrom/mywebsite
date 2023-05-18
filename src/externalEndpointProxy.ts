@@ -2,12 +2,6 @@ import express from "express";
 import axios from "axios";
 import cors from "cors";
 
-
-// Code from https://medium.com/@dtkatz/3-ways-to-fix-the-cors-error-and-how-access-control-allow-origin-works-d97d55946d9
-// which uses deprecated 'request'.
-
-// TODO: replace request, see https://nodesource.com/blog/express-going-into-maintenance-mode
-
 function getConfiguredApp() {
     const app = express();
     app.use(cors());

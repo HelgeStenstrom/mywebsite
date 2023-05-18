@@ -20,9 +20,6 @@ export class Orm {
     constructor(database: string, dbUserName: string, dbPassword: string, options: Options) {
         this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);
 
-        // TODO: Test that the backend can connect with the database,
-        //  without any crash if the databas is not connectable.
-        //this.testAuthentication();
 
         this.Grape = this.sequelize.define("grape",
             {

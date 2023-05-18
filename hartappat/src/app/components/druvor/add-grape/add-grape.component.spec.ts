@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AddGrapeComponent} from './add-grape.component';
-import {BackendService, Grape, Tasting, Wine} from "../../../services/backend.service";
+import {BackendService, Grape, Member, Tasting, Wine} from "../../../services/backend.service";
 import {Observable, of} from "rxjs";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
@@ -85,6 +85,12 @@ xdescribe('AddGrapeComponent with hand-made stub', () => {
 
   const fakeBackend: Pick<BackendService, keyof BackendService> = {
     urlBase: "http://localhost:3000/",
+    getMembers(): Observable<Member[]> {
+      return  of([]);
+    },
+    getMembersExample(): Observable<Member[]> {
+      return  of([]);
+    },
     getTastings(): Observable<Tasting[]> {
       return of([]);
     },

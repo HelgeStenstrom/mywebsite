@@ -9,6 +9,6 @@ import { Injectable } from '@angular/core';
 })
 export class SystembolagetService {
 
-  constructor() { }
+  // Empty constructor removed.
 
 }
