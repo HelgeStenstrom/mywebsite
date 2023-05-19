@@ -195,3 +195,23 @@ Filen uppdateras dagligen.
   * För Vinmonopolet måste rätt Headers och rätt URL överföras via proxyn 
     till vinmonopolet.no.
   * Värt att pröva proxyn på det enklare fallet Wikipedia.
+
+
+## Provningar och omröstningar
+
+### Provning
+
+- Titel
+- Längre beskrivning
+- Var provningen hölls
+- Vilka som deltog?
+
+### Omröstning
+
+- Vilka som deltog
+- Hör till en provning
+- Vinerna är definierade utanför komponenten, innan röstningen påbörjas
+- Man vill kunna mata in röster, utan att vinerna avslöjas
+- Vilka viner som deltog
+- Varje röstares poäng för varje vin
+

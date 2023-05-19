@@ -31,6 +31,7 @@ import {ProvningarComponent} from './components/provningar/provningar.component'
 import {TastingComponent} from './components/provningar/tasting/tasting.component';
 import { AltDruvorComponent } from './components/alt-druvor/alt-druvor.component';
 import { MembersComponent } from './components/about/members/members.component';
+import { VotingComponent } from './components/voting/voting.component';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,8 @@ import { MembersComponent } from './components/about/members/members.component';
     ProvningarComponent,
     TastingComponent,
     AltDruvorComponent,
-    MembersComponent
+    MembersComponent,
+    VotingComponent
   ],
   imports: [
     BrowserModule,
@@ -68,6 +70,7 @@ import { MembersComponent } from './components/about/members/members.component';
       {path: 'viner', component: WinesComponent},
       {path: 'resor', component: TravelsComponent},
       {path: 'about', component: AboutComponent},
+      {path: 'voting', component: VotingComponent},
       {path: 'provningar', component: ProvningarComponent},
       {path: 'tests', component: TestbenchComponent},
       {path: '**', component: NotFoundComponent},
