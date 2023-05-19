@@ -1,4 +1,21 @@
-<p>provningar works!</p>
+<h1>Provningar</h1>
+
+
+<h2>Sammanfattning</h2>
+
+<table class="bordered">
+  <caption>Våra provningar</caption>
+  <th>Datum</th>
+  <th>Namn</th>
+  <th>Noter</th>
+  <th>Vinnare</th>
+  <tr *ngFor="let t of tastings$ | async">
+    <td>{{t.date}}</td>
+    <td>{{t.title}}</td>
+    <td>{{t.notes}}</td>
+    <td>ej implementerat</td>
+  </tr>
+</table>
 
 <h2>Våra vinprovningar</h2>
 

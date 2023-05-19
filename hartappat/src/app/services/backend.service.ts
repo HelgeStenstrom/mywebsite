@@ -114,6 +114,7 @@ export type Grape = {
 export type Tasting = {
   title: string;
   notes: string;
+  date: string;
 }
 
 export type Member = {
