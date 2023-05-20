@@ -215,3 +215,49 @@ Filen uppdateras dagligen.
 - Vilka viner som deltog
 - Varje röstares poäng för varje vin
 
+#### Före omröstningen
+
+- Lägg till viner
+- Lägg till deltagare, eller numrera dem.
+
+#### Under omröstningen
+
+- Lägg till deltagarnas röstetal, ett i taget
+- Uppdatera tabell och/eller graf allt eftersom
+
+#### Efter omröstningen
+
+- Visa tabell och graf
+- Lås rösterna
+
+## Roller
+
+- Medlemmarna på sajten tilldelas roller.
+- Roller kan vara tillfälliga
+- Roller kan kopplas till en aktivitet, t.ex. en omröstning.
+- Exempel
+  - Rösträknare
+    - Lägger in röstetal i tabellen under en omröstning
+  - Omröstningsvärd
+    - Lägger in viner till en omröstning
+    - Lägger in deltagare i en omröstning
+    - Är förmodligen ofta samma som rösträknaren.
+  - Provningsvärd
+    - Lägger in beskrivning och titel till en provning
+  - Kalenderuppdaterare
+
+## Kalender
+
+Det kan vara önskvärt att ha en kalender i sajten. Men vi klarar oss nog bra 
+utan.
+
+- Egen lösning (verkar jobbigt)
+- Integrera Google kalender
+  - Kalenderdata sparas hos Google
+- Någon färdig lösning för Angular (så länge vi använder Angular)
+  - sparar kalenderdata i sajtens databas
+- Datum för provningar
+- Datum för resor
+- Andra intressanta datum, t.ex. mässor, födelsedagar.
+- 
+
