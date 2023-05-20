@@ -2,6 +2,7 @@
 <p>Datum: 2023-11-13</p>
 <p>Provning: Bästa lördagen i månaden (exempel på namnet på en provning</p>
 
+<h2>Hard-coded table</h2>
 <table>
   <caption>En omröstning om vinerna vi dricker på en provning</caption>
   <th>Deltagare</th>
@@ -49,5 +50,42 @@
 
 </table>
 
+<h2>TDD driven table</h2>
+
+<table>
+  <caption>En omröstning om vinerna vi dricker på en provning</caption>
+  <th>Deltagare</th>
+  <th>Vin 1</th>
+  <th>Vin 2</th>
+  <th>Vin 3</th>
+  <tr>
+    <td>Pris</td>
+    <td>159</td>
+    <td>169</td>
+    <td>179</td>
+  </tr>
+  <tr>
+    <td>Land</td>
+    <td>Frankrike</td>
+    <td>Frankrike</td>
+    <td>Italien</td>
+  </tr>
+  <tr *ngFor="let voter of voters" class="voter">
+    <td>Fake name</td>
+    <td>
+      <input value="14">
+    </td>
+    <td><input value="15"></td>
+    <td><input value="16"></td>
+  </tr>
+
+  <tr>
+    <td>Medelpoäng</td>
+    <td>14.1</td>
+    <td>14.2</td>
+    <td>14,3</td>
+  </tr>
+
+</table>
 
 <h2>Plats för graf pris/prestanda</h2>

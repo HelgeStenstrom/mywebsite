@@ -13,9 +13,9 @@ describe('ProvningarComponent', () => {
   const backendServiceStub: Partial<BackendService> = {
     getTastings(): Observable<Tasting[]> {
       return of([
-        {title: 'a title', notes: 'some notes'},
-        {title: 'a title', notes: 'some notes'},
-        {title: 'a title', notes: 'some notes'},
+        {title: 'a title', notes: 'some nuts', date: 'today'},
+        {title: 'a title', notes: 'some notes', date: 'yesterday'},
+        {title: 'a title', notes: 'some notes', date: 'tomorrow'},
       ]);
     }
   };

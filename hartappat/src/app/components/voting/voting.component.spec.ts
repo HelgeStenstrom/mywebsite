@@ -18,4 +18,9 @@ describe('VotingComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should show voters and votes', () => {
+
+    expect(fixture.nativeElement.querySelectorAll('.voter').length).toBe(3);
+  });
 });
