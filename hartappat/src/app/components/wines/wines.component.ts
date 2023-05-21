@@ -26,4 +26,11 @@ export class WinesComponent implements OnInit {
 
   }
 
+  edit(w: Wine) {
+
+  }
+
+  delete(w: Wine) {
+
+  }
 }

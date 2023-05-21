@@ -16,6 +16,13 @@
     <td>{{w.category}}</td>
     <td *ngIf="w.systembolaget"> <a href="https://www.systembolaget.se/sortiment/?q={{w.systembolaget}}">{{w.systembolaget}}</a> </td>
     <td *ngIf="!w.systembolaget"></td>
+
+    <button mat-icon-button color="primary" (click)="edit(w)">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button color="warn" (click)="delete(w)">
+      <mat-icon>delete</mat-icon>
+    </button>
   </tr>
 </table>
 
