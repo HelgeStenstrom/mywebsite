@@ -7,12 +7,12 @@
   <tr *ngFor="let grape of grapes">
     <td>{{grape.name}}</td>
     <td>{{grape.color}}</td>
-    <button mat-icon-button color="warn" (click)="deleteGrape(grape)">
-    <mat-icon>delete</mat-icon>
-    </button>
     <button mat-icon-button color="primary" (click)="editGrape(grape)">
       <mat-icon>edit</mat-icon>
-      </button>
+    </button>
+    <button mat-icon-button color="warn" (click)="deleteGrape(grape)">
+      <mat-icon>delete</mat-icon>
+    </button>
   </tr>
 </table>
 
