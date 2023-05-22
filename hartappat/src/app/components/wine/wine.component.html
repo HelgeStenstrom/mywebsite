@@ -4,19 +4,19 @@
   <th>Typ</th>
   <th>Systembolaget</th>
   <tr>
-    <td><input value="Königsmosel"></td>
+    <td><input value="Königsmosel" data-test="name-input"></td>
     <td>
-      <select>
+      <select data-test="country-input">
         <option>Tyskland</option>
         <option>Annat</option>
       </select>
     </td>
-    <td><select>
+    <td><select data-test="type-input">
       <option>Rött</option>
       <option>Vitt</option>
     </select></td>
-    <td><input value="12345"></td>
+    <td><input value="12345" data-test="systembolaget-input"></td>
 
   </tr>
 </table>
-<button>Lägg till vinet</button>
+<button data-test="add-button">Lägg till vinet</button>
