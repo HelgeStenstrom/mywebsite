@@ -69,23 +69,36 @@ describe('WineComponent', () => {
   it('should return an object with wine name', () => {
 
     const expectedName = "Ringbolt";
-    const nameElement = findElement("name-input").nativeElement;
-    nameElement.value = expectedName;
-    nameElement.dispatchEvent(new Event('input'));
+    const element = findElement("name-input").nativeElement;
+    element.value = expectedName;
+    element.dispatchEvent(new Event('input'));
 
     const wine: Wine = component.getWine();
     expect(wine.name).toEqual(expectedName);
   });
 
-  it('should return an object category', () => {
+  it('should return an object with wine category', () => {
+    const element = findElement("type-input").nativeElement
 
-    const expectedType = "vitt";
-    const nameElement = findElement("type-input").nativeElement;
-    nameElement.value = expectedType;
-    nameElement.dispatchEvent(new Event('input'));
+    // Before programmatically changing the value:
+    expect(component.getWine().category).toEqual("Annat");
+
+    const expectedType = "Rött";
+    element.value = expectedType;
+    element.dispatchEvent(new Event('change'));
+
+    const wine = component.getWine();
+    expect(wine.category).toEqual(expectedType);
+  });
+
+  it('should return Systembolaget number', () => {
+    const expectedNumber = 23;
+    const element = findElement("systembolaget-input").nativeElement;
+    element.value = expectedNumber;
+    element.dispatchEvent(new Event('input'));
 
     const wine: Wine = component.getWine();
-    expect(wine.category).toEqual(expectedType);
+    expect(wine.systembolaget).toEqual(expectedNumber);
   });
 
 });

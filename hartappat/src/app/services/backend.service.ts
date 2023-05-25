@@ -103,7 +103,7 @@ export type Wine = {
   name: string;
   country: string;
   category: string;
-  systembolaget: number
+  systembolaget: number | undefined;
 };
 
 export type Grape = {

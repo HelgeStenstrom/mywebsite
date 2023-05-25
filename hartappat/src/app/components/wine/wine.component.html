@@ -11,11 +11,12 @@
         <option>Annat</option>
       </select>
     </td>
-    <td><select data-test="type-input">
+    <td><select [(ngModel)]="typeSelect" data-test="type-input">
       <option>Rött</option>
       <option>Vitt</option>
+      <option>Annat</option>
     </select></td>
-    <td><input value="12345" data-test="systembolaget-input"></td>
+    <td><input type="number" [(ngModel)]="systemNumber" data-test="systembolaget-input"></td>
 
   </tr>
 </table>

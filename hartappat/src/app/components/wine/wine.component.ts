@@ -8,9 +8,11 @@ import {Wine} from "../../services/backend.service";
 })
 export class WineComponent {
   wineName = "default name";
+  typeSelect = "Annat";
+  systemNumber: number | undefined = undefined;
 
   getWine(): Wine {
-    return {name:this.wineName, country:'land', systembolaget:123, category:'not implemented'};
+    return {name:this.wineName, country:'land', systembolaget:this.systemNumber, category:this.typeSelect};
   }
 
 }
