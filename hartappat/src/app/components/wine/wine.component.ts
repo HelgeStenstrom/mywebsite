@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
+import {Wine} from "../../services/backend.service";
 
 @Component({
   selector: 'app-wine',
@@ -6,8 +7,10 @@ import { Component } from '@angular/core';
   styleUrls: ['./wine.component.css']
 })
 export class WineComponent {
+  wineName = "default name";
 
-  getWineAsString() {
-    return "TODO: replace me";
+  getWine(): Wine {
+    return {name:this.wineName, country:'land', systembolaget:123, category:'not implemented'};
   }
+
 }

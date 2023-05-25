@@ -1,7 +1,10 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { WineComponent } from './wine.component';
+import {WineComponent} from './wine.component';
 import {By} from "@angular/platform-browser";
+import {Wine} from "../../services/backend.service";
+import {FormsModule} from "@angular/forms";
+import {DebugElement} from "@angular/core";
 
 // Inspired by https://youtu.be/uefGmRcIm3c
 // What building with TDD actually looks like
@@ -12,7 +15,9 @@ describe('WineComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WineComponent]
+      declarations: [WineComponent],
+      imports: [FormsModule],
+
     });
     fixture = TestBed.createComponent(WineComponent);
     component = fixture.componentInstance;
@@ -42,8 +47,7 @@ describe('WineComponent', () => {
   });
 
   it('should have a Type selector', () => {
-    const debugElement = fixture.debugElement.query(
-      By.css('[data-test="type-input"]'));
+    const debugElement = findElement("type-input");
     expect(debugElement).toBeTruthy();
   });
 
@@ -53,10 +57,35 @@ describe('WineComponent', () => {
     expect(debugElement).toBeTruthy();
   });
 
-  it('should return a wine object', () => {
+  it('should have name input, tested differently', () => {
+    const nameInput = fixture.nativeElement.querySelector(".nameInput");
+    expect(nameInput).toBeTruthy();
+  });
 
-    const wine: string = component.getWineAsString();
-    expect(wine).toContain("TODO");
+  function findElement(identifier: string): DebugElement {
+    return fixture.debugElement.query(By.css(`[data-test="${identifier}"]`));
+  }
+
+  it('should return an object with wine name', () => {
+
+    const expectedName = "Ringbolt";
+    const nameElement = findElement("name-input").nativeElement;
+    nameElement.value = expectedName;
+    nameElement.dispatchEvent(new Event('input'));
+
+    const wine: Wine = component.getWine();
+    expect(wine.name).toEqual(expectedName);
+  });
+
+  it('should return an object category', () => {
+
+    const expectedType = "vitt";
+    const nameElement = findElement("type-input").nativeElement;
+    nameElement.value = expectedType;
+    nameElement.dispatchEvent(new Event('input'));
+
+    const wine: Wine = component.getWine();
+    expect(wine.category).toEqual(expectedType);
   });
 
 });
