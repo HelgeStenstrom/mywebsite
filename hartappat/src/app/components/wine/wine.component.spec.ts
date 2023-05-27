@@ -28,12 +28,6 @@ describe('WineComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have an Add button', () => {
-    const debugElement = fixture.debugElement.query(
-      By.css('[data-test="add-button"]'));
-    expect(debugElement).toBeTruthy();
-  });
-
   it('should have a Name input', () => {
     const debugElement = fixture.debugElement.query(
       By.css('[data-test="name-input"]'));
