@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {BackendService, Wine} from "../../services/backend.service";
+import {WineComponent} from "../wine/wine.component";
 
 @Component({
   selector: 'app-wines',
@@ -9,6 +10,8 @@ import {BackendService, Wine} from "../../services/backend.service";
 export class WinesComponent implements OnInit {
   private service: BackendService;
   wines : Wine[] = [];
+  @ViewChild(WineComponent)
+  private wineComponent!: WineComponent;
 
 
 
@@ -32,5 +35,10 @@ export class WinesComponent implements OnInit {
 
   delete(w: Wine) {
 
+  }
+
+  addWineToList() {
+    const wine = this.wineComponent.getWine();
+    console.log("Called WineComponent.getWine(), got ", wine);
   }
 }
