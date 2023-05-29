@@ -38,6 +38,7 @@ describe('BackendService with mocked backend (faking MariaDB)', () => {
   });
 
   it('should return the wanted grapes', (done) => {
+    const url = service.urlBase + 'api/v1/' + 'grapes';
 
     service.getGrapes().subscribe({
         next: result => {
@@ -48,7 +49,7 @@ describe('BackendService with mocked backend (faking MariaDB)', () => {
       }
     );
 
-    const url = service.urlBase + 'grapes';
+
     const req: TestRequest = httpMock.expectOne(url);
     req.flush(grapes);
 
