@@ -26,6 +26,11 @@ export class BackendService {
     return this.grapesSubject.asObservable();
   }
 
+  addWine(wine: Wine) {
+    console.log("BackendService.addWine(wine) called");
+    throw new Error();
+  }
+
   addGrape(grape: Grape): Observable<void> {
     const url = `${this.apiBase}grapes`;
     const objectObservable: Observable<void> = this.http.post<void>(url, grape);

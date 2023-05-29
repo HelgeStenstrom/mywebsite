@@ -7,14 +7,12 @@ import {WineComponent} from "../wine/wine.component";
   templateUrl: './wines.component.html',
   styleUrls: ['./wines.component.css']
 })
+
 export class WinesComponent implements OnInit {
   private service: BackendService;
   wines : Wine[] = [];
   @ViewChild(WineComponent)
-  private wineComponent!: WineComponent;
-
-
-
+  private _wineComponent!: WineComponent;
   constructor(service: BackendService) {
     this.service = service;
 
@@ -29,6 +27,10 @@ export class WinesComponent implements OnInit {
 
   }
 
+  get wineComponent(): WineComponent {
+    return this._wineComponent;
+  }
+
   edit(w: Wine) {
 
   }
@@ -38,7 +40,8 @@ export class WinesComponent implements OnInit {
   }
 
   addWineToList() {
-    const wine = this.wineComponent.getWine();
+    const wine = this._wineComponent.getWine();
     console.log("Called WineComponent.getWine(), got ", wine);
+    this.service.addWine(wine);
   }
 }

@@ -261,3 +261,19 @@ utan.
 - Andra intressanta datum, t.ex. mässor, födelsedagar.
 - 
 
+## Unit testing med Jasmine/Karma
+
+### Hitta GUI-element
+
+```html
+<button (click)="addWineToList()" data-test="add-wine-button" >
+  Text på knapp
+</button>
+```
+ 
+```typescript
+const buttonElement = fixture.debugElement.query(  By.css('[data-test="add-wine-button"]'));
+```
+
+
+### Simulera klick på knapp
