@@ -5,7 +5,7 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {RouterModule} from "@angular/router";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 
 import {AppComponent} from './app.component';
 import {VinprovningComponent} from './components/vinprovning/vinprovning.component';
@@ -33,6 +33,7 @@ import { AltDruvorComponent } from './components/alt-druvor/alt-druvor.component
 import { MembersComponent } from './components/about/members/members.component';
 import { VotingComponent } from './components/voting/voting.component';
 import { WineComponent } from './components/wine/wine.component';
+import {ExtraHeaderInterceptor} from "./services/interceptors/extra-header-interceptor";
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { WineComponent } from './components/wine/wine.component';
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: MatDialogRef, useValue:{}},
     {provide: MAT_DIALOG_DATA, useValue:{}},
+    {provide: HTTP_INTERCEPTORS, useClass: ExtraHeaderInterceptor, multi: true}
   ],
   bootstrap: [AppComponent]
 })
