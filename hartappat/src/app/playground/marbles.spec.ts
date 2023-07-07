@@ -32,7 +32,7 @@ describe('Marble test with RxJs testing utils', () => {
   });
 
 
-  xit('should show how take works', () => {
+  it('should show how take works', () => {
 
     scheduler.run(({cold, expectObservable}) => {
 
@@ -41,7 +41,7 @@ describe('Marble test with RxJs testing utils', () => {
 
       let expectedValues = {a: 1, b: 7};
       expectedValues = sourceValues;
-      const expected$ = cold('a-b--c--d|', expectedValues);
+      const expected$ = cold('a-b--c--(d|)', expectedValues);
 
       const result$ = source$.pipe(take(4));
       expectObservable(result$).toEqual(expected$)
@@ -50,11 +50,11 @@ describe('Marble test with RxJs testing utils', () => {
 
   });
 
-  xit('test', () => {
+  it('learn using marbles', () => {
     scheduler.run((helpers) => {
       const { cold, expectObservable } = helpers;
       const source$ = cold('-a-b-c|');
-      const expected = '-a-b-c|';
+      const expected = '-a-b-(c|)';
 
       expectObservable(source$.pipe(take(3))).toBe(expected);
     });

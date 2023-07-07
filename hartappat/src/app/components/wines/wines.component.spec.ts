@@ -64,11 +64,11 @@ describe('WinesComponent', () => {
     expect(serviceMock.addWine).toHaveBeenCalled();
   });
 
-  it('should  bring up a form when the edit button is clicked', () => {
+  xit('should  bring up a form when the edit button is clicked', () => {
     fail('This test is not implemented yet.');
   });
 
-  it('should delete a wine from the list when the delete button is clicked', () => {
+  xit('should delete a wine from the list when the delete button is clicked', () => {
     fail('This test is not implemented yet.');
   });
 

@@ -7,10 +7,11 @@ import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {FormControl, FormGroup} from "@angular/forms";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 
 // Informative: https://testing-angular.com/testing-components-with-children/
 
-xdescribe('AddGrapeComponent test with mock', () => {
+describe('AddGrapeComponent test with mock', () => {
   let component: AddGrapeComponent;
   let fixture: ComponentFixture<AddGrapeComponent>;
 
@@ -26,7 +27,10 @@ xdescribe('AddGrapeComponent test with mock', () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       declarations: [AddGrapeComponent],
-      providers: [{provide: BackendService, useValue: backendServiceStub}],
+      providers: [
+        {provide: BackendService, useValue: backendServiceStub},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+        {provide: MatDialogRef, useValue: {}}],
       schemas: [NO_ERRORS_SCHEMA]})
       .compileComponents();
 
@@ -77,7 +81,7 @@ xdescribe('AddGrapeComponent test with mock', () => {
 });
 
 
-xdescribe('AddGrapeComponent with jasmine spies', () => {
+describe('AddGrapeComponent with jasmine spies', () => {
 
   let component: AddGrapeComponent;
   let fixture: ComponentFixture<AddGrapeComponent>;
@@ -96,12 +100,17 @@ xdescribe('AddGrapeComponent with jasmine spies', () => {
         getGrapes: undefined,
         getWines: undefined,
         patchGrape: undefined,
+        newEvent: undefined,
       }
     );
 
     await TestBed.configureTestingModule({
       declarations: [AddGrapeComponent],
-      providers: [{provide: BackendService, useValue: fakeBackend}],
+      providers: [
+        {provide: BackendService, useValue: fakeBackend},
+        {provide: MatDialogRef, useValue: {}},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
+      ],
       schemas: [NO_ERRORS_SCHEMA]})
       .compileComponents();
 
