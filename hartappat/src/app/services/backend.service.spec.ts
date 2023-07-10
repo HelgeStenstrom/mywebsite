@@ -59,6 +59,9 @@ describe('BackendService with mocked backend (faking MariaDB)', () => {
 
 
 
+/**
+ * TODO: Remove these test, substitute them with tests using in-memory database, or a mocked backend.
+ * */
 xdescribe('BackendService Test with active backend (MariaDB)', () => {
   let httpClient: HttpClient;
   let service: BackendService;
@@ -81,7 +84,8 @@ xdescribe('BackendService Test with active backend (MariaDB)', () => {
       .getGrapes()
       .subscribe((result) => {
 
-        expect(result).toContain({name: 'Riesling', color: 'grön'});
+        expect(result).toContain(jasmine.objectContaining({name: 'Riesling', color: 'grön'}));
+        //expect(result).toContain({name: 'Riesling', color: 'grön'});
         done();
       });
   });

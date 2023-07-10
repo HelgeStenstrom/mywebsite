@@ -1,27 +1,14 @@
 <table>
   <caption>Medlemmar i Härtappat</caption>
   <th>Medlem</th>
-  <tr> members (async solution)</tr>
-  <tr *ngFor="let member of members | async">
-    {{member.given}} {{member.surname}}
-  </tr>
-  <tr>examples</tr>
-  <tr *ngFor="let member of examples | async">
-    {{member.given}} {{member.surname}}
-  </tr>
-  <tr></tr>
-  <tr>Inte async!</tr>
-  <tr *ngFor="let member of memSync">
+  <tr *ngFor="let member of members$ | async">
     {{member.given}} {{member.surname}}
   </tr>
 
-  <tr>Viner, som test</tr>
-  <tr *ngFor="let w of wines">
-    {{w.name}} {{w.country}}
-  </tr>
-  <tr>Last row of table</tr>
 </table>
 
+<!--
+<hr>
 <h1>Medlemmar, synkront</h1>
 <table>
   <caption>Medlemmar</caption>
@@ -31,7 +18,9 @@
   </tr>
   <tr>Last row of table</tr>
 </table>
+-->
 
+<!--<hr>
 
 <h1>Viner</h1>
 <table>
@@ -41,4 +30,6 @@
     {{w.name}} {{w.country}}
   </tr>
   <tr>Last row of table</tr>
-</table>
+</table>-->
+<p> Slut på members.component.html</p>
+<hr>

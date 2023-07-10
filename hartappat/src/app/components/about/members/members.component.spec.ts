@@ -10,7 +10,7 @@ describe('MembersComponent', () => {
 
   // TODO: Det här verkar mer än lovligt krångligt. Varför behövs getWines?
   const backendServiceStub: Partial<BackendService> = {
-    getMembers(): Observable<Member[]> {
+    getMembers$(): Observable<Member[]> {
       return of([]);
     },
     getMembersExample(): Observable<Member[]> {

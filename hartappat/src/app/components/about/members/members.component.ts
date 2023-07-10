@@ -8,41 +8,15 @@ import {Observable, EMPTY} from "rxjs";
   styleUrls: ['./members.component.css']
 })
 export class MembersComponent implements OnInit {
-  /*  members: any = [
-      {given: "Helge", surname: "Stenström"},
-      {given: "Ann-Marie", surname: "Bergström"},
-    ];*/
 
-  members: Observable<any[]> = EMPTY;
-  examples: Observable<any[]> = EMPTY;
-  memSync: Member[] = [];
-  wines: Wine[] = [];
+  members$: Observable<any[]> = EMPTY;
 
   constructor(private service: BackendService) {
   }
 
   ngOnInit(): void {
 
-    this.members = this.service.getMembers();
-    this.examples = this.service.getMembersExample();
-
-    const members1 = this.service.getMembers();
-
-    members1.subscribe((m: Member[]) => {
-      console.log("ngOnInit members", m);
-    });
-
-    this.service.getMembers()
-      .subscribe(m => {
-        this.memSync = m;
-      });
-
-    this.service.getWines()
-      .subscribe((w: Wine[]) => {
-        this.wines = w;
-
-      });
-
+    this.members$ = this.service.getMembers$();
   }
 
 
