@@ -26,9 +26,12 @@ export class BackendService {
     return this.grapesSubject.asObservable();
   }
 
-  addWine(wine: Wine) {
-    console.error("Not implemented yet: BackendService.addWine(wine) called");
-    throw new Error("BackendService.addWine() not implemented yet");
+  addWine(wine: Wine):  Observable<void> {
+
+    const url = `${this.apiBase}wines`;
+
+    const objectObservable: Observable<void> = this.http.post<void>(url, wine);
+    return objectObservable.pipe(catchError(this.handleError));
   }
 
   addGrape(grape: Grape): Observable<void> {

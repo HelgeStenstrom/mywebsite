@@ -102,7 +102,7 @@ describe('BackendService', () => {
       url = backendService.urlBase + 'api/v1/' + 'wines';
     });
 
-    it('calls getWines()', done => {
+    it('gets the Wines', done => {
       const expectedWines: Wine[] = [aWine];
 
       backendService.getWines()
@@ -115,6 +115,19 @@ describe('BackendService', () => {
       expect(req.request.method).toEqual('GET');
       req.flush(expectedWines);
     });
+
+    it('adds a Wine', done => {
+      backendService.addWine(aWine)
+        .subscribe(() => {
+          done();
+        });
+
+      const req = httpTestingController.expectOne(url);
+      expect(req.request.method).toEqual('POST');
+      expect(req.request.body).toEqual(aWine);
+      req.flush(aWine);
+    });
+
   });
 
   describe('Members', () => {
