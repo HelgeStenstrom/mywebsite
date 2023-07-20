@@ -1,7 +1,8 @@
-import {Component, Inject, OnInit} from '@angular/core';
+import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {BackendService, Grape} from "../../../services/backend.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import { Observable } from "rxjs";
 
 @Component({
   selector: 'app-add-grape',
@@ -9,6 +10,9 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
   styleUrls: ['./add-grape.component.css']
 })
 export class AddGrapeComponent implements OnInit {
+
+  @Output()
+  grapeAdded: EventEmitter<Grape> = new EventEmitter<Grape>();
 
   grapeForm = new FormGroup({
     color: new FormControl<string>(''),
@@ -42,17 +46,20 @@ export class AddGrapeComponent implements OnInit {
         color: formValue.color
       };
 
+      let patchGrape$: Observable<void>;
       if (this.isEditCall()) {
-        this.service.patchGrape(this.grapeToEdit, g).subscribe(() => {
-          this.service.newEvent(g);
-        });
+        patchGrape$ = this.service.patchGrape(this.grapeToEdit, g);
         this.closeDialog();
       } else {
-        this.service.addGrape(g).subscribe(() => {
-          this.service.newEvent(g);
-        });
-
+        patchGrape$ = this.service.addGrape(g);
       }
+      patchGrape$.subscribe(() => {
+        this.service.newEvent(g);
+        this.grapeAdded.emit(g);
+      });
+
+      // TODO: Jag vill att detta formulär ska uppdatera grape$ i DruvorComponent.
+
     }
   }
 
