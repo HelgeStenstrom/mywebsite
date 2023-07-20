@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { interval, Observable, Subject, throwError } from "rxjs";
+import { delay, interval, Observable, of, Subject, throwError } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 
 @Injectable({
@@ -27,8 +27,8 @@ export class BackendService {
   }
 
   addWine(wine: Wine) {
-    console.log("BackendService.addWine(wine) called");
-    throw new Error();
+    console.error("Not implemented yet: BackendService.addWine(wine) called");
+    throw new Error("BackendService.addWine() not implemented yet");
   }
 
   addGrape(grape: Grape): Observable<void> {
@@ -48,18 +48,19 @@ export class BackendService {
     const url: string = this.apiBase + 'grapes';
     return this.http
       .get<Grape[]>(url)
-      .pipe(catchError(this.handleError));
+      .pipe(
+        // Genom att aktivera raden nedan, kan man enkelt verifiera att ett UT verkligen testar
+        //map(gs => gs.map((g: Grape) => ({name: 'Not ' + g.name + '?', color: g.color}))),
+        // Så länge fördröjningen är mindre än 5 sekunder (Jasmine default väntetid), så verkar unit test fungera.
+        //delay(4900),
+        catchError(this.handleError));
   }
 
 
   getWines(): Observable<Wine[]> {
     const url: string = this.apiBase + 'wines';
-    return this.http.get<Wine[]>(url,
-      { // Options are not needed in this case; the defaults are OK.
-        responseType: 'json',
-        observe: 'body',
-        reportProgress: false
-      })
+    return this.http
+      .get<Wine[]>(url)
       .pipe(
         catchError(this.handleError)
       )
@@ -94,11 +95,6 @@ export class BackendService {
           .map(m => ({given: m.Förnamn, surname: m.Efternamn}))),
       );
     return observable1;
-  }
-
-  getMembersExample(): Observable<Member[]>{
-    return interval(500)
-      .pipe(map(() => [{given: 'Adam', surname:'Nescio'}, {given: 'Bertil', surname:'Bbb'}]));
   }
 
   getTastings() : Observable<Tasting[]>{

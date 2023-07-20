@@ -13,9 +13,6 @@ describe('MembersComponent', () => {
     getMembers$(): Observable<Member[]> {
       return of([]);
     },
-    getMembersExample(): Observable<Member[]> {
-      return of([{given: 'Adam', surname: 'Nescio'}, {given: 'Bertil', surname: 'Bbb'}]);
-    },
     getWines(): Observable<Wine[]> {
       return of([]);
     }
