@@ -2,20 +2,24 @@
 
 <h2>Lägg till ett vin</h2>
 <app-wine></app-wine>
-<button (click)="addWineToList()" data-test="add-wine-button" >Lägg till vinet enligt ovan</button>
+<button (click)="addWineToList()" data-test="add-wine-button">Lägg till vinet enligt ovan</button>
 
 <h2>Viner som finns i databasen</h2>
 
 <table class="mat-table">
+  <caption>Viner i databasen</caption>
   <th>Namn</th>
   <th>Land</th>
   <th>Typ</th>
+  <th>Volym</th>
   <th>Systembolaget</th>
-  <tr *ngFor="let w of wines">
+  <tr *ngFor="let w of winesAsync$|async">
     <td>{{w.name}}</td>
     <td>{{w.country}}</td>
     <td>{{w.category}}</td>
-    <td *ngIf="w.systembolaget"> <a href="https://www.systembolaget.se/sortiment/?q={{w.systembolaget}}">{{w.systembolaget}}</a> </td>
+    <td>{{750}} (hårdkodat)</td>
+    <td *ngIf="w.systembolaget"><a
+      href="https://www.systembolaget.se/sortiment/?q={{w.systembolaget}}">{{w.systembolaget}}</a></td>
     <td *ngIf="!w.systembolaget"></td>
 
     <button mat-icon-button color="primary" (click)="edit(w)">

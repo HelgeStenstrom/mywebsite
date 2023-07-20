@@ -134,6 +134,7 @@ export function setupEndpoints(router, sequelizeDbOptions) {
     router.post('/api/v1/members', endpointHandlers.postMember());
 
     router.get('/api/v1/wines', endpointHandlers.getWines());
+    router.post('/api/v1/wines', endpointHandlers.postWine());
 
     router.get('/api/v1/vinprovning/:id', getTasting());
     router.get('/api/v1/vinprovning/', getAllTastings());

@@ -124,3 +124,12 @@ Fix: Add the method to the list of methods in `createSpyObj()`:
 - what happens with errors and complete, through a pipeline? Guess: They go 
   straight through. 
 - TestScheduler
+- Adding a wine and updating the list of wines in the GUI
+  - For grapes, I've used Subject<Grape>() for something that seems far too 
+    complicated. I don't to explicitly introduce any new events, and I don't 
+    want code such as  `newEvent(event: Grape)` to be specific for one type 
+    (in this case `Grape`)
+  - It should be possible to use RxJx to join the observable of the add 
+    operation, with an observable that returns the list (of grapes or wines),
+    and have the actual list in the GUI depend on the compound observable. 
+  - Use switchMap, and look how it's done for Wines.
