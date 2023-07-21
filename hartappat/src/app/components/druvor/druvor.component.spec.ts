@@ -95,13 +95,6 @@ describe('DruvorComponent', () => {
 
   });
 
-  xdescribe('non-async', () => {
-
-    xit('should have Cab and Riesling', () => {
-      // expect(druvorComponent.grapes).toContain(cs);
-      // expect(druvorComponent.grapes).toContain(riesling);
-    });
-  });
 
   describe('grapes$ async', () => {
 
