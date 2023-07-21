@@ -4,24 +4,6 @@
   <caption>Druvor i databasen</caption>
   <th>Namn</th>
   <th>Färg</th>
-  <tr *ngFor="let grape of grapes">
-    <td>{{grape.name}}</td>
-    <td>{{grape.color}}</td>
-    <button mat-icon-button color="primary" (click)="editGrape(grape)">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-icon-button color="warn" (click)="deleteGrape(grape)">
-      <mat-icon>delete</mat-icon>
-    </button>
-  </tr>
-</table>
-
-
-<h3>Samma tabell, men asynkront implementerad</h3>
-<table>
-  <caption>Druvor i databasen</caption>
-  <th>Namn</th>
-  <th>Färg</th>
   <tr *ngFor="let grape of grapes$ | async">
     <td>{{grape.name}}</td>
     <td>{{grape.color}}</td>
@@ -33,5 +15,7 @@
     </button>
   </tr>
 </table>
+
 <hr>
+
 <app-add-grape  (grapeAdded)="onGrapeAdded($event)"></app-add-grape>

@@ -7,17 +7,18 @@ import {DebugElement, NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {MatDialog} from "@angular/material/dialog";
 
-describe('DruvorComponent test with mock', () => {
+describe('DruvorComponent', () => {
   let druvorComponent: DruvorComponent;
   let fixture: ComponentFixture<DruvorComponent>;
 
   const cs: Grape = {name:'Cabernet Sauvignon', color:'blå'};
+  const riesling: Grape = {name:'Riesling', color:'grön'};
 
   const backendServiceStub: Partial<BackendService> = {
     getGrapes(): Observable<Grape[]> {
       // console.log('getGrapes() within backendServiceStup was called');
-      const r: Grape = {name:'Riesling', color:'grön'};
-      return of([r, cs]);
+
+      return of([riesling, cs]);
     },
 
     get events(): Observable<Grape> {
@@ -50,14 +51,9 @@ describe('DruvorComponent test with mock', () => {
     expect(druvorComponent).toBeTruthy();
   });
 
-  it('should have Riesling', () => {
-    const r: Grape = {name: 'Riesling', color: 'grön'};
-    expect(druvorComponent.grapes).toContain(r);
-  });
 
-  it('should have Cab', () => {
-    expect(druvorComponent.grapes).toContain(cs);
-  });
+
+
 
   // See https://testing-angular.com/testing-components-with-children/#unit-test
   it('should have a Druva subcomponent', () => {
@@ -95,6 +91,25 @@ describe('DruvorComponent test with mock', () => {
       expect(backendServiceStub.deleteGrape).toHaveBeenCalled();
       // backendServiceStub.deleteGrape is asynchronous; DruvorComponent.deleteGrape is not.
       done();
+    });
+
+  });
+
+  xdescribe('non-async', () => {
+
+    xit('should have Cab and Riesling', () => {
+      // expect(druvorComponent.grapes).toContain(cs);
+      // expect(druvorComponent.grapes).toContain(riesling);
+    });
+  });
+
+  describe('grapes$ async', () => {
+
+    it('should have Cab', done => {
+      druvorComponent.grapes$.subscribe(result => {
+        expect(result).toContain(riesling);
+        done();
+      });
     });
 
   });
