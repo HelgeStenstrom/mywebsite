@@ -3,14 +3,8 @@ info:
   title: Härtappat backend API
   version: "1.0"
 servers:
-  - url: http://helges-mbp-2:3000
+  - url: http://localhost:3000/api/v1
 paths:
-  /test:
-    get:
-      responses:
-        '200':
-          description: Pipe-cleaner. This endpoint will be removed some day, it's just for learning.
-
   /members:
     get:
       description: Returns a list of the members of the club.
@@ -32,19 +26,6 @@ paths:
                     Efternamn:
                       type: string
                       example: Stenström
-
-  /membersX:
-    get:
-      description: Returns a list of the members of the club.
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Member'
 
   /wines:
     get:
@@ -73,7 +54,18 @@ paths:
                     systembolaget:
                       description: The item product number used by Systembolaget.
                       type: integer
-
+    post:
+      summary: Adds a wine to the database.
+      requestBody:
+        description: a wine with properties in textual form
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Wine'
+      responses:
+        201:
+          description: Created
 
   /grapes:
     get:
@@ -84,19 +76,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  required:
-                    - name
-                  properties:
-                    name:
-                      description: The name of the grape.
-                      type: string
-                    color:
-                      description: The color of the grape, in Swedish. One of 'grön' or 'blå'.
-                      type: string
-
+                $ref: '#/components/schemas/Grape'
     post:
       responses:
         '200':
@@ -128,7 +108,20 @@ paths:
                     name:
                       type: string
                       example: Österrike
-  /api/v1/vinprovning/{id}:
+
+  /tasting:
+    get:
+      description: Returns a list of all tastings
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tasting'
+  /tasting/{id}:
     get:
       description: Returns information about one wine tasting
       parameters:
@@ -143,11 +136,22 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vinprovning'
+                $ref: '#/components/schemas/Tasting'
 
 
 components:
   schemas:
+    Grape:
+      type: object
+      properties:
+        name:
+          description: The name of the grape.
+          type: string
+          example: Rondo
+        color:
+          description: The color of the grape, in Swedish. One of 'grön' or 'blå'.
+          type: string
+          example: blå
     Member:
       type: object
       properties:
@@ -159,7 +163,7 @@ components:
         Efternamn:
           type: string
           example: Stenström
-    Vinprovning:
+    Tasting:
       type: object
       required:
         - titel
@@ -177,3 +181,13 @@ components:
         hosts:
           type: string
           example: Åke och Åsa
+    Wine:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Liebfraumilch
+    Country:
+      type: string
+    WineType:
+      type: string

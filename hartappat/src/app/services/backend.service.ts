@@ -102,7 +102,7 @@ export class BackendService {
 
   getTastings() : Observable<Tasting[]>{
 
-    const url = `${this.apiBase}vinprovning`;
+    const url = `${this.apiBase}tasting`;
     return this.http.get<Tasting[]>(url);
 
   }

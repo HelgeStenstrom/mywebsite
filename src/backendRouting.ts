@@ -129,23 +129,24 @@ export function setupEndpoints(router, sequelizeDbOptions) {
         };
     }
 
-
-    router.get('/api/v1/members', endpointHandlers.getMembers());
-    router.post('/api/v1/members', endpointHandlers.postMember());
-
-    router.get('/api/v1/wines', endpointHandlers.getWines());
-    router.post('/api/v1/wines', endpointHandlers.postWine());
-
-    router.get('/api/v1/vinprovning/:id', getTasting());
-    router.get('/api/v1/vinprovning/', getAllTastings());
+    router.get('/api/v1/countries', getCountries());
+    router.post('/api/v1/countries', postCountries());
 
     router.get('/api/v1/grapes', getGrapes());
     router.post('/api/v1/grapes', postGrape());
     router.patch('/api/v1/grapes', patchGrape());
     router.delete('/api/v1/grapes/:name', deleteGrapeByName());
 
-    router.get('/api/v1/countries', getCountries());
-    router.post('/api/v1/countries', postCountries());
+    router.get('/api/v1/members', endpointHandlers.getMembers());
+    router.post('/api/v1/members', endpointHandlers.postMember());
+
+    router.get('/api/v1/tasting/:id', getTasting());
+    router.get('/api/v1/tasting/', getAllTastings());
+
+    router.get('/api/v1/wines', endpointHandlers.getWines());
+    router.post('/api/v1/wines', endpointHandlers.postWine());
+
+
 
 }
 

@@ -9,6 +9,9 @@
   - endpoint
   - anrop från komponent
 - ======= klart hit ==========
+- Skriv API-beskrivning `hartappat.yaml`.
+  - POST wines
+  - Förstå hur parametrar skrivs som body eller som URL-värden
 - Få bort loggat fel då koden uppdateras
   - Gissningsvis relaterat till saker som inte utförs i förväntad ordning
 - https
@@ -66,6 +69,13 @@
     i en tabell i databasen. Man ska inte kunna ta bort Grekland, om något vin 
     därifrån finns i databasen.
     - Förmodligen kan Sequelize hjälpa till med detta. 
+- TDD: backend
+  - Ett land kan läggas till databasen
+  - Länder kan läsas från databasen
+  - Vintyper kan skrivas och läsas från databasen
+  - Ett vin kan skrivas, med land och vintyp som text. Om land och vintyp 
+    inte fanns i förväg, finns de efter att vinet skrivits.
+
 
 # Gemensamma typer
 
