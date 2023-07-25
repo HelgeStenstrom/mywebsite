@@ -5,6 +5,61 @@ info:
 servers:
   - url: http://localhost:3000/api/v1
 paths:
+  /country:
+    get:
+      summary: Get a list of known countries.
+      description: Returns a list of known countries in the database. Used to ensure that countries are spelled consistently.
+      responses:
+        '200':
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
+    post:
+      summary: Adds one country to the list of known countries
+      description: Adds one country to the list of known countries.
+      requestBody:
+        required: true
+        description: One country to be added
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Country'
+      responses:
+        200:
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Country'
+
+
+  /grapes:
+    get:
+      description: Returns a list of the grapes in the database. Currently the length of the list is unlimited; that may change.
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Grape'
+    post:
+      responses:
+        '200':
+          description: TODO describe me
+    patch:
+      responses:
+        '200':
+          description: TODO describe me
+    delete:
+      responses:
+        '200':
+          description: TODO describe me
+
   /members:
     get:
       description: Returns a list of the members of the club.
@@ -26,7 +81,34 @@ paths:
                     Efternamn:
                       type: string
                       example: Stenström
-
+  /tasting:
+    get:
+      description: Returns a list of all tastings
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Tasting'
+  /tasting/{id}:
+    get:
+      description: Returns information about one wine tasting
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          description: Successful response.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Tasting'
   /wines:
     get:
       description: Returns a list of the wines in the database. Currently the length of the list is unlimited; that may change.
@@ -66,77 +148,6 @@ paths:
       responses:
         201:
           description: Created
-
-  /grapes:
-    get:
-      description: Returns a list of the grapes in the database. Currently the length of the list is unlimited; that may change.
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Grape'
-    post:
-      responses:
-        '200':
-          description: TODO describe me
-    patch:
-      responses:
-        '200':
-          description: TODO describe me
-    delete:
-      responses:
-        '200':
-          description: TODO describe me
-  /countries:
-    get:
-      description: Returns a list of known countries in the database. Used to ensure that countries are spelled consistently.
-      responses:
-        '200':
-          description: Successful response.
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    id:
-                      type: integer
-                      example: 17
-                    name:
-                      type: string
-                      example: Österrike
-
-  /tasting:
-    get:
-      description: Returns a list of all tastings
-      responses:
-        '200':
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/Tasting'
-  /tasting/{id}:
-    get:
-      description: Returns information about one wine tasting
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          description: Successful response.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Tasting'
 
 
 components:
@@ -189,5 +200,6 @@ components:
           example: Liebfraumilch
     Country:
       type: string
+      example: Österrike
     WineType:
       type: string
