@@ -1,20 +1,200 @@
-import {beforeEach, describe, expect, test, jest} from "@jest/globals";
-import {Orm} from "../orm";
-import {EndpointHandlers} from "../endpointHandlers";
+import { beforeEach, describe, expect, test, jest } from "@jest/globals";
+import { Orm } from "../orm";
+import { EndpointHandlers } from "../endpointHandlers";
 
 
 describe('Endpoint handler tests', () => {
 
     let orm: Orm;
 
-    beforeEach(() => {
+    beforeEach(async () => {
         orm = new Orm("myDatabase", "myUserName", "mySecret",
             {
                 dialect: "sqlite",
             });
+        await orm.createTables();
     });
 
-    test('post and read back members', async() => {
+    test.skip('get members before there are any', async () => {
+        const res = {
+            status: jest.fn(() => res),
+            json: jest.fn()
+        };
+
+        const sut = new EndpointHandlers(orm);
+        const memberHandlingFunction: (req, res) => Promise<void> = sut.getMembers();
+
+        await memberHandlingFunction(null, res);
+        expect(res.status).toHaveBeenCalled();
+    });
+
+    test.skip('get members before there are any, without async/await', (done) => {
+        const res = {
+            status: jest.fn(() => res),
+            json: jest.fn()
+        };
+
+        //expect(res.status(12345)).toBe(res); // Checking that status is mocked correctly
+
+        const sut = new EndpointHandlers(orm);
+        const memberHandlingFunction: (req, res) => Promise<void> = sut.getMembers();
+
+
+        return expect(memberHandlingFunction(null, res)).resolves.toBeUndefined().then(() => {
+            expect(res.status).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(12);
+            done();
+        });
+
+    });
+
+
+    test('get members before there are any, with timeout', (done) => {
+        const res = {
+            status: jest.fn(() => res),
+            json: jest.fn(),
+            send: jest.fn(),
+            foo: "bar",
+        };
+
+        //expect(res.status(12345)).toBe(res); // Checking that status is mocked correctly
+
+        const sut = new EndpointHandlers(orm);
+        const memberHandlingFunction: (req, res) => Promise<void> = sut.getMembers();
+        const promise = memberHandlingFunction(null, res);
+
+        setTimeout(() => {
+            expect(res.status).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(200);
+
+            promise.then(() => {
+                expect(res.status).toHaveBeenCalled();
+                expect(res.status).toHaveBeenCalledWith(200);
+                done();
+            }).catch((error) => {
+                // If the promise rejects, you can handle errors here.
+                // Call `done` with an error to fail the test in case of errors.
+
+                expect(res.status).toHaveBeenCalled();
+                expect(res.status).toHaveBeenCalledWith(202);
+                done(error);
+            });
+
+        }, 100);
+
+
+    })
+
+
+    test('get members after one post, with timeout', (done) => {
+        const res = {
+            status: jest.fn(() => res),
+            json: jest.fn(),
+            send: jest.fn(),
+            foo: "bar",
+        };
+
+        const req1 = {body: {id: 17, givenName: "Nomen", surname: "Nescio"}};
+        const req2 = {body: {Förnamn: "Nomen", Efternamn: "Nescio"}};
+
+        //expect(res.status(12345)).toBe(res); // Checking that status is mocked correctly
+
+        const sut = new EndpointHandlers(orm);
+
+        const postPromise = sut.postMember()(req2, res);
+
+        setTimeout(() => {
+            expect(res.status).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(201);
+            done();
+        }, 1000);
+
+        /* const memberHandlingFunction: (req, res) => Promise<void> = sut.getMembers();
+         const promise = memberHandlingFunction(null, res);
+
+         setTimeout(() => {
+             expect(res.status).toHaveBeenCalled();
+             expect(res.status).toHaveBeenCalledWith(200);
+
+             promise.then(() => {
+                 expect(res.status).toHaveBeenCalled();
+                 expect(res.status).toHaveBeenCalledWith(200);
+                 done();
+             }).catch((error) => {
+                 // If the promise rejects, you can handle errors here.
+                 // Call `done` with an error to fail the test in case of errors.
+
+                 expect(res.status).toHaveBeenCalled();
+                 expect(res.status).toHaveBeenCalledWith(202);
+                 done(error);
+             });
+
+         }, 1000);
+ */
+
+    });
+
+    test('post and read back members', async () => {
+
+        const sut = new EndpointHandlers(orm);
+
+        const rs = jest.fn(x => {
+            // Nothing defined, not needed?
+            //status: (n) => console.log('.status called with ', n);
+        });
+        // rs ska vara en ett objekt som har en funktion .status(int)
+        // status(int) ska returnera ett objekt som har funktionen json(string)
+        // Lämpligt att mocka dessa, och testa de argument som funktionerna får.
+
+        const postMember: (req, res) => void = sut.postMember();
+        const rq = {body: {Förnamn: "Nomen", Efternamn: "Nescio"}};
+        //const rq = {Förnamn: "Nomen", Efternamn: "Nescio"};
+        postMember(rq, rs);
+
+        const members: (req, res) => Promise<void> = sut.getMembers();
+        // TODO: Förstå argumenten till members()
+        const promise = members({}, {status: (n) => console.log('.status called with ', n)});
+        promise.then(value => {
+            expect(value).toBeTruthy();
+        });
+
+    });
+
+    /**
+     * From ChatGPT: https://chat.openai.com/c/4bb0536d-9f8f-4b6b-9c72-519cb8702770
+     **/
+    test('it should return status 201 with a success message, using timeout', done => {
+        // TODO: Testet fungerar bara om det körs enkilt, inte som en del i hela describe-sviten.
+        //  Få det att fungerar som en del av sviten.
+
+        // TODO: Make this test take shorter time.
+        //  It should only take a couple of ms when it passes, not the full timeout duration.
+        const req = {body: {Förnamn: "Nomen", Efternamn: "Nescio"}};
+        const res = {
+            status: jest.fn(() => res),
+            json: jest.fn()
+        };
+
+        const sut = new EndpointHandlers(orm);
+        const memberHandlingFunction: (req, res) => Promise<void> = sut.postMember();
+        const promise1 = memberHandlingFunction(req, res);
+        setTimeout(() => {
+            expect(res.status).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(201);
+            expect(res.json).toHaveBeenCalledWith("postMember called!");
+
+            promise1.then(() => {
+                done();
+            });
+
+        }, 1000);
+
+
+    });
+
+    test.skip('post and read back countries', async () => {
+
+        throw Error('Not ready, fix test of members first!')
 
         const sut = new EndpointHandlers(orm);
 
@@ -25,12 +205,12 @@ describe('Endpoint handler tests', () => {
         // status(int) ska returnera ett objekt som har funktionen json(string)
         // Lämpligt att mocka dessa, och testa de argument som funktionerna får.
 
-        const postMember: (req, res) => void = sut.postMember();
-        const rq = {body: {Förnamn: "Nomen", Efternamn: "Nescio"}}
-        postMember(rq, rs);
+        const postCountry: (req, res) => void = sut.postCountry();
+        const rq = "Tyskland"
+        postCountry(rq, rs);
 
-        const members = sut.getMembers();
-        const promise = members({}, undefined);
+        const countries = sut.getCountries();
+        const promise = countries({}, undefined);
         promise.then(value => {
             //expect(value).toBeTruthy();
         });
@@ -42,7 +222,7 @@ describe('Endpoint handler tests', () => {
 
 describe('thenJson test happy path', () => {
 
-    test('thenJson happy path using async', async() => {
+    test('thenJson happy path using async', async () => {
 
         const sut = new EndpointHandlers(undefined);
 
@@ -91,7 +271,7 @@ describe('thenJson test happy path', () => {
             },
         };
 
-         sut.thenJson(promise, res)
+        sut.thenJson(promise, res)
             .then(() => {
                 expect(status).toEqual(200);
                 expect(jsonCalled).toBeTruthy();

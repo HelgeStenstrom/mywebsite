@@ -12,10 +12,10 @@ export class Orm {
     private Member: ModelStatic<Model>;
 
 
-    testAuthentication() {
-        const promise = this.sequelize.authenticate();
-        promise.then(x => console.log('Sequelize authentication passed', x));
-    }
+    // testAuthentication() {
+    //     const promise = this.sequelize.authenticate();
+    //     promise.then(x => console.log('Sequelize authentication passed', x));
+    // }
 
     constructor(database: string, dbUserName: string, dbPassword: string, options: Options) {
         this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);

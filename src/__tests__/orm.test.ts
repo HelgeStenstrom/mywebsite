@@ -82,7 +82,7 @@ describe('Database tests', () => {
 
     describe('Countries tests', () => {
 
-        test('post and read back counries', async () => {
+        test('post and read back countries', async () => {
             await orm.createTables();
 
             await orm.postCountry({name: "Norge"});

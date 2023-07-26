@@ -1,29 +1,27 @@
-import {Orm} from "./orm";
-import {Member} from "./backendRouting";
+import { Orm } from "./orm";
 import { Wine } from "../hartappat/src/app/services/backend.service";
 
 export class EndpointHandlers {
     constructor(private orm: Orm) {}
 
     getWines(): (req, res) => Promise<void> {
-
-        console.log('EndpointHandles.getWines()');
         return async (req, res) => {
             this.thenJson(this.orm.findWines(), res);
         };
     }
 
     getMembers(): (req, res) => Promise<void> {
-        return async (req, res) => {
+        return async (_, res) => {
             this.thenJson(this.orm.findMembers(), res);
         };
     }
 
-    postMember(): (req, res) => void {
+    postMember(): (req, res) => Promise<void> {
 
         return async (req, res) => {
-            const member: Member = req.body;
-            this.orm.postMember(member)
+            const member = req.body;
+            console.log(`Förnamn: ${member.Förnamn}`)
+            return this.orm.postMember(member)
                 .then(() => res.status(201).json("postMember called!"))
                 .catch(e => console.error(e));
 
@@ -33,10 +31,12 @@ export class EndpointHandlers {
     thenJson(promise: Promise<object[]>, res) {
 
         return promise
-            .then((x) => {
-                return res.status(200).json(x);
+            .then((objects) => {
+                console.log('thenJson got a promise! ');
+                return res.status(200).json(objects);
             })
-            .catch(() => {
+            .catch((err) => {
+                console.error('Got error', err);
                 res.status(503)
                     .send("Ingen kontakt med databasen. Är Docker startad?");
             });
@@ -54,5 +54,15 @@ export class EndpointHandlers {
                 .catch(e => console.error(e));
 
         };
+    }
+
+    postCountry(): (req, res) => void {
+        return function (p1, p2) {
+            throw Error("not implemented yet");
+        };
+    }
+
+    getCountries(): (req, res) => Promise<void>  {
+        throw Error("not implemented yet");
     }
 }

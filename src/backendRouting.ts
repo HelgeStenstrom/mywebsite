@@ -1,17 +1,17 @@
-import express from "express";
+import express, { Express } from "express";
 import cors from "cors";
 
-import {Orm} from "./orm";
-import {EndpointHandlers} from "./endpointHandlers";
+import { Orm } from "./orm";
+import { EndpointHandlers } from "./endpointHandlers";
 
-function getConfiguredApp() {
-    const app = express();
+function getConfiguredApp(): Express {
+    const app: Express = express();
     app.use(cors());
     app.use(express.json());
     return app;
 }
 
-export const app = getConfiguredApp();
+export const app: Express = getConfiguredApp();
 
 export interface Member extends NodeJS.ReadableStream {
     id: number,
@@ -31,7 +31,7 @@ interface Country extends NodeJS.ReadableStream {
     name: string,
 }
 
-export function setupEndpoints(router, sequelizeDbOptions) {
+export function setupEndpoints(router: Express, sequelizeDbOptions) {
 
 
     const orm  = new Orm('hartappat', 'root', 'root1234', sequelizeDbOptions);
