@@ -139,7 +139,8 @@ describe('Endpoint handler tests', () => {
     });
 
     test.skip('post and read back members', async () => {
-
+        // TODO: När detta test körs, blir det inte färdigt, och följande test(er) tycks misslyckas.
+        //  Test runner säger "Terminated". Undersök loggen från testkörningen.
 
         const sut = new EndpointHandlers(orm);
 
