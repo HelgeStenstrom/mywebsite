@@ -15,7 +15,10 @@
 - Få bort loggat fel då koden uppdateras
   - Gissningsvis relaterat till saker som inte utförs i förväntad ordning
 - https
+  - När sajten är sjösatt, vill man definitivt ha https, och inte http. 
+    Under utvecklingsarbetet kan det duga med http.
 - Login/autentisering
+  - Nödvändigt för en sjösatt sajt.
 - Tabell för användare
   - username
   - hashed salted password
