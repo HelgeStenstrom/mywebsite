@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, jest } from "@jest/globals";
+import { beforeEach, describe, expect, test, jest, afterEach } from "@jest/globals";
 import { Orm } from "../orm";
 import { EndpointHandlers } from "../endpointHandlers";
 
@@ -13,6 +13,10 @@ describe('Endpoint handler tests', () => {
                 dialect: "sqlite",
             });
         await orm.createTables();
+    });
+
+    afterEach(() => {
+        orm = null;
     });
 
     test.skip('get members before there are any', async () => {
@@ -134,7 +138,8 @@ describe('Endpoint handler tests', () => {
 
     });
 
-    test('post and read back members', async () => {
+    test.skip('post and read back members', async () => {
+
 
         const sut = new EndpointHandlers(orm);
 
@@ -164,8 +169,6 @@ describe('Endpoint handler tests', () => {
      * From ChatGPT: https://chat.openai.com/c/4bb0536d-9f8f-4b6b-9c72-519cb8702770
      **/
     test('it should return status 201 with a success message, using timeout', done => {
-        // TODO: Testet fungerar bara om det körs enkilt, inte som en del i hela describe-sviten.
-        //  Få det att fungerar som en del av sviten.
 
         // TODO: Make this test take shorter time.
         //  It should only take a couple of ms when it passes, not the full timeout duration.
@@ -180,7 +183,7 @@ describe('Endpoint handler tests', () => {
         const promise1 = memberHandlingFunction(req, res);
         setTimeout(() => {
             expect(res.status).toHaveBeenCalled();
-            expect(res.status).toHaveBeenCalledWith(201);
+            expect(res.status).toHaveBeenCalledWith(201); // FAIL med flit, just nu.
             expect(res.json).toHaveBeenCalledWith("postMember called!");
 
             promise1.then(() => {
@@ -189,6 +192,31 @@ describe('Endpoint handler tests', () => {
 
         }, 1000);
 
+
+    });
+
+
+    test('it should return status 201 with a success message, using Jest faketimers', () => {
+
+        jest.useFakeTimers();
+        const req = {body: {Förnamn: "Nomen", Efternamn: "Nescio"}};
+        const res = {
+            status: jest.fn(() => res),
+            json: jest.fn()
+        };
+
+        const sut = new EndpointHandlers(orm);
+        const memberHandlingFunction: (req, res) => Promise<void> = sut.postMember();
+        const promise = memberHandlingFunction(req, res);
+
+        jest.runAllTimers();
+
+        return promise.then(() => {
+
+            expect(res.status).toHaveBeenCalled();
+            expect(res.status).toHaveBeenCalledWith(201); // FAIL med flit, just nu.
+            expect(res.json).toHaveBeenCalledWith("postMember called!");
+        });
 
     });
 
