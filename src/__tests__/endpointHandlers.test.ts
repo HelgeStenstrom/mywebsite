@@ -2,6 +2,7 @@ import { beforeEach, describe, expect, test, jest, afterEach } from "@jest/globa
 import { Orm } from "../orm";
 import { EndpointHandlers } from "../endpointHandlers";
 
+const longTime = 1000;
 
 describe('Endpoint handler tests', () => {
 
@@ -84,7 +85,7 @@ describe('Endpoint handler tests', () => {
                 done(error);
             });
 
-        }, 100);
+        }, longTime);
 
 
     })
@@ -111,30 +112,7 @@ describe('Endpoint handler tests', () => {
             expect(res.status).toHaveBeenCalled();
             expect(res.status).toHaveBeenCalledWith(201);
             done();
-        }, 1000);
-
-        /* const memberHandlingFunction: (req, res) => Promise<void> = sut.getMembers();
-         const promise = memberHandlingFunction(null, res);
-
-         setTimeout(() => {
-             expect(res.status).toHaveBeenCalled();
-             expect(res.status).toHaveBeenCalledWith(200);
-
-             promise.then(() => {
-                 expect(res.status).toHaveBeenCalled();
-                 expect(res.status).toHaveBeenCalledWith(200);
-                 done();
-             }).catch((error) => {
-                 // If the promise rejects, you can handle errors here.
-                 // Call `done` with an error to fail the test in case of errors.
-
-                 expect(res.status).toHaveBeenCalled();
-                 expect(res.status).toHaveBeenCalledWith(202);
-                 done(error);
-             });
-
-         }, 1000);
- */
+        }, longTime);
 
     });
 
@@ -191,7 +169,7 @@ describe('Endpoint handler tests', () => {
                 done();
             });
 
-        }, 1000);
+        }, longTime);
 
 
     });
