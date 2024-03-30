@@ -17,7 +17,11 @@ export class VinmonopoletService {
     };
 
     const url  = 'http://localhost:3001/vinmonopolet';
+    // TODO: Ta URL eller åtminstone hostname från en konfigurationsfil.
+    //  Mål: kunna testa från andra datorer än localhost, i andra nätverk än hemma.
+    // const url  = 'http://192.168.2.140:3001/vinmonopolet';
     return this.http.get<ProductDetail[]>(url, {headers: headers});
+
   }
 }
 

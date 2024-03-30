@@ -58,4 +58,7 @@ app.get('/vinmonopolet', (req, res) => {
 
 
 const PORT = process.env.PORT || "3001";
-app.listen(PORT, () => console.log(`listening on ${PORT}`));
+
+// TODO: Ta hostname från en konfigurationsfil. Om sajten används på localhost, behövs inte hostname.
+//  0.0.0.0 lyssnar på alla adresser, vilket verkar onödigt.
+app.listen(+PORT, '0.0.0.0',  () => console.log(`listening on ${PORT}`));
