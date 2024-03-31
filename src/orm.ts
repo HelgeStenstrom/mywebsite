@@ -217,4 +217,11 @@ export class Orm {
     async postWineType(param: { sv: string; en: string }) {
         return this.WineType.create(param);
     }
+
+
+    async delWine(name: string) {
+        return this.Wine.destroy({
+            where: {name: name}
+        });
+    }
 }

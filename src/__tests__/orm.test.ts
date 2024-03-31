@@ -11,6 +11,9 @@ describe('block name', () => {
 
 describe('Database tests', () => {
 
+    // TODO: Refactor; remove code duplication in tests.
+    //  There is duplication between creation, deletion and patching tests.
+
     let orm: Orm;
 
     beforeEach(() => {
@@ -158,7 +161,34 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType0 = await orm.postWineType({sv: "sadf", en: "df"});
+            const wineType = await orm.postWineType({sv: "rött", en: "red"});
+
+            // Then ensure that we have the needed country
+            const country = await orm.postCountry({name: "Sverige"});
+
+            // post the wine
+            await orm.postWine({
+                country: country['id'],
+                name: 'Rödtjut',
+                systembolaget: 4711,
+                volume: 750,
+                winetype: wineType['id']
+            })
+
+            const wines = await orm.findWines();
+            const first = wines[0];
+
+            // Verify
+            expect(first['name']).toBeTruthy();
+            expect(first['name']).toEqual('Rödtjut');
+        });
+
+        test('Delete a wine', async () => {
+
+            // Setup
+            await orm.createTables();
+
+            // First ensure that we have the needed winetype
             const wineType = await orm.postWineType({sv: "rött", en: "red"});
 
             // Then ensure that we have the needed country
@@ -173,16 +203,48 @@ describe('Database tests', () => {
                 winetype: wineType['id']
             })
 
-            const wines = await orm.findWines();
-            const first = wines[0];
-            expect(first['name']).toBeTruthy();
+            const winesBefore = await orm.findWines();
+
+            expect(winesBefore.length).toEqual(1);
+            const first = winesBefore[0];
             expect(first['name']).toEqual('Rödtjut');
 
-            //expect(first.countryModel.name).toEqual("Sverige");
-            //expect(first.winetypeModel.sv).toEqual("rött");
+            // Exercise
+            await orm.delWine('Rödtjut');
 
+            // Verify
+            const winesAfter = await orm.findWines();
+            expect(winesAfter.length).toEqual(0);
 
+        });
 
+        test.skip('Patch a wine', async () => {
+
+            // Setup
+            await orm.createTables();
+
+            // First ensure that we have the needed winetype
+            const wineType = await orm.postWineType({sv: "rött", en: "red"});
+
+            // Then ensure that we have the needed country
+            const country = await orm.postCountry({name: "Sverige"});
+
+            // post the wine
+            await orm.postWine({
+                country: country['id'],
+                name: 'Rödtjut',
+                systembolaget: 4711,
+                volume: 750,
+                winetype: wineType['id']
+            })
+
+            // Read back, so that we get a wine to patch
+            const wines = await orm.findWines();
+            const first = wines[0];
+
+            // TODO: How should we identify wines? The name may not be unique. We need a unique key!
+
+            fail("Test not done yet.");
         });
     });
 
