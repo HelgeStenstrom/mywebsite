@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { delay, interval, Observable, of, Subject, throwError } from "rxjs";
+import { Observable, Subject, throwError } from "rxjs";
 import { catchError, map } from "rxjs/operators";
 import { environment } from "../../environments/environment";
 
@@ -9,10 +9,7 @@ import { environment } from "../../environments/environment";
 })
 export class BackendService {
 
-  //public readonly urlBase = 'http://localhost:3000/';
-  public readonly urlBase = environment.apiUrl + '/';
-  //public readonly urlBase = 'http://helges-mbp-2:3000/';
-  private apiBase = this.urlBase + 'api/v1/';
+  public readonly apiBase = environment.apiUrl + '/api/v1';
 
   /**
    * Subject baserat på https://stackoverflow.com/questions/40313770/how-to-trigger-function-from-one-component-to-another-in-angular2
@@ -30,27 +27,27 @@ export class BackendService {
 
   addWine(wine: Wine):  Observable<void> {
 
-    const url = `${this.apiBase}wines`;
+    const url = `${this.apiBase}/wines`;
     console.log(`BackendService.addWine: ${wine.name}. url = ${url}`)
     const objectObservable: Observable<void> = this.http.post<void>(url, wine);
     return objectObservable.pipe(catchError(this.handleError));
   }
 
   addGrape(grape: Grape): Observable<void> {
-    const url = `${this.apiBase}grapes`;
+    const url = `${this.apiBase}/grapes`;
     const objectObservable: Observable<void> = this.http.post<void>(url, grape);
     return objectObservable.pipe(catchError(this.handleError));
   }
 
   deleteGrape(grape: Grape): Observable<Grape> {
-    const url: string = this.apiBase + `grapes/${grape.name}`;
+    const url: string = this.apiBase + `/grapes/${grape.name}`;
 
     return this.http.delete<Grape>(url);
   }
 
 
   getGrapes(): Observable<Grape[]> {
-    const url: string = this.apiBase + 'grapes';
+    const url: string = this.apiBase + '/grapes';
     return this.http
       .get<Grape[]>(url)
       .pipe(
@@ -63,7 +60,7 @@ export class BackendService {
 
 
   getWines(): Observable<Wine[]> {
-    const url: string = this.apiBase + 'wines';
+    const url: string = this.apiBase + '/wines';
     return this.http
       .get<Wine[]>(url)
       .pipe(
@@ -73,7 +70,7 @@ export class BackendService {
   }
 
   patchGrape(from: Grape, to:Grape): Observable<void> {
-    const url = `${this.apiBase}grapes`;
+    const url = `${this.apiBase}/grapes`;
     const objectObservable: Observable<void> = this.http.patch<void>(url, {from, to});
     return objectObservable.pipe(catchError(this.handleError));
   }
@@ -93,7 +90,7 @@ export class BackendService {
   }
 
   getMembers$(): Observable<Member[]> {
-    const url = `${this.apiBase}members`;
+    const url = `${this.apiBase}/members`;
     const observable1: Observable<Member[]> = this.http.get<any[]>(url)
       .pipe(
         map(ms => ms
@@ -104,7 +101,7 @@ export class BackendService {
 
   getTastings() : Observable<Tasting[]>{
 
-    const url = `${this.apiBase}tasting`;
+    const url = `${this.apiBase}/tasting`;
     return this.http.get<Tasting[]>(url);
 
   }
