@@ -43,7 +43,7 @@ describe('BackendService', () => {
     let url: string;
 
     beforeEach(() => {
-      url = backendService.urlBase + 'api/v1/' + 'grapes';
+      url = backendService.apiBase + '/grapes';
     });
 
     it('gets the grapes', done => {
@@ -95,11 +95,11 @@ describe('BackendService', () => {
 
   describe('Wines', () => {
 
-    const aWine: Wine = {name: 'N', country: 'Country', category: 'Cat', systembolaget: 1234};
+    const aWine: Wine = {name: 'N', country: 'Country', category: 'Cat', systembolaget: 1234, volume: 750};
     let url: string;
 
     beforeEach(() => {
-      url = backendService.urlBase + 'api/v1/' + 'wines';
+      url = backendService.apiBase + '/wines';
     });
 
     it('gets the Wines', done => {
@@ -139,7 +139,7 @@ describe('BackendService', () => {
       const expectedMember: Member = {given: 'Nomen', surname: 'Nescio'};
       const expectedMembers = [expectedMember];
 
-      const url = backendService.urlBase + 'api/v1/' + 'members';
+      const url = backendService.apiBase + '/members';
 
       backendService.getMembers$()
         .subscribe(result => {
@@ -168,7 +168,7 @@ describe('BackendService', () => {
           done();
         });
 
-      const url = backendService.urlBase + 'api/v1/' + 'vinprovning';
+      const url = backendService.apiBase + '/vinprovning';
       const req = httpTestingController.expectOne(url);
       expect(req.request.method).toEqual('GET');
       req.flush(expectedTastings);
