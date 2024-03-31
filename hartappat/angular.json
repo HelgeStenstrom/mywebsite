@@ -57,6 +57,20 @@
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
+            },
+            "rosendahl": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.rosendahl.ts"
+                }
+              ],
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
@@ -69,7 +83,13 @@
             },
             "development": {
               "browserTarget": "hartappat:build:development"
+            },
+            "rosendahl": {
+              "browserTarget": "hartappat:build:rosendahl"
             }
+          },
+          "options": {
+            "disableHostCheck": true
           },
           "defaultConfiguration": "development"
         },

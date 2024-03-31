@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
+import { environment } from '../../environments/environment';
 
 // See https://en.wikipedia.org/api/rest_v1/
 
@@ -22,7 +23,9 @@ export class WikipediaService {
   }
 
   getFeatured(): Observable<Featured> {
-    const urlViaProxy = 'http://localhost:3001/featured';
+    const urlViaProxy = environment.proxyUrl +  '/featured';
+    console.log("urlViaProxy = ", urlViaProxy);
+    //const urlViaProxy = 'http://localhost:3001/featured';
     return this.http.get<Featured>(urlViaProxy);
   }
 }

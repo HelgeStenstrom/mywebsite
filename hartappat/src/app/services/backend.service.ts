@@ -2,13 +2,15 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from "@angular/common/http";
 import { delay, interval, Observable, of, Subject, throwError } from "rxjs";
 import { catchError, map } from "rxjs/operators";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackendService {
 
-  public readonly urlBase = 'http://localhost:3000/';
+  //public readonly urlBase = 'http://localhost:3000/';
+  public readonly urlBase = environment.apiUrl + '/';
   //public readonly urlBase = 'http://helges-mbp-2:3000/';
   private apiBase = this.urlBase + 'api/v1/';
 

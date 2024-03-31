@@ -4,8 +4,10 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.2.140:3000',
-  proxyUrl: 'http://192.168.2.140:3001'
+  //apiUrl: 'http://192.168.2.140:3000',
+  //proxyUrl: 'http://192.168.2.140:3001',
+  proxyUrl: 'http://helges-macbook-pro-2.local:3001',
+  apiUrl: 'http://helges-macbook-pro-2.local:3000',
 };
 
 /*
