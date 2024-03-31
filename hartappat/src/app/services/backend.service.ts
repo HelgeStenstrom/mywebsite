@@ -112,6 +112,7 @@ export type Wine = {
   country: string;
   category: string;
   systembolaget: number | undefined;
+  volume: number | undefined;
 };
 
 export type Grape = {
