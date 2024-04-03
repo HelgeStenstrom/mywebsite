@@ -11,6 +11,7 @@
     "localhost 8080": "cd hartappat && ng serve  --host localhost   --port 8080",
     "0.0.0.0 8080": "cd hartappat && ng serve  --host 0.0.0.0   --port 8080",
     "Rosendahl 8080": "cd hartappat && ng serve  --configuration=rosendahl --host 0.0.0.0   --port 8080",
+    "Hemma 8080": "cd hartappat && ng serve  --configuration=hemma --host 0.0.0.0   --port 8080",
     "sajten8080 HelgesMbp2": "cd hartappat && ng serve  --host helges-mbp-2  --port 8080",
     "sajten Mbp2 Secure": "cd hartappat && ng serve  --host helges-mbp-2  --ssl --ssl-cert \"/Users/helge/localhost.pem\" --ssl-key \"/Users/helge/localhost-key.pem\" ",
     "sajten localhost Secure": "cd hartappat && ng serve  --host localhost  --ssl --ssl-cert \"/Users/helge/localhost.pem\" --ssl-key \"/Users/helge/localhost-key.pem\" "

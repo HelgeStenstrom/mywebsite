@@ -2,8 +2,11 @@
 // `ng build` replaces `environment.ts` with `environment.prod.ts`.
 // The list of file replacements can be found in `angular.json`.
 
+// TODO: Undersök om alla parametrar till kommandot ng serve kan definieras här (host och port är intressantast)
 export const environment = {
-  production: false
+  production: false,
+  apiUrl: 'http://192.168.1.89:3000',
+  proxyUrl: 'http://192.168.1.89:3001'
 };
 
 /*

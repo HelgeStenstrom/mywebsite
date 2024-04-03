@@ -58,6 +58,20 @@
               "sourceMap": true,
               "namedChunks": true
             },
+            "hemma": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.hemma.ts"
+                }
+              ],
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            },
             "rosendahl": {
               "fileReplacements": [
                 {
@@ -83,6 +97,9 @@
             },
             "development": {
               "browserTarget": "hartappat:build:development"
+            },
+            "hemma": {
+              "browserTarget": "hartappat:build:hemma"
             },
             "rosendahl": {
               "browserTarget": "hartappat:build:rosendahl"
