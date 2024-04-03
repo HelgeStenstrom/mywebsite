@@ -26,8 +26,8 @@ export class WikipediaComponent implements OnInit {
 
     this.service.getFeatured()
       .subscribe(a => {
-        this.mostReadTitle =  a.mostread.articles[0].displaytitle;
-        const innerHTML = a.mostread.articles[0].displaytitle;
+        this.mostReadTitle =  a.tfa.displaytitle;
+        const innerHTML = a.tfa.displaytitle;
         const elementById = document.getElementById('mostRead');
         if (elementById !== null) {
           elementById.innerHTML = innerHTML;

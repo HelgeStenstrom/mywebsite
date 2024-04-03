@@ -36,4 +36,4 @@ export type WikiAnnounce = {
 
 export type WikiPageMeta = any;
 
-export type Featured = {mostread: { articles:[{ title:string, displaytitle: string; }] }};
+export type Featured = { tfa:{ title:string, displaytitle: string; } };
