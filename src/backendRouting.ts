@@ -86,7 +86,7 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
             const grape: Grape = req.body;
 
             orm.postGrape(grape)
-                .then(() => res.status(201).json("postGrape called!"))
+                .then((response) => res.status(201).json(response))
                 .catch(e => console.error(e));
 
         };
