@@ -1,6 +1,6 @@
-import {beforeEach, describe, expect, test} from "@jest/globals";
-import {Model} from "sequelize";
-import {Orm} from "../orm";
+import { beforeEach, describe, expect, test } from "@jest/globals";
+import { Model } from "sequelize";
+import { Orm } from "../orm";
 
 describe('block name', () => {
 
@@ -24,6 +24,22 @@ describe('Database tests', () => {
     });
 
     describe('Grape tests', () => {
+
+        test('post two grapes and check ID', async () => {
+            // We mostly want to check that the values returned are the values sent,
+            // and that the ID gets incremented.
+            await orm.createTables();
+
+            const first = (await orm.postGrape({name: "first", color: "gray"})).dataValues;
+            const second = (await orm.postGrape({name: "second", color: "blue"})).dataValues;
+            expect(first.name).toEqual("first");
+            expect(first.color).toEqual("gray");
+            expect(first.id).toEqual(1);
+            expect(second.name).toEqual("second");
+            expect(second.color).toEqual("blue");
+            expect(second.id).toEqual(2);
+        });
+
         test('post and read back grape', async () => {
 
             await orm.createTables();

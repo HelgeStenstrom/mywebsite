@@ -3,6 +3,8 @@ import express, { Express, IRouterMatcher } from "express";
 
 // TODO: Klargör syftet med denna fil, eller ta bort den. Se till att den uppfyller sitt syfte.
 
+// Syfte: verifiera att http-anrop till endpoints returnerar förväntat data.
+
 describe('from setupEndpoints', () => {
     test('postCountry', () => {
 
