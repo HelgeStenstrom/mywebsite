@@ -1,10 +1,19 @@
-import {DataTypes, Model, ModelStatic, Options, Sequelize} from 'sequelize';
+import { DataTypes, Model, ModelStatic, Options, Sequelize } from 'sequelize';
+
+interface GrapeAttributes {
+    id: number;
+    name: string;
+    color: string;
+}
+
+interface GrapeInstance extends Model<GrapeAttributes>, GrapeAttributes {}
+//interface GrapeInstance extends Model<GrapeAttributes, Omit<GrapeAttributes, 'id'>>, GrapeAttributes {}
 
 export class Orm {
 
 
     sequelize: Sequelize;
-    private Grape: ModelStatic<Model>;
+    private Grape: ModelStatic<GrapeInstance>;
     private Tasting: ModelStatic<Model>;
     private Country: ModelStatic<Model>;
     private Wine: ModelStatic<Model>;
@@ -12,17 +21,18 @@ export class Orm {
     private Member: ModelStatic<Model>;
 
 
-    // testAuthentication() {
-    //     const promise = this.sequelize.authenticate();
-    //     promise.then(x => console.log('Sequelize authentication passed', x));
-    // }
+
 
     constructor(database: string, dbUserName: string, dbPassword: string, options: Options) {
         this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);
 
 
-        this.Grape = this.sequelize.define("grape",
-            {
+        this.Grape = this.sequelize.define<GrapeInstance>("grape",
+            { id: {
+                    type: DataTypes.INTEGER,
+                    primaryKey: true,
+                    autoIncrement: true
+                },
                 name: DataTypes.TEXT,
                 color: DataTypes.TEXT
             },
@@ -114,7 +124,7 @@ export class Orm {
         return this.Tasting.findByPk(id);
     }
 
-    findGrapes(): Promise<object[]> {
+    findGrapes(): Promise<GrapeInstance[]> {
         return this.Grape.findAll();
     }
 
