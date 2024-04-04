@@ -137,11 +137,11 @@ describe('Database tests', () => {
     describe('Members tests', () => {
         test('Post and read back members', async () => {
             await orm.createTables();
-            await orm.postMember({Förnamn: "Nomen", Efternamn: "Nescio"})
+            await orm.postMember({Given: "Nomen", Efternamn: "Nescio"})
 
             const members = await orm.findMembers();
 
-            expect(members[0]["Förnamn"]).toEqual("Nomen");
+            expect(members[0]["Given"]).toEqual("Nomen");
         });
     });
 

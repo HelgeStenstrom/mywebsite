@@ -20,7 +20,7 @@ export class EndpointHandlers {
 
         return async (req, res) => {
             const member = req.body;
-            console.log(`Förnamn: ${member.Förnamn}`)
+            console.log(`Förnamn: ${member.Given}`)
             return this.orm.postMember(member)
                 .then(() => res.status(201).json("postMember called!"))
                 .catch(e => console.error(e));

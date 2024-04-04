@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, test, jest, afterEach } from "@jest/globals";
+import { afterEach, beforeEach, describe, expect, jest, test } from "@jest/globals";
 import { Orm } from "../orm";
 import { EndpointHandlers } from "../endpointHandlers";
 
@@ -100,7 +100,7 @@ describe('Endpoint handler tests', () => {
         };
 
         const req1 = {body: {id: 17, givenName: "Nomen", surname: "Nescio"}};
-        const req2 = {body: {Förnamn: "Nomen", Efternamn: "Nescio"}};
+        const req2 = {body: {Given: "Nomen", Efternamn: "Nescio"}};
 
         //expect(res.status(12345)).toBe(res); // Checking that status is mocked correctly
 
@@ -131,8 +131,8 @@ describe('Endpoint handler tests', () => {
         // Lämpligt att mocka dessa, och testa de argument som funktionerna får.
 
         const postMember: (req, res) => void = sut.postMember();
-        const rq = {body: {Förnamn: "Nomen", Efternamn: "Nescio"}};
-        //const rq = {Förnamn: "Nomen", Efternamn: "Nescio"};
+        const rq = {body: {Given: "Nomen", Efternamn: "Nescio"}};
+        //const rq = {Given: "Nomen", Efternamn: "Nescio"};
         postMember(rq, rs);
 
         const members: (req, res) => Promise<void> = sut.getMembers();
@@ -151,7 +151,7 @@ describe('Endpoint handler tests', () => {
 
         // TODO: Make this test take shorter time.
         //  It should only take a couple of ms when it passes, not the full timeout duration.
-        const req = {body: {Förnamn: "Nomen", Efternamn: "Nescio"}};
+        const req = {body: {Given: "Nomen", Efternamn: "Nescio"}};
         const res = {
             status: jest.fn(() => res),
             json: jest.fn()
@@ -178,7 +178,7 @@ describe('Endpoint handler tests', () => {
     test('it should return status 201 with a success message, using Jest faketimers', () => {
 
         jest.useFakeTimers();
-        const req = {body: {Förnamn: "Nomen", Efternamn: "Nescio"}};
+        const req = {body: {Given: "Nomen", Efternamn: "Nescio"}};
         const res = {
             status: jest.fn(() => res),
             json: jest.fn()

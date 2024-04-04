@@ -91,12 +91,11 @@ export class BackendService {
 
   getMembers$(): Observable<Member[]> {
     const url = `${this.apiBase}/members`;
-    const observable1: Observable<Member[]> = this.http.get<any[]>(url)
+    return this.http.get<any[]>(url)
       .pipe(
         map(ms => ms
-          .map(m => ({given: m.Förnamn, surname: m.Efternamn}))),
+          .map(m => ({given: m.Given, surname: m.Efternamn}))),
       );
-    return observable1;
   }
 
   getTastings() : Observable<Tasting[]>{

@@ -9,3 +9,4 @@ interface SomeAttributes {
 interface   SomeValues extends Model<SomeAttributes>, SomeAttributes {}
 //interface  SomeInstance extends Sequelize.Instance<SomeAttributes>, SomeAttributes {}
 type  SomeCreationAttributes = Optional<SomeAttributes, 'id'>
+// funkar det nu?

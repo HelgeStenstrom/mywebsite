@@ -1,8 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { HttpClient, HttpClientModule } from "@angular/common/http";
 
 import { BackendService, Grape, Member, Tasting, Wine } from './backend.service';
-import { HttpClientTestingModule, HttpTestingController, TestRequest } from "@angular/common/http/testing";
+import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
 import { Observable } from "rxjs";
 import { TestScheduler } from "rxjs/testing";
 
@@ -134,7 +133,7 @@ describe('BackendService', () => {
 
     it('calls getMembers()', done => {
 
-      const aMemberFromBackend = {Förnamn: 'Nomen', Efternamn: 'Nescio'};
+      const aMemberFromBackend = {Given: 'Nomen', Efternamn: 'Nescio'};
       const membersFromBackend = [aMemberFromBackend];
       const expectedMember: Member = {given: 'Nomen', surname: 'Nescio'};
       const expectedMembers = [expectedMember];

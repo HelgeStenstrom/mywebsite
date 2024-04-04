@@ -66,7 +66,7 @@ export class Orm {
 
         this.Member = this.sequelize.define("member",
             {
-                Förnamn: DataTypes.TEXT,
+                Given: DataTypes.TEXT,
                 Efternamn: DataTypes.TEXT,
             },
             {
@@ -161,7 +161,7 @@ export class Orm {
                 ]
             }
         );
-        const promise1 = promise.then(m => {
+        return promise.then(m => {
                 return m.map(x => {
                     console.log('In model mapping lambda: x.name = ', x['name']);
                     console.log('In model mapping lambda: x.winetypeModel.sv = ', x['winetypeModel'].sv);
@@ -176,7 +176,6 @@ export class Orm {
                 });
             }
         );
-        return promise1;
     }
 
     findWinesNoOptions() {
