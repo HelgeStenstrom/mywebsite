@@ -107,6 +107,7 @@ export class BackendService {
 }
 
 export type Wine = {
+  id: number;
   name: string;
   country: string;
   category: string;

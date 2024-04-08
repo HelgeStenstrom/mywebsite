@@ -8,12 +8,14 @@
 
 <table class="mat-table">
   <caption>Viner i databasen</caption>
+  <th>ID</th>
   <th>Namn</th>
   <th>Land</th>
   <th>Typ</th>
   <th>Volym</th>
   <th>Systembolaget</th>
   <tr *ngFor="let w of winesAsync$|async">
+    <td>{{w.id}}</td>
     <td>{{w.name}}</td>
     <td>{{w.country}}</td>
     <td>{{w.category}}</td>

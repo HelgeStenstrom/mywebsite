@@ -34,7 +34,7 @@ describe('Database tests', () => {
             const second = (await orm.postGrape({name: "second", color: "blue"})).dataValues;
             expect(first.name).toEqual("first");
             expect(first.color).toEqual("gray");
-            expect(first.id).toEqual(1);
+            expect(first.id).toEqual(1); // TODO: this is not an actual requirement; test something else.
             expect(second.name).toEqual("second");
             expect(second.color).toEqual("blue");
             expect(second.id).toEqual(2);
@@ -56,7 +56,7 @@ describe('Database tests', () => {
             expect(secondBack.color).toEqual("blue");
         });
 
-        test('delete a grape', async () => {
+        test('delete a grape by name', async () => {
 
             // Setup
             await orm.createTables();

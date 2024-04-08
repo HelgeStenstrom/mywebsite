@@ -7,7 +7,7 @@ interface GrapeAttributes {
 }
 
 interface GrapeInstance extends Model<GrapeAttributes>, GrapeAttributes {}
-//interface GrapeInstance extends Model<GrapeAttributes, Omit<GrapeAttributes, 'id'>>, GrapeAttributes {}
+
 
 export class Orm {
 
@@ -167,6 +167,7 @@ export class Orm {
                     console.log('In model mapping lambda: x.winetypeModel.sv = ', x['winetypeModel'].sv);
                     //return x;
                     return {
+                        id: x['id'],
                         name: x['name'],
                         systembolaget: x['systembolaget'],
                         category: x['winetypeModel'].sv,

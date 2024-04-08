@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {Wine} from "../../services/backend.service";
+import { Component } from '@angular/core';
+import { Wine } from "../../services/backend.service";
 
 @Component({
   selector: 'app-wine',
@@ -12,7 +12,7 @@ export class WineComponent {
   systemNumber: number | undefined = undefined;
 
   getWine(): Wine {
-    return {name:this.wineName, country:'land', systembolaget:this.systemNumber, category:this.typeSelect, volume: 749};
+    return {id: 3, name:this.wineName, country:'land', systembolaget:this.systemNumber, category:this.typeSelect, volume: 749};
   }
 
 }
