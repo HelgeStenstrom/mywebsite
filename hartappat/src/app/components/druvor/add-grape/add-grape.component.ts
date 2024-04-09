@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
-import {BackendService, Grape} from "../../../services/backend.service";
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import { FormControl, FormGroup } from "@angular/forms";
+import { BackendService, Grape } from "../../../services/backend.service";
+import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 import { Observable } from "rxjs";
 
 @Component({
@@ -42,6 +42,7 @@ export class AddGrapeComponent implements OnInit {
     const formValue = this.grapeForm.value;
     if (formValue.name && formValue.color) {
       const g:Grape = {
+        id: -1,
         name: formValue.name,
         color: formValue.color
       };

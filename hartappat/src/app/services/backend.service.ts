@@ -116,6 +116,7 @@ export type Wine = {
 };
 
 export type Grape = {
+  id: number;
   name: string;
   color: string;
 };

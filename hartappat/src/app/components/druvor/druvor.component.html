@@ -2,9 +2,11 @@
 
 <table>
   <caption>Druvor i databasen</caption>
+  <th>ID</th>
   <th>Namn</th>
   <th>Färg</th>
   <tr *ngFor="let grape of grapes$ | async">
+    <td>{{grape.id}}</td>
     <td>{{grape.name}}</td>
     <td>{{grape.color}}</td>
     <button mat-icon-button color="primary" (click)="editGrape(grape)">
