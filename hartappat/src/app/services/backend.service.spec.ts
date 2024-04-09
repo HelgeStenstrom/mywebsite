@@ -38,7 +38,7 @@ describe('BackendService', () => {
 
   describe('Grapes', () => {
 
-    const aGrape: Grape = {name: 'grape1', color: 'pink'};
+    const aGrape: Grape = {id: -1, name: 'grape1', color: 'pink'};
     let url: string;
 
     beforeEach(() => {
@@ -94,7 +94,7 @@ describe('BackendService', () => {
 
   describe('Wines', () => {
 
-    const aWine: Wine = {name: 'N', country: 'Country', category: 'Cat', systembolaget: 1234, volume: 750};
+    const aWine: Wine = {id: 4711, name: 'N', country: 'Country', category: 'Cat', systembolaget: 1234, volume: 750};
     let url: string;
 
     beforeEach(() => {
