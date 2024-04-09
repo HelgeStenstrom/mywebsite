@@ -1,6 +1,5 @@
 import { beforeEach, describe, expect, test } from "@jest/globals";
-import { Model } from "sequelize";
-import { Orm } from "../orm";
+import { CountryInstance, Orm, WineTypeInstance } from "../orm";
 
 describe('block name', () => {
 
@@ -310,8 +309,8 @@ describe('Database tests', () => {
     describe('Wine tests with common database setup', () => {
 
 
-        let wineType: Model<any, any>;
-        let country: Model<any, any>;
+        let wineType: WineTypeInstance;
+        let country: CountryInstance;
 
         beforeEach(async () => {
             await orm.createTables();

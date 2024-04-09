@@ -17,6 +17,19 @@ interface WineAttributes {
 
 interface WineInstance extends Model<WineAttributes>, WineAttributes {}
 
+interface CountryAttributes {
+    id: number;
+    name: string;
+}
+export interface CountryInstance extends Model<CountryAttributes>, CountryAttributes {}
+
+interface WineTypeAttributes {
+    id: number;
+    sv: string;
+    en: string;
+}
+export interface WineTypeInstance extends Model<WineTypeAttributes>, WineTypeAttributes {}
+
 
 export class Orm {
 
@@ -24,9 +37,9 @@ export class Orm {
     sequelize: Sequelize;
     private Grape: ModelStatic<GrapeInstance>;
     private Tasting: ModelStatic<Model>;
-    private Country: ModelStatic<Model>;
+    private Country: ModelStatic<CountryInstance>;
     private Wine: ModelStatic<WineInstance>;
-    private WineType: ModelStatic<Model>;
+    private WineType: ModelStatic<WineTypeInstance>;
     private Member: ModelStatic<Model>;
 
 
@@ -203,7 +216,7 @@ export class Orm {
         return this.Tasting.create(tasting);
     }
 
-    postCountry(country) {
+    postCountry(country): Promise<CountryInstance> {
         return this.Country.create(country);
     }
 
