@@ -18,6 +18,10 @@ export interface Member extends NodeJS.ReadableStream {
     givenName: string,
     surname: string
 }
+
+/**
+ * TODO: Denna typ tycks inte användas. Ta bort.
+ */
 interface Wine extends NodeJS.ReadableStream {
     name: string,
     country: string,
@@ -129,6 +133,23 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
         };
     }
 
+    function getGrapeById() {
+
+        return async (req, res) => {
+            orm.getGrape(req.params.id)
+                .then((grape) => {
+                    if (grape)
+                        return res.status(200).json(grape);
+                    else
+                        return res.status(404).json({ error: 'Grape not found' });
+                })
+                .catch(e => console.error(e));
+            // TODO: Consider variant of return res.status(500).json({ error: 'Internal Server Error' })
+
+        };
+    }
+
+
     router.get('/api/v1/countries', getCountries());
     router.post('/api/v1/countries', postCountries());
 
@@ -136,6 +157,7 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
     router.post('/api/v1/grapes', postGrape());
     router.patch('/api/v1/grapes', patchGrape());
     router.delete('/api/v1/grapes/:name', deleteGrapeByName());
+    router.get('/api/v1/grapes/:id', getGrapeById());
 
     router.get('/api/v1/members', endpointHandlers.getMembers());
     router.post('/api/v1/members', endpointHandlers.postMember());

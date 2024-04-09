@@ -219,7 +219,11 @@ export class Orm {
         });
     }
 
-    patchGrape(from: any, to: any) {
+    getGrape(id: number) {
+        return this.Grape.findByPk(id);
+    }
+
+    patchGrape(from: GrapeInstance, to: GrapeInstance) {
 
         // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-update
 
