@@ -192,7 +192,7 @@ describe('Database tests', () => {
             expect(first['name']).toEqual('Rödtjut');
         });
 
-        test('Delete a wine', async () => {
+        test('Delete a wine by name', async () => {
 
             // Setup
             await orm.createTables();
@@ -204,7 +204,7 @@ describe('Database tests', () => {
             const country = await orm.postCountry({name: "Sverige"});
 
             // post the wine
-            const wine = await orm.postWine({
+            await orm.postWine({
                 country: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
@@ -219,11 +219,60 @@ describe('Database tests', () => {
             expect(first['name']).toEqual('Rödtjut');
 
             // Exercise
-            await orm.delWine('Rödtjut');
+            await orm.delWineByName('Rödtjut');
 
             // Verify
             const winesAfter = await orm.findWines();
             expect(winesAfter.length).toEqual(0);
+
+        });
+
+        test('Delete a wine by ID', async () => {
+
+            // Setup
+            await orm.createTables();
+
+            // First ensure that we have the needed winetype
+            const wineType = await orm.postWineType({sv: "rött", en: "red"});
+
+            // Then ensure that we have the needed country
+            const country = await orm.postCountry({name: "Sverige"});
+
+            // post the wine
+            const wineToBeDeleted = await orm.postWine({
+                country: country['id'],
+                name: 'Rödtjut',
+                systembolaget: 4711,
+                volume: 750,
+                winetype: wineType['id']
+            })
+
+                  // post another wine
+            const otherWine = await orm.postWine({
+                country: country['id'],
+                name: 'Other',
+                systembolaget: 4711,
+                volume: 750,
+                winetype: wineType['id']
+            });
+
+
+
+            const winesBefore = await orm.findWines();
+
+            expect(winesBefore.length).toEqual(2);
+            const first = winesBefore[0];
+            expect(first['name']).toEqual('Rödtjut');
+
+            // Exercise
+            await orm.delWineById(wineToBeDeleted.id);
+
+            // Verify
+            const winesAfter = await orm.findWines();
+            expect(winesAfter.length).toEqual(1);
+            // Expect one wine to be deleted, and the other wine to remain.
+            expect(winesAfter.filter(w => w.id === otherWine.id).length).toEqual(1);
+            expect(winesAfter.filter(w => w.id === wineToBeDeleted.id).length).toEqual(0);
 
         });
 

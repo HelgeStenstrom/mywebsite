@@ -8,6 +8,15 @@ interface GrapeAttributes {
 
 interface GrapeInstance extends Model<GrapeAttributes>, GrapeAttributes {}
 
+interface WineAttributes {
+    id: number;
+    name: string;
+    systembolaget: number;
+    volume: number;
+}
+
+interface WineInstance extends Model<WineAttributes>, WineAttributes {}
+
 
 export class Orm {
 
@@ -16,7 +25,7 @@ export class Orm {
     private Grape: ModelStatic<GrapeInstance>;
     private Tasting: ModelStatic<Model>;
     private Country: ModelStatic<Model>;
-    private Wine: ModelStatic<Model>;
+    private Wine: ModelStatic<WineInstance>;
     private WineType: ModelStatic<Model>;
     private Member: ModelStatic<Model>;
 
@@ -229,9 +238,15 @@ export class Orm {
     }
 
 
-    async delWine(name: string) {
+    async delWineByName(name: string) {
         return this.Wine.destroy({
             where: {name: name}
+        });
+    }
+
+    async delWineById(id: number) {
+        return this.Wine.destroy({
+            where: {id: id}
         });
     }
 }
