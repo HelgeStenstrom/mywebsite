@@ -227,6 +227,36 @@ paths:
         201:
           description: Created
 
+  /wines/{id}:
+    get:
+      summary: Returns a wine by id
+      description: Returns a wine by id, with details
+      responses:
+        '404':
+          description: GET operation failed, wine not found
+        '200':
+          description: Successful GET operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wine'
+    delete:
+      summary: Deletes a wine from the database
+      description: Deletes a wine by its ID, from the database
+      parameters:
+        - name: id
+          in: path
+          description: ID of the wine to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '404':
+          description: Wine not found
+        '204':
+          description: Wine deleted successfully
+
 
 components:
   schemas:
