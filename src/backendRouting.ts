@@ -127,7 +127,7 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
         return async (req, res) => {
             const {from, to} = req.body;
 
-            orm.patchGrape(from, to)
+            orm.patchGrapeByNameAndColor(from, to)
                 .then(() => res.status(200).json("patchGrape called!"))
                 .catch(e => console.error(e));
         };

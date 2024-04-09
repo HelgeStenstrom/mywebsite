@@ -1,6 +1,6 @@
 import { DataTypes, Model, ModelStatic, Options, Sequelize } from 'sequelize';
 
-interface GrapeAttributes {
+export interface GrapeAttributes {
     id: number;
     name: string;
     color: string;
@@ -223,7 +223,7 @@ export class Orm {
         return this.Grape.findByPk(id);
     }
 
-    patchGrape(from: GrapeInstance, to: GrapeInstance) {
+    patchGrapeByNameAndColor(from: GrapeAttributes, to: GrapeAttributes) {
 
         // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-update
 
