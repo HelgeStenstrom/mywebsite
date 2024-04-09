@@ -94,7 +94,7 @@ export class BackendService {
     return this.http.get<any[]>(url)
       .pipe(
         map(ms => ms
-          .map(m => ({given: m.Given, surname: m.Efternamn}))),
+          .map(m => ({given: m.given, surname: m.surname}))),
       );
   }
 

@@ -133,7 +133,7 @@ describe('BackendService', () => {
 
     it('calls getMembers()', done => {
 
-      const aMemberFromBackend = {Given: 'Nomen', Efternamn: 'Nescio'};
+      const aMemberFromBackend = {given: 'Nomen', surname: 'Nescio'};
       const membersFromBackend = [aMemberFromBackend];
       const expectedMember: Member = {given: 'Nomen', surname: 'Nescio'};
       const expectedMembers = [expectedMember];

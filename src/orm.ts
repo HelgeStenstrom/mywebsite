@@ -88,8 +88,8 @@ export class Orm {
 
         this.Member = this.sequelize.define("member",
             {
-                Given: DataTypes.TEXT,
-                Efternamn: DataTypes.TEXT,
+                given: DataTypes.TEXT,
+                surname: DataTypes.TEXT,
             },
             {
                 timestamps: false,

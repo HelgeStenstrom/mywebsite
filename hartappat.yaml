@@ -153,10 +153,10 @@ paths:
                   properties:
                     id:
                       type: integer
-                    Given:
+                    given:
                       type: string
                       example: Helge
-                    Efternamn:
+                    surname:
                       type: string
                       example: Stenström
   /tasting:
