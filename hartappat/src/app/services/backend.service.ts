@@ -40,7 +40,7 @@ export class BackendService {
   }
 
   deleteGrape(grape: Grape): Observable<Grape> {
-    const url: string = this.apiBase + `/grapes/${grape.name}`;
+    const url: string = this.apiBase + `/grapes/${grape.id}`;
 
     return this.http.delete<Grape>(url);
   }

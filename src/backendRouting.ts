@@ -79,7 +79,8 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
 
         return async (req, res) => {
 
-            const grape: Grape = req.body;
+            // We don't want to set the ID number; it should be handled by ORM.
+            const grape = {...(req.body), id: null}
 
             orm.postGrape(grape)
                 .then((response) => res.status(201).json(response))
@@ -102,15 +103,18 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
         };
     }
 
-    function deleteGrapeByName() {
-
+    function deleteGrapeById() {
         return async (req, res) => {
-            const name = req.params.name;
+            const id = req.params.id;
 
-            orm.delGrape(name)
-                .then(() => res.status(200).json("deleteGrapeByName called!"))
+            orm.delGrapeById(id)
+                .then((gnum) => {
+                    if (gnum)
+                        return res.status(204).json("Grape successfully deleted");
+                    else
+                        return res.status(404).json({ error: 'Grape not found' });
+                })
                 .catch(e => console.error(e));
-
         };
     }
 
@@ -141,14 +145,14 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
         };
     }
 
-
     router.get('/api/v1/countries', getCountries());
     router.post('/api/v1/countries', postCountries());
 
     router.get('/api/v1/grapes', getGrapes());
     router.post('/api/v1/grapes', postGrape());
     router.patch('/api/v1/grapes', patchGrape());
-    router.delete('/api/v1/grapes/:name', deleteGrapeByName());
+
+    router.delete('/api/v1/grapes/:id', deleteGrapeById());
     router.get('/api/v1/grapes/:id', getGrapeById());
 
     router.get('/api/v1/members', endpointHandlers.getMembers());

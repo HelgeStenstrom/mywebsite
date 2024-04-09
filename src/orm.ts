@@ -232,6 +232,10 @@ export class Orm {
         });
     }
 
+    delGrapeById(id: number) {
+        return this.Grape.destroy({where: {id: id}})
+    }
+
     getGrape(id: number) {
         return this.Grape.findByPk(id);
     }
@@ -250,15 +254,9 @@ export class Orm {
         return this.WineType.findAll();
     }
 
+
     async postWineType(param: { sv: string; en: string }) {
         return this.WineType.create(param);
-    }
-
-
-    async delWineByName(name: string) {
-        return this.Wine.destroy({
-            where: {name: name}
-        });
     }
 
     async delWineById(id: number) {
