@@ -19,10 +19,6 @@ export interface Member extends NodeJS.ReadableStream {
     surname: string
 }
 
-interface Grape extends NodeJS.ReadableStream {
-    name: string,
-    color: string;
-}
 interface Country extends NodeJS.ReadableStream {
     name: string,
 }
