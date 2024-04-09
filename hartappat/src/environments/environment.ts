@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.2.140:3000',
-  proxyUrl: 'http://192.168.2.140:3001'
+  apiUrl: 'http://localhost:3000',
+  proxyUrl: 'http://localhost:3001'
 };
 
 /*
