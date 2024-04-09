@@ -19,14 +19,6 @@ export interface Member extends NodeJS.ReadableStream {
     surname: string
 }
 
-/**
- * TODO: Denna typ tycks inte användas. Ta bort.
- */
-interface Wine extends NodeJS.ReadableStream {
-    name: string,
-    country: string,
-    category: string
-}
 interface Grape extends NodeJS.ReadableStream {
     name: string,
     color: string;
@@ -83,7 +75,7 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
 
 
 
-    function postGrape(): (req, res) => void {
+    function postGrape(): (req, res) => Promise<void> {
 
         return async (req, res) => {
 
@@ -97,7 +89,7 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
     }
 
 
-    function postCountries(): (req, res) => void {
+    function postCountries(): (req, res) => Promise<void>  {
 
         return async (req, res) => {
 
@@ -122,7 +114,7 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
         };
     }
 
-    function patchGrape(): (req, res) => void {
+    function patchGrape(): (req, res) => Promise<void>  {
 
         return async (req, res) => {
             const {from, to} = req.body;

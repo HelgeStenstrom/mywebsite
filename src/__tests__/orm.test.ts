@@ -299,8 +299,7 @@ describe('Database tests', () => {
             })
 
             // Read back, so that we get a wine to patch
-            const wines = await orm.findWines();
-            const first = wines[0];
+            await orm.findWines();
 
             // TODO: How should we identify wines? The name may not be unique. We need a unique key!
 
@@ -318,7 +317,7 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType0 = await orm.postWineType({sv: "sadf", en: "df"});
+            await orm.postWineType({sv: "sadf", en: "df"});
             wineType = await orm.postWineType({sv: "rött", en: "red"});
 
             // Then ensure that we have the needed country
@@ -333,7 +332,7 @@ describe('Database tests', () => {
         });
 
         test('post a wine and check it manually', async () => {
-            const wine = await orm.postWine({
+            await orm.postWine({
                 country: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
@@ -365,7 +364,7 @@ describe('Database tests', () => {
         })
 
         test('findWinesNoOptions', async () => {
-            const wine = await orm.postWine({
+            await orm.postWine({
                 country: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
