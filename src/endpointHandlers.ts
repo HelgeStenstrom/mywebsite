@@ -65,4 +65,20 @@ export class EndpointHandlers {
     getCountries(): (req, res) => Promise<void>  {
         throw Error("not implemented yet");
     }
+
+    deleteWineById() {
+        return async (req, res) => {
+            const id = req.params.id;
+
+            this.orm.delWineById(id)
+                .then((gnum) => {
+                    if (gnum)
+                        return res.status(204).json("Wine successfully deleted");
+                    else
+                        return res.status(404).json({ error: 'Wine not found' });
+                })
+                .catch(e => console.error(e));
+        };
+
+    }
 }

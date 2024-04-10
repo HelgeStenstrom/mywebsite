@@ -160,6 +160,8 @@ export function setupEndpoints(router: Express, sequelizeDbOptions) {
     router.get('/api/v1/wines', endpointHandlers.getWines());
     router.post('/api/v1/wines', endpointHandlers.postWine());
 
+    router.delete('/api/v1/wines/:id', endpointHandlers.deleteWineById());
+
 
 
 }
