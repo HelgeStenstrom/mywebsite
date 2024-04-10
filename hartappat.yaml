@@ -39,7 +39,24 @@ paths:
 
   /grapes:
     get:
-      description: Returns a list of the grapes in the database. Currently the length of the list is unlimited; that may change.
+      description: Returns a list of the grapes in the database, with optional pagination
+      parameters:
+        - name: page
+          in: query
+          description: The page number to retrieve (optional)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            example: 1
+        - name: perPage
+          in: query
+          description: Number of items per page (optional)
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+            example: 10
       responses:
         '200':
           description: Successful response
@@ -133,10 +150,16 @@ paths:
             type: integer
             format: int64
       responses:
+        '204':
+          description: Grape deleted successfully. Updated list is returned
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Grape'
         '404':
           description: Grape not found
-        '204':
-          description: Grape deleted successfully
 
   /members:
     get:

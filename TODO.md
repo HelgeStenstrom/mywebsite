@@ -17,6 +17,9 @@
     Under utvecklingsarbetet kan det duga med http.
 - Login/autentisering
   - Nödvändigt för en sjösatt sajt.
+- Implementera paginering i backend
+- Implementera "optimistic update" vid delete, enligt Chat 
+  GPT: https://chat.openai.com/share/08d3ac56-3be9-444e-84ca-afc589b283b4
 - Tabell för användare
   - username
   - hashed salted password
