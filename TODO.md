@@ -12,6 +12,12 @@
   - POST wines
   - Förstå hur parametrar skrivs som body eller som URL-värden
 - ======= klart hit ==========
+- Backend: Delete country
+  - Verifiera att landet inte används
+  - Unit tests av orm-metod
+- GUI: vin
+  - lägga till
+  - redigera
 - https
   - När sajten är sjösatt, vill man definitivt ha https, och inte http. 
     Under utvecklingsarbetet kan det duga med http.
@@ -36,9 +42,6 @@
   - undersök BankID
   - Logga in med Google?
   - Logga in med Facebook?
-- GUI: vin
-  - lägga till
-  - redigera
 - Backend
   - Krascha inte om databasen är nere
 - Gemensamma typdefinitioner för frontend och backend. Åtminstone om det 

@@ -35,6 +35,30 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Country'
+  /countries/{id}:
+    get:
+      summary: Get one country by id
+      description: Returns the country of the given id.
+      responses:
+        200:
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Country'
+
+    delete:
+      summary: Delete one county
+      description: Delete one country that is not in use (not registered with any wine). Return remaining countries.
+      responses:
+        200:
+          description: Successful deletion of the given country
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Country'
 
 
   /grapes:
