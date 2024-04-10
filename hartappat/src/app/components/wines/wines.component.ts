@@ -1,6 +1,6 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
-import {BackendService, Wine} from "../../services/backend.service";
-import {WineComponent} from "../wine/wine.component";
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { BackendService, Wine } from "../../services/backend.service";
+import { WineComponent } from "../wine/wine.component";
 import { Observable, of, switchMap } from "rxjs";
 
 @Component({
@@ -36,11 +36,16 @@ export class WinesComponent implements OnInit {
   }
 
   edit(w: Wine) {
-
+    // TODO: Implement edit(wine)
   }
 
   delete(w: Wine) {
 
+    const deletedWine$ = this.service.deleteWine(w);
+
+    this.winesAsync$ = deletedWine$.pipe(
+      switchMap(() => this.service.getWines())
+    );
   }
 
   addWineToList() {

@@ -46,6 +46,13 @@ export class BackendService {
   }
 
 
+  deleteWine(wine: Wine): Observable<Wine> {
+    const url: string = this.apiBase + `/wines/${wine.id}`;
+
+    return this.http.delete<Wine>(url);
+  }
+
+
   getGrapes(): Observable<Grape[]> {
     const url: string = this.apiBase + '/grapes';
     return this.http
