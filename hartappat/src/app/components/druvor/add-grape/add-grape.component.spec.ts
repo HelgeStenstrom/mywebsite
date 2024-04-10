@@ -1,12 +1,12 @@
-import {ComponentFixture, TestBed} from '@angular/core/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import {AddGrapeComponent} from './add-grape.component';
-import {BackendService, Grape, Member, Tasting, Wine} from "../../../services/backend.service";
-import {Observable, of} from "rxjs";
-import {NO_ERRORS_SCHEMA} from "@angular/core";
-import {By} from "@angular/platform-browser";
-import {FormControl, FormGroup} from "@angular/forms";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import { AddGrapeComponent } from './add-grape.component';
+import { BackendService, Grape } from "../../../services/backend.service";
+import { Observable, of } from "rxjs";
+import { NO_ERRORS_SCHEMA } from "@angular/core";
+import { By } from "@angular/platform-browser";
+import { FormControl, FormGroup } from "@angular/forms";
+import { HttpClientTestingModule } from "@angular/common/http/testing";
 import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
 
 // Informative: https://testing-angular.com/testing-components-with-children/
@@ -15,10 +15,10 @@ describe('AddGrapeComponent test with mock', () => {
   let component: AddGrapeComponent;
   let fixture: ComponentFixture<AddGrapeComponent>;
 
-  const cs: Grape = {name: 'Cabernet Sauvignon', color: 'blå'};
+  const cs: Grape = {id: 0, name: 'Cabernet Sauvignon', color: 'blå'};
   const backendServiceStub: Partial<BackendService> = {
     getGrapes(): Observable<Grape[]> {
-      const r: Grape = {name: 'Riesling', color: 'grön'};
+      const r: Grape = {id: 0, name: 'Riesling', color: 'grön'};
       return of([r, cs]);
     }
   };
