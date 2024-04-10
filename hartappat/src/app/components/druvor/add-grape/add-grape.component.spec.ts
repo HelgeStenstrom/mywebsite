@@ -51,10 +51,6 @@ describe('AddGrapeComponent test with mock', () => {
   });
 
   it('it should have a grapeform', () => {
-    const {debugElement} = fixture;
-
-    //console.log("debugElement.properties: ", debugElement.properties);
-    //const grapeForm: any = debugElement.properties.grapeForm;
     const componentInstance: AddGrapeComponent = fixture.componentInstance;
     const grapeForm: FormGroup<{
       color: FormControl<string | null>;
