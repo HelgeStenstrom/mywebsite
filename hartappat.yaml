@@ -39,6 +39,14 @@ paths:
     get:
       summary: Get one country by id
       description: Returns the country of the given id.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the country to get
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Successful response
@@ -48,8 +56,16 @@ paths:
                 $ref: '#/components/schemas/Country'
 
     delete:
-      summary: Delete one county
+      summary: Delete one county by id
       description: Delete one country that is not in use (not registered with any wine). Return remaining countries.
+      parameters:
+        - name: id
+          in: path
+          description: ID of the country to delete
+          required: true
+          schema:
+            type: integer
+            format: int64
       responses:
         200:
           description: Successful deletion of the given country
@@ -59,7 +75,8 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Country'
-
+        409:
+          description: Cannot delete country as it is associated with wines.
 
   /grapes:
     get:
@@ -174,7 +191,7 @@ paths:
             type: integer
             format: int64
       responses:
-        '204':
+        '200':
           description: Grape deleted successfully. Updated list is returned
           content:
             application/json:
