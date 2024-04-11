@@ -30,6 +30,13 @@ interface WineTypeAttributes {
 }
 export interface WineTypeInstance extends Model<WineTypeAttributes>, WineTypeAttributes {}
 
+interface MemberAttributes {
+    id: number;
+    given: string;
+    surname: string;
+}
+
+export interface  MemberInstance extends Model<MemberAttributes>, MemberAttributes {}
 
 export class Orm {
 
@@ -40,7 +47,7 @@ export class Orm {
     private Country: ModelStatic<CountryInstance>;
     private Wine: ModelStatic<WineInstance>;
     private WineType: ModelStatic<WineTypeInstance>;
-    private Member: ModelStatic<Model>;
+    private Member: ModelStatic<MemberInstance>;
 
 
 
@@ -150,7 +157,7 @@ export class Orm {
         return this.Grape.findAll();
     }
 
-    findMembers(): Promise<object[]> {
+    findMembers(): Promise<MemberInstance[]> {
 
         return this.Member.findAll();
     }

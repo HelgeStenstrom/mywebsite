@@ -141,7 +141,7 @@ describe('Database tests', () => {
             await orm.postMember({given: "Nomen", surname: "Nescio"})
 
             const members = await orm.findMembers();
-            expect(members[0]["given"]).toEqual("Nomen");
+            expect(members[0].given).toEqual("Nomen");
         });
     });
 
