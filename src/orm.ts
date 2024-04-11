@@ -38,12 +38,21 @@ interface MemberAttributes {
 
 export interface  MemberInstance extends Model<MemberAttributes>, MemberAttributes {}
 
+interface TastingAttributes {
+    id: number;
+    title: string;
+    notes: string;
+    date: Date;
+}
+
+export interface  TastingInstance extends Model<TastingAttributes>, TastingAttributes {}
+
 export class Orm {
 
 
     sequelize: Sequelize;
     private Grape: ModelStatic<GrapeInstance>;
-    private Tasting: ModelStatic<Model>;
+    private Tasting: ModelStatic<TastingInstance>;
     private Country: ModelStatic<CountryInstance>;
     private Wine: ModelStatic<WineInstance>;
     private WineType: ModelStatic<WineTypeInstance>;
@@ -85,7 +94,7 @@ export class Orm {
             {
                 title: DataTypes.TEXT,
                 notes: DataTypes.TEXT,
-                date: DataTypes.TEXT
+                date: DataTypes.DATE
             },
             {
                 timestamps: false,
@@ -145,7 +154,7 @@ export class Orm {
         return this.sequelize.sync();
     }
 
-    findTastings(): Promise<object[]> {
+    findTastings(): Promise<TastingInstance[]> {
         return this.Tasting.findAll();
     }
 
@@ -163,7 +172,7 @@ export class Orm {
     }
 
 
-    findCountries(): Promise<object[]> {
+    findCountries(): Promise<CountryInstance[]> {
         return this.Country.findAll();
     }
 

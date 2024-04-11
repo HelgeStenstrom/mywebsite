@@ -77,8 +77,8 @@ describe('Database tests', () => {
             await orm.createTables();
             await orm.postGrape({name: "g1", color: "gray"});
             const prePatchGrapes = await orm.findGrapes();
-            expect(prePatchGrapes[0]["id"]).toEqual(1);
-            expect(prePatchGrapes[0]["name"]).toEqual("g1");
+            expect(prePatchGrapes[0].id).toEqual(1);
+            expect(prePatchGrapes[0].name).toEqual("g1");
 
             // Exercise
             await orm.patchGrapeByNameAndColor(
@@ -88,8 +88,8 @@ describe('Database tests', () => {
             // Verify
             const grapes = await orm.findGrapes();
             expect(grapes.length).toEqual(1);
-            expect(grapes[0]["id"]).toEqual(1);
-            expect(grapes[0]["name"]).toEqual("g2");
+            expect(grapes[0].id).toEqual(1);
+            expect(grapes[0].name).toEqual("g2");
         });
     });
 
@@ -101,7 +101,7 @@ describe('Database tests', () => {
             await orm.postCountry({name: "Norge"});
             const countries = await orm.findCountries();
 
-            expect(countries[0]["name"]).toEqual("Norge");
+            expect(countries[0].name).toEqual("Norge");
         });
     })
 
@@ -111,13 +111,15 @@ describe('Database tests', () => {
             await orm.createTables();
 
             await orm.postTasting({title: "Till fisk", notes: "hemma hos", date: "2021-03-28"});
-            await orm.postTasting({title: "Till kött", notes: "hemma hos oss", date: "2022-03-28"});
+            await orm.postTasting({title: "Till kött", notes: "hemma hos oss", date: "2022-01-01"});
             const tastings = await orm.findTastings();
 
-            expect(tastings[1]["title"]).toEqual("Till kött");
+            expect(tastings[1].title).toEqual("Till kött");
 
             const tasting = await orm.getTasting(1);
-            expect(tasting["title"]).toEqual("Till fisk");
+            expect(tasting.title).toEqual("Till fisk");
+            expect(tasting.date).toEqual(new Date("2021-03-28"));
+
         });
     });
 
@@ -130,8 +132,8 @@ describe('Database tests', () => {
 
             const countries = await orm.findCountries();
 
-            expect(countries[0]["name"]).toEqual("Norge");
-            expect(countries[1]["name"]).toEqual("Finland");
+            expect(countries[0].name).toEqual("Norge");
+            expect(countries[1].name).toEqual("Finland");
         });
     });
 
@@ -154,12 +156,12 @@ describe('Database tests', () => {
 
             const wineTypes = await orm.findWineTypes();
 
-            expect(wineTypes[0]["sv"]).toEqual("rött");
-            expect(wineTypes[0]["en"]).toEqual("red");
-            expect(wineTypes[1]["sv"]).toEqual("vitt");
-            expect(wineTypes[1]["en"]).toEqual("white");
+            expect(wineTypes[0].sv).toEqual("rött");
+            expect(wineTypes[0].en).toEqual("red");
+            expect(wineTypes[1].sv).toEqual("vitt");
+            expect(wineTypes[1].en).toEqual("white");
 
-            expect(wineTypes[1]["id"]).toEqual(2);
+            expect(wineTypes[1].id).toEqual(2);
 
         });
     });
@@ -289,9 +291,9 @@ describe('Database tests', () => {
 
         test('check the setup', async () => {
             const wineTypes = await orm.findWineTypes();
-            expect(wineTypes[1]["sv"]).toEqual("rött");
+            expect(wineTypes[1].sv).toEqual("rött");
             const countries = await orm.findCountries();
-            expect(countries[0]["name"]).toEqual("Sverige");
+            expect(countries[0].name).toEqual("Sverige");
         });
 
         test('post a wine and check it manually', async () => {
