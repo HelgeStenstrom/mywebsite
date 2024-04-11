@@ -103,6 +103,31 @@ describe('Database tests', () => {
 
             expect(countries[0].name).toEqual("Norge");
         });
+
+        test('try to delete non-existing country', async () => {
+            await orm.createTables();
+            await orm.postCountry({name: "Norge"});
+            const nonExistingId = 17;
+            const numberOfDeletedItems = await orm.delCountryById(nonExistingId);
+            expect(numberOfDeletedItems).toEqual(0);
+            const countryInstances = await orm.findCountries();
+            expect(countryInstances.length).toEqual(1);
+        });
+
+        test('post and delete country', async() => {
+            await orm.createTables();
+            await orm.postCountry({name: "Norge"});
+            const countryInstances = await orm.findCountries();
+            const idToDelete = countryInstances[0].id;
+            const numberOfDeletedItems = await orm.delCountryById(idToDelete);
+            expect(numberOfDeletedItems).toEqual(1);
+            const instancesAfterDeletion = await orm.findCountries();
+            expect(instancesAfterDeletion.length).toEqual(0);
+        });
+
+        test.skip('try to delete country in use', async () => {
+            expect(false).toBeTruthy();  // TODO: Test not done
+        });
     })
 
     describe('Tastings tests', () => {

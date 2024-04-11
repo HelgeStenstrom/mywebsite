@@ -1,4 +1,4 @@
-import { DataTypes, Model, ModelStatic, Options, Sequelize } from 'sequelize';
+import { DataTypes, Model, ModelStatic, Options, Sequelize, SyncOptions } from 'sequelize';
 
 export interface GrapeAttributes {
     id: number;
@@ -151,7 +151,8 @@ export class Orm {
 
 
     createTables() {
-        return this.sequelize.sync();
+        const opts: SyncOptions = {logging: false}; // TODO: Turn off logging, there's too much!
+        return this.sequelize.sync(opts);
     }
 
     findTastings(): Promise<TastingInstance[]> {
@@ -279,5 +280,10 @@ export class Orm {
         return this.Wine.destroy({
             where: {id: id}
         });
+    }
+
+    async delCountryById(id: number) {
+
+        return this.Country.destroy({where: {id: id}})
     }
 }
