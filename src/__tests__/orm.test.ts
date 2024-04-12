@@ -1,12 +1,10 @@
 import { beforeEach, describe, expect, test } from "@jest/globals";
 import { CountryInstance, Orm, WineTypeInstance } from "../orm";
 
-describe('block name', () => {
+function fail(message) {
+    throw new Error(message);
+}
 
-    test('test namn', () => {
-        expect(2).toEqual(2);
-    });
-});
 
 describe('Database tests', () => {
 
@@ -21,6 +19,65 @@ describe('Database tests', () => {
                 dialect: "sqlite",
             });
     });
+
+    describe('Countries tests', () => {
+
+        test('post and read back countries', async () => {
+            await orm.createTables();
+            await orm.postCountry({name: "Norge"});
+            await orm.postCountry({name: "Finland"});
+
+            const countries = await orm.findCountries();
+
+            expect(countries[0].name).toEqual("Norge");
+            expect(countries[1].name).toEqual("Finland");
+        });
+
+        test('try to delete non-existing country', async () => {
+            await orm.createTables();
+            await orm.postCountry({name: "Norge"});
+            const nonExistingId = 17;
+            const numberOfDeletedItems = await orm.delCountryById(nonExistingId);
+            expect(numberOfDeletedItems).toEqual(0);
+            const countryInstances = await orm.findCountries();
+            expect(countryInstances.length).toEqual(1);
+        });
+
+        test('post and delete country', async() => {
+            await orm.createTables();
+            await orm.postCountry({name: "Norge"});
+            const countryInstances = await orm.findCountries();
+            const idToDelete = countryInstances[0].id;
+            const numberOfDeletedItems = await orm.delCountryById(idToDelete);
+            expect(numberOfDeletedItems).toEqual(1);
+            const instancesAfterDeletion = await orm.findCountries();
+            expect(instancesAfterDeletion.length).toEqual(0);
+        });
+
+        test('try to delete country in use', async () => {
+
+            await orm.createTables();
+
+            const countryInstance = await orm.postCountry("A country");
+            const wineTypeInstance = await orm.postWineType({sv:"rött", en: "red"});
+            const wineInstance = await orm.postWine({
+                country: countryInstance.id,
+                name: "Wine name",
+                volume: 750,
+                winetype: wineTypeInstance.id,
+                systembolaget: null
+            });
+
+            // Deleting the country is expected to fail, because it's used in a wine.
+
+            const numberOfDeletions = await orm.delCountryById(countryInstance.id);
+
+            expect(numberOfDeletions).toEqual(0);
+
+            fail("test not done");
+        });
+    })
+
 
     describe('Grape tests', () => {
 
@@ -93,42 +150,15 @@ describe('Database tests', () => {
         });
     });
 
-    describe('Countries tests', () => {
-
-        test('post and read back countries', async () => {
+    describe('Members tests', () => {
+        test('Post and read back members', async () => {
             await orm.createTables();
+            await orm.postMember({given: "Nomen", surname: "Nescio"})
 
-            await orm.postCountry({name: "Norge"});
-            const countries = await orm.findCountries();
-
-            expect(countries[0].name).toEqual("Norge");
+            const members = await orm.findMembers();
+            expect(members[0].given).toEqual("Nomen");
         });
-
-        test('try to delete non-existing country', async () => {
-            await orm.createTables();
-            await orm.postCountry({name: "Norge"});
-            const nonExistingId = 17;
-            const numberOfDeletedItems = await orm.delCountryById(nonExistingId);
-            expect(numberOfDeletedItems).toEqual(0);
-            const countryInstances = await orm.findCountries();
-            expect(countryInstances.length).toEqual(1);
-        });
-
-        test('post and delete country', async() => {
-            await orm.createTables();
-            await orm.postCountry({name: "Norge"});
-            const countryInstances = await orm.findCountries();
-            const idToDelete = countryInstances[0].id;
-            const numberOfDeletedItems = await orm.delCountryById(idToDelete);
-            expect(numberOfDeletedItems).toEqual(1);
-            const instancesAfterDeletion = await orm.findCountries();
-            expect(instancesAfterDeletion.length).toEqual(0);
-        });
-
-        test.skip('try to delete country in use', async () => {
-            expect(false).toBeTruthy();  // TODO: Test not done
-        });
-    })
+    });
 
     describe('Tastings tests', () => {
 
@@ -147,50 +177,6 @@ describe('Database tests', () => {
 
         });
     });
-
-    describe('Countries tests', () => {
-
-        test('post and read back countries', async () => {
-            await orm.createTables();
-            await orm.postCountry({name: "Norge"});
-            await orm.postCountry({name: "Finland"});
-
-            const countries = await orm.findCountries();
-
-            expect(countries[0].name).toEqual("Norge");
-            expect(countries[1].name).toEqual("Finland");
-        });
-    });
-
-    describe('Members tests', () => {
-        test('Post and read back members', async () => {
-            await orm.createTables();
-            await orm.postMember({given: "Nomen", surname: "Nescio"})
-
-            const members = await orm.findMembers();
-            expect(members[0].given).toEqual("Nomen");
-        });
-    });
-
-    describe('Winetype tests', () => {
-        test('Post and read back winetypes', async () => {
-
-            await orm.createTables();
-            await orm.postWineType({sv: "rött", en: "red"});
-            await orm.postWineType({sv: "vitt", en: "white"});
-
-            const wineTypes = await orm.findWineTypes();
-
-            expect(wineTypes[0].sv).toEqual("rött");
-            expect(wineTypes[0].en).toEqual("red");
-            expect(wineTypes[1].sv).toEqual("vitt");
-            expect(wineTypes[1].en).toEqual("white");
-
-            expect(wineTypes[1].id).toEqual(2);
-
-        });
-    });
-
 
     describe('Wine test', () => {
         test('Post and read back wines', async () => {
@@ -369,6 +355,25 @@ describe('Database tests', () => {
 
             expect(winesNoOptions).not.toHaveLength(0);
 
+
+        });
+    });
+
+    describe('Winetype tests', () => {
+        test('Post and read back winetypes', async () => {
+
+            await orm.createTables();
+            await orm.postWineType({sv: "rött", en: "red"});
+            await orm.postWineType({sv: "vitt", en: "white"});
+
+            const wineTypes = await orm.findWineTypes();
+
+            expect(wineTypes[0].sv).toEqual("rött");
+            expect(wineTypes[0].en).toEqual("red");
+            expect(wineTypes[1].sv).toEqual("vitt");
+            expect(wineTypes[1].en).toEqual("white");
+
+            expect(wineTypes[1].id).toEqual(2);
 
         });
     });
