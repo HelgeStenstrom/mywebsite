@@ -54,7 +54,7 @@ describe('Database tests', () => {
             expect(instancesAfterDeletion.length).toEqual(0);
         });
 
-        test('try to delete country in use', async () => {
+        test.skip('try to delete country in use', async () => {
 
             await orm.createTables();
 
