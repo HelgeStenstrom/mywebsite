@@ -82,7 +82,7 @@ export class Orm {
 
         this.Country = this.sequelize.define("countryModel",
             {
-                name: DataTypes.TEXT,
+                name: DataTypes.STRING(40),
             },
             {
                 timestamps: false,
@@ -92,8 +92,8 @@ export class Orm {
 
         this.Tasting = this.sequelize.define("tasting",
             {
-                title: DataTypes.TEXT,
-                notes: DataTypes.TEXT,
+                title: DataTypes.STRING(128),
+                notes: DataTypes.TEXT('long'),
                 date: DataTypes.DATE
             },
             {
@@ -115,8 +115,8 @@ export class Orm {
 
         this.WineType = this.sequelize.define("winetypeModel",
             {
-                sv: DataTypes.TEXT,
-                en: DataTypes.TEXT
+                sv: DataTypes.STRING(20),
+                en: DataTypes.STRING(20)
             },
             {
                 timestamps: false,
@@ -127,7 +127,7 @@ export class Orm {
         this.Wine = this.sequelize.define("wine",
             {
                // country: DataTypes.TEXT,
-                name: DataTypes.TEXT,
+                name: DataTypes.STRING(256),
                 systembolaget: DataTypes.INTEGER,
                 volume: DataTypes.INTEGER,
                 //winetype: DataTypes.TEXT,
