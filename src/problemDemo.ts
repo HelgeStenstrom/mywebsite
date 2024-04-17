@@ -5,4 +5,4 @@ interface SomeAttributes {
     name: string
 }
 
-interface SomeValues extends Model<SomeAttributes>, SomeAttributes {} // Yields analysis error with no error text.
+interface SomeValues extends Model<SomeAttributes>, SomeAttributes {}
