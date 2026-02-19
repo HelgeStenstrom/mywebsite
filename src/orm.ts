@@ -62,9 +62,6 @@ export class Orm {
 
 
     constructor(database: string, dbUserName: string, dbPassword: string, options: Options) {
-
-        console.log('DB OPTIONS:', options);
-
         this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);
 
 
