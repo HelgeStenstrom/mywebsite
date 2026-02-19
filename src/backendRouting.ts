@@ -1,8 +1,8 @@
-import express, { Express } from "express";
+import express, {Express} from "express";
 import cors from "cors";
 
-import { Orm } from "./orm";
-import { EndpointHandlers } from "./endpointHandlers";
+import {Orm} from "./orm";
+import {EndpointHandlers} from "./endpointHandlers";
 
 function getConfiguredApp(): Express {
     const app: Express = express();
@@ -17,7 +17,7 @@ export const app: Express = getConfiguredApp();
 export function setupEndpoints(router: Express, sequelizeDbOptions) {
 
 
-    const orm  = new Orm('hartappat', 'root', 'root1234', sequelizeDbOptions);
+    const orm  = new Orm('hartappat', 'appuser', 'appuserpass', sequelizeDbOptions);
 
     const endpointHandlers = new EndpointHandlers(orm);
 

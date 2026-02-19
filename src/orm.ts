@@ -1,4 +1,4 @@
-import { DataTypes, Model, ModelStatic, Options, Sequelize, SyncOptions } from 'sequelize';
+import {DataTypes, Model, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
 
 export interface GrapeAttributes {
     id: number;
@@ -62,6 +62,9 @@ export class Orm {
 
 
     constructor(database: string, dbUserName: string, dbPassword: string, options: Options) {
+
+        console.log('DB OPTIONS:', options);
+
         this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);
 
 
