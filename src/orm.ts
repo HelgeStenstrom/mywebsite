@@ -173,6 +173,10 @@ export class Orm {
     }
 
 
+    /**
+     * Returns a promise that resolves to an array of CountryInstance objects.
+     * Return all countries in the database.
+     */
     findCountries(): Promise<CountryInstance[]> {
         return this.Country.findAll();
     }

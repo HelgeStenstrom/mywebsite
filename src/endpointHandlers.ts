@@ -1,11 +1,23 @@
-import { Orm } from "./orm";
-import { Wine } from "../hartappat/src/app/services/backend.service";
+import {Orm} from "./orm";
+import {Wine} from "../hartappat/src/app/services/backend.service";
 
+
+/**
+ * This class contains all the endpoint handlers. The endpoint handlers are called when the corresponding
+ * endpoint is called. An endpoint is a URL, e.g. http://localhost:3000/grapes,
+ * with an http method, e.g. GET, POST, etc.
+ */
 export class EndpointHandlers {
     constructor(private orm: Orm) {
     }
 
 // Common utilities
+
+    /**
+     * This function takes a promise and returns a JSON response. If the promise fails, an error message is returned.
+     * @param promise
+     * @param res
+     */
     thenJson(promise: Promise<object[]>, res) {
 
         return promise
@@ -22,12 +34,20 @@ export class EndpointHandlers {
 
 // Countries
 
+    /**
+     * Add a country to the database.
+     * @deprecated Use postCountries instead.
+     *
+     */
     postCountry(): (req, res) => void {
         return function (p1, p2) {
             throw Error("not implemented yet");
         };
     }
 
+    /**
+     * Get all countries from the database.
+     */
     getCountries(): (req, res) => Promise<void> {
 
         return async (req, res) => {
@@ -35,6 +55,9 @@ export class EndpointHandlers {
         };
     }
 
+    /**
+     * Add a country to the database.
+     */
     postCountries(): (req, res) => Promise<void>  {
 
         return async (req, res) => {
@@ -49,6 +72,9 @@ export class EndpointHandlers {
 
 // Grapes
 
+    /**
+     * Get all grapes from the database.
+     */
     getGrapes(): (req, res) => Promise<void> {
 
         return async (req, res) => {
@@ -56,6 +82,9 @@ export class EndpointHandlers {
         };
     }
 
+    /**
+     * Get a grape by ID.
+     */
     getGrapeById() {
 
         return async (req, res) => {
@@ -72,6 +101,12 @@ export class EndpointHandlers {
         };
     }
 
+    /**
+     * Add a grape to the database.
+     * @param req request body
+     * @param res response
+     * @returns {Promise<void>}
+     */
     postGrape(): (req, res) => Promise<void> {
 
         return async (req, res) => {
@@ -85,6 +120,10 @@ export class EndpointHandlers {
         };
     }
 
+
+    /**
+     * Replace an existing grape with a new one, without changing its ID.
+     */
     patchGrape(): (req, res) => Promise<void>  {
 
         return async (req, res) => {
@@ -96,6 +135,9 @@ export class EndpointHandlers {
         };
     }
 
+    /**
+     * Delete a grape from the database, identified by its ID.
+     */
     deleteGrapeById() {
         return async (req, res) => {
             const id = req.params.id;
@@ -112,12 +154,20 @@ export class EndpointHandlers {
     }
 
 // Members
+
+    /**
+     * Get all members from the database.
+     */
     getMembers(): (req, res) => Promise<void> {
         return async (_, res) => {
             this.thenJson(this.orm.findMembers(), res);
         };
     }
 
+
+    /**
+     * Add a member to the database.
+     */
     postMember(): (req, res) => Promise<void> {
 
         return async (req, res) => {
@@ -132,6 +182,9 @@ export class EndpointHandlers {
 
 // Tastings
 
+    /**
+     * Get a tasting by ID.
+     */
     getTasting(): (req, res) => Promise<void> {
 
         return async (req, res) => {
@@ -142,6 +195,9 @@ export class EndpointHandlers {
         };
     }
 
+    /**
+     * Get all tastings from the database.
+     */
     getAllTastings(): (req, res) => Promise<void> {
 
         return async (req, res) => {
@@ -151,6 +207,9 @@ export class EndpointHandlers {
 
 // Wines
 
+    /**
+     * Get all wines from the database.
+     */
     getWines(): (req, res) => Promise<void> {
         return async (req, res) => {
             this.thenJson(this.orm.findWines(), res);
@@ -158,6 +217,9 @@ export class EndpointHandlers {
     }
 
 
+    /**
+     * Add a wine to the database.
+     */
     postWine() {
         return async (req, res) => {
             console.log('EndpointHandlers.postWine()');
@@ -172,6 +234,9 @@ export class EndpointHandlers {
         };
     }
 
+    /**
+     * Delete a wine from the database, identified by its ID.
+     */
     deleteWineById() {
         return async (req, res) => {
             const id = req.params.id;
