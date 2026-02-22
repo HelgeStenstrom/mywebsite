@@ -385,6 +385,7 @@ components:
           example: blå
       required:
         - name
+
     Member:
       type: object
       properties:
@@ -396,6 +397,16 @@ components:
         Surname:
           type: string
           example: Stenström
+
+    Country:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        name:
+            type: string
+            example: Frankrike
     Tasting:
       type: object
       required:
@@ -414,15 +425,43 @@ components:
         hosts:
           type: string
           example: Åke och Åsa
+
     Wine:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 42
+        name:
+          type: string
+          example: Liebfraumilch
+        country:
+          $ref: '#/components/schemas/Country'
+        wineType:
+          $ref: '#/components/schemas/WineType'
+      required:
+        - id
+        - name
+        - country
+        - wineType
+
+    WineCreate:
       type: object
       properties:
         name:
           type: string
           example: Liebfraumilch
-    Country:
-      type: string
-      example: Österrike
+        countryId:
+          type: integer
+          example: 7
+        wineTypeId:
+          type: integer
+          example: 2
+      required:
+        - name
+        - countryId
+        - wineTypeId
+
     WineType:
       type: object
       properties:
@@ -438,6 +477,7 @@ components:
       required:
         - id
         - name
+
     WineTypeCreate:
       type: object
       properties:
