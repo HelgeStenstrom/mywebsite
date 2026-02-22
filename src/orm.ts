@@ -68,6 +68,80 @@ function defineCountry(sequelize: Sequelize) {
     );
 }
 
+function defineGrape(sequelize1: Sequelize) {
+    return sequelize1.define<GrapeInstance>("grape",
+        {
+            id: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            name: DataTypes.TEXT,
+            color: DataTypes.TEXT
+        },
+        {
+            timestamps: false,
+            tableName: "grapes"
+        }
+    );
+}
+
+function defineTasting(sequelize1: Sequelize): ModelStatic<TastingInstance> {
+    return sequelize1.define("tasting",
+        {
+            title: DataTypes.STRING(128),
+            notes: DataTypes.TEXT('long'),
+            date: DataTypes.DATE
+        },
+        {
+            timestamps: false,
+            tableName: "tasting"
+        }
+    );
+}
+
+function defineMember(sequelize1: Sequelize): ModelStatic<MemberInstance> {
+    return sequelize1.define("member",
+        {
+            given: DataTypes.TEXT,
+            surname: DataTypes.TEXT,
+        },
+        {
+            timestamps: false,
+            tableName: "members"
+        }
+    );
+}
+
+function defineWineType(sequelize1: Sequelize): ModelStatic<WineTypeInstance> {
+    return sequelize1.define("winetypeModel",
+        {
+            sv: DataTypes.STRING(20),
+            en: DataTypes.STRING(20)
+        },
+        {
+            timestamps: false,
+            tableName: "winetypes"
+        }
+    );
+}
+
+function defineWine(sequelize1: Sequelize): ModelStatic<WineInstance> {
+    return sequelize1.define("wine",
+        {
+            // country: DataTypes.TEXT,
+            name: DataTypes.STRING(256),
+            systembolaget: DataTypes.INTEGER,
+            volume: DataTypes.INTEGER,
+            //winetype: DataTypes.TEXT,
+        },
+        {
+            timestamps: false,
+            tableName: "wines"
+        }
+    );
+}
+
 export class Orm {
 
 
@@ -87,69 +161,11 @@ export class Orm {
 
 
         this.Country = defineCountry(this.sequelize);
-
-        this.Grape = this.sequelize.define<GrapeInstance>("grape",
-            { id: {
-                    type: DataTypes.INTEGER,
-                    primaryKey: true,
-                    autoIncrement: true
-                },
-                name: DataTypes.TEXT,
-                color: DataTypes.TEXT
-            },
-            {
-                timestamps: false,
-                tableName: "grapes"
-            }
-        )
-
-        this.Tasting = this.sequelize.define("tasting",
-            {
-                title: DataTypes.STRING(128),
-                notes: DataTypes.TEXT('long'),
-                date: DataTypes.DATE
-            },
-            {
-                timestamps: false,
-                tableName: "tasting"
-            }
-        )
-
-        this.Member = this.sequelize.define("member",
-            {
-                given: DataTypes.TEXT,
-                surname: DataTypes.TEXT,
-            },
-            {
-                timestamps: false,
-                tableName: "members"
-            }
-        )
-
-        this.WineType = this.sequelize.define("winetypeModel",
-            {
-                sv: DataTypes.STRING(20),
-                en: DataTypes.STRING(20)
-            },
-            {
-                timestamps: false,
-                tableName: "winetypes"
-            }
-        )
-
-        this.Wine = this.sequelize.define("wine",
-            {
-               // country: DataTypes.TEXT,
-                name: DataTypes.STRING(256),
-                systembolaget: DataTypes.INTEGER,
-                volume: DataTypes.INTEGER,
-                //winetype: DataTypes.TEXT,
-            },
-            {
-                timestamps: false,
-                tableName: "wines"
-            }
-        )
+        this.Grape = defineGrape(this.sequelize)
+        this.Tasting = defineTasting(this.sequelize)
+        this.Member = defineMember(this.sequelize)
+        this.WineType = defineWineType(this.sequelize)
+        this.Wine = defineWine(this.sequelize)
 
         this.Wine.belongsTo(this.Country, {foreignKey: 'country'});
         this.Country.hasMany(this.Wine, {
@@ -223,9 +239,7 @@ export class Orm {
         );
         return promise.then(m => {
                 return m.map(x => {
-                    console.log('In model mapping lambda: x.name = ', x['name']);
-                    console.log('In model mapping lambda: x.winetypeModel.sv = ', x['winetypeModel'].sv);
-                    //return x;
+
                     return {
                         id: x['id'],
                         name: x['name'],
