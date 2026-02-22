@@ -270,5 +270,20 @@ export class EndpointHandlers {
     }
 
 
+    postWineType() {
+        return async (req, res) => {
+            console.log('EndpointHandlers.postWineType()');
+            const wineType = req.body;
+            this.orm.postWineType(wineType)
+                .then(() => res.status(201).json("postWineType called!"))
+                .catch(e => console.error(e));
+        };
+    }
 
+    getWineTypes(): (req, res) => Promise<void> {
+        return async (req, res) => {
+            this.thenJson(this.orm.findWineTypes(), res);
+        };
+
+    }
 }

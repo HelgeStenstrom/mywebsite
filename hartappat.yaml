@@ -338,6 +338,33 @@ paths:
         '204':
           description: Wine deleted successfully
 
+  /wine-types:
+    post:
+      summary: Create a new wine type
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WineTypeCreate'
+      responses:
+        '201':
+          description: Wine type created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WineType'
+    get:
+      summary: Get all wine types
+      responses:
+        '200':
+          description: Wine types returned successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WineType'
 
 components:
   schemas:
@@ -366,7 +393,7 @@ components:
         Given:
           type: string
           example: Helge
-        Efternamn:
+        Surname:
           type: string
           example: Stenström
     Tasting:
@@ -397,4 +424,29 @@ components:
       type: string
       example: Österrike
     WineType:
-      type: string
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        sv:
+          type: string
+          example: Vitt
+        en:
+          type: string
+          example: White
+      required:
+        - id
+        - name
+    WineTypeCreate:
+      type: object
+      properties:
+        sv:
+          type: string
+          example: Rött
+        en:
+          type: string
+          example: Red
+      required:
+        - sv
+        - en
