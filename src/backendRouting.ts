@@ -14,10 +14,8 @@ function getConfiguredApp(): Express {
 export const app: Express = getConfiguredApp();
 
 
-export function setupEndpoints(router: Express, sequelizeDbOptions) {
+export function setupEndpoints(router: Express, orm: Orm) {
 
-
-    const orm  = new Orm('hartappat', 'appuser', 'appuserpass', sequelizeDbOptions);
 
     const endpointHandlers = new EndpointHandlers(orm);
 

@@ -47,6 +47,27 @@ interface TastingAttributes {
 
 export interface  TastingInstance extends Model<TastingAttributes>, TastingAttributes {}
 
+function defineCountry(sequelize: Sequelize) {
+    return sequelize.define<CountryInstance>(
+        'countryModel',
+        {
+            id: {
+                type: DataTypes.INTEGER,
+                primaryKey: true,
+                autoIncrement: true
+            },
+            name: {
+                type: DataTypes.STRING(40),
+                allowNull: false
+            }
+        },
+        {
+            tableName: 'countries',
+            timestamps: false
+        }
+    );
+}
+
 export class Orm {
 
 
@@ -65,6 +86,8 @@ export class Orm {
         this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);
 
 
+        this.Country = defineCountry(this.sequelize);
+
         this.Grape = this.sequelize.define<GrapeInstance>("grape",
             { id: {
                     type: DataTypes.INTEGER,
@@ -77,16 +100,6 @@ export class Orm {
             {
                 timestamps: false,
                 tableName: "grapes"
-            }
-        )
-
-        this.Country = this.sequelize.define("countryModel",
-            {
-                name: DataTypes.STRING(40),
-            },
-            {
-                timestamps: false,
-                tableName: "countries"
             }
         )
 
@@ -147,6 +160,10 @@ export class Orm {
         this.WineType.hasMany(this.Wine, {
             foreignKey: 'winetype'
         });
+    }
+
+    async sync() {
+        await this.sequelize.sync({ force: true });
     }
 
 

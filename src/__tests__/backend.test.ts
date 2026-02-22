@@ -1,5 +1,7 @@
 import {describe, expect, test} from "@jest/globals";
 import {app, setupEndpoints} from "../backendRouting";
+import {Orm} from "../orm";
+import {Options} from "sequelize";
 
 describe('block name', () => {
 
@@ -18,8 +20,10 @@ describe('backend tests', () => {
 
 
 describe('setupEndpoints', () => {
+    const sequelizeDbOptions : Options = {dialect: "sqlite", storage: ":memory:"};
 
     test('minimal test', async () => {
-        setupEndpoints(app, {dialect: "sqlite",})
+        const orm = new Orm('test', 'test', 'test', sequelizeDbOptions);
+        setupEndpoints(app, orm)
     });
 });
