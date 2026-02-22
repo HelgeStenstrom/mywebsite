@@ -34,48 +34,72 @@ describe('Table endpoints', () => {
         app = await createTestApp();
     });
 
-    test('Countries: POST followed by GET returns the same data', async () => {
-        const putResponse = await request(app).post('/api/v1/countries').send({name: "Sweden"});
-        await request(app).post('/api/v1/countries').send({name: "Norge"});
-        expect(putResponse.status).toBe(201);
+    describe('Countries', () => {
+        test('Countries: POST followed by GET returns the same data', async () => {
+            const putResponse = await request(app).post('/api/v1/countries').send({name: "Sweden"});
+            await request(app).post('/api/v1/countries').send({name: "Norge"});
+            expect(putResponse.status).toBe(201);
 
-        const getResponse = await request(app).get('/api/v1/countries');
-        expect(getResponse.status).toBe(200);
+            const getResponse = await request(app).get('/api/v1/countries');
+            expect(getResponse.status).toBe(200);
 
-        expect(getResponse.body).toEqual([
-            {id: 1, name: "Sweden"},
-            {id: 2, name: "Norge"},
-        ]);
+            expect(getResponse.body).toEqual([
+                {id: 1, name: "Sweden"},
+                {id: 2, name: "Norge"},
+            ]);
+
+        })
+    })
+
+
+    describe('Grapes', () => {
+        test('Grapes: POST followed by GET returns the same data', async () => {
+            const putResponse = await request(app).post('/api/v1/grapes').send({name: "foo", color: "grön"});
+            expect(putResponse.status).toBe(201);
+            await request(app).post('/api/v1/grapes').send({name: "bar", color: "blå"});
+
+            const getResponse = await request(app).get('/api/v1/grapes');
+            expect(getResponse.status).toBe(200);
+
+            expect(getResponse.body).toEqual([
+                {id: 1, name: "foo", color: "grön"},
+                {id: 2, name: "bar", color: "blå"},
+            ]);
+
+        })
+
+        test('Gapes: get a single grape by id', async () => {
+
+            await request(app).post('/api/v1/grapes').send({name: "test", color: "grön"});
+            await request(app).post('/api/v1/grapes').send({name: "bar", color: "blå"});
+
+            const getResponse = await request(app).get('/api/v1/grapes/2');
+            expect(getResponse.body).toEqual({id: 2, name: "bar", color: "blå"});
+            expect(getResponse.status).toBe(200);
+        })
+
+        test('Grapes: put a grape with invalid color returns 400', async () => {
+            const response = await request(app).post('/api/v1/grapes').send({name: "test", color: "invalid"});
+            expect(response.status).toBe(400);
+        })
 
     })
 
-    test('Grapes: POST followed by GET returns the same data', async () => {
-        const putResponse = await request(app).post('/api/v1/grapes').send({name: "foo", color: "grön"});
-        expect(putResponse.status).toBe(201);
-        await request(app).post('/api/v1/grapes').send({name: "bar", color: "blå"});
+    describe('Members', () => {
 
-        const getResponse = await request(app).get('/api/v1/grapes');
-        expect(getResponse.status).toBe(200);
+        test('Members: POST followed by GET returns the same data', async () => {
+            const putResponse = await request(app).post('/api/v1/members').send({given: "a", surname: "A"});
+            expect(putResponse.status).toBe(201);
+            await request(app).post('/api/v1/members').send({given: "b", surname: "B"});
 
-        expect(getResponse.body).toEqual([
-            {id: 1, name: "foo", color: "grön"},
-            {id: 2, name: "bar", color: "blå"},
-        ]);
-
+            const getResponse = await request(app).get('/api/v1/members');
+            expect(getResponse.status).toBe(200);
+            expect(getResponse.body).toEqual([
+                {id: 1, given: "a", surname: "A"},
+                {id: 2, given: "b", surname: "B"},
+            ]);
+        })
     })
 
-    test('Gapes: get a single grape by id', async () => {
 
-        await request(app).post('/api/v1/grapes').send({name: "test", color: "grön"});
-        await request(app).post('/api/v1/grapes').send({name: "bar", color: "blå"});
-
-        const getResponse = await request(app).get('/api/v1/grapes/2');
-        expect(getResponse.body).toEqual({id: 2, name: "bar", color: "blå"});
-        expect(getResponse.status).toBe(200);
-    })
-
-    test('Grapes: put a grape with invalid color returns 400', async () => {
-        const response = await request(app).post('/api/v1/grapes').send({name: "test", color: "invalid"});
-        expect(response.status).toBe(400);
-    })
 })

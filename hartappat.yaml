@@ -223,6 +223,23 @@ paths:
                     surname:
                       type: string
                       example: Stenström
+    post:
+      summary: Adds a new member to the club.
+      requestBody:
+        description: A member with properties in textual form
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Member'
+      responses:
+        '201':
+          description: Grape created successfully.  The response includes the ID of the newly created grape.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member' # TODO: Se till att koden returnerar skapad druva.
+
   /tasting:
     get:
       description: Returns a list of all tastings
