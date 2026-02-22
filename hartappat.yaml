@@ -240,7 +240,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Member' # TODO: Se till att koden returnerar skapad druva.
 
-  /tasting:
+  /tastings:
     get:
       description: Returns a list of all tastings
       responses:
@@ -252,7 +252,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Tasting'
-  /tasting/{id}:
+  /tastings/{id}:
     get:
       description: Returns information about one wine tasting
       parameters:

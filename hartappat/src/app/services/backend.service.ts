@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from "@angular/common/http";
-import { Observable, Subject, throwError } from "rxjs";
-import { catchError, map } from "rxjs/operators";
-import { environment } from "../../environments/environment";
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse} from "@angular/common/http";
+import {Observable, Subject, throwError} from "rxjs";
+import {catchError, map} from "rxjs/operators";
+import {environment} from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -107,7 +107,7 @@ export class BackendService {
 
   getTastings() : Observable<Tasting[]>{
 
-    const url = `${this.apiBase}/tasting`;
+    const url = `${this.apiBase}/tastings`;
     return this.http.get<Tasting[]>(url);
 
   }
