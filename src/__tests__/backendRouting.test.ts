@@ -8,7 +8,7 @@ import {Options} from "sequelize";
 
 // Syfte: verifiera att http-anrop till endpoints returnerar förväntat data.
 
-async function createTestApp() {
+async function createTestApp(): Promise<Express> {
     const app = express();
     app.use(express.json());
 
@@ -27,18 +27,56 @@ async function createTestApp() {
     return app;
 }
 
-describe('Countries endpoints', () => {
-    let app;
+describe('Table endpoints', () => {
+    let app: express.Express;
 
     beforeEach(async () => {
         app = await createTestApp();
     });
 
-    test('POST followed by GET returns the same data', async () => {
-        const response = await request(app).post('/api/v1/countries').send({name: "Sweden"});
-        expect(response.status).toBe(201);
+    test('Countries: POST followed by GET returns the same data', async () => {
+        const putResponse = await request(app).post('/api/v1/countries').send({name: "Sweden"});
+        await request(app).post('/api/v1/countries').send({name: "Norge"});
+        expect(putResponse.status).toBe(201);
 
-        // TODO: Read back the data from the database and verify that it is the same as the one sent in the POST.
+        const getResponse = await request(app).get('/api/v1/countries');
+        expect(getResponse.status).toBe(200);
+
+        expect(getResponse.body).toEqual([
+            {id: 1, name: "Sweden"},
+            {id: 2, name: "Norge"},
+        ]);
+
+    })
+
+    test('Grapes: POST followed by GET returns the same data', async () => {
+        const putResponse = await request(app).post('/api/v1/grapes').send({name: "foo", color: "grön"});
+        expect(putResponse.status).toBe(201);
+        await request(app).post('/api/v1/grapes').send({name: "bar", color: "blå"});
+
+        const getResponse = await request(app).get('/api/v1/grapes');
+        expect(getResponse.status).toBe(200);
+
+        expect(getResponse.body).toEqual([
+            {id: 1, name: "foo", color: "grön"},
+            {id: 2, name: "bar", color: "blå"},
+        ]);
+
+    })
+
+    test('Gapes: get a single grape by id', async () => {
+
+        await request(app).post('/api/v1/grapes').send({name: "test", color: "grön"});
+        await request(app).post('/api/v1/grapes').send({name: "bar", color: "blå"});
+
+        const getResponse = await request(app).get('/api/v1/grapes/2');
+        expect(getResponse.body).toEqual({id: 2, name: "bar", color: "blå"});
+        expect(getResponse.status).toBe(200);
+    })
+
+    test('Grapes: put a grape with invalid color returns 400', async () => {
+        const response = await request(app).post('/api/v1/grapes').send({name: "test", color: "invalid"});
+        expect(response.status).toBe(400);
     })
 })
 

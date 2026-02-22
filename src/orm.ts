@@ -77,7 +77,13 @@ function defineGrape(sequelize1: Sequelize) {
                 autoIncrement: true
             },
             name: DataTypes.TEXT,
-            color: DataTypes.TEXT
+            color: {
+                type: DataTypes.STRING,
+                allowNull: true,
+                validate: {
+                    isIn: [['blå', 'grön']]
+                }
+            }
         },
         {
             timestamps: false,

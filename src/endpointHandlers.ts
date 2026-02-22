@@ -114,9 +114,27 @@ export class EndpointHandlers {
             // We don't want to set the ID number; it should be handled by ORM.
             const grape = {...(req.body), id: null}
 
-            this.orm.postGrape(grape)
-                .then((response) => res.status(201).json(response))
-                .catch(e => console.error(e));
+            try {
+                const response = await this.orm.postGrape(grape);
+                res.status(201).json(response);
+            } catch (e) {
+                if (e.name === 'SequelizeValidationError') {
+                    res.status(400).json({
+                        error: 'Validation failed',
+                        details: e.errors.map(err => ({
+                            field: err.path,
+                            message: err.message
+                        }))
+                    });
+                    return;
+                }
+                console.error(e);
+                res.status(500).json({ error: 'Internal Server Error' });
+            }
+
+            // this.orm.postGrape(grape)
+            //     .then((response) => res.status(201).json(response))
+            //     .catch(e => console.error(e));
         };
     }
 
