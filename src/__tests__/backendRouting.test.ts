@@ -116,5 +116,24 @@ describe('Table endpoints', () => {
         })
     })
 
+    describe('Wines', () => {
+        test.skip('Wines: POST followed by GET returns the same data', async () => {
+            // Let's first create a country
+            await request(app).post('/api/v1/countries').send({name: "Sweden"});
+            // Verify
+            const countries = await request(app).get('/api/v1/countries');
+            expect(countries.body).toEqual([{id: 1, name: "Sweden"}]);
+
+            // Then create a wine type.
+            await request(app).post('/api/v1/wine-types').send({sv: "blått", en: "blue"})
+
+            // Verify
+            const wineTypes = await request(app).get('/api/v1/wine-types');
+            expect(wineTypes.body).toEqual([{id: 1, sv: "blått", en: "blue"}])
+
+            const putResponse = await request(app).post('/api/v1/wines').send({name: "foo", countryId: 1, wineTypeId: 1});
+            expect(putResponse.status).toBe(201);
+        })
+    })
 
 })

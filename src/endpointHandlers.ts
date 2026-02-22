@@ -1,5 +1,7 @@
 import {Orm} from "./orm";
-import {Wine} from "../hartappat/src/app/services/backend.service";
+import {Wine} from "./types";
+
+//import {Wine} from "../hartappat/src/app/services/backend.service";
 
 
 /**
@@ -238,11 +240,13 @@ export class EndpointHandlers {
      */
     postWine() {
         return async (req, res) => {
-            console.log('EndpointHandlers.postWine()');
+            //console.log('EndpointHandlers.postWine()');
 
             const wine: Wine = req.body;
 
-            const param = {name: wine.name, country: 3, systembolaget: wine.systembolaget, volume: -1, winetype: 2};
+
+
+            const param = {name: wine.name, country: 3, systembolaget: 23, volume: -1, winetype: 2};
             this.orm.postWine(param)
                 .then(() => res.status(201).json("postWine called!"))
                 .catch(e => console.error(e));
@@ -272,7 +276,7 @@ export class EndpointHandlers {
 
     postWineType() {
         return async (req, res) => {
-            console.log('EndpointHandlers.postWineType()');
+            //console.log('EndpointHandlers.postWineType()');
             const wineType = req.body;
             this.orm.postWineType(wineType)
                 .then(() => res.status(201).json("postWineType called!"))
