@@ -57,7 +57,7 @@ paths:
 
     delete:
       summary: Delete one county by id
-      description: Delete one country that is not in use (not registered with any wine). Return remaining countries.
+      description: Delete one country which is not in use (not registered with any wine). Returns remaining countries.
       parameters:
         - name: id
           in: path
@@ -76,7 +76,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/Country'
         409:
-          description: Cannot delete country as it is associated with wines.
+          description: Cannot delete the country as it is associated with wines.
 
   /grapes:
     get:
@@ -129,7 +129,7 @@ paths:
     patch: # TODO: Peka ut druvan med Primary key, inte namn.
       deprecated: true # TODO: Implementera patch by id
       summary: Change an existing grape
-      description: Change the details of an existing grape, without changing the identity
+      description: Change the details of an existing grape without changing the identity
       responses:
         '200':
           description: Successful patch of grape # TODO describe PATCH grape
@@ -204,7 +204,7 @@ paths:
 
   /members:
     get:
-      description: Returns a list of the members of the club.
+      description: Returns a list of the club members.
       responses:
         '200':
           description: Successful response
@@ -253,7 +253,7 @@ paths:
                 $ref: '#/components/schemas/Tasting'
   /wines:
     get:
-      description: Returns a list of the wines in the database. Currently the length of the list is unlimited; that may change.
+      description: Returns a list of the wines in the database. Currently, the length of the list is unlimited; that may change.
       responses:
         '200':
           description: Successful response
@@ -271,7 +271,7 @@ paths:
                       description: The name of the wine, as stated by Systembolaget or by the label.
                     country:
                       type: string
-                      description: The name of the country of origin, in Swedish
+                      description: The country of origin, in Swedish
                     category:
                       type: string
                       description: The currently used categories are 'rött', 'rosé' and 'vitt'.
