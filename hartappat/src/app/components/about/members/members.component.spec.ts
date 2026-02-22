@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MembersComponent} from './members.component';
-import {BackendService, Member, Wine} from "../../../services/backend.service";
+import {BackendService, Member, WineView} from "../../../services/backend.service";
 import {Observable, of} from "rxjs";
 
 describe('MembersComponent', () => {
@@ -13,7 +13,7 @@ describe('MembersComponent', () => {
     getMembers$(): Observable<Member[]> {
       return of([]);
     },
-    getWines(): Observable<Wine[]> {
+    getWines(): Observable<WineView[]> {
       return of([]);
     }
   };

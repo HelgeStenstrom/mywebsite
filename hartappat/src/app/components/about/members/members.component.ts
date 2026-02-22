@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService, Member, Wine} from "../../../services/backend.service";
-import {Observable, EMPTY} from "rxjs";
+import {BackendService} from "../../../services/backend.service";
+import {EMPTY, Observable} from "rxjs";
 
 @Component({
   selector: 'app-members',

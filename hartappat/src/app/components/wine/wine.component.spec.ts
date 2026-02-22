@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {WineComponent} from './wine.component';
 import {By} from "@angular/platform-browser";
-import {Wine} from "../../services/backend.service";
+import {WineView} from "../../services/backend.service";
 import {FormsModule} from "@angular/forms";
 import {DebugElement} from "@angular/core";
 
@@ -67,7 +67,7 @@ describe('WineComponent', () => {
     element.value = expectedName;
     element.dispatchEvent(new Event('input'));
 
-    const wine: Wine = component.getWine();
+    const wine: WineView = component.getWine();
     expect(wine.name).toEqual(expectedName);
   });
 
@@ -91,7 +91,7 @@ describe('WineComponent', () => {
     element.value = expectedNumber;
     element.dispatchEvent(new Event('input'));
 
-    const wine: Wine = component.getWine();
+    const wine: WineView = component.getWine();
     expect(wine.systembolaget).toEqual(expectedNumber);
   });
 

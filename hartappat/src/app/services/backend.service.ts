@@ -25,7 +25,7 @@ export class BackendService {
     return this.grapesSubject.asObservable();
   }
 
-  addWine(wine: Wine):  Observable<void> {
+  addWine(wine: WineView):  Observable<void> {
 
     const url = `${this.apiBase}/wines`;
     console.log(`BackendService.addWine: ${wine.name}. url = ${url}`)
@@ -46,10 +46,10 @@ export class BackendService {
   }
 
 
-  deleteWine(wine: Wine): Observable<Wine> {
+  deleteWine(wine: WineView): Observable<WineView> {
     const url: string = this.apiBase + `/wines/${wine.id}`;
 
-    return this.http.delete<Wine>(url);
+    return this.http.delete<WineView>(url);
   }
 
 
@@ -66,10 +66,10 @@ export class BackendService {
   }
 
 
-  getWines(): Observable<Wine[]> {
+  getWines(): Observable<WineView[]> {
     const url: string = this.apiBase + '/wines';
     return this.http
-      .get<Wine[]>(url)
+      .get<WineView[]>(url)
       .pipe(
         catchError(this.handleError)
       )
@@ -113,7 +113,7 @@ export class BackendService {
   }
 }
 
-export type Wine = {
+export type WineView = {
   id: number;
   name: string;
   country: string;

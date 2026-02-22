@@ -1,9 +1,9 @@
-import { TestBed } from '@angular/core/testing';
+import {TestBed} from '@angular/core/testing';
 
-import { BackendService, Grape, Member, Tasting, Wine } from './backend.service';
-import { HttpClientTestingModule, HttpTestingController } from "@angular/common/http/testing";
-import { Observable } from "rxjs";
-import { TestScheduler } from "rxjs/testing";
+import {BackendService, Grape, Member, Tasting, WineView} from './backend.service';
+import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {Observable} from "rxjs";
+import {TestScheduler} from "rxjs/testing";
 
 describe('BackendService', () => {
 
@@ -94,7 +94,7 @@ describe('BackendService', () => {
 
   describe('Wines', () => {
 
-    const aWine: Wine = {id: 4711, name: 'N', country: 'Country', category: 'Cat', systembolaget: 1234, volume: 750};
+    const aWine: WineView = {id: 4711, name: 'N', country: 'Country', category: 'Cat', systembolaget: 1234, volume: 750};
     let url: string;
 
     beforeEach(() => {
@@ -102,7 +102,7 @@ describe('BackendService', () => {
     });
 
     it('gets the Wines', done => {
-      const expectedWines: Wine[] = [aWine];
+      const expectedWines: WineView[] = [aWine];
 
       backendService.getWines()
         .subscribe(result => {
