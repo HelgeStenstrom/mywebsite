@@ -1,9 +1,37 @@
-import { setupEndpoints } from "../backendRouting";
-import express, { Express, IRouterMatcher } from "express";
+import {setupEndpoints} from "../backendRouting";
+import express, {Express} from "express";
+import request from "supertest";
 
 // TODO: Klargör syftet med denna fil, eller ta bort den. Se till att den uppfyller sitt syfte.
 
 // Syfte: verifiera att http-anrop till endpoints returnerar förväntat data.
+
+function createTestApp() {
+    const app = express();
+    app.use(express.json());
+
+    setupEndpoints(app, {
+        dialect: "sqlite",
+        storage: ":memory:",
+        logging: false
+    });
+
+    return app;
+}
+
+describe('Countries endpoints', () => {
+    let app;
+
+    beforeEach(async () => {
+        app = createTestApp();
+    });
+
+    // TODO: Make sure the tables exist before running these tests.
+    test.skip('POST followed by GET returns the same data', async () => {
+        const response = await request(app).post('/api/v1/countries').send({name: "Sweden"});
+        expect(response.status).toBe(201);
+    })
+})
 
 describe('from setupEndpoints', () => {
     test('postCountry', () => {
