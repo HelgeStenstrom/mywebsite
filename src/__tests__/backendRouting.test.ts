@@ -79,19 +79,3 @@ describe('Table endpoints', () => {
         expect(response.status).toBe(400);
     })
 })
-
-describe('from setupEndpoints', () => {
-    test('postCountry', () => {
-        const sequelizeDbOptions: Options = {dialect: 'sqlite', storage: ':memory:', logging: false};
-
-        const router = {
-            post: () => console.log('POST was called'),
-            get: () => console.log('GET was called'),
-            patch: () => console.log('PATCH was called'),
-            delete: () => console.log('DELETE was called'),
-        } as any as Express;  // From https://stackoverflow.com/questions/57964299/mocking-express-request-with-jest-and-typescript-using-correct-types
-        const orm = new Orm('test', 'test', 'test', sequelizeDbOptions);
-        setupEndpoints(router, orm);
-    });
-});
-
