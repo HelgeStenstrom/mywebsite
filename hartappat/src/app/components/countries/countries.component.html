@@ -3,14 +3,13 @@
 <table>
   <thead>
   <tr>
-    <th>ID</th>
     <th>Namn</th>
+    <th>Åtgärd</th>
   </tr>
   </thead>
 
   <tbody>
   <tr *ngFor="let country of countries">
-    <td>{{ country.id }}</td>
     <td>{{ country.name }}</td>
     <td>
       <button (click)="deleteCountry(country.id)">
