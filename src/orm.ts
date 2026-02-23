@@ -35,6 +35,9 @@ interface CountryAttributes {
     name: string;
 }
 export interface CountryInstance extends Model<CountryAttributes>, CountryAttributes {}
+interface CountryWithWines extends CountryInstance {
+    wines?: { id: number }[];
+}
 
 interface WineTypeAttributes {
     id: number;
@@ -243,11 +246,12 @@ export class Orm {
                     required: false      // vänster join, så länder utan viner också returneras
                 }
             ]
-        });
+        }) as CountryWithWines[];
+
         return countries.map(c => ({
             id: c.id,
             name: c.name,
-            isUsed: false
+            isUsed: c.wines?.length > 0
         }));
     }
 
