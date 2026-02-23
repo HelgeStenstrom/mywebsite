@@ -8,6 +8,18 @@ export interface GrapeAttributes {
 
 interface GrapeInstance extends Model<GrapeAttributes>, GrapeAttributes {}
 
+interface WineAssociations {
+    winetypeModel: {
+        id: number;
+        sv: string;
+    };
+
+    countryModel: {
+        id: number;
+        name: string;
+    };
+}
+
 interface WineAttributes {
     id: number;
     name: string;
@@ -15,7 +27,7 @@ interface WineAttributes {
     volume: number;
 }
 
-interface WineInstance extends Model<WineAttributes>, WineAttributes {}
+interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
 
 interface CountryAttributes {
     id: number;
@@ -232,12 +244,12 @@ export class Orm {
                 include: [
                     {
                         model: this.WineType,
-                        attributes: ['sv'],
+                        attributes: ['id', 'sv'],
                         required: true
                     },
                     {
                         model: this.Country,
-                        attributes: ['name'],
+                        attributes: ['id', 'name'],
                         required: true
                     }
                 ]
@@ -247,12 +259,19 @@ export class Orm {
                 return m.map(x => {
 
                     return {
-                        id: x['id'],
-                        name: x['name'],
-                        systembolaget: x['systembolaget'],
-                        wineType: x['winetypeModel'].sv,
-                        country: x['countryModel'].name,
-                        volume: x['volume'],
+                        id: x.id,
+                        name: x.name,
+                        systembolaget: x.systembolaget,
+                        volume: x.volume,
+
+                        wineType: {
+                            id: x.winetypeModel.id,
+                            name: x.winetypeModel.sv
+                        },
+                        country: {
+                            id: x.countryModel.id,
+                            name: x.countryModel.name
+                        },
                     };
                 });
             }

@@ -68,12 +68,23 @@ export class BackendService {
 
   getWines(): Observable<WineView[]> {
     const url: string = this.apiBase + '/wines';
-    return this.http
-      .get<WineView[]>(url)
-      .pipe(
-        catchError(this.handleError)
-      )
-      ;
+    return this.http.get<WineApi[]>(url).pipe(
+      map(wines =>
+        wines.map(wine => this.toWineView(wine))
+      ),
+      catchError(this.handleError)
+    );
+  }
+
+  private toWineView(wine: WineApi): WineView {
+    return {
+      id: wine.id,
+      name: wine.name,
+      country: wine.country.name,
+      wineType: wine.wineType.name,
+      systembolaget: wine.systembolaget,
+      volume: wine.volume
+    };
   }
 
   patchGrape(from: Grape, to:Grape): Observable<void> {
@@ -120,6 +131,21 @@ export type WineView = {
   wineType: string;
   systembolaget: number | undefined;
   volume: number | undefined;
+};
+
+export type WineApi = {
+  id: number;
+  name: string;
+  country: {
+    id: number;
+    name: string;
+  };
+  wineType: {
+    id: number;
+    name: string;
+  };
+  systembolaget?: number;
+  volume?: number;
 };
 
 export type Grape = {

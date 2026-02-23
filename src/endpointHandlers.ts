@@ -244,7 +244,7 @@ export class EndpointHandlers {
 
             const wine: WineCreateDto = req.body;
 
-            const param = {name: wine.name, country: wine.countryId, systembolaget: 23, volume: -1, winetype: wine.wineTypeId};
+            const param = {name: wine.name, country: wine.countryId, systembolaget: wine.systembolaget, volume: wine.volume, winetype: wine.wineTypeId};
             this.orm.postWine(param)
                 .then(() => res.status(201).json("postWine called!"))
                 .catch(e => console.error(e));
