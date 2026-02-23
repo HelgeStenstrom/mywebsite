@@ -250,7 +250,7 @@ export class Orm {
                         id: x['id'],
                         name: x['name'],
                         systembolaget: x['systembolaget'],
-                        category: x['winetypeModel'].sv,
+                        wineType: x['winetypeModel'].sv,
                         country: x['countryModel'].name,
                         volume: x['volume'],
                     };

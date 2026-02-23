@@ -1,5 +1,5 @@
-import { beforeEach, describe, expect, test } from "@jest/globals";
-import { CountryInstance, Orm, WineTypeInstance } from "../orm";
+import {beforeEach, describe, expect, test} from "@jest/globals";
+import {CountryInstance, Orm, WineTypeInstance} from "../orm";
 
 function fail(message) {
     throw new Error(message);
@@ -333,7 +333,7 @@ describe('Database tests', () => {
             //console.log('All wines:', postedWine);
             expect(postedWine['name']).toEqual("Rödtjut");
             expect(postedWine['systembolaget']).toEqual(4711);
-            expect(postedWine['category']).toEqual("rött");
+            expect(postedWine['wineType']).toEqual("rött");
             expect(postedWine['country']).toEqual("Sverige");
             expect(postedWine['volume']).toEqual(750);
 

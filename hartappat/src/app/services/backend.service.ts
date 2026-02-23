@@ -117,7 +117,7 @@ export type WineView = {
   id: number;
   name: string;
   country: string;
-  category: string;
+  wineType: string;
   systembolaget: number | undefined;
   volume: number | undefined;
 };

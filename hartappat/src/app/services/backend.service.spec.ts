@@ -94,7 +94,7 @@ describe('BackendService', () => {
 
   describe('Wines', () => {
 
-    const aWine: WineView = {id: 4711, name: 'N', country: 'Country', category: 'Cat', systembolaget: 1234, volume: 750};
+    const aWine: WineView = {id: 4711, name: 'N', country: 'Country', wineType: 'Cat', systembolaget: 1234, volume: 750};
     let url: string;
 
     beforeEach(() => {

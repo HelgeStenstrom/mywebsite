@@ -12,7 +12,7 @@ export class WineComponent {
   systemNumber: number | undefined = undefined;
 
   getWine(): WineView {
-    return {id: 3, name:this.wineName, country:'land', systembolaget:this.systemNumber, category:this.typeSelect, volume: 749};
+    return {id: 3, name:this.wineName, country:'land', systembolaget:this.systemNumber, wineType:this.typeSelect, volume: 749};
   }
 
 }

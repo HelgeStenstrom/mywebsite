@@ -75,14 +75,14 @@ describe('WineComponent', () => {
     const element = findElement("type-input").nativeElement
 
     // Before programmatically changing the value:
-    expect(component.getWine().category).toEqual("Annat");
+    expect(component.getWine().wineType).toEqual("Annat");
 
     const expectedType = "Rött";
     element.value = expectedType;
     element.dispatchEvent(new Event('change'));
 
     const wine = component.getWine();
-    expect(wine.category).toEqual(expectedType);
+    expect(wine.wineType).toEqual(expectedType);
   });
 
   it('should return Systembolaget number', () => {

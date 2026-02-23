@@ -1,8 +1,24 @@
-export type Wine = {
+export type WineDto = {
     id: number;
     name: string;
-    country: string;
-    category: string;
-    systembolaget: number | undefined;
-    volume: number | undefined;
+    country:  {
+        id: number;
+        name: string;
+    };
+    wineType: {
+        id: number;
+        name: string;
+    };
+    systembolaget?: number;
+    volume?: number;
 };
+
+export type WineCreateDto = {
+    id: number;
+    name: string;
+    countryId: number;
+    wineTypeId: number;
+    systembolaget?: number;
+    volume?: number;
+};
+
