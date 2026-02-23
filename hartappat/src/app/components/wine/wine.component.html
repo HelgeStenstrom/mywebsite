@@ -6,16 +6,21 @@
   <tr>
     <td><input type="text" [(ngModel)]="wineName"  data-test="name-input" class="nameInput"></td>
     <td>
-      <select data-test="country-input">
-        <option>Tyskland</option>
-        <option>Annat</option>
+      <select  [(ngModel)]="countryId"  data-test="country-input">
+        <option [ngValue]="undefined">Välj land</option>
+        <option *ngFor="let c of countries" [ngValue]="c.id">
+          {{ c.name }}
+        </option>
       </select>
     </td>
-    <td><select [(ngModel)]="typeSelect" data-test="type-input">
-      <option>Rött</option>
-      <option>Vitt</option>
-      <option>Annat</option>
-    </select></td>
+    <td>
+      <select [(ngModel)]="wineTypeId" data-test="type-input">
+        <option [ngValue]="undefined">Välj typ</option>
+        <option *ngFor="let t of wineTypes" [ngValue]="t.id">
+          {{ t.name }}
+        </option>
+      </select>
+    </td>
     <td><input type="number" [(ngModel)]="systemNumber" data-test="systembolaget-input"></td>
 
   </tr>

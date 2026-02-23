@@ -1,4 +1,5 @@
 import {DataTypes, Model, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
+import {WineTypeDto} from "./types";
 
 export interface GrapeAttributes {
     id: number;
@@ -327,8 +328,15 @@ export class Orm {
         );
     }
 
-    async findWineTypes() {
-        return this.WineType.findAll();
+    async findWineTypes(): Promise<WineTypeDto[]> {
+        const models = await this.WineType.findAll({
+            attributes: ['id', 'sv']
+        });
+
+        return models.map(x => ({
+            id: x.id,
+            name: x.sv
+        }));
     }
 
 

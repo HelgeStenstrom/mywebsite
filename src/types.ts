@@ -22,3 +22,8 @@ export type WineCreateDto = {
     volume?: number;
 };
 
+export type WineTypeDto = {
+    id: number;
+    name: string;
+};
+

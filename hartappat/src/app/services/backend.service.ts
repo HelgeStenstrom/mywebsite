@@ -58,13 +58,21 @@ export class BackendService {
     return this.http
       .get<Grape[]>(url)
       .pipe(
-        // Genom att aktivera raden nedan, kan man enkelt verifiera att ett UT verkligen testar
-        //map(gs => gs.map((g: Grape) => ({name: 'Not ' + g.name + '?', color: g.color}))),
-        // Så länge fördröjningen är mindre än 5 sekunder (Jasmine default väntetid), så verkar unit test fungera.
-        //delay(4900),
         catchError(this.handleError));
   }
 
+
+  getCountries(): Observable<CountryApi[]> {
+    return this.http
+      .get<CountryApi[]>(`${this.apiBase}/countries`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getWineTypes(): Observable<WineTypeApi[]> {
+    return this.http
+      .get<WineTypeApi[]>(`${this.apiBase}/wine-types`)
+      .pipe(catchError(this.handleError));
+  }
 
   getWines(): Observable<WineView[]> {
     const url: string = this.apiBase + '/wines';
@@ -146,6 +154,16 @@ export type WineApi = {
   };
   systembolaget?: number;
   volume?: number;
+};
+
+export type CountryApi = {
+  id: number;
+  name: string;
+};
+
+export type WineTypeApi = {
+  id: number;
+  name: string;
 };
 
 export type Grape = {
