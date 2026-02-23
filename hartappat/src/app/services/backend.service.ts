@@ -46,6 +46,12 @@ export class BackendService {
   }
 
 
+  deleteCountry(id: number) {
+    const url: string = this.apiBase + `/countries/${id}`;
+    return this.http.delete<void>(url);
+  }
+
+
   deleteWine(wine: WineView): Observable<WineView> {
     const url: string = this.apiBase + `/wines/${wine.id}`;
 
@@ -60,7 +66,6 @@ export class BackendService {
       .pipe(
         catchError(this.handleError));
   }
-
 
   getCountries(): Observable<CountryApi[]> {
     return this.http
