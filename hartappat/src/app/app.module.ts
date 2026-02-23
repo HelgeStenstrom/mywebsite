@@ -29,11 +29,13 @@ import {DndDirective} from './dnd.directive';
 import {TestbenchComponent} from './components/testbench/testbench.component';
 import {ProvningarComponent} from './components/provningar/provningar.component';
 import {TastingComponent} from './components/provningar/tasting/tasting.component';
-import { AltDruvorComponent } from './components/alt-druvor/alt-druvor.component';
-import { MembersComponent } from './components/about/members/members.component';
-import { VotingComponent } from './components/voting/voting.component';
-import { WineComponent } from './components/wine/wine.component';
+import {AltDruvorComponent} from './components/alt-druvor/alt-druvor.component';
+import {MembersComponent} from './components/about/members/members.component';
+import {VotingComponent} from './components/voting/voting.component';
+import {WineComponent} from './components/wine/wine.component';
 import {ExtraHeaderInterceptor} from "./services/interceptors/extra-header-interceptor";
+import {CountriesComponent} from './components/countries/countries.component';
+import {WineTypesComponent} from './components/wine-types/wine-types.component';
 
 @NgModule({
   declarations: [
@@ -57,7 +59,9 @@ import {ExtraHeaderInterceptor} from "./services/interceptors/extra-header-inter
     AltDruvorComponent,
     MembersComponent,
     VotingComponent,
-    WineComponent
+    WineComponent,
+    CountriesComponent,
+    WineTypesComponent
   ],
   imports: [
     BrowserModule,
@@ -75,6 +79,8 @@ import {ExtraHeaderInterceptor} from "./services/interceptors/extra-header-inter
       {path: 'about', component: AboutComponent},
       {path: 'voting', component: VotingComponent},
       {path: 'provningar', component: ProvningarComponent},
+      {path: 'countries', component: CountriesComponent},
+      {path: 'wine-types', component: WineTypesComponent},
       {path: 'tests', component: TestbenchComponent},
       {path: '**', component: NotFoundComponent},
     ]),
