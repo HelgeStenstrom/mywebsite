@@ -59,7 +59,7 @@ describe('Database tests', () => {
             await orm.createTables();
 
             const countryInstance = await orm.postCountry("A country");
-            const wineTypeInstance = await orm.postWineType({sv:"rött"});
+            const wineTypeInstance = await orm.postWineType({name:"rött"});
             const wineInstance = await orm.postWine({
                 country: countryInstance.id,
                 name: "Wine name",
@@ -183,7 +183,7 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType = await orm.postWineType({sv: "rött"});
+            const wineType = await orm.postWineType({name: "rött"});
 
             // Then ensure that we have the needed country
             const country = await orm.postCountry({name: "Sverige"});
@@ -211,7 +211,7 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType = await orm.postWineType({sv: "rött"});
+            const wineType = await orm.postWineType({name: "rött"});
 
             // Then ensure that we have the needed country
             const country = await orm.postCountry({name: "Sverige"});
@@ -260,7 +260,7 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType = await orm.postWineType({sv: "rött"});
+            const wineType = await orm.postWineType({name: "rött"});
 
             // Then ensure that we have the needed country
             const country = await orm.postCountry({name: "Sverige"});
@@ -293,8 +293,8 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            await orm.postWineType({sv: "sadf"});
-            wineType = await orm.postWineType({sv: "rött"});
+            await orm.postWineType({name: "sadf"});
+            wineType = await orm.postWineType({name: "rött"});
 
             // Then ensure that we have the needed country
              country = await orm.postCountry({name: "Sverige"});
@@ -363,8 +363,8 @@ describe('Database tests', () => {
         test('Post and read back winetypes', async () => {
 
             await orm.createTables();
-            await orm.postWineType({sv: "rött"});
-            await orm.postWineType({sv: "vitt"});
+            await orm.postWineType({name: "rött"});
+            await orm.postWineType({name: "vitt"});
 
             const wineTypes = await orm.findWineTypes();
 

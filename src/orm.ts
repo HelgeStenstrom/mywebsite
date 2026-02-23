@@ -12,7 +12,7 @@ interface GrapeInstance extends Model<GrapeAttributes>, GrapeAttributes {}
 interface WineAssociations {
     winetypeModel: {
         id: number;
-        sv: string;
+        name: string;
     };
 
     countryModel: {
@@ -38,7 +38,7 @@ export interface CountryInstance extends Model<CountryAttributes>, CountryAttrib
 
 interface WineTypeAttributes {
     id: number;
-    sv: string;
+    name: string;
 }
 export interface WineTypeInstance extends Model<WineTypeAttributes>, WineTypeAttributes {}
 
@@ -134,7 +134,7 @@ function defineMember(sequelize1: Sequelize): ModelStatic<MemberInstance> {
 function defineWineType(sequelize1: Sequelize): ModelStatic<WineTypeInstance> {
     return sequelize1.define("winetypeModel",
         {
-            sv: DataTypes.STRING(20),
+            name: DataTypes.STRING(20),
         },
         {
             timestamps: false,
@@ -243,7 +243,7 @@ export class Orm {
                 include: [
                     {
                         model: this.WineType,
-                        attributes: ['id', 'sv'],
+                        attributes: ['id', 'name'],
                         required: true
                     },
                     {
@@ -265,7 +265,7 @@ export class Orm {
 
                         wineType: {
                             id: x.winetypeModel.id,
-                            name: x.winetypeModel.sv
+                            name: x.winetypeModel.name
                         },
                         country: {
                             id: x.countryModel.id,
@@ -328,17 +328,17 @@ export class Orm {
 
     async findWineTypes(): Promise<WineTypeDto[]> {
         const models = await this.WineType.findAll({
-            attributes: ['id', 'sv']
+            attributes: ['id', 'name']
         });
 
         return models.map(x => ({
             id: x.id,
-            name: x.sv
+            name: x.name
         }));
     }
 
 
-    async postWineType(param: { sv: string }) {
+    async postWineType(param: { name: string }) {
         return this.WineType.create(param);
     }
 
