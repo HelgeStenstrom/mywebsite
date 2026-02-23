@@ -49,6 +49,21 @@ describe('Table endpoints', () => {
             ]);
 
         })
+
+        test('Countries: delete an existing country', async () => {
+            const putResponse1 = await request(app).post('/api/v1/countries').send({name: "Sverige"});
+            expect(putResponse1.status).toBe(201);
+            const putResponse2 = await request(app).post('/api/v1/countries').send({name: "Norge"});
+            expect(putResponse2.status).toBe(201);
+
+            const deleteResponse = await request(app).delete('/api/v1/countries/1');
+            expect(deleteResponse.status).toBe(204);
+
+            const getResponse = await request(app).get('/api/v1/countries');
+            expect(getResponse.status).toBe(200);
+            expect(getResponse.body).toEqual([{id: 2, name: "Norge"}]);
+
+        })
     })
 
 

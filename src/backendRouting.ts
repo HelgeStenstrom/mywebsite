@@ -22,6 +22,7 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.get('/api/v1/countries', endpointHandlers.getCountries());
     router.post('/api/v1/countries', endpointHandlers.postCountries());
+    router.delete('/api/v1/countries/:id', endpointHandlers.deleteCountryById());
 
     router.get('/api/v1/grapes', endpointHandlers.getGrapes());
     router.post('/api/v1/grapes', endpointHandlers.postGrape());

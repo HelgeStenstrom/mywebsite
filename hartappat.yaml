@@ -67,7 +67,7 @@ paths:
             type: integer
             format: int64
       responses:
-        200:
+        204:
           description: Successful deletion of the given country
           content:
             application/json:

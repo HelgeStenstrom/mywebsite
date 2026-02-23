@@ -252,6 +252,22 @@ export class EndpointHandlers {
         };
     }
 
+    deleteCountryById() {
+        return async (req, res) => {
+            const id = req.params.id;
+
+            this.orm.delCountryById(id)
+                .then((gnum) => {
+                    if (gnum)
+                        return res.status(204).json("Country successfully deleted");
+                    else
+                        return res.status(404).json({error: 'Country not found'});
+                })
+                .catch(e => console.error(e));
+        };
+    }
+
+
     /**
      * Delete a wine from the database, identified by its ID.
      */
@@ -270,7 +286,6 @@ export class EndpointHandlers {
         };
 
     }
-
 
     postWineType() {
         return async (req, res) => {
