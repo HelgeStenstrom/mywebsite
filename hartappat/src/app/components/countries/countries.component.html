@@ -1,5 +1,11 @@
 <h2>Länder</h2>
 
+<!-- Formulär för nytt land -->
+<div>
+  <input type="text" [(ngModel)]="newCountryName" placeholder="Nytt land" />
+  <button (click)="addCountry()">Lägg till</button>
+</div>
+
 <table>
   <thead>
   <tr>

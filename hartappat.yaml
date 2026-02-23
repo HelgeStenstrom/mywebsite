@@ -27,7 +27,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Country'
+              $ref: '#/components/schemas/CountryCreate'
       responses:
         200:
           description: Successful response.
@@ -404,6 +404,12 @@ components:
         id:
           type: integer
           example: 42
+        name:
+            type: string
+            example: Frankrike
+    CountryCreate:
+      type: object
+      properties:
         name:
             type: string
             example: Frankrike

@@ -9,14 +9,17 @@ import {BackendService, CountryApi} from "../../services/backend.service";
 export class CountriesComponent implements OnInit {
 
   countries: CountryApi[] = [];
+  newCountryName = '';
 
   constructor(private backendService: BackendService) {}
 
   ngOnInit(): void {
-    this.backendService.getCountries().subscribe(countries => {
-      this.countries = countries;
-      console.log(this.countries);
-      console.log("ngOnInit for CountriesComponent called.");
+    this.loadCountries();
+  }
+
+  private loadCountries() {
+    this.backendService.getCountries().subscribe(c => {
+      this.countries = c;
     });
   }
 
@@ -30,5 +33,22 @@ export class CountriesComponent implements OnInit {
         console.error('Failed to delete country', err);
       }
     });
+  }
+
+  protected addCountry() {
+    if (!this.newCountryName.trim()) return; // ignore empty strings
+
+
+    this.backendService.addCountry(this.newCountryName.trim())
+      .subscribe({
+        next: (created) => {
+          this.countries.push(created); // lägg till direkt i listan
+          this.countries.sort((a, b) => a.name.localeCompare(b.name)); // håll listan alfabetisk
+          this.newCountryName = ''; // töm inputfältet
+        },
+        error: (err) => {
+          console.error('Failed to add country', err);
+        }
+      });
   }
 }

@@ -135,6 +135,11 @@ export class BackendService {
     return this.http.get<Tasting[]>(url);
 
   }
+
+  addCountry(name: string) {
+    const url = `${this.apiBase}/countries`;
+    return this.http.post<CountryApi>(url, {name});
+  }
 }
 
 export type WineView = {
