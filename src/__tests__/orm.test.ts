@@ -311,56 +311,7 @@ describe('Database tests', () => {
             expect(countries[0].name).toEqual("Sverige");
         });
 
-        test('post a wine and check it manually', async () => {
-            await orm.postWine({
-                country: country['id'],
-                name: 'Rödtjut',
-                systembolaget: 4711,
-                volume: 750,
-                winetype: wineType['id']
-            })
 
-
-            const winesNoOptions = await orm.findWinesNoOptions();
-            expect(winesNoOptions).toBeTruthy();
-            expect(winesNoOptions).not.toHaveLength(0);
-
-            console.log("==== EXERCISE findWines()  ========")
-
-            const allWines = await orm.findWines();
-            expect(allWines).toBeTruthy();
-            expect(allWines).not.toHaveLength(0);
-
-            expect(allWines).toBeTruthy();
-            const postedWine = allWines[0];
-            expect(postedWine).toBeTruthy();
-            //console.log('All wines:', postedWine);
-            expect(postedWine['name']).toEqual("Rödtjut");
-            expect(postedWine['systembolaget']).toEqual(4711);
-            expect(postedWine['wineType']).toEqual({"id": 2, "name": "rött"});
-            expect(postedWine['country']).toEqual({"id": 1, "name": "Sverige"});
-            expect(postedWine['volume']).toEqual(750);
-
-        })
-
-        test('findWinesNoOptions', async () => {
-            await orm.postWine({
-                country: country['id'],
-                name: 'Rödtjut',
-                systembolaget: 4711,
-                volume: 750,
-                winetype: wineType['id']
-            })
-
-
-            console.log("==== EXERCISE findWinesNoOptions()  ========")
-            const winesNoOptions = await orm.findWinesNoOptions();
-            expect(winesNoOptions).toBeTruthy();
-
-            expect(winesNoOptions).not.toHaveLength(0);
-
-
-        });
     });
 
     describe('Winetype tests', () => {

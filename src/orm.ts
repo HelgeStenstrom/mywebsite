@@ -281,9 +281,6 @@ export class Orm {
         );
     }
 
-    findWinesNoOptions() {
-        return this.Wine.findAll();
-    }
 
     postGrape(grape) {
 
