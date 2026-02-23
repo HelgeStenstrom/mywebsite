@@ -1,1 +1,22 @@
-<p>countries works!</p>
+<h2>Länder</h2>
+
+<table>
+  <thead>
+  <tr>
+    <th>ID</th>
+    <th>Namn</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let country of countries">
+    <td>{{ country.id }}</td>
+    <td>{{ country.name }}</td>
+  </tr>
+  </tbody>
+
+</table>
+
+<p *ngIf="countries.length === 0">
+  Inga länder hittades.
+</p>
