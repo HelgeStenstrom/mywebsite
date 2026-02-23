@@ -184,9 +184,13 @@ export class Orm {
         this.WineType = defineWineType(this.sequelize)
         this.Wine = defineWine(this.sequelize)
 
-        this.Wine.belongsTo(this.Country, {foreignKey: 'country'});
+        this.Wine.belongsTo(this.Country, {
+            foreignKey: 'country',
+            as: 'countryModel'
+        });
         this.Country.hasMany(this.Wine, {
-            foreignKey: 'country'
+            foreignKey: 'country',
+            as: 'wines'
         });
 
         this.Wine.belongsTo(this.WineType, {foreignKey: 'winetype'});
@@ -227,13 +231,14 @@ export class Orm {
      * Returns a promise that resolves to an array of CountryInstance objects.
      * Return all countries in the database.
      */
-    async findCountries(): Promise<{ id: number, name: string }[]> {
+    async findCountries(): Promise<{ id: number, name: string, isUsed: boolean}[]> {
         const countries = await this.Country.findAll({
             attributes: ['id', 'name'], // vi behöver fortfarande id internt
             order: [['name', 'ASC']], // sortera alfabetiskt
             include: [
                 {
                     model: this.Wine,
+                    as: 'wines',
                     attributes: ['id'],  // vi behöver bara veta om det finns några viner
                     required: false      // vänster join, så länder utan viner också returneras
                 }
@@ -258,11 +263,13 @@ export class Orm {
                 include: [
                     {
                         model: this.WineType,
+                        as: 'winetypeModel',
                         attributes: ['id', 'name'],
                         required: true
                     },
                     {
                         model: this.Country,
+                        as: 'countryModel',
                         attributes: ['id', 'name'],
                         required: true
                     }
