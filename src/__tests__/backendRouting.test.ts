@@ -45,8 +45,8 @@ describe('Table endpoints', () => {
 
             expect(getResponse.body).toEqual([
                 // Countries are returned in alphabetical order.
-                {id: 2, name: "Norge"},
-                {id: 1, name: "Sweden"},
+                {id: 2, name: "Norge", isUsed: false},
+                {id: 1, name: "Sweden", isUsed: false},
             ]);
 
         })
@@ -62,7 +62,7 @@ describe('Table endpoints', () => {
 
             const getResponse = await request(app).get('/api/v1/countries');
             expect(getResponse.status).toBe(200);
-            expect(getResponse.body).toEqual([{id: 2, name: "Norge"}]);
+            expect(getResponse.body).toEqual([{id: 2, name: "Norge", isUsed: false}]);
 
         })
     })
@@ -138,7 +138,7 @@ describe('Table endpoints', () => {
             await request(app).post('/api/v1/countries').send({name: "Sweden"});
             // Verify
             const countries = await request(app).get('/api/v1/countries');
-            expect(countries.body).toEqual([{id: 1, name: "Sweden"}]);
+            expect(countries.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
 
             // Then create a wine type.
             await request(app).post('/api/v1/wine-types').send({name: "rött"})

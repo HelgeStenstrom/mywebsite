@@ -227,12 +227,23 @@ export class Orm {
      * Returns a promise that resolves to an array of CountryInstance objects.
      * Return all countries in the database.
      */
-    findCountries(): Promise<{id:number,name:string}[]> {
-        return this.Country.findAll({
-            attributes: ['id', 'name'],  // vi behöver fortfarande id internt
-            order: [['name', 'ASC']]     // sortera alfabetiskt
-        }).then(models =>
-                models.map(c => ({id: c.id, name: c.name})));
+    async findCountries(): Promise<{ id: number, name: string }[]> {
+        const countries = await this.Country.findAll({
+            attributes: ['id', 'name'], // vi behöver fortfarande id internt
+            order: [['name', 'ASC']], // sortera alfabetiskt
+            include: [
+                {
+                    model: this.Wine,
+                    attributes: ['id'],  // vi behöver bara veta om det finns några viner
+                    required: false      // vänster join, så länder utan viner också returneras
+                }
+            ]
+        });
+        return countries.map(c => ({
+            id: c.id,
+            name: c.name,
+            isUsed: false
+        }));
     }
 
     async postWine(param: {

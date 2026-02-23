@@ -32,8 +32,8 @@ describe('Database tests', () => {
             expect(countries).toHaveLength(2);
             expect(countries).toEqual([
                 // Countries are returned in alphabetical order.
-                {id: 2, name: "Finland"},
-                {id: 1, name: "Norge"}
+                {id: 2, name: "Finland", isUsed: false},
+                {id: 1, name: "Norge", isUsed: false}
             ]);
         });
 
