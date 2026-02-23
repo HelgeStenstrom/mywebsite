@@ -86,13 +86,13 @@ describe('Database tests', () => {
             // and that the ID gets incremented.
             await orm.createTables();
 
-            const first = (await orm.postGrape({name: "first", color: "gray"})).dataValues;
-            const second = (await orm.postGrape({name: "second", color: "blue"})).dataValues;
+            const first = (await orm.postGrape({name: "first", color: "grön"})).dataValues;
+            const second = (await orm.postGrape({name: "second", color: "blå"})).dataValues;
             expect(first.name).toEqual("first");
-            expect(first.color).toEqual("gray");
+            expect(first.color).toEqual("grön");
             expect(first.id).toEqual(1); // TODO: this is not an actual requirement; test something else.
             expect(second.name).toEqual("second");
-            expect(second.color).toEqual("blue");
+            expect(second.color).toEqual("blå");
             expect(second.id).toEqual(2);
         });
 
@@ -100,25 +100,25 @@ describe('Database tests', () => {
 
             await orm.createTables();
 
-            await orm.postGrape({name: "first", color: "gray"});
-            const secondPosted = await orm.postGrape({name: "second", color: "blue"});
+            await orm.postGrape({name: "first", color: "grön"});
+            const secondPosted = await orm.postGrape({name: "second", color: "blå"});
 
             const grapesBack = await orm.findGrapes();
 
             expect(grapesBack.length).toEqual(2);
             const firstBack = grapesBack.filter(g => g.name === "first")[0];
             const secondBack = grapesBack.filter(g => g.id === secondPosted.id)[0];
-            expect(firstBack.color).toEqual("gray");
-            expect(secondBack.color).toEqual("blue");
+            expect(firstBack.color).toEqual("grön");
+            expect(secondBack.color).toEqual("blå");
         });
 
         test('delete a grape by name', async () => {
 
             // Setup
             await orm.createTables();
-            await orm.postGrape({name: "g1", color: "gray"});
-            await orm.postGrape({name: "g2", color: "gray"});
-            await orm.postGrape({name: "g3", color: "gray"});
+            await orm.postGrape({name: "g1", color: "grön"});
+            await orm.postGrape({name: "g2", color: "grön"});
+            await orm.postGrape({name: "g3", color: "grön"});
 
             // Exercise
             await orm.delGrape("g2");
@@ -132,15 +132,15 @@ describe('Database tests', () => {
 
             // Setup
             await orm.createTables();
-            await orm.postGrape({name: "g1", color: "gray"});
+            await orm.postGrape({name: "g1", color: "grön"});
             const prePatchGrapes = await orm.findGrapes();
             expect(prePatchGrapes[0].id).toEqual(1);
             expect(prePatchGrapes[0].name).toEqual("g1");
 
             // Exercise
             await orm.patchGrapeByNameAndColor(
-                {id: 1, name: 'g1', color: 'gray'},
-                {id: 1, name: "g2", color: "white"})
+                {id: 1, name: 'g1', color: 'grön'},
+                {id: 1, name: "g2", color: "blå"})
 
             // Verify
             const grapes = await orm.findGrapes();
@@ -302,7 +302,7 @@ describe('Database tests', () => {
 
         test('check the setup', async () => {
             const wineTypes = await orm.findWineTypes();
-            expect(wineTypes[1].sv).toEqual("rött");
+            expect(wineTypes[1].name).toEqual("rött");
             const countries = await orm.findCountries();
             expect(countries[0].name).toEqual("Sverige");
         });
@@ -333,8 +333,8 @@ describe('Database tests', () => {
             //console.log('All wines:', postedWine);
             expect(postedWine['name']).toEqual("Rödtjut");
             expect(postedWine['systembolaget']).toEqual(4711);
-            expect(postedWine['wineType']).toEqual("rött");
-            expect(postedWine['country']).toEqual("Sverige");
+            expect(postedWine['wineType']).toEqual({"id": 2, "name": "rött"});
+            expect(postedWine['country']).toEqual({"id": 1, "name": "Sverige"});
             expect(postedWine['volume']).toEqual(750);
 
         })
@@ -368,10 +368,8 @@ describe('Database tests', () => {
 
             const wineTypes = await orm.findWineTypes();
 
-            expect(wineTypes[0].sv).toEqual("rött");
-            expect(wineTypes[0].en).toEqual("red");
-            expect(wineTypes[1].sv).toEqual("vitt");
-            expect(wineTypes[1].en).toEqual("white");
+            expect(wineTypes[0].name).toEqual("rött");
+            expect(wineTypes[1].name).toEqual("vitt");
 
             expect(wineTypes[1].id).toEqual(2);
 

@@ -109,7 +109,7 @@ describe('Table endpoints', () => {
             const getResponse = await request(app).get('/api/v1/wine-types');
             expect(getResponse.status).toBe(200);
             expect(getResponse.body).toEqual([
-                {id: 1, sv: "blått", en: "blue"},
+                {id: 1, name: "blått"},
             ]);
 
 
@@ -125,11 +125,11 @@ describe('Table endpoints', () => {
             expect(countries.body).toEqual([{id: 1, name: "Sweden"}]);
 
             // Then create a wine type.
-            await request(app).post('/api/v1/wine-types').send({sv: "blått", en: "blue"})
+            await request(app).post('/api/v1/wine-types').send({sv: "rött", en: "red"})
 
             // Verify
             const wineTypes = await request(app).get('/api/v1/wine-types');
-            expect(wineTypes.body).toEqual([{id: 1, sv: "blått", en: "blue"}])
+            expect(wineTypes.body).toEqual([{id: 1, name: "rött"}])
 
             const putResponse = await request(app).post('/api/v1/wines').send({name: "foo", countryId: 1, wineTypeId: 1, systembolaget: 523});
             expect(putResponse.status).toBe(201);
@@ -141,7 +141,7 @@ describe('Table endpoints', () => {
                     id: 1, name: "foo", country: {
                         "id": 1,
                         "name": "Sweden",
-                    }, wineType: {"id": 1, "name": "blått"}, systembolaget: 523, volume: null,
+                    }, wineType: {"id": 1, "name": "rött"}, systembolaget: 523, volume: null,
                 },
             ]);
 
