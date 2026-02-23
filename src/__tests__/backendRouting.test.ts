@@ -164,4 +164,36 @@ describe('Table endpoints', () => {
         })
     })
 
+    describe('Table interactions', () => {
+        test('When a Wine used a Country, it shows when getting countries', async () => {
+            // Let's first create a country
+            await request(app).post('/api/v1/countries').send({name: "Sweden"});
+            // Verify
+            const countries = await request(app).get('/api/v1/countries');
+            expect(countries.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
+
+            // Then create a wine type.
+            await request(app).post('/api/v1/wine-types').send({name: "rött"})
+
+            // Verify
+            const wineTypes = await request(app).get('/api/v1/wine-types');
+            expect(wineTypes.body).toEqual([{id: 1, name: "rött"}])
+
+            // Now create a wine that uses the country.
+            await request(app).post('/api/v1/wines').send({name: "foo", countryId: 1, wineTypeId: 1, systembolaget: 523});
+
+            // Verify that the country is now used.
+            const countries2 = await request(app).get('/api/v1/countries');
+            expect(countries2.body).toEqual([{id: 1, name: "Sweden", isUsed: true}]);
+
+            // Now remove the wine.
+            await request(app).delete('/api/v1/wines/1');
+
+            // Verify that the country is no longer used.
+            const countries3 = await request(app).get('/api/v1/countries');
+            expect(countries3.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
+
+        })
+    })
+
 })
