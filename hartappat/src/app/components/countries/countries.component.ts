@@ -20,4 +20,16 @@ export class CountriesComponent implements OnInit {
     });
   }
 
+  protected deleteCountry(id: number) {
+
+    // this.backendService.deleteCountry(id).subscribe({
+    //   next: () => {
+    //     // Ta bort landet lokalt så UI uppdateras direkt
+    //     this.countries = this.countries.filter(c => c.id !== id);
+    //   },
+    //   error: err => {
+    //     console.error('Failed to delete country', err);
+    //   }
+    // });
+  }
 }

@@ -12,6 +12,11 @@
   <tr *ngFor="let country of countries">
     <td>{{ country.id }}</td>
     <td>{{ country.name }}</td>
+    <td>
+      <button (click)="deleteCountry(country.id)">
+        Ta bort
+      </button>
+    </td>
   </tr>
   </tbody>
 
