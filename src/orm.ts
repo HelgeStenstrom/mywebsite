@@ -39,7 +39,6 @@ export interface CountryInstance extends Model<CountryAttributes>, CountryAttrib
 interface WineTypeAttributes {
     id: number;
     sv: string;
-    en: string;
 }
 export interface WineTypeInstance extends Model<WineTypeAttributes>, WineTypeAttributes {}
 
@@ -136,7 +135,6 @@ function defineWineType(sequelize1: Sequelize): ModelStatic<WineTypeInstance> {
     return sequelize1.define("winetypeModel",
         {
             sv: DataTypes.STRING(20),
-            en: DataTypes.STRING(20)
         },
         {
             timestamps: false,
@@ -340,7 +338,7 @@ export class Orm {
     }
 
 
-    async postWineType(param: { sv: string; en: string }) {
+    async postWineType(param: { sv: string }) {
         return this.WineType.create(param);
     }
 
