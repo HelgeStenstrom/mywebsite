@@ -29,8 +29,12 @@ describe('Database tests', () => {
 
             const countries = await orm.findCountries();
 
-            expect(countries[0].name).toEqual("Norge");
-            expect(countries[1].name).toEqual("Finland");
+            expect(countries).toHaveLength(2);
+            expect(countries).toEqual([
+                // Countries are returned in alphabetical order.
+                {id: 2, name: "Finland"},
+                {id: 1, name: "Norge"}
+            ]);
         });
 
         test('try to delete non-existing country', async () => {

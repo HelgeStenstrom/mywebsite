@@ -44,8 +44,9 @@ describe('Table endpoints', () => {
             expect(getResponse.status).toBe(200);
 
             expect(getResponse.body).toEqual([
-                {id: 1, name: "Sweden"},
+                // Countries are returned in alphabetical order.
                 {id: 2, name: "Norge"},
+                {id: 1, name: "Sweden"},
             ]);
 
         })
