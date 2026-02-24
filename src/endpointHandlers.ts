@@ -63,9 +63,19 @@ export class EndpointHandlers {
 
         return async (req, res) => {
 
-            this.orm.postCountry(req.body)
-                .then(() => res.status(201).json("postCountries called!"))
-                .catch(e => console.error(e));
+            try {
+
+                const country = await this.orm.postCountry(req.body);
+
+                res.status(201).json({
+                    id: country.id,
+                    name: country.name,
+                    isUsed: false
+                });
+            } catch (e) {
+                console.error(e);
+                res.status(500).end();
+            }
 
         };
     }
@@ -315,11 +325,18 @@ export class EndpointHandlers {
 
     postWineType() {
         return async (req, res) => {
-            //console.log('EndpointHandlers.postWineType()');
-            const wineType = req.body;
-            this.orm.postWineType(wineType)
-                .then(() => res.status(201).json("postWineType called!"))
-                .catch(e => console.error(e));
+            try {
+                const wineType = await this.orm.postWineType(req.body);
+
+                res.status(201).json({
+                    id: wineType.id,
+                    name: wineType.name,
+                    isUsed: false
+                });
+            } catch (e) {
+                console.error(e);
+                res.status(500).end();
+            }
         };
     }
 

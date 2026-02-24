@@ -154,10 +154,16 @@ describe('Table endpoints', () => {
             expect(getResponse.status).toBe(200);
             expect(getResponse.body).toEqual([
                 {
-                    id: 1, name: "foo", country: {
+                    id: 1,
+                    name: "foo",
+                    country: {
                         "id": 1,
                         "name": "Sweden",
-                    }, wineType: {"id": 1, "name": "rött"}, systembolaget: 523, volume: null,
+                        },
+                    wineType: {"id": 1, "name": "rött"},
+                    systembolaget: 523,
+                    volume: null,
+                    createdAt: null,
                 },
             ]);
 
