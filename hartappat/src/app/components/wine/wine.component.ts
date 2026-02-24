@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService, CountryApi, WineTypeApi, WineView} from "../../services/backend.service";
+import {BackendService, CountryApi, WineCreate, WineTypeApi} from "../../services/backend.service";
 
 @Component({
   selector: 'app-wine',
@@ -29,8 +29,17 @@ export class WineComponent implements OnInit {
     });
   }
 
-  getWine(): WineView {
-    return {id: 3, name:this.wineName, country:'land', systembolaget:this.systemNumber, wineType:this.typeSelect, volume: 749};
+  getWine(): WineCreate {
+    if (!this.countryId || !this.wineTypeId) {
+      throw new Error("Country and wine type must be selected");
+    }
+
+    return {
+      name:this.wineName,
+      countryId:this.countryId,
+      systembolaget:this.systemNumber,
+      wineTypeId:this.wineTypeId,
+      volume: 749};
   }
 
 }

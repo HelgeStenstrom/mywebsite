@@ -25,7 +25,7 @@ export class BackendService {
     return this.grapesSubject.asObservable();
   }
 
-  addWine(wine: WineView):  Observable<void> {
+  addWine(wine: WineCreate):  Observable<void> {
 
     const url = `${this.apiBase}/wines`;
     console.log(`BackendService.addWine: ${wine.name}. url = ${url}`)
@@ -159,6 +159,14 @@ export type WineView = {
   wineType: string;
   systembolaget: number | undefined;
   volume: number | undefined;
+};
+
+export type WineCreate = {
+  name: string;
+  countryId: number;
+  wineTypeId: number;
+  systembolaget?: number;
+  volume?: number;
 };
 
 export type WineApi = {
