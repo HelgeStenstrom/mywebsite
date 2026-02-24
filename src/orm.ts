@@ -1,5 +1,5 @@
 import {DataTypes, Model, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
-import {WineTypeDto} from "./types";
+import {CountryDto, WineTypeDto} from "./types";
 
 export interface GrapeAttributes {
     id: number;
@@ -246,16 +246,16 @@ export class Orm {
      * Returns a promise that resolves to an array of CountryInstance objects.
      * Return all countries in the database.
      */
-    async findCountries(): Promise<{ id: number, name: string, isUsed: boolean}[]> {
+    async findCountries(): Promise<CountryDto[]> {
         const countries = await this.Country.findAll({
-            attributes: ['id', 'name'], // vi behöver fortfarande id internt
+            attributes: ['id', 'name'],
             order: [['name', 'ASC']], // sortera alfabetiskt
             include: [
                 {
                     model: this.Wine,
                     as: 'wines',
-                    attributes: ['id'],  // vi behöver bara veta om det finns några viner
-                    required: false      // vänster join, så länder utan viner också returneras
+                    attributes: ['id'],
+                    required: false,
                 }
             ]
         }) as CountryWithWines[];

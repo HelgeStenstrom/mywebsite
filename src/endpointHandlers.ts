@@ -1,8 +1,6 @@
 import {Orm} from "./orm";
 import {WineCreateDto} from "./types";
 
-//import {Wine} from "../hartappat/src/app/services/backend.service";
-
 
 /**
  * This class contains all the endpoint handlers. The endpoint handlers are called when the corresponding
@@ -34,17 +32,6 @@ export class EndpointHandlers {
     }
 
 // Countries
-
-    /**
-     * Add a country to the database.
-     * @deprecated Use postCountries instead.
-     *
-     */
-    postCountry(): (req, res) => void {
-        return function (p1, p2) {
-            throw Error("not implemented yet");
-        };
-    }
 
     /**
      * Get all countries from the database.

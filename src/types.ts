@@ -28,3 +28,8 @@ export type WineTypeDto = {
     isUsed: boolean;
 };
 
+export type CountryDto = {
+    id: number;
+    name: string;
+    isUsed: boolean;
+};
