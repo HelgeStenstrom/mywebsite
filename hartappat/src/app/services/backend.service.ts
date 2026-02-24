@@ -15,17 +15,19 @@ export class BackendService {
    * Subject baserat på https://stackoverflow.com/questions/40313770/how-to-trigger-function-from-one-component-to-another-in-angular2
    */
   private grapesSubject: Subject<Grape> = new Subject<Grape>();
-  constructor(private http:HttpClient) { }
+
+  constructor(private http: HttpClient) {
+  }
 
   newEvent(event: Grape): void {
     this.grapesSubject.next(event);
   }
 
-  get events () {
+  get events() {
     return this.grapesSubject.asObservable();
   }
 
-  addWine(wine: WineCreate):  Observable<void> {
+  addWine(wine: WineCreate): Observable<void> {
 
     const url = `${this.apiBase}/wines`;
     console.log(`BackendService.addWine: ${wine.name}. url = ${url}`)
@@ -105,7 +107,7 @@ export class BackendService {
     };
   }
 
-  patchGrape(from: Grape, to:Grape): Observable<void> {
+  patchGrape(from: Grape, to: Grape): Observable<void> {
     const url = `${this.apiBase}/grapes`;
     const objectObservable: Observable<void> = this.http.patch<void>(url, {from, to});
     return objectObservable.pipe(catchError(this.handleError));
@@ -134,7 +136,7 @@ export class BackendService {
       );
   }
 
-  getTastings() : Observable<Tasting[]>{
+  getTastings(): Observable<Tasting[]> {
 
     const url = `${this.apiBase}/tastings`;
     return this.http.get<Tasting[]>(url);
@@ -157,8 +159,8 @@ export type WineView = {
   name: string;
   country: string;
   wineType: string;
-  systembolaget: number | undefined;
-  volume: number | undefined;
+  systembolaget?: number;
+  volume?: number;
 };
 
 export type WineCreate = {

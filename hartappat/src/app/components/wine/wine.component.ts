@@ -15,6 +15,7 @@ export class WineComponent implements OnInit {
   countryId?: number;
   wineTypeId?: number;
   systemNumber?: number;
+  volume?: number;
 
   constructor(private backendService: BackendService) {
   }
@@ -39,7 +40,7 @@ export class WineComponent implements OnInit {
       countryId:this.countryId,
       systembolaget:this.systemNumber,
       wineTypeId:this.wineTypeId,
-      volume: 749};
+      volume: this.volume};
   }
 
 }
