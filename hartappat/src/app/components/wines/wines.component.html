@@ -20,8 +20,14 @@
     <td>{{w.country}}</td>
     <td>{{w.wineType}}</td>
     <td>{{w.volume}}</td>
-    <td *ngIf="w.systembolaget"><a
-      href="https://www.systembolaget.se/sortiment/?q={{w.systembolaget}}">{{w.systembolaget}}</a></td>
+    <td *ngIf="w.systembolaget">
+      <a
+      href="https://www.systembolaget.se/sortiment/?q={{w.systembolaget}}"
+      target="_blank"
+      rel="noopener noreferrer">
+        {{w.systembolaget}}
+      </a>
+    </td>
     <td *ngIf="!w.systembolaget"></td>
 
     <button mat-icon-button color="primary" (click)="edit(w)">
