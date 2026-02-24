@@ -103,7 +103,8 @@ export class BackendService {
       country: wine.country.name,
       wineType: wine.wineType.name,
       systembolaget: wine.systembolaget,
-      volume: wine.volume
+      volume: wine.volume,
+      createdAt: wine.createdAt,
     };
   }
 
@@ -161,6 +162,7 @@ export type WineView = {
   wineType: string;
   systembolaget?: number;
   volume?: number;
+  createdAt?: string;
 };
 
 export type WineCreate = {
@@ -184,6 +186,7 @@ export type WineApi = {
   };
   systembolaget?: number;
   volume?: number;
+  createdAt?: string;
 };
 
 export type CountryApi = {

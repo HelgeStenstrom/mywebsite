@@ -26,6 +26,7 @@ interface WineAttributes {
     name: string;
     systembolaget: number;
     volume: number;
+    createdAt?: Date;
 }
 
 interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
@@ -153,11 +154,14 @@ function defineWineType(sequelize1: Sequelize): ModelStatic<WineTypeInstance> {
 function defineWine(sequelize1: Sequelize): ModelStatic<WineInstance> {
     return sequelize1.define("wine",
         {
-            // country: DataTypes.TEXT,
             name: DataTypes.STRING(256),
             systembolaget: DataTypes.INTEGER,
             volume: DataTypes.INTEGER,
-            //winetype: DataTypes.TEXT,
+
+            createdAt: {
+                type: DataTypes.DATE,
+                allowNull: true
+            }
         },
         {
             timestamps: false,
@@ -296,6 +300,7 @@ export class Orm {
                         name: x.name,
                         systembolaget: x.systembolaget,
                         volume: x.volume,
+                        createdAt: x.createdAt,
 
                         wineType: {
                             id: x.winetypeModel.id,
