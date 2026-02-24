@@ -46,6 +46,12 @@ export class BackendService {
   }
 
 
+  deleteWineType(id: number) {
+    const url: string = this.apiBase + `/wine-types/${id}`;
+    return this.http.delete<void>(url);
+  }
+
+
   deleteCountry(id: number) {
     const url: string = this.apiBase + `/countries/${id}`;
     return this.http.delete<void>(url);
@@ -57,7 +63,6 @@ export class BackendService {
 
     return this.http.delete<WineView>(url);
   }
-
 
   getGrapes(): Observable<Grape[]> {
     const url: string = this.apiBase + '/grapes';
@@ -139,6 +144,11 @@ export class BackendService {
   addCountry(name: string) {
     const url = `${this.apiBase}/countries`;
     return this.http.post<CountryApi>(url, {name});
+  }
+
+  addWineType(name: string) {
+    const url = `${this.apiBase}/wine-types`;
+    return this.http.post<WineTypeApi>(url, {name});
   }
 }
 

@@ -1,1 +1,32 @@
-<p>wine-types works!</p>
+<h2>Vintyper</h2>
+
+<!-- Formulär för nytt land -->
+<div>
+  <input type="text" [(ngModel)]="newWineType" placeholder="Ny vintyp" />
+  <button (click)="addWineType()">Lägg till</button>
+</div>
+
+<table>
+  <thead>
+  <tr>
+    <th>Namn</th>
+    <th>Åtgärd</th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <tr *ngFor="let wineType of wineTypes">
+    <td>{{ wineType.name }}</td>
+    <td>
+      <button (click)="deleteWineType(wineType.id)">
+        Ta bort
+      </button>
+    </td>
+  </tr>
+  </tbody>
+
+</table>
+
+<p *ngIf="wineTypes.length === 0">
+  Inga vintyper hittades.
+</p>
