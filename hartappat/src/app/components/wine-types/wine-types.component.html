@@ -18,7 +18,10 @@
   <tr *ngFor="let wineType of wineTypes">
     <td>{{ wineType.name }}</td>
     <td>
-      <button (click)="deleteWineType(wineType.id)">
+      <button
+        (click)="deleteWineType(wineType.id)"
+        [disabled]="wineType.isUsed"
+      >
         Ta bort
       </button>
     </td>

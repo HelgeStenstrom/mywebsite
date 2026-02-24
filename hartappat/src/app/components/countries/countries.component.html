@@ -18,7 +18,10 @@
   <tr *ngFor="let country of countries">
     <td>{{ country.name }}</td>
     <td>
-      <button (click)="deleteCountry(country.id)">
+      <button
+        (click)="deleteCountry(country.id)"
+        [disabled]="country.isUsed"
+      >
         Ta bort
       </button>
     </td>

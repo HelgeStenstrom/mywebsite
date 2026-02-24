@@ -192,11 +192,13 @@ export type WineApi = {
 export type CountryApi = {
   id: number;
   name: string;
+  isUsed: boolean;
 };
 
 export type WineTypeApi = {
   id: number;
   name: string;
+  isUsed: boolean;
 };
 
 export type Grape = {
