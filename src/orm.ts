@@ -372,7 +372,18 @@ export class Orm {
     }
 
     async delCountryById(id: number) {
+        const country: CountryWithWines = await this.Country.findByPk(id, {
+            include: [{ model: this.Wine, as: 'wines', attributes: ['id'], required: false }]
+        });
 
-        return this.Country.destroy({where: {id: id}})
+        if (!country) {
+            return 'not_found';
+        }
+        if (country.wines?.length > 0) {
+            return 'in_use';
+        }
+
+        await this.Country.destroy({where: {id: id}})
+        return 'deleted';
     }
 }

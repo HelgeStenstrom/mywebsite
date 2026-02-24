@@ -256,14 +256,19 @@ export class EndpointHandlers {
         return async (req, res) => {
             const id = req.params.id;
 
-            this.orm.delCountryById(id)
-                .then((gnum) => {
-                    if (gnum)
-                        return res.status(204).json("Country successfully deleted");
-                    else
-                        return res.status(404).json({error: 'Country not found'});
-                })
-                .catch(e => console.error(e));
+            const result = await this.orm.delCountryById(id);
+
+            switch (result) {
+                case 'deleted':
+                    return res.status(204).json("Country successfully deleted");
+                case 'not_found':
+                    return res.status(404).json({error: 'Country not found'});
+                case 'in_use':
+                    return res.status(409).json({error: 'Country is in use'});
+                default:
+                    return res.status(503).json({error: 'Unknown error'});
+            }
+
         };
     }
 

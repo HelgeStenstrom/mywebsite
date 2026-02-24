@@ -194,6 +194,21 @@ describe('Table endpoints', () => {
             expect(countries3.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
 
         })
+
+        test('Trying to delete a country that is used by a wine throws an error', async () => {
+            // Let's first create a country
+            await request(app).post('/api/v1/countries').send({name: "Sweden"});
+
+            // Then create a wine type.
+            await request(app).post('/api/v1/wine-types').send({name: "rött"})
+
+            // Now create a wine that uses the country.
+            await request(app).post('/api/v1/wines').send({name: "foo", countryId: 1, wineTypeId: 1, systembolaget: 523});
+
+            // Now try to delete the country. This should fail.
+            const response = await request(app).delete('/api/v1/countries/1');
+            expect(response.status).toBe(409);
+        })
     })
 
 })

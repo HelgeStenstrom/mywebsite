@@ -41,8 +41,8 @@ describe('Database tests', () => {
             await orm.createTables();
             await orm.postCountry({name: "Norge"});
             const nonExistingId = 17;
-            const numberOfDeletedItems = await orm.delCountryById(nonExistingId);
-            expect(numberOfDeletedItems).toEqual(0);
+            const deleteResponse = await orm.delCountryById(nonExistingId);
+            expect(deleteResponse).toEqual('not_found');
             const countryInstances = await orm.findCountries();
             expect(countryInstances.length).toEqual(1);
         });
@@ -52,8 +52,8 @@ describe('Database tests', () => {
             await orm.postCountry({name: "Norge"});
             const countryInstances = await orm.findCountries();
             const idToDelete = countryInstances[0].id;
-            const numberOfDeletedItems = await orm.delCountryById(idToDelete);
-            expect(numberOfDeletedItems).toEqual(1);
+            const deleteResponse = await orm.delCountryById(idToDelete);
+            expect(deleteResponse).toEqual('deleted');
             const instancesAfterDeletion = await orm.findCountries();
             expect(instancesAfterDeletion.length).toEqual(0);
         });
