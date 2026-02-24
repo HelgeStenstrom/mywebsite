@@ -1,5 +1,5 @@
 import {beforeEach, describe, expect, test} from "@jest/globals";
-import {CountryInstance, Orm, WineTypeInstance} from "../orm";
+import {Orm} from "../orm";
 
 function fail(message) {
     throw new Error(message);
@@ -290,25 +290,26 @@ describe('Database tests', () => {
     describe('Wine tests with common database setup', () => {
 
 
-        let wineType: WineTypeInstance;
-        let country: CountryInstance;
-
         beforeEach(async () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            await orm.postWineType({name: "sadf"});
-            wineType = await orm.postWineType({name: "rött"});
-
-            // Then ensure that we have the needed country
-             country = await orm.postCountry({name: "Sverige"});
+            await orm.postWineType({name: "zzz"});
+            await orm.postWineType({name: "rött"}); // Then ensure that we have the needed country
+            await orm.postCountry({name: "Sverige"});
         });
 
         test('check the setup', async () => {
             const wineTypes = await orm.findWineTypes();
-            expect(wineTypes[1].name).toEqual("rött");
+            // Wine types are returned in alphabetical order.
+            expect(wineTypes).toEqual([
+                {id: 2, name: "rött", isUsed: false},
+                {id: 1, name: "zzz", isUsed: false},
+            ]);
+
             const countries = await orm.findCountries();
             expect(countries[0].name).toEqual("Sverige");
+
         });
 
 

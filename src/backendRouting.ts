@@ -44,5 +44,6 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.post('/api/v1/wine-types', endpointHandlers.postWineType());
     router.get('/api/v1/wine-types', endpointHandlers.getWineTypes());
+    router.delete('/api/v1/wine-types/:id', endpointHandlers.deleteWineTypeById());
 
 }

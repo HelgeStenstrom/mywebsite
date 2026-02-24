@@ -1,6 +1,6 @@
-import { afterEach, beforeEach, describe, expect, jest, test } from "@jest/globals";
-import { Orm } from "../orm";
-import { EndpointHandlers } from "../endpointHandlers";
+import {afterEach, beforeEach, describe, expect, jest, test} from "@jest/globals";
+import {Orm} from "../orm";
+import {EndpointHandlers} from "../endpointHandlers";
 
 const longTime = 1000;
 
@@ -20,39 +20,6 @@ describe('Endpoint handler tests', () => {
         orm = null;
     });
 
-    test.skip('get members before there are any', async () => {
-        const res = {
-            status: jest.fn(() => res),
-            json: jest.fn()
-        };
-
-        const sut = new EndpointHandlers(orm);
-        const memberHandlingFunction: (req, res) => Promise<void> = sut.getMembers();
-
-        await memberHandlingFunction(null, res);
-        expect(res.status).toHaveBeenCalled();
-    });
-
-    test.skip('get members before there are any, without async/await', (done) => {
-        const res = {
-            status: jest.fn(() => res),
-            json: jest.fn()
-        };
-
-        //expect(res.status(12345)).toBe(res); // Checking that status is mocked correctly
-
-        const sut = new EndpointHandlers(orm);
-        const memberHandlingFunction: (req, res) => Promise<void> = sut.getMembers();
-
-
-        return expect(memberHandlingFunction(null, res)).resolves.toBeUndefined().then(() => {
-            expect(res.status).toHaveBeenCalled();
-            expect(res.status).toHaveBeenCalledWith(12);
-            done();
-        });
-
-    });
-
 
     test('get members before there are any, with timeout', (done) => {
         const res = {
@@ -61,8 +28,6 @@ describe('Endpoint handler tests', () => {
             send: jest.fn(),
             foo: "bar",
         };
-
-        //expect(res.status(12345)).toBe(res); // Checking that status is mocked correctly
 
         const sut = new EndpointHandlers(orm);
         const memberHandlingFunction: (req, res) => Promise<void> = sut.getMembers();
@@ -86,8 +51,6 @@ describe('Endpoint handler tests', () => {
             });
 
         }, longTime);
-
-
     })
 
 
@@ -113,34 +76,6 @@ describe('Endpoint handler tests', () => {
             expect(res.status).toHaveBeenCalledWith(201);
             done();
         }, longTime);
-
-    });
-
-    test.skip('post and read back members', async () => {
-        // TODO: När detta test körs, blir det inte färdigt, och följande test(er) tycks misslyckas.
-        //  Test runner säger "Terminated". Undersök loggen från testkörningen.
-
-        const sut = new EndpointHandlers(orm);
-
-        const rs = jest.fn(x => {
-            // Nothing defined, not needed?
-            //status: (n) => console.log('.status called with ', n);
-        });
-        // rs ska vara en ett objekt som har en funktion .status(int)
-        // status(int) ska returnera ett objekt som har funktionen json(string)
-        // Lämpligt att mocka dessa, och testa de argument som funktionerna får.
-
-        const postMember: (req, res) => void = sut.postMember();
-        const rq = {body: {Given: "Nomen", Efternamn: "Nescio"}};
-        //const rq = {Given: "Nomen", Efternamn: "Nescio"};
-        postMember(rq, rs);
-
-        const members: (req, res) => Promise<void> = sut.getMembers();
-        // TODO: Förstå argumenten till members()
-        const promise = members({}, {status: (n) => console.log('.status called with ', n)});
-        promise.then(value => {
-            expect(value).toBeTruthy();
-        });
 
     });
 
@@ -195,31 +130,6 @@ describe('Endpoint handler tests', () => {
             expect(res.status).toHaveBeenCalled();
             expect(res.status).toHaveBeenCalledWith(201); // FAIL med flit, just nu.
             expect(res.json).toHaveBeenCalledWith("postMember called!");
-        });
-
-    });
-
-    test.skip('post and read back countries', async () => {
-
-        throw Error('Not ready, fix test of members first!')
-
-        const sut = new EndpointHandlers(orm);
-
-        const rs = jest.fn(x => {
-            // Nothing defined, not needed?
-        });
-        // rs ska vara en ett objekt som har en funktion .status(int)
-        // status(int) ska returnera ett objekt som har funktionen json(string)
-        // Lämpligt att mocka dessa, och testa de argument som funktionerna får.
-
-        const postCountry: (req, res) => void = sut.postCountry();
-        const rq = "Tyskland"
-        postCountry(rq, rs);
-
-        const countries = sut.getCountries();
-        const promise = countries({}, undefined);
-        promise.then(value => {
-            //expect(value).toBeTruthy();
         });
 
     });

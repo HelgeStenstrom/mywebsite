@@ -25,5 +25,6 @@ export type WineCreateDto = {
 export type WineTypeDto = {
     id: number;
     name: string;
+    isUsed: boolean;
 };
 

@@ -125,7 +125,7 @@ describe('Table endpoints', () => {
             const getResponse = await request(app).get('/api/v1/wine-types');
             expect(getResponse.status).toBe(200);
             expect(getResponse.body).toEqual([
-                {id: 1, name: "blått"},
+                {id: 1, name: "blått", isUsed: false},
             ]);
 
 
@@ -145,7 +145,7 @@ describe('Table endpoints', () => {
 
             // Verify
             const wineTypes = await request(app).get('/api/v1/wine-types');
-            expect(wineTypes.body).toEqual([{id: 1, name: "rött"}])
+            expect(wineTypes.body).toEqual([{id: 1, name: "rött", isUsed: false}])
 
             const putResponse = await request(app).post('/api/v1/wines').send({name: "foo", countryId: 1, wineTypeId: 1, systembolaget: 523});
             expect(putResponse.status).toBe(201);
@@ -165,33 +165,34 @@ describe('Table endpoints', () => {
     })
 
     describe('Table interactions', () => {
-        test('When a Wine used a Country, it shows when getting countries', async () => {
-            // Let's first create a country
+        test('When a Wine uses a WineType and a Country, it shows when getting WineTypes and Countries', async () => {
+            // Let's first create a country and a wine type
             await request(app).post('/api/v1/countries').send({name: "Sweden"});
-            // Verify
-            const countries = await request(app).get('/api/v1/countries');
-            expect(countries.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
-
-            // Then create a wine type.
             await request(app).post('/api/v1/wine-types').send({name: "rött"})
 
             // Verify
+            const countries = await request(app).get('/api/v1/countries');
             const wineTypes = await request(app).get('/api/v1/wine-types');
-            expect(wineTypes.body).toEqual([{id: 1, name: "rött"}])
+            expect(countries.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
+            expect(wineTypes.body).toEqual([{id: 1, name: "rött", isUsed: false}])
 
             // Now create a wine that uses the country.
             await request(app).post('/api/v1/wines').send({name: "foo", countryId: 1, wineTypeId: 1, systembolaget: 523});
 
-            // Verify that the country is now used.
+            // Verify that the country and wine type are now used.
             const countries2 = await request(app).get('/api/v1/countries');
+            const wineTypes2 = await request(app).get('/api/v1/wine-types');
             expect(countries2.body).toEqual([{id: 1, name: "Sweden", isUsed: true}]);
+            expect(wineTypes2.body).toEqual([{id: 1, name: "rött", isUsed: true}]);
 
             // Now remove the wine.
             await request(app).delete('/api/v1/wines/1');
 
-            // Verify that the country is no longer used.
+            // Verify that the country and wine type are no longer used.
             const countries3 = await request(app).get('/api/v1/countries');
+            const wineTypes3 = await request(app).get('/api/v1/wine-types');
             expect(countries3.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
+            expect(wineTypes3.body).toEqual([{id: 1, name: "rött", isUsed: false}]);
 
         })
 
@@ -207,6 +208,21 @@ describe('Table endpoints', () => {
 
             // Now try to delete the country. This should fail.
             const response = await request(app).delete('/api/v1/countries/1');
+            expect(response.status).toBe(409);
+        })
+
+        test('Trying to delete a wine type that is used by a wine throws an error', async () => {
+            // Let's first create a country
+            await request(app).post('/api/v1/countries').send({name: "Sweden"});
+
+            // Then create a wine type.
+            await request(app).post('/api/v1/wine-types').send({name: "rött"})
+
+            // Now create a wine that uses the wine type.
+            await request(app).post('/api/v1/wines').send({name: "foo", countryId: 1, wineTypeId: 1, systembolaget: 523});
+
+            // Now try to delete the country. This should fail.
+            const response = await request(app).delete('/api/v1/wine-types/1');
             expect(response.status).toBe(409);
         })
     })

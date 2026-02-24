@@ -45,6 +45,10 @@ interface WineTypeAttributes {
 }
 export interface WineTypeInstance extends Model<WineTypeAttributes>, WineTypeAttributes {}
 
+interface WineTypeWithWines extends WineTypeInstance {
+    wines?: { id: number }[];
+}
+
 interface MemberAttributes {
     id: number;
     given: string;
@@ -196,9 +200,13 @@ export class Orm {
             as: 'wines'
         });
 
-        this.Wine.belongsTo(this.WineType, {foreignKey: 'winetype'});
+        this.Wine.belongsTo(this.WineType, {
+            foreignKey: 'winetype',
+            as: 'winetypeModel'
+        });
         this.WineType.hasMany(this.Wine, {
-            foreignKey: 'winetype'
+            foreignKey: 'winetype',
+            as: 'wines'
         });
     }
 
@@ -351,12 +359,22 @@ export class Orm {
 
     async findWineTypes(): Promise<WineTypeDto[]> {
         const models = await this.WineType.findAll({
-            attributes: ['id', 'name']
-        });
+            attributes: ['id', 'name'],
+            order: [['name', 'ASC']],
+            include: [
+                {
+                    model: this.Wine,
+                    as: 'wines',
+                    attributes: ['id'],
+                    required: false
+                }
+            ]
+        }) as WineTypeWithWines[];
 
-        return models.map(x => ({
-            id: x.id,
-            name: x.name
+        return models.map(t => ({
+            id: t.id,
+            name: t.name,
+            isUsed: t.wines?.length > 0
         }));
     }
 
@@ -384,6 +402,22 @@ export class Orm {
         }
 
         await this.Country.destroy({where: {id: id}})
+        return 'deleted';
+    }
+
+    async delWineTypeById(id: any) {
+        const wineType: CountryWithWines = await this.WineType.findByPk(id, {
+            include: [{ model: this.Wine, as: 'wines', attributes: ['id'], required: false }]
+        });
+
+        if (!wineType) {
+            return 'not_found';
+        }
+        if (wineType.wines?.length > 0) {
+            return 'in_use';
+        }
+
+        await this.WineType.destroy({where: {id: id}})
         return 'deleted';
     }
 }

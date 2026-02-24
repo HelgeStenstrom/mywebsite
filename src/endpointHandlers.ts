@@ -273,6 +273,27 @@ export class EndpointHandlers {
     }
 
 
+    deleteWineTypeById() {
+        return async (req, res) => {
+            const id = req.params.id;
+
+            const result = await this.orm.delWineTypeById(id);
+
+            switch (result) {
+                case 'deleted':
+                    return res.status(204).json("WineType successfully deleted");
+                case 'not_found':
+                    return res.status(404).json({error: 'WineType not found'});
+                case 'in_use':
+                    return res.status(409).json({error: 'WineType is in use'});
+                default:
+                    return res.status(503).json({error: 'Unknown error'});
+            }
+
+        };
+
+    }
+
     /**
      * Delete a wine from the database, identified by its ID.
      */
