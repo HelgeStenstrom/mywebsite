@@ -1,14 +1,8 @@
 export type WineDto = {
     id: number;
     name: string;
-    country:  {
-        id: number;
-        name: string;
-    };
-    wineType: {
-        id: number;
-        name: string;
-    };
+    country: CountryDto;
+    wineType: WineTypeDto;
     systembolaget?: number;
     volume?: number;
 };

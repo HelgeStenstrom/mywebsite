@@ -17,7 +17,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Country'
+                  $ref: '#/components/schemas/CountryDto'
     post:
       summary: Adds one country to the list of known countries
       description: Adds one country to the list of known countries.
@@ -34,7 +34,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Country'
+                $ref: '#/components/schemas/CountryDto'
   /countries/{id}:
     get:
       summary: Get one country by id
@@ -53,7 +53,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Country'
+                $ref: '#/components/schemas/CountryDto'
 
     delete:
       summary: Delete one county by id
@@ -74,7 +74,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Country'
+                  $ref: '#/components/schemas/CountryDto'
         409:
           description: Cannot delete the country as it is associated with wines.
 
@@ -303,7 +303,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Wine'
+              $ref: '#/components/schemas/WineDto'
       responses:
         201:
           description: Created
@@ -320,7 +320,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Wine'
+                $ref: '#/components/schemas/WineDto'
     delete:
       summary: Deletes a wine from the database
       description: Deletes a wine by its ID, from the database
@@ -353,7 +353,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WineType'
+                $ref: '#/components/schemas/WineTypeDto'
     get:
       summary: Get all wine types
       responses:
@@ -364,16 +364,38 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/WineType'
+                  $ref: '#/components/schemas/WineTypeDto'
 
 components:
   schemas:
-    Grape:
+    CountryDto:
       type: object
+      required: [id, name, isUsed]
       properties:
         id:
           type: integer
-          format: int64
+          example: 42
+        name:
+            type: string
+            example: Frankrike
+        isUsed:
+          type: boolean
+          example: true
+
+    CountryCreate:
+      type: object
+      required: [name]
+      properties:
+        name:
+            type: string
+            example: Frankrike
+
+    Grape:
+      type: object
+      required: [ name ]
+      properties:
+        id:
+          type: integer
           description: Unique identifier for the grape
         name:
           description: The name of the grape.
@@ -383,8 +405,6 @@ components:
           description: The color of the grape, in Swedish. One of 'grön' or 'blå'.
           type: string
           example: blå
-      required:
-        - name
 
     Member:
       type: object
@@ -398,21 +418,6 @@ components:
           type: string
           example: Stenström
 
-    Country:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 42
-        name:
-            type: string
-            example: Frankrike
-    CountryCreate:
-      type: object
-      properties:
-        name:
-            type: string
-            example: Frankrike
     Tasting:
       type: object
       required:
@@ -432,8 +437,9 @@ components:
           type: string
           example: Åke och Åsa
 
-    Wine:
+    WineDto:
       type: object
+      required: [id, name, country, wineType]
       properties:
         id:
           type: integer
@@ -442,17 +448,13 @@ components:
           type: string
           example: Liebfraumilch
         country:
-          $ref: '#/components/schemas/Country'
+          $ref: '#/components/schemas/CountryDto'
         wineType:
-          $ref: '#/components/schemas/WineType'
-      required:
-        - id
-        - name
-        - country
-        - wineType
+          $ref: '#/components/schemas/WineTypeDto'
 
     WineCreate:
       type: object
+      required: [ name, countryId, wineTypeId ]
       properties:
         name:
           type: string
@@ -463,36 +465,26 @@ components:
         wineTypeId:
           type: integer
           example: 2
-      required:
-        - name
-        - countryId
-        - wineTypeId
 
-    WineType:
+    WineTypeDto:
       type: object
+      required: [id, name, isUsed]
       properties:
         id:
           type: integer
           example: 1
-        sv:
+        name:
           type: string
           example: Vitt
-        en:
-          type: string
-          example: White
-      required:
-        - id
-        - name
+        isUsed:
+          type: boolean
+          example: true
 
     WineTypeCreate:
       type: object
+      required: [name]
       properties:
-        sv:
+        name:
           type: string
           example: Rött
-        en:
-          type: string
-          example: Red
-      required:
-        - sv
-        - en
+
