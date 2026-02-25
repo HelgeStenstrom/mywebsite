@@ -1,13 +1,6 @@
 import {DataTypes, Model, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
-import {CountryDto, WineTypeDto} from "./types";
+import {CountryDto, GrapeAttributes, GrapeDto, GrapeInstance, WineTypeDto} from "./types";
 
-export interface GrapeAttributes {
-    id: number;
-    name: string;
-    color: string;
-}
-
-interface GrapeInstance extends Model<GrapeAttributes>, GrapeAttributes {}
 
 interface WineAssociations {
     winetypeModel: {
@@ -99,9 +92,9 @@ function defineGrape(sequelize1: Sequelize) {
             name: DataTypes.TEXT,
             color: {
                 type: DataTypes.STRING,
-                allowNull: true,
+                allowNull: false,
                 validate: {
-                    isIn: [['blå', 'grön']]
+                    isIn: [['blå', 'grön', 'annan', 'okänd']]
                 }
             }
         },
@@ -232,8 +225,15 @@ export class Orm {
         return this.Tasting.findByPk(id);
     }
 
-    findGrapes(): Promise<GrapeInstance[]> {
-        return this.Grape.findAll();
+    findGrapes(): Promise<GrapeDto[]> {
+        return this.Grape.findAll()
+            .then(grapes =>
+                grapes.map(g => ({
+                    id: g.id,
+                    name: g.name,
+                    color: g.color  as 'blå' | 'grön' | null
+                }))
+            );
     }
 
     findMembers(): Promise<MemberInstance[]> {
@@ -329,7 +329,8 @@ export class Orm {
     }
 
     postCountry(country): Promise<CountryInstance> {
-        return this.Country.create(country);
+        const promise =  this.Country.create(country);
+        return promise;
     }
 
     postMember(member) {

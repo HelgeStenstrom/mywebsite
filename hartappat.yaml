@@ -29,7 +29,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CountryCreate'
       responses:
-        200:
+        201:
           description: Successful response.
           content:
             application/json:
@@ -106,7 +106,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Grape'
+                  $ref: '#/components/schemas/GrapeDto'
     post:
       summary: Create a new grape
       description: Creates a new grape with the provided details
@@ -115,14 +115,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Grape'
+              $ref: '#/components/schemas/GrapeDto'
       responses:
         '201':
           description: Grape created successfully.  The response includes the ID of the newly created grape.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Grape' # TODO: Se till att koden returnerar skapad druva.
+                $ref: '#/components/schemas/GrapeDto' # TODO: Se till att koden returnerar skapad druva.
 
 
 
@@ -151,7 +151,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Grape'
+                $ref: '#/components/schemas/GrapeDto'
     patch:
       summary: Change a grape identified by id
       description: Change the details of a grape, identified by its id.
@@ -168,7 +168,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Grape'
+              $ref: '#/components/schemas/GrapeDto'
       responses:
         '404':
           description: Grape not found
@@ -177,7 +177,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Grape'
+                $ref: '#/components/schemas/GrapeDto'
 
     delete:
       summary: Delete a grape by id
@@ -198,7 +198,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Grape'
+                  $ref: '#/components/schemas/GrapeDto'
         '404':
           description: Grape not found
 
@@ -390,9 +390,9 @@ components:
             type: string
             example: Frankrike
 
-    Grape:
+    GrapeDto:
       type: object
-      required: [ name ]
+      required: [ id, name, color ]
       properties:
         id:
           type: integer
@@ -402,9 +402,17 @@ components:
           type: string
           example: Rondo
         color:
-          description: The color of the grape, in Swedish. One of 'grön' or 'blå'.
+          $ref: '#/definitions/GrapeColor'
+
+    GrapeCreate:
+      type: object
+      required: [ name, color ]
+      properties:
+        name:
           type: string
-          example: blå
+          example: Rondo
+        color:
+          $ref: '#/definitions/GrapeColor'
 
     Member:
       type: object
@@ -488,3 +496,8 @@ components:
           type: string
           example: Rött
 
+definitions:
+  GrapeColor:
+    description: The color of the grape, in Swedish.
+    type: string
+    enum: [ blå, grön, annan, okänd ]

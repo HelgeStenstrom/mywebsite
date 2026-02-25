@@ -1,5 +1,5 @@
 import {Orm} from "./orm";
-import {WineCreateDto} from "./types";
+import {CountryDto, GrapeDto, WineCreateDto} from "./types";
 
 
 /**
@@ -18,11 +18,11 @@ export class EndpointHandlers {
      * @param promise
      * @param res
      */
-    thenJson(promise: Promise<object[]>, res) {
+    thenJson<T>(promise: Promise<T>, res): Promise<void> {
 
         return promise
-            .then((objects) => {
-                return res.status(200).json(objects);
+            .then((result) => {
+                return res.status(200).json(result);
             })
             .catch((err) => {
                 console.error('Got error', err);
@@ -39,7 +39,8 @@ export class EndpointHandlers {
     getCountries(): (req, res) => Promise<void> {
 
         return async (req, res) => {
-            this.thenJson(this.orm.findCountries(), res);
+            const countries = this.orm.findCountries();
+            await this.thenJson<CountryDto[]>(countries, res);
         };
     }
 
@@ -76,7 +77,8 @@ export class EndpointHandlers {
     getGrapes(): (req, res) => Promise<void> {
 
         return async (req, res) => {
-            this.thenJson(this.orm.findGrapes(), res);
+            const grapes: Promise<GrapeDto[]> = this.orm.findGrapes();
+            await this.thenJson(grapes, res);
         };
     }
 
@@ -176,7 +178,8 @@ export class EndpointHandlers {
      */
     getMembers(): (req, res) => Promise<void> {
         return async (_, res) => {
-            this.thenJson(this.orm.findMembers(), res);
+            const members = this.orm.findMembers();
+            this.thenJson(members, res);
         };
     }
 
@@ -216,7 +219,8 @@ export class EndpointHandlers {
     getAllTastings(): (req, res) => Promise<void> {
 
         return async (req, res) => {
-            this.thenJson(this.orm.findTastings(), res);
+            const tastings = this.orm.findTastings();
+            this.thenJson(tastings, res);
         };
     }
 
@@ -227,7 +231,8 @@ export class EndpointHandlers {
      */
     getWines(): (req, res) => Promise<void> {
         return async (req, res) => {
-            this.thenJson(this.orm.findWines(), res);
+            const wines = this.orm.findWines();
+            this.thenJson(wines, res);
         };
     }
 
@@ -329,7 +334,8 @@ export class EndpointHandlers {
 
     getWineTypes(): (req, res) => Promise<void> {
         return async (req, res) => {
-            this.thenJson(this.orm.findWineTypes(), res);
+            const wineTypes = this.orm.findWineTypes();
+            this.thenJson(wineTypes, res);
         };
 
     }
