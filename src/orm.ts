@@ -1,5 +1,5 @@
 import {DataTypes, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
-import {GrapeAttributes, GrapeDto, GrapeInstance} from "./types/grape";
+import {GrapeAttributes, GrapeColor, GrapeDto, GrapeInstance} from "./types/grape";
 import {MemberInstance} from "./types/member";
 import {TastingInstance} from "./types/tasting";
 import {CountryDto, CountryInstance, CountryWithWines} from "./types/country";
@@ -114,12 +114,12 @@ export class Orm {
 
 
     sequelize: Sequelize;
-    private Grape: ModelStatic<GrapeInstance>;
-    private Tasting: ModelStatic<TastingInstance>;
-    private Country: ModelStatic<CountryInstance>;
-    private Wine: ModelStatic<WineInstance>;
-    private WineType: ModelStatic<WineTypeInstance>;
-    private Member: ModelStatic<MemberInstance>;
+    private readonly Grape: ModelStatic<GrapeInstance>;
+    private readonly Tasting: ModelStatic<TastingInstance>;
+    private readonly Country: ModelStatic<CountryInstance>;
+    private readonly Wine: ModelStatic<WineInstance>;
+    private readonly WineType: ModelStatic<WineTypeInstance>;
+    private readonly Member: ModelStatic<MemberInstance>;
 
 
 
@@ -275,9 +275,13 @@ export class Orm {
         return this.Tasting.create(tasting);
     }
 
-    postCountry(country): Promise<CountryInstance> {
-        const promise =  this.Country.create(country);
-        return promise;
+    async postCountry(country): Promise<CountryDto> {
+        const created = await this.Country.create(country);
+        return {
+            id: created.id,
+            name: created.name,
+            isUsed: false
+        };
     }
 
     postMember(member) {
@@ -296,8 +300,21 @@ export class Orm {
         return this.Grape.destroy({where: {id: id}})
     }
 
-    getGrape(id: number) {
-        return this.Grape.findByPk(id);
+    async getGrape(id: number): Promise<GrapeDto | null>  {
+        const grape = await this.Grape.findByPk(id);
+        if (!grape) {
+            return null;
+        }
+
+        return this.toGrapeDto(grape);
+    }
+
+    private toGrapeDto(grape: GrapeInstance): GrapeDto {
+        return {
+            id: grape.id,
+            name: grape.name,
+            color: grape.color as GrapeColor
+        };
     }
 
     patchGrapeByNameAndColor(from: GrapeAttributes, to: GrapeAttributes) {

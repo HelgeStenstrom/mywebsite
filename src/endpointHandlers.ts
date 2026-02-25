@@ -1,5 +1,4 @@
 import {Orm} from "./orm";
-import {GrapeDto} from "./types/grape";
 import {CountryDto} from "./types/country";
 import {WineCreateDto} from "./types/wine";
 
@@ -57,11 +56,7 @@ export class EndpointHandlers {
 
                 const country = await this.orm.postCountry(req.body);
 
-                res.status(201).json({
-                    id: country.id,
-                    name: country.name,
-                    isUsed: false
-                });
+                res.status(201).json(country);
             } catch (e) {
                 console.error(e);
                 res.status(500).end();
@@ -79,7 +74,7 @@ export class EndpointHandlers {
     getGrapes(): (req, res) => Promise<void> {
 
         return async (req, res) => {
-            const grapes: Promise<GrapeDto[]> = this.orm.findGrapes();
+            const grapes = this.orm.findGrapes();
             await this.thenJson(grapes, res);
         };
     }
@@ -90,18 +85,23 @@ export class EndpointHandlers {
     getGrapeById() {
 
         return async (req, res) => {
-            this.orm.getGrape(req.params.id)
-                .then((grape) => {
-                    if (grape)
-                        return res.status(200).json(grape);
-                    else
-                        return res.status(404).json({ error: 'Grape not found' });
-                })
-                .catch(e => console.error(e));
-            // TODO: Consider variant of return res.status(500).json({ error: 'Internal Server Error' })
+            try {
+                const id = Number(req.params.id);
+                const grape = await this.orm.getGrape(id);
 
+                if (!grape) {
+                    return res.status(404).json({ error: 'Grape not found' });
+                }
+
+                return res.status(200).json(grape);
+            } catch (e) {
+                console.error(e);
+                res.status(500).end();
+            }
         };
     }
+
+
 
     /**
      * Add a grape to the database.

@@ -124,21 +124,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/GrapeDto' # TODO: Se till att koden returnerar skapad druva.
 
-
-
-    patch: # TODO: Peka ut druvan med Primary key, inte namn.
-      deprecated: true # TODO: Implementera patch by id
-      summary: Change an existing grape
-      description: Change the details of an existing grape without changing the identity
-      responses:
-        '200':
-          description: Successful patch of grape # TODO describe PATCH grape
-    delete:
-      deprecated: true # TODO: Implementera delete by id
-      responses:
-        '200':
-          description: successful deletion of grape by name# TODO describe DELETE grape
-
   /grapes/{id}:
     get:
       summary: Returns a grape by id
