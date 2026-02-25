@@ -216,14 +216,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Member'
+              $ref: '#/components/schemas/MemberCreate'
       responses:
         '201':
           description: Grape created successfully.  The response includes the ID of the newly created grape.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Member' # TODO: Se till att koden returnerar skapad druva.
+                $ref: '#/components/schemas/Member'
 
   /tastings:
     get:
@@ -420,13 +420,25 @@ components:
 
     Member:
       type: object
+      required: [id, Given, Surname]
       properties:
         id:
           type: integer
-        Given:
+        given:
           type: string
           example: Helge
-        Surname:
+        surname:
+          type: string
+          example: Stenström
+
+    MemberCreate:
+      type: object
+      required: [given, surname]
+      properties:
+        given:
+          type: string
+          example: Helge
+        surname:
           type: string
           example: Stenström
 
