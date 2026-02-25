@@ -90,8 +90,8 @@ describe('Database tests', () => {
             // and that the ID gets incremented.
             await orm.createTables();
 
-            const first = (await orm.postGrape({name: "first", color: "grön"})).dataValues;
-            const second = (await orm.postGrape({name: "second", color: "blå"})).dataValues;
+            const first = await orm.postGrape({name: "first", color: "grön"});
+            const second = await orm.postGrape({name: "second", color: "blå"});
             expect(first.name).toEqual("first");
             expect(first.color).toEqual("grön");
             expect(first.id).toEqual(1); // TODO: this is not an actual requirement; test something else.

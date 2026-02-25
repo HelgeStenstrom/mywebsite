@@ -9,3 +9,10 @@ interface TastingAttributes {
 
 export interface TastingInstance extends Model<TastingAttributes>, TastingAttributes {
 }
+
+export type TastingDto = {
+    id: number;
+    title: string;
+    notes: string;
+    date: Date;
+}

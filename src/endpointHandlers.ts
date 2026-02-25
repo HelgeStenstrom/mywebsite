@@ -1,6 +1,7 @@
 import {Orm} from "./orm";
 import {CountryDto} from "./types/country";
 import {WineCreateDto} from "./types/wine";
+import {GrapeCreate} from "./types/grape";
 
 
 /**
@@ -113,11 +114,8 @@ export class EndpointHandlers {
 
         return async (req, res) => {
 
-            // We don't want to set the ID number; it should be handled by ORM.
-            const grape = {...(req.body), id: null}
-
             try {
-                const response = await this.orm.postGrape(grape);
+                const response = await this.orm.postGrape(req.body as GrapeCreate);
                 res.status(201).json(response);
             } catch (e) {
                 if (e.name === 'SequelizeValidationError') {
@@ -133,10 +131,6 @@ export class EndpointHandlers {
                 console.error(e);
                 res.status(500).json({ error: 'Internal Server Error' });
             }
-
-            // this.orm.postGrape(grape)
-            //     .then((response) => res.status(201).json(response))
-            //     .catch(e => console.error(e));
         };
     }
 
@@ -206,23 +200,34 @@ export class EndpointHandlers {
      * Get a tasting by ID.
      */
     getTasting(): (req, res) => Promise<void> {
-
         return async (req, res) => {
-            console.log("get tasting with id=", req.params.id);
-            this.orm.getTasting(req.params.id)
-                .then((x) => res.json(x))
-                .catch(e => console.error(e));
+            try {
+                const tasting = await this.orm.getTasting(Number(req.params.id));
+
+                if (!tasting) {
+                    return res.status(404).json({ error: 'Tasting not found' });
+                }
+
+                return res.status(200).json(tasting);
+            } catch (e) {
+                console.error(e);
+                res.status(500).end();
+            }
         };
     }
 
     /**
      * Get all tastings from the database.
      */
-    getAllTastings(): (req, res) => Promise<void> {
-
+    getTastings(): (req, res) => Promise<void> {
         return async (req, res) => {
-            const tastings = this.orm.findTastings();
-            this.thenJson(tastings, res);
+            try {
+                const tastings = await this.orm.findTastings(); // returnerar TastingDto[]
+                res.status(200).json(tastings);                 // skickar DTO-listan som JSON
+            } catch (e) {
+                console.error(e);
+                res.status(500).end();                          // hanterar eventuella fel
+            }
         };
     }
 
@@ -244,7 +249,6 @@ export class EndpointHandlers {
      */
     postWine() {
         return async (req, res) => {
-            //console.log('EndpointHandlers.postWine()');
 
             const wine: WineCreateDto = req.body;
 

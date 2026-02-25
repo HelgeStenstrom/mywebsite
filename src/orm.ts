@@ -1,10 +1,10 @@
 import {DataTypes, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
-import {GrapeAttributes, GrapeColor, GrapeDto, GrapeInstance} from "./types/grape";
-import {MemberInstance} from "./types/member";
-import {TastingInstance} from "./types/tasting";
+import {GrapeAttributes, GrapeColor, GrapeCreate, GrapeDto, GrapeInstance} from "./types/grape";
+import {MemberDto, MemberInstance} from "./types/member";
+import {TastingDto, TastingInstance} from "./types/tasting";
 import {CountryDto, CountryInstance, CountryWithWines} from "./types/country";
 import {WineTypeDto, WineTypeInstance, WineTypeWithWines} from "./types/wine-type";
-import {WineInstance} from "./types/wine";
+import {WineDto, WineInstance} from "./types/wine";
 
 
 function defineCountry(sequelize: Sequelize) {
@@ -164,12 +164,19 @@ export class Orm {
         return this.sequelize.sync(opts);
     }
 
-    findTastings(): Promise<TastingInstance[]> {
-        return this.Tasting.findAll();
+    findTastings(): Promise<TastingDto[]> {
+        const tastings = this.Tasting.findAll();
+        return tastings.then(ts => ts.map(t => this.toTastingDto(t)));
     }
 
-    getTasting(id: number) {
-        return this.Tasting.findByPk(id);
+    async getTasting(id: number): Promise<TastingDto | null> {
+        const tasting = await this.Tasting.findByPk(id);
+
+        if (!tasting) {
+            return null;
+        }
+
+        return this.toTastingDto(tasting);
     }
 
     findGrapes(): Promise<GrapeDto[]> {
@@ -183,14 +190,13 @@ export class Orm {
             );
     }
 
-    findMembers(): Promise<MemberInstance[]> {
-
-        return this.Member.findAll();
+    async findMembers(): Promise<MemberDto[]> {
+        const members = await this.Member.findAll();
+        return members.map(m => this.toMemberDto(m));
     }
 
 
     /**
-     * Returns a promise that resolves to an array of CountryInstance objects.
      * Return all countries in the database.
      */
     async findCountries(): Promise<CountryDto[]> {
@@ -220,8 +226,8 @@ export class Orm {
         return this.Wine.create(param);
     }
 
-    findWines() {
-        const promise = this.Wine.findAll(
+    async findWines(): Promise<WineDto[]> {
+        const wines = await this.Wine.findAll(
             {
                 include: [
                     {
@@ -239,36 +245,13 @@ export class Orm {
                 ]
             }
         );
-        return promise.then(m => {
-                return m.map(x => {
-
-                    return {
-                        id: x.id,
-                        name: x.name,
-                        systembolaget: x.systembolaget,
-                        volume: x.volume,
-                        createdAt: x.createdAt,
-
-                        wineType: {
-                            id: x.winetypeModel.id,
-                            name: x.winetypeModel.name
-                        },
-                        country: {
-                            id: x.countryModel.id,
-                            name: x.countryModel.name
-                        },
-                    };
-                });
-            }
-        );
+        return wines.map(this.toWineDto);
     }
 
 
-    postGrape(grape) {
-
-        //console.log(`In Orm.postGrape(${grape.name})`)
-        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-create
-        return this.Grape.create(grape);
+    async postGrape(grape: GrapeCreate): Promise<GrapeDto> {
+        const created = await this.Grape.create(grape);
+        return this.toGrapeDto(created);
     }
 
     postTasting(tasting) {
@@ -314,6 +297,43 @@ export class Orm {
             id: grape.id,
             name: grape.name,
             color: grape.color as GrapeColor
+        };
+    }
+
+    private toTastingDto(t: TastingInstance): TastingDto {
+        return {
+            id: t.id,
+            title: t.title,
+            notes: t.notes,
+            date: t.date
+        };
+    }
+
+    private toCountryDto(c: CountryWithWines): CountryDto {
+        return {
+            id: c.id,
+            name: c.name,
+            isUsed: c.wines?.length > 0
+        };
+    }
+
+    private toWineDto(w: WineInstance): WineDto {
+        return {
+            id: w.id,
+            name: w.name,
+            systembolaget: w.systembolaget,
+            volume: w.volume,
+            createdAt: w.createdAt,
+            wineType: w.winetypeModel ?? { id: 0, name: '', isUsed: false },
+            country: w.countryModel ?? { id: 0, name: '', isUsed: false }
+        };
+    }
+
+    private toMemberDto(m: MemberInstance): MemberDto {
+        return {
+            id: m.id,
+            given: m.given,
+            surname: m.surname,
         };
     }
 

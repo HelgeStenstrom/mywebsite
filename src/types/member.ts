@@ -7,3 +7,9 @@ interface MemberAttributes {
 }
 
 export interface MemberInstance extends Model<MemberAttributes>, MemberAttributes {}
+
+export type MemberDto = {
+    id: number;
+    given: string;
+    surname: string;
+}

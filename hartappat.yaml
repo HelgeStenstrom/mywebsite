@@ -122,7 +122,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GrapeDto' # TODO: Se till att koden returnerar skapad druva.
+                $ref: '#/components/schemas/GrapeDto'
 
   /grapes/{id}:
     get:

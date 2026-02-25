@@ -1,17 +1,10 @@
 import {Model} from "sequelize";
-import {CountryDto} from "./country";
 import {WineTypeDto} from "./wine-type";
+import {CountryDto} from "./country";
 
 interface WineAssociations {
-    winetypeModel: {
-        id: number;
-        name: string;
-    };
-
-    countryModel: {
-        id: number;
-        name: string;
-    };
+    winetypeModel?: WineTypeDto;
+    countryModel?: CountryDto;
 }
 
 interface WineAttributes {
@@ -22,22 +15,22 @@ interface WineAttributes {
     createdAt?: Date;
 }
 
-export interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {
-}
+export interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
 
 export type WineDto = {
     id: number;
     name: string;
-    country: CountryDto;
+    systembolaget: number;
+    volume: number;
+    createdAt: Date;
     wineType: WineTypeDto;
-    systembolaget?: number;
-    volume?: number;
+    country: CountryDto;
 };
+
 export type WineCreateDto = {
-    id: number;
     name: string;
     countryId: number;
     wineTypeId: number;
-    systembolaget?: number;
-    volume?: number;
+    systembolaget: number;
+    volume: number;
 };
