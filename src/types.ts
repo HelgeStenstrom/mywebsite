@@ -1,34 +1,20 @@
 import {Model} from "sequelize";
 
-export type WineDto = {
-    id: number;
-    name: string;
-    country: CountryDto;
-    wineType: WineTypeDto;
-    systembolaget?: number;
-    volume?: number;
-};
-
-export type WineCreateDto = {
-    id: number;
-    name: string;
-    countryId: number;
-    wineTypeId: number;
-    systembolaget?: number;
-    volume?: number;
-};
-
-export type WineTypeDto = {
-    id: number;
-    name: string;
-    isUsed: boolean;
-};
-
 export type CountryDto = {
     id: number;
     name: string;
     isUsed: boolean;
 };
+
+interface CountryAttributes {
+    id: number;
+    name: string;
+}
+
+export interface CountryInstance extends Model<CountryAttributes>, CountryAttributes {}
+export interface CountryWithWines extends CountryInstance {
+    wines?: { id: number }[];
+}
 
 export interface GrapeAttributes {
     id: number;
@@ -50,6 +36,40 @@ export type GrapeCreate = {
 }
 
 export type GrapeColor = 'blå' | 'grön' | 'annan' | 'okänd';
+
+interface MemberAttributes {
+    id: number;
+    given: string;
+    surname: string;
+}
+
+export interface  MemberInstance extends Model<MemberAttributes>, MemberAttributes {}
+
+interface TastingAttributes {
+    id: number;
+    title: string;
+    notes: string;
+    date: Date;
+}
+
+export interface  TastingInstance extends Model<TastingAttributes>, TastingAttributes {}
+
+interface WineTypeAttributes {
+    id: number;
+    name: string;
+}
+
+export interface WineTypeInstance extends Model<WineTypeAttributes>, WineTypeAttributes {}
+
+export interface WineTypeWithWines extends WineTypeInstance {
+    wines?: { id: number }[];
+}
+
+export type WineTypeDto = {
+    id: number;
+    name: string;
+    isUsed: boolean;
+};
 
 interface WineAssociations {
     winetypeModel: {
@@ -73,38 +93,20 @@ interface WineAttributes {
 
 export interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
 
-interface CountryAttributes {
+export type WineDto = {
     id: number;
     name: string;
-}
-export interface CountryInstance extends Model<CountryAttributes>, CountryAttributes {}
-export interface CountryWithWines extends CountryInstance {
-    wines?: { id: number }[];
-}
+    country: CountryDto;
+    wineType: WineTypeDto;
+    systembolaget?: number;
+    volume?: number;
+};
 
-interface WineTypeAttributes {
+export type WineCreateDto = {
     id: number;
     name: string;
-}
-export interface WineTypeInstance extends Model<WineTypeAttributes>, WineTypeAttributes {}
-
-export interface WineTypeWithWines extends WineTypeInstance {
-    wines?: { id: number }[];
-}
-
-interface MemberAttributes {
-    id: number;
-    given: string;
-    surname: string;
-}
-
-export interface  MemberInstance extends Model<MemberAttributes>, MemberAttributes {}
-
-interface TastingAttributes {
-    id: number;
-    title: string;
-    notes: string;
-    date: Date;
-}
-
-export interface  TastingInstance extends Model<TastingAttributes>, TastingAttributes {}
+    countryId: number;
+    wineTypeId: number;
+    systembolaget?: number;
+    volume?: number;
+};
