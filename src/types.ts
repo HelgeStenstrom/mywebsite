@@ -50,3 +50,61 @@ export type GrapeCreate = {
 }
 
 export type GrapeColor = 'blå' | 'grön' | 'annan' | 'okänd';
+
+interface WineAssociations {
+    winetypeModel: {
+        id: number;
+        name: string;
+    };
+
+    countryModel: {
+        id: number;
+        name: string;
+    };
+}
+
+interface WineAttributes {
+    id: number;
+    name: string;
+    systembolaget: number;
+    volume: number;
+    createdAt?: Date;
+}
+
+export interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
+
+interface CountryAttributes {
+    id: number;
+    name: string;
+}
+export interface CountryInstance extends Model<CountryAttributes>, CountryAttributes {}
+export interface CountryWithWines extends CountryInstance {
+    wines?: { id: number }[];
+}
+
+interface WineTypeAttributes {
+    id: number;
+    name: string;
+}
+export interface WineTypeInstance extends Model<WineTypeAttributes>, WineTypeAttributes {}
+
+export interface WineTypeWithWines extends WineTypeInstance {
+    wines?: { id: number }[];
+}
+
+interface MemberAttributes {
+    id: number;
+    given: string;
+    surname: string;
+}
+
+export interface  MemberInstance extends Model<MemberAttributes>, MemberAttributes {}
+
+interface TastingAttributes {
+    id: number;
+    title: string;
+    notes: string;
+    date: Date;
+}
+
+export interface  TastingInstance extends Model<TastingAttributes>, TastingAttributes {}

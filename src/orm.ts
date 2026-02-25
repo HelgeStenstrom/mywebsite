@@ -1,64 +1,19 @@
-import {DataTypes, Model, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
-import {CountryDto, GrapeAttributes, GrapeDto, GrapeInstance, WineTypeDto} from "./types";
+import {DataTypes, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
+import {
+    CountryDto,
+    CountryInstance,
+    CountryWithWines,
+    GrapeAttributes,
+    GrapeDto,
+    GrapeInstance,
+    MemberInstance,
+    TastingInstance,
+    WineInstance,
+    WineTypeDto,
+    WineTypeInstance,
+    WineTypeWithWines
+} from "./types";
 
-
-interface WineAssociations {
-    winetypeModel: {
-        id: number;
-        name: string;
-    };
-
-    countryModel: {
-        id: number;
-        name: string;
-    };
-}
-
-interface WineAttributes {
-    id: number;
-    name: string;
-    systembolaget: number;
-    volume: number;
-    createdAt?: Date;
-}
-
-interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
-
-interface CountryAttributes {
-    id: number;
-    name: string;
-}
-export interface CountryInstance extends Model<CountryAttributes>, CountryAttributes {}
-interface CountryWithWines extends CountryInstance {
-    wines?: { id: number }[];
-}
-
-interface WineTypeAttributes {
-    id: number;
-    name: string;
-}
-export interface WineTypeInstance extends Model<WineTypeAttributes>, WineTypeAttributes {}
-
-interface WineTypeWithWines extends WineTypeInstance {
-    wines?: { id: number }[];
-}
-
-interface MemberAttributes {
-    id: number;
-    given: string;
-    surname: string;
-}
-
-export interface  MemberInstance extends Model<MemberAttributes>, MemberAttributes {}
-
-interface TastingAttributes {
-    id: number;
-    title: string;
-    notes: string;
-    date: Date;
-}
-
-export interface  TastingInstance extends Model<TastingAttributes>, TastingAttributes {}
 
 function defineCountry(sequelize: Sequelize) {
     return sequelize.define<CountryInstance>(
