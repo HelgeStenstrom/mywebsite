@@ -36,6 +36,7 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.get('/api/v1/tastings/:id', endpointHandlers.getTasting());
     router.get('/api/v1/tastings/', endpointHandlers.getTastings());
+    router.post('/api/v1/tastings/', endpointHandlers.postTasting());
 
     router.get('/api/v1/wines', endpointHandlers.getWines());
     router.post('/api/v1/wines', endpointHandlers.postWine());

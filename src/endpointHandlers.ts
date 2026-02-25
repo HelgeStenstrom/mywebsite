@@ -1,7 +1,8 @@
-import {Orm} from "./orm";
+import {BadRequestError, Orm} from "./orm";
 import {CountryDto} from "./types/country";
 import {WineCreateDto} from "./types/wine";
 import {GrapeCreate} from "./types/grape";
+import {TastingCreate} from "./types/tasting";
 
 
 /**
@@ -344,5 +345,31 @@ export class EndpointHandlers {
             this.thenJson(wineTypes, res);
         };
 
+    }
+
+    postTasting() {
+        return async (req, res) => {
+            try {
+                const tasting = await this.orm.postTasting(req.body as TastingCreate);
+                res.status(201).json(tasting);
+            } catch (e) {
+                if (e instanceof BadRequestError) {
+                    return res.status(400).json({ error: e.message });
+                }
+
+                if (e.name === 'SequelizeValidationError') {
+                    res.status(400).json({
+                        error: 'Validation failed',
+                        details: e.errors.map(err => ({
+                            field: err.path,
+                            message: err.message
+                        }))
+                    });
+                    return;
+                }
+                console.error(e);
+                res.status(500).json({error: 'Internal Server Error'});
+            }
+        }
     }
 }

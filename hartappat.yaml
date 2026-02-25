@@ -236,7 +236,26 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Tasting'
+                  $ref: '#/components/schemas/TastingDto'
+
+    post:
+      summary: Create a new tasting
+      description: Adds a new tasting to the database
+      requestBody:
+        description: A tasting with properties in textual form
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TastingCreate'
+      responses:
+        201:
+          description: Tasting created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TastingDto'
+
   /tastings/{id}:
     get:
       description: Returns information about one wine tasting
@@ -252,7 +271,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Tasting'
+                $ref: '#/components/schemas/TastingDto'
   /wines:
     get:
       description: Returns a list of the wines in the database. Currently, the length of the list is unlimited; that may change.
@@ -411,12 +430,12 @@ components:
           type: string
           example: Stenström
 
-    Tasting:
+    TastingDto:
       type: object
       required:
-        - titel
+        - title
       properties:
-        titel:
+        title:
           type: string
           example: 'Röda viner från Danmark'
         notes:
@@ -426,9 +445,21 @@ components:
           type: string
           description: The date the tasting was taking place. In ISO notation.
           example: 2023-01-06
-        hosts:
+
+    TastingCreate:
+      type: object
+      required: [ title, date ]
+      properties:
+        title:
           type: string
-          example: Åke och Åsa
+          example: 'Röda viner från Danmark'
+        notes:
+          type: string
+          example: 'Vi provade viner som vi drack i somras. Det var jättetrevligt. Jag skriver mer senare.'
+        date:
+          type: string
+          description: The date the tasting was taking place. In ISO notation.
+          example: 2023-01-06
 
     WineDto:
       type: object

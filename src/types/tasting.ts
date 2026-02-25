@@ -16,3 +16,9 @@ export type TastingDto = {
     notes: string;
     date: Date;
 }
+
+export type TastingCreate = {
+    title: string;
+    notes: string;
+    date: Date;
+}

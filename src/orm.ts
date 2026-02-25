@@ -1,7 +1,7 @@
 import {DataTypes, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
 import {GrapeAttributes, GrapeColor, GrapeCreate, GrapeDto, GrapeInstance} from "./types/grape";
 import {MemberDto, MemberInstance} from "./types/member";
-import {TastingDto, TastingInstance} from "./types/tasting";
+import {TastingCreate, TastingDto, TastingInstance} from "./types/tasting";
 import {CountryDto, CountryInstance, CountryWithWines} from "./types/country";
 import {WineTypeDto, WineTypeInstance, WineTypeWithWines} from "./types/wine-type";
 import {WineDto, WineInstance} from "./types/wine";
@@ -109,6 +109,8 @@ function defineWine(sequelize1: Sequelize): ModelStatic<WineInstance> {
         }
     );
 }
+
+export class BadRequestError extends Error {}
 
 export class Orm {
 
@@ -254,10 +256,13 @@ export class Orm {
         return this.toGrapeDto(created);
     }
 
-    postTasting(tasting) {
-        return this.Tasting.create(tasting);
+    async postTasting(t: TastingCreate): Promise<TastingDto> {
+        if (!t.title || !t.notes || !t.date) {
+            throw new BadRequestError('Missing required fields: title, notes, date');
+        }
+        const created = await this.Tasting.create(t);
+        return this.toTastingDto(created);
     }
-
     async postCountry(country): Promise<CountryDto> {
         const created = await this.Country.create(country);
         return {
