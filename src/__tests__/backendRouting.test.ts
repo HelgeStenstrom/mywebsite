@@ -3,6 +3,8 @@ import express, {Express} from "express";
 import request from "supertest";
 import {Orm} from "../orm";
 import {Options} from "sequelize";
+import {CountryDto} from "../types/country";
+import {WineDto} from "../types/wine";
 
 // TODO: Klargör syftet med denna fil, eller ta bort den. Se till att den uppfyller sitt syfte.
 
@@ -43,7 +45,8 @@ describe('Table endpoints', () => {
             const getResponse = await request(app).get('/api/v1/countries');
             expect(getResponse.status).toBe(200);
 
-            expect(getResponse.body).toEqual([
+            const body: CountryDto = getResponse.body;
+            expect(body).toEqual([
                 // Countries are returned in alphabetical order.
                 {id: 2, name: "Norge", isUsed: false},
                 {id: 1, name: "Sweden", isUsed: false},
@@ -133,6 +136,20 @@ describe('Table endpoints', () => {
     })
 
     describe('Wines', () => {
+        test('Wines: POST returns 201 and the created object', async () => {
+            // Let's first create a country and a wine type
+            await request(app).post('/api/v1/countries').send({name: "Sweden"});
+            const countries = await request(app).get('/api/v1/countries');
+            expect(countries.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
+
+            const response = await request(app).post('/api/v1/wine-types').send({name: "A wine"})
+            expect(response.status).toBe(201);
+            const body: WineDto = response.body;
+            expect(body).toEqual({id: 1, name: "A wine", isUsed: false});
+
+        })
+
+
         test('Wines: POST followed by GET returns the same data', async () => {
             // Let's first create a country
             await request(app).post('/api/v1/countries').send({name: "Sweden"});
