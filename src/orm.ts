@@ -1,18 +1,10 @@
 import {DataTypes, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
-import {
-    CountryDto,
-    CountryInstance,
-    CountryWithWines,
-    GrapeAttributes,
-    GrapeDto,
-    GrapeInstance,
-    MemberInstance,
-    TastingInstance,
-    WineInstance,
-    WineTypeDto,
-    WineTypeInstance,
-    WineTypeWithWines
-} from "./types";
+import {GrapeAttributes, GrapeDto, GrapeInstance} from "./types/grape";
+import {MemberInstance} from "./types/member";
+import {TastingInstance} from "./types/tasting";
+import {CountryDto, CountryInstance, CountryWithWines} from "./types/country";
+import {WineTypeDto, WineTypeInstance, WineTypeWithWines} from "./types/wine-type";
+import {WineInstance} from "./types/wine";
 
 
 function defineCountry(sequelize: Sequelize) {

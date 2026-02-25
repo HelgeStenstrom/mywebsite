@@ -1,5 +1,7 @@
 import {Orm} from "./orm";
-import {CountryDto, GrapeDto, WineCreateDto} from "./types";
+import {GrapeDto} from "./types/grape";
+import {CountryDto} from "./types/country";
+import {WineCreateDto} from "./types/wine";
 
 
 /**
