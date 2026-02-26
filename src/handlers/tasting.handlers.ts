@@ -1,9 +1,10 @@
-import {BadRequestError, Orm} from "../orm";
 import {TastingCreate} from "../types/tasting";
+import {BadRequestError} from "../errors/bad-request-error";
+import {Orm} from "../orm";
 
 export class TastingHandlers {
 
-    constructor(private orm:Orm) {}
+    constructor(private readonly orm:Orm) {}
 
     // Tastings
 

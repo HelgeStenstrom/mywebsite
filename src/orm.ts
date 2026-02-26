@@ -11,8 +11,7 @@ import {defineGrape} from "./orm/models/grape.model";
 import {defineTasting} from "./orm/models/tasting.model";
 import {defineWineType} from "./orm/models/wine-type.model";
 import {defineWine} from "./orm/models/wine.model";
-
-export class BadRequestError extends Error {}
+import {BadRequestError} from "./errors/bad-request-error";
 
 export class Orm {
 
