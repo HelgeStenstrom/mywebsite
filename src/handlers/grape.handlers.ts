@@ -94,7 +94,9 @@ export class GrapeHandlers {
 
             try {
                 const id = Number(req.params.id);
+                console.log('putGrapeById() called with id = ' + id);
                 await this.orm.putGrape(id, req.body as GrapeCreate);
+                console.log('Sending 204, no content');
                 res.status(204).end();
             } catch (e) {
                 console.error(e);

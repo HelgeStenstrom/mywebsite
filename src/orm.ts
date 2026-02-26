@@ -256,24 +256,19 @@ export class Orm {
         return this.toGrapeDto(created);
     }
 
-    async putGrape(id: number, grape: GrapeCreate): Promise<GrapeDto> {
-        const [updatedCount] = await this.Grape.update(
-            {
-                name: grape.name,
-                color: grape.color
-            },
-            {
-                where: { id }
-            }
-        );
+    async putGrape(id: number, grape: GrapeCreate): Promise<void> {
+        const existing = await this.Grape.findByPk(id);
 
-        if (updatedCount === 0) {
+        if (!existing) {
             throw new Error(`Grape with id ${id} not found`);
         }
 
-        const updated = await this.Grape.findByPk(id);
-        return this.toGrapeDto(updated!);
+        await existing.update({
+            name: grape.name,
+            color: grape.color
+        });
     }
+
 
     async postTasting(t: TastingCreate): Promise<TastingDto> {
         if (!t.title || !t.notes || !t.date) {
