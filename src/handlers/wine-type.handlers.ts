@@ -4,28 +4,6 @@ export class WineTypeHandlers {
 
     constructor(private readonly orm:Orm) {}
 
-    // Common utilities
-
-    /**
-     * This function takes a promise and returns a JSON response. If the promise fails, an error message is returned.
-     * @param promise
-     * @param res
-     */
-    thenJson<T>(promise: Promise<T>, res): Promise<void> {
-
-        return promise
-            .then((result) => {
-                return res.status(200).json(result);
-            })
-            .catch((err) => {
-                console.error('Got error', err);
-                res.status(503)
-                    .send("Ingen kontakt med databasen. Är Docker startad?");
-            });
-    }
-
-
-
     deleteWineTypeById() {
         return async (req, res) => {
             const id = req.params.id;
@@ -64,11 +42,18 @@ export class WineTypeHandlers {
         };
     }
 
-    getWineTypes(): (req, res) => Promise<void> {
-        return async (req, res) => {
-            const wineTypes = this.orm.findWineTypes();
-            this.thenJson(wineTypes, res);
-        };
 
+    getWineTypes(): (req, res) => Promise<void> {
+        return async (_, res) => {
+            try {
+                const wineTypes = await this.orm.findWineTypes();
+                res.status(200).json(wineTypes);
+            } catch (err) {
+                console.error('Got error', err);
+                res.status(503).send(
+                    'Ingen kontakt med databasen. Är Docker startad?'
+                );
+            }
+        };
     }
 }

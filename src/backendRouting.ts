@@ -21,8 +21,6 @@ export const app: Express = getConfiguredApp();
 
 export function setupEndpoints(router: Express, orm: Orm) {
 
-
-    //const endpointHandlers = new EndpointHandlers(orm);
     const grapeHandlers = new GrapeHandlers(orm);
     const memberHandlers = new MemberHandlers(orm);
     const tastingHandlers = new TastingHandlers(orm);

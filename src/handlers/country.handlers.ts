@@ -1,27 +1,8 @@
 import {Orm} from "../orm";
-import {CountryDto} from "../types/country";
 
 export class CountryHandlers {
 
     constructor(private readonly orm: Orm) {}
-
-    /**
-     * This function takes a promise and returns a JSON response. If the promise fails, an error message is returned.
-     * @param promise
-     * @param res
-     */
-    thenJson<T>(promise: Promise<T>, res): Promise<void> {
-
-        return promise
-            .then((result) => {
-                return res.status(200).json(result);
-            })
-            .catch((err) => {
-                console.error('Got error', err);
-                res.status(503)
-                    .send("Ingen kontakt med databasen. Är Docker startad?");
-            });
-    }
 
 
     // Countries
@@ -30,12 +11,19 @@ export class CountryHandlers {
      * Get all countries from the database.
      */
     getCountries(): (req, res) => Promise<void> {
-
-        return async (req, res) => {
-            const countries = this.orm.findCountries();
-            await this.thenJson<CountryDto[]>(countries, res);
+        return async (_, res) => {
+            try {
+                const countries = await this.orm.findCountries();
+                res.status(200).json(countries);
+            } catch (err) {
+                console.error('Got error', err);
+                res.status(503).send(
+                    'Ingen kontakt med databasen. Är Docker startad?'
+                );
+            }
         };
     }
+
 
     /**
      * Add a country to the database.
