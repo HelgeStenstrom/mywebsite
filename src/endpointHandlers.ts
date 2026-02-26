@@ -1,14 +1,10 @@
-import {Orm} from "./orm";
-
-
 /**
  * This class contains all the endpoint handlers. The endpoint handlers are called when the corresponding
  * endpoint is called. An endpoint is a URL, e.g. http://localhost:3000/grapes,
  * with an http method, e.g. GET, POST, etc.
  */
 export class EndpointHandlers {
-    constructor(private readonly orm: Orm) {
-    }
+
 
 // Common utilities
 

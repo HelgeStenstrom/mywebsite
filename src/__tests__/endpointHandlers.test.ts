@@ -3,7 +3,7 @@ import {Orm} from "../orm";
 import {EndpointHandlers} from "../endpointHandlers";
 import {MemberHandlers} from "../handlers/member.handlers";
 
-const longTime = 1000;
+const longTime = 500; // TODO: make the test run faster, without the need for timeouts.
 
 describe('Endpoint handler tests', () => {
 
@@ -142,7 +142,7 @@ describe('thenJson test happy path', () => {
 
     test('thenJson happy path using async', async () => {
 
-        const sut = new EndpointHandlers(undefined);
+        const sut = new EndpointHandlers();
 
         const promisedValue = [123];
         const promise: Promise<any[]> = Promise.resolve(promisedValue);
@@ -170,7 +170,7 @@ describe('thenJson test happy path', () => {
 
     test('thenJson happy path with then', () => {
 
-        const sut = new EndpointHandlers(undefined);
+        const sut = new EndpointHandlers();
 
         const promisedValue = [123];
         const promise: Promise<any[]> = Promise.resolve(promisedValue);
@@ -222,7 +222,7 @@ describe('thenJson unhappy path', () => {
     };
 
     test('thenJson unhappy path async', async () => {
-        const sut = new EndpointHandlers(undefined);
+        const sut = new EndpointHandlers();
 
         const prom: Promise<any[]> = Promise.reject();
 
@@ -234,7 +234,7 @@ describe('thenJson unhappy path', () => {
     });
 
     test('thenJson unhappy path with then', () => {
-        const sut = new EndpointHandlers(undefined);
+        const sut = new EndpointHandlers();
 
         const prom: Promise<never> = Promise.reject();
 
