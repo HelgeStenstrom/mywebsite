@@ -69,12 +69,6 @@ paths:
       responses:
         204:
           description: Successful deletion of the given country
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/CountryDto'
         409:
           description: Cannot delete the country as it is associated with wines.
 
@@ -140,6 +134,10 @@ paths:
       responses:
         '404':
           description: Grape not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '200':
           description: Grape changed successfully
           content:
@@ -159,16 +157,14 @@ paths:
             type: integer
             format: int64
       responses:
-        '200':
-          description: Grape deleted successfully. Updated list is returned
+        '204':
+          description: Grape deleted successfully
+        '404':
+          description: Grape not found
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/GrapeDto'
-        '404':
-          description: Grape not found
+                $ref: '#/components/schemas/ErrorResponse'
 
   /members:
     get:
@@ -302,6 +298,10 @@ paths:
       responses:
         '404':
           description: GET operation failed, wine not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '200':
           description: Successful GET operation
           content:
@@ -322,6 +322,10 @@ paths:
       responses:
         '404':
           description: Wine not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '204':
           description: Wine deleted successfully
 
@@ -514,3 +518,13 @@ components:
       type: string
       enum: [ blå, grön, annan, okänd ]
 
+    ErrorResponse:
+      type: object
+      required: [status, message]
+      properties:
+        status:
+          type: integer
+          example: 404
+        message:
+          type: string
+          example: Wine not found
