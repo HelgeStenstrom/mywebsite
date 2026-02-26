@@ -56,7 +56,7 @@ paths:
                 $ref: '#/components/schemas/CountryDto'
 
     delete:
-      summary: Delete one county by id
+      summary: Delete one country by id
       description: Delete one country which is not in use (not registered with any wine). Returns remaining countries.
       parameters:
         - name: id
@@ -102,12 +102,24 @@ paths:
                 $ref: '#/components/schemas/GrapeDto'
 
   /grapes/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the grape
+        required: true
+        schema:
+          type: integer
+          format: int64
     get:
       summary: Returns a grape by id
       description: Returns a grape by id, with details
       responses:
-        '400':
-          description: GET operation failed
+        '404':
+          description: Grape not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '200':
           description: Successful GET operation
           content:
@@ -117,14 +129,6 @@ paths:
     patch:
       summary: Change a grape identified by id
       description: Change the details of a grape, identified by its id.
-      parameters:
-        - name: id
-          in: path
-          description: ID of the grape to change
-          required: true
-          schema:
-            type: integer
-            format: int64
       requestBody:
         required: true
         content:
@@ -144,18 +148,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/GrapeDto'
-
     delete:
       summary: Delete a grape by id
       description: Delete a grape by id
-      parameters:
-        - name: id
-          in: path
-          description: ID of the grape to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
       responses:
         '204':
           description: Grape deleted successfully
@@ -198,7 +193,7 @@ paths:
               $ref: '#/components/schemas/MemberCreate'
       responses:
         '201':
-          description: Grape created successfully.  The response includes the ID of the newly created grape.
+          description: Member created successfully.
           content:
             application/json:
               schema:
@@ -236,14 +231,16 @@ paths:
                 $ref: '#/components/schemas/TastingDto'
 
   /tastings/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the tasting
+        required: true
+        schema:
+          type: integer
+          format: int64
     get:
       description: Returns information about one wine tasting
-      parameters:
-        - name: id
-          in: path
-          required: true
-          schema:
-            type: integer
       responses:
         200:
           description: Successful response.
@@ -262,22 +259,7 @@ paths:
               schema:
                 type: array
                 items:
-                  type: object
-                  required:
-                    - name
-                  properties:
-                    name:
-                      type: string
-                      description: The name of the wine, as stated by Systembolaget or by the label.
-                    country:
-                      type: string
-                      description: The country of origin, in Swedish
-                    category:
-                      type: string
-                      description: The currently used categories are 'rött', 'rosé' and 'vitt'.
-                    systembolaget:
-                      description: The item product number used by Systembolaget.
-                      type: integer
+                  $ref: '#/components/schemas/WineDto'
     post:
       summary: Adds a wine to the database.
       requestBody:
@@ -292,6 +274,14 @@ paths:
           description: Created
 
   /wines/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the wine
+        required: true
+        schema:
+          type: integer
+          format: int64
     get:
       summary: Returns a wine by id
       description: Returns a wine by id, with details
@@ -311,14 +301,6 @@ paths:
     delete:
       summary: Deletes a wine from the database
       description: Deletes a wine by its ID, from the database
-      parameters:
-        - name: id
-          in: path
-          description: ID of the wine to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
       responses:
         '404':
           description: Wine not found
@@ -431,9 +413,11 @@ components:
 
     TastingDto:
       type: object
-      required:
-        - title
+      required: [ id, title ]
       properties:
+        id:
+          type: integer
+          example: 1
         title:
           type: string
           example: 'Röda viner från Danmark'
