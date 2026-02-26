@@ -1,6 +1,7 @@
 import {afterEach, beforeEach, describe, expect, jest, test} from "@jest/globals";
 import {Orm} from "../orm";
 import {EndpointHandlers} from "../endpointHandlers";
+import {MemberHandlers} from "../handlers/member.handlers";
 
 const longTime = 1000;
 
@@ -29,7 +30,7 @@ describe('Endpoint handler tests', () => {
             foo: "bar",
         };
 
-        const sut = new EndpointHandlers(orm);
+        const sut = new MemberHandlers(orm);
         const memberHandlingFunction: (req, res) => Promise<void> = sut.getMembers();
         const promise = memberHandlingFunction(null, res);
 
@@ -67,7 +68,7 @@ describe('Endpoint handler tests', () => {
 
         //expect(res.status(12345)).toBe(res); // Checking that status is mocked correctly
 
-        const sut = new EndpointHandlers(orm);
+        const sut = new MemberHandlers(orm);
 
         const postPromise = sut.postMember()(req2, res);
 
@@ -92,7 +93,7 @@ describe('Endpoint handler tests', () => {
             json: jest.fn()
         };
 
-        const sut = new EndpointHandlers(orm);
+        const sut = new MemberHandlers(orm);
         const memberHandlingFunction: (req, res) => Promise<void> = sut.postMember();
         const promise1 = memberHandlingFunction(req, res);
         setTimeout(() => {
@@ -119,7 +120,7 @@ describe('Endpoint handler tests', () => {
             json: jest.fn()
         };
 
-        const sut = new EndpointHandlers(orm);
+        const sut = new MemberHandlers(orm);
         const memberHandlingFunction: (req, res) => Promise<void> = sut.postMember();
         const promise = memberHandlingFunction(req, res);
 

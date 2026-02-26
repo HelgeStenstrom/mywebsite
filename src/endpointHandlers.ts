@@ -1,8 +1,6 @@
-import {BadRequestError, Orm} from "./orm";
+import {Orm} from "./orm";
 import {CountryDto} from "./types/country";
 import {WineCreateDto} from "./types/wine";
-import {GrapeCreate} from "./types/grape";
-import {TastingCreate} from "./types/tasting";
 
 
 /**
@@ -67,71 +65,6 @@ export class EndpointHandlers {
         };
     }
 
-
-
-// Members
-
-    /**
-     * Get all members from the database.
-     */
-    getMembers(): (req, res) => Promise<void> {
-        return async (_, res) => {
-            const members = this.orm.findMembers();
-            this.thenJson(members, res);
-        };
-    }
-
-
-    /**
-     * Add a member to the database.
-     */
-    postMember(): (req, res) => Promise<void> {
-
-        return async (req, res) => {
-            const member = req.body;
-            return this.orm.postMember(member)
-                .then(() => res.status(201).json("postMember called!"))
-                .catch(e => console.error(e));
-
-        };
-    }
-
-// Tastings
-
-    /**
-     * Get a tasting by ID.
-     */
-    getTasting(): (req, res) => Promise<void> {
-        return async (req, res) => {
-            try {
-                const tasting = await this.orm.getTasting(Number(req.params.id));
-
-                if (!tasting) {
-                    return res.status(404).json({ error: 'Tasting not found' });
-                }
-
-                return res.status(200).json(tasting);
-            } catch (e) {
-                console.error(e);
-                res.status(500).end();
-            }
-        };
-    }
-
-    /**
-     * Get all tastings from the database.
-     */
-    getTastings(): (req, res) => Promise<void> {
-        return async (req, res) => {
-            try {
-                const tastings = await this.orm.findTastings(); // returnerar TastingDto[]
-                res.status(200).json(tastings);                 // skickar DTO-listan som JSON
-            } catch (e) {
-                console.error(e);
-                res.status(500).end();                          // hanterar eventuella fel
-            }
-        };
-    }
 
 // Wines
 
@@ -248,43 +181,4 @@ export class EndpointHandlers {
 
     }
 
-    postTasting() {
-        return async (req, res) => {
-            try {
-                const tasting = await this.orm.postTasting(req.body as TastingCreate);
-                res.status(201).json(tasting);
-            } catch (e) {
-                if (e instanceof BadRequestError) {
-                    return res.status(400).json({ error: e.message });
-                }
-
-                if (e.name === 'SequelizeValidationError') {
-                    res.status(400).json({
-                        error: 'Validation failed',
-                        details: e.errors.map(err => ({
-                            field: err.path,
-                            message: err.message
-                        }))
-                    });
-                    return;
-                }
-                console.error(e);
-                res.status(500).json({error: 'Internal Server Error'});
-            }
-        }
-    }
-
-    putGrapeById() {
-        return async (req, res) => {
-
-            try {
-                const id = Number(req.params.id);
-                await this.orm.putGrape(id, req.body as GrapeCreate);
-                res.status(204).end();
-            } catch (e) {
-                console.error(e);
-                res.status(404).json({ status: 404, message: e.message });
-            }
-        }
-    }
 }
