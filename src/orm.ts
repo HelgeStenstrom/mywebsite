@@ -256,6 +256,25 @@ export class Orm {
         return this.toGrapeDto(created);
     }
 
+    async putGrape(id: number, grape: GrapeCreate): Promise<GrapeDto> {
+        const [updatedCount] = await this.Grape.update(
+            {
+                name: grape.name,
+                color: grape.color
+            },
+            {
+                where: { id }
+            }
+        );
+
+        if (updatedCount === 0) {
+            throw new Error(`Grape with id ${id} not found`);
+        }
+
+        const updated = await this.Grape.findByPk(id);
+        return this.toGrapeDto(updated!);
+    }
+
     async postTasting(t: TastingCreate): Promise<TastingDto> {
         if (!t.title || !t.notes || !t.date) {
             throw new BadRequestError('Missing required fields: title, notes, date');

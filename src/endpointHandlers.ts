@@ -372,4 +372,18 @@ export class EndpointHandlers {
             }
         }
     }
+
+    putGrapeById() {
+        return async (req, res) => {
+
+            try {
+                const id = Number(req.params.id);
+                await this.orm.putGrape(id, req.body as GrapeCreate);
+                res.status(204).end();
+            } catch (e) {
+                console.error(e);
+                res.status(404).json({ status: 404, message: e.message });
+            }
+        }
+    }
 }

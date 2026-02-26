@@ -30,6 +30,7 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.delete('/api/v1/grapes/:id', endpointHandlers.deleteGrapeById());
     router.get('/api/v1/grapes/:id', endpointHandlers.getGrapeById());
+    router.put('/api/v1/grapes/:id', endpointHandlers.putGrapeById());
 
     router.get('/api/v1/members', endpointHandlers.getMembers());
     router.post('/api/v1/members', endpointHandlers.postMember());
