@@ -1,114 +1,16 @@
-import {DataTypes, ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
+import {ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
 import {GrapeAttributes, GrapeColor, GrapeCreate, GrapeDto, GrapeInstance} from "./types/grape";
 import {MemberDto, MemberInstance} from "./types/member";
 import {TastingCreate, TastingDto, TastingInstance} from "./types/tasting";
 import {CountryDto, CountryInstance, CountryWithWines} from "./types/country";
 import {WineTypeDto, WineTypeInstance, WineTypeWithWines} from "./types/wine-type";
 import {WineDto, WineInstance} from "./types/wine";
-
-
-function defineCountry(sequelize: Sequelize) {
-    return sequelize.define<CountryInstance>(
-        'countryModel',
-        {
-            id: {
-                type: DataTypes.INTEGER,
-                primaryKey: true,
-                autoIncrement: true
-            },
-            name: {
-                type: DataTypes.STRING(40),
-                allowNull: false
-            }
-        },
-        {
-            tableName: 'countries',
-            timestamps: false
-        }
-    );
-}
-
-function defineGrape(sequelize1: Sequelize) {
-    return sequelize1.define<GrapeInstance>("grape",
-        {
-            id: {
-                type: DataTypes.INTEGER,
-                primaryKey: true,
-                autoIncrement: true
-            },
-            name: DataTypes.TEXT,
-            color: {
-                type: DataTypes.STRING,
-                allowNull: false,
-                validate: {
-                    isIn: [['blå', 'grön', 'annan', 'okänd']]
-                }
-            }
-        },
-        {
-            timestamps: false,
-            tableName: "grapes"
-        }
-    );
-}
-
-function defineTasting(sequelize1: Sequelize): ModelStatic<TastingInstance> {
-    return sequelize1.define("tasting",
-        {
-            title: DataTypes.STRING(128),
-            notes: DataTypes.TEXT('long'),
-            date: DataTypes.DATE
-        },
-        {
-            timestamps: false,
-            tableName: "tasting"
-        }
-    );
-}
-
-function defineMember(sequelize1: Sequelize): ModelStatic<MemberInstance> {
-    return sequelize1.define("member",
-        {
-            given: DataTypes.TEXT,
-            surname: DataTypes.TEXT,
-        },
-        {
-            timestamps: false,
-            tableName: "members"
-        }
-    );
-}
-
-function defineWineType(sequelize1: Sequelize): ModelStatic<WineTypeInstance> {
-    return sequelize1.define("winetypeModel",
-        {
-            name: DataTypes.STRING(20),
-        },
-        {
-            timestamps: false,
-            tableName: "winetypes"
-        }
-    );
-}
-
-function defineWine(sequelize1: Sequelize): ModelStatic<WineInstance> {
-    return sequelize1.define("wine",
-        {
-            name: DataTypes.STRING(256),
-            systembolaget: DataTypes.INTEGER,
-            volume: DataTypes.INTEGER,
-
-            createdAt: {
-                type: DataTypes.DATE,
-                allowNull: true
-            }
-        },
-        {
-            timestamps: false,
-            tableName: "wines"
-        }
-    );
-}
+import {defineMember} from "./orm/models/member.model";
+import {defineCountry} from "./orm/models/country.model";
+import {defineGrape} from "./orm/models/grape.model";
+import {defineTasting} from "./orm/models/tasting.model";
+import {defineWineType} from "./orm/models/wine-type.model";
+import {defineWine} from "./orm/models/wine.model";
 
 export class BadRequestError extends Error {}
 
