@@ -6,6 +6,8 @@ import {EndpointHandlers} from "./endpointHandlers";
 import {GrapeHandlers} from "./handlers/grape.handlers";
 import {MemberHandlers} from "./handlers/member.handlers";
 import {TastingHandlers} from "./handlers/tasting.handlers";
+import {CountryHandlers} from "./handlers/country.handlers";
+import {WineTypeHandlers} from "./handlers/wine-type.handlers";
 
 function getConfiguredApp(): Express {
     const app: Express = express();
@@ -24,11 +26,13 @@ export function setupEndpoints(router: Express, orm: Orm) {
     const grapeHandlers = new GrapeHandlers(orm);
     const memberHandlers = new MemberHandlers(orm);
     const tastingHandlers = new TastingHandlers(orm);
+    const countryHandlers = new CountryHandlers(orm);
+    const wineTypeHandlers = new WineTypeHandlers(orm);
 
 
-    router.get('/api/v1/countries', endpointHandlers.getCountries());
-    router.post('/api/v1/countries', endpointHandlers.postCountries());
-    router.delete('/api/v1/countries/:id', endpointHandlers.deleteCountryById());
+    router.get('/api/v1/countries', countryHandlers.getCountries());
+    router.post('/api/v1/countries', countryHandlers.postCountries());
+    router.delete('/api/v1/countries/:id', countryHandlers.deleteCountryById());
 
     router.get('/api/v1/grapes', grapeHandlers.getAll());
     router.post('/api/v1/grapes', grapeHandlers.create());
@@ -50,8 +54,8 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.delete('/api/v1/wines/:id', endpointHandlers.deleteWineById());
 
-    router.post('/api/v1/wine-types', endpointHandlers.postWineType());
-    router.get('/api/v1/wine-types', endpointHandlers.getWineTypes());
-    router.delete('/api/v1/wine-types/:id', endpointHandlers.deleteWineTypeById());
+    router.post('/api/v1/wine-types', wineTypeHandlers.postWineType());
+    router.get('/api/v1/wine-types', wineTypeHandlers.getWineTypes());
+    router.delete('/api/v1/wine-types/:id', wineTypeHandlers.deleteWineTypeById());
 
 }

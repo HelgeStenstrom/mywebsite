@@ -1,5 +1,4 @@
 import {Orm} from "./orm";
-import {CountryDto} from "./types/country";
 import {WineCreateDto} from "./types/wine";
 
 
@@ -9,7 +8,7 @@ import {WineCreateDto} from "./types/wine";
  * with an http method, e.g. GET, POST, etc.
  */
 export class EndpointHandlers {
-    constructor(private orm: Orm) {
+    constructor(private readonly orm: Orm) {
     }
 
 // Common utilities
@@ -32,41 +31,11 @@ export class EndpointHandlers {
             });
     }
 
-// Countries
 
-    /**
-     * Get all countries from the database.
-     */
-    getCountries(): (req, res) => Promise<void> {
-
-        return async (req, res) => {
-            const countries = this.orm.findCountries();
-            await this.thenJson<CountryDto[]>(countries, res);
-        };
-    }
-
-    /**
-     * Add a country to the database.
-     */
-    postCountries(): (req, res) => Promise<void>  {
-
-        return async (req, res) => {
-
-            try {
-
-                const country = await this.orm.postCountry(req.body);
-
-                res.status(201).json(country);
-            } catch (e) {
-                console.error(e);
-                res.status(500).end();
-            }
-
-        };
-    }
 
 
 // Wines
+
 
     /**
      * Get all wines from the database.
@@ -77,7 +46,6 @@ export class EndpointHandlers {
             this.thenJson(wines, res);
         };
     }
-
 
     /**
      * Add a wine to the database.
@@ -95,47 +63,6 @@ export class EndpointHandlers {
         };
     }
 
-    deleteCountryById() {
-        return async (req, res) => {
-            const id = req.params.id;
-
-            const result = await this.orm.delCountryById(id);
-
-            switch (result) {
-                case 'deleted':
-                    return res.status(204).json("Country successfully deleted");
-                case 'not_found':
-                    return res.status(404).json({error: 'Country not found'});
-                case 'in_use':
-                    return res.status(409).json({error: 'Country is in use'});
-                default:
-                    return res.status(503).json({error: 'Unknown error'});
-            }
-
-        };
-    }
-
-
-    deleteWineTypeById() {
-        return async (req, res) => {
-            const id = req.params.id;
-
-            const result = await this.orm.delWineTypeById(id);
-
-            switch (result) {
-                case 'deleted':
-                    return res.status(204).json("WineType successfully deleted");
-                case 'not_found':
-                    return res.status(404).json({error: 'WineType not found'});
-                case 'in_use':
-                    return res.status(409).json({error: 'WineType is in use'});
-                default:
-                    return res.status(503).json({error: 'Unknown error'});
-            }
-
-        };
-
-    }
 
     /**
      * Delete a wine from the database, identified by its ID.
@@ -156,29 +83,6 @@ export class EndpointHandlers {
 
     }
 
-    postWineType() {
-        return async (req, res) => {
-            try {
-                const wineType = await this.orm.postWineType(req.body);
 
-                res.status(201).json({
-                    id: wineType.id,
-                    name: wineType.name,
-                    isUsed: false
-                });
-            } catch (e) {
-                console.error(e);
-                res.status(500).end();
-            }
-        };
-    }
-
-    getWineTypes(): (req, res) => Promise<void> {
-        return async (req, res) => {
-            const wineTypes = this.orm.findWineTypes();
-            this.thenJson(wineTypes, res);
-        };
-
-    }
 
 }
