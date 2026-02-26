@@ -3,6 +3,7 @@ import cors from "cors";
 
 import {Orm} from "./orm";
 import {EndpointHandlers} from "./endpointHandlers";
+import {GrapeHandlers} from "./handlers/grape.handlers";
 
 function getConfiguredApp(): Express {
     const app: Express = express();
@@ -18,19 +19,20 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
 
     const endpointHandlers = new EndpointHandlers(orm);
+    const grapeHandlers = new GrapeHandlers(orm);
 
 
     router.get('/api/v1/countries', endpointHandlers.getCountries());
     router.post('/api/v1/countries', endpointHandlers.postCountries());
     router.delete('/api/v1/countries/:id', endpointHandlers.deleteCountryById());
 
-    router.get('/api/v1/grapes', endpointHandlers.getGrapes());
-    router.post('/api/v1/grapes', endpointHandlers.postGrape());
-    router.patch('/api/v1/grapes', endpointHandlers.patchGrape());
+    router.get('/api/v1/grapes', grapeHandlers.getAll());
+    router.post('/api/v1/grapes', grapeHandlers.create());
+    router.patch('/api/v1/grapes', grapeHandlers.patchGrape());
 
-    router.delete('/api/v1/grapes/:id', endpointHandlers.deleteGrapeById());
-    router.get('/api/v1/grapes/:id', endpointHandlers.getGrapeById());
-    router.put('/api/v1/grapes/:id', endpointHandlers.putGrapeById());
+    router.delete('/api/v1/grapes/:id', grapeHandlers.deleteGrapeById());
+    router.get('/api/v1/grapes/:id', grapeHandlers.getGrapeById());
+    router.put('/api/v1/grapes/:id', grapeHandlers.putGrapeById());
 
     router.get('/api/v1/members', endpointHandlers.getMembers());
     router.post('/api/v1/members', endpointHandlers.postMember());
