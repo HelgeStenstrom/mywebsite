@@ -67,38 +67,6 @@ export class Orm {
         return this.sequelize.sync(opts);
     }
 
-    findTastings(): Promise<TastingDto[]> {
-        const tastings = this.Tasting.findAll();
-        return tastings.then(ts => ts.map(t => this.toTastingDto(t)));
-    }
-
-    async getTasting(id: number): Promise<TastingDto | null> {
-        const tasting = await this.Tasting.findByPk(id);
-
-        if (!tasting) {
-            return null;
-        }
-
-        return this.toTastingDto(tasting);
-    }
-
-    findGrapes(): Promise<GrapeDto[]> {
-        return this.Grape.findAll()
-            .then(grapes =>
-                grapes.map(g => ({
-                    id: g.id,
-                    name: g.name,
-                    color: g.color  as 'blå' | 'grön' | null
-                }))
-            );
-    }
-
-    async findMembers(): Promise<MemberDto[]> {
-        const members = await this.Member.findAll();
-        return members.map(m => this.toMemberDto(m));
-    }
-
-
     /**
      * Return all countries in the database.
      */
@@ -123,34 +91,51 @@ export class Orm {
         }));
     }
 
-    async postWine(param: {
-        country: number; name: string; systembolaget: number; volume: number; winetype: number
-    }) {
-        return this.Wine.create(param);
+    async postCountry(country): Promise<CountryDto> {
+        const created = await this.Country.create(country);
+        return {
+            id: created.id,
+            name: created.name,
+            isUsed: false
+        };
     }
 
-    async findWines(): Promise<WineDto[]> {
-        const wines = await this.Wine.findAll(
-            {
-                include: [
-                    {
-                        model: this.WineType,
-                        as: 'winetypeModel',
-                        attributes: ['id', 'name'],
-                        required: true
-                    },
-                    {
-                        model: this.Country,
-                        as: 'countryModel',
-                        attributes: ['id', 'name'],
-                        required: true
-                    }
-                ]
-            }
-        );
-        return wines.map(this.toWineDto);
+    async delCountryById(id: number) {
+        const country: CountryWithWines = await this.Country.findByPk(id, {
+            include: [{ model: this.Wine, as: 'wines', attributes: ['id'], required: false }]
+        });
+
+        if (!country) {
+            return 'not_found';
+        }
+        if (country.wines?.length > 0) {
+            return 'in_use';
+        }
+
+        await this.Country.destroy({where: {id: id}})
+        return 'deleted';
     }
 
+
+    private toCountryDto(c: CountryWithWines): CountryDto {
+        return {
+            id: c.id,
+            name: c.name,
+            isUsed: c.wines?.length > 0
+        };
+    }
+
+
+    findGrapes(): Promise<GrapeDto[]> {
+        return this.Grape.findAll()
+            .then(grapes =>
+                grapes.map(g => ({
+                    id: g.id,
+                    name: g.name,
+                    color: g.color  as 'blå' | 'grön' | null
+                }))
+            );
+    }
 
     async postGrape(grape: GrapeCreate): Promise<GrapeDto> {
         const created = await this.Grape.create(grape);
@@ -168,27 +153,6 @@ export class Orm {
             name: grape.name,
             color: grape.color
         });
-    }
-
-
-    async postTasting(t: TastingCreate): Promise<TastingDto> {
-        if (!t.title || !t.notes || !t.date) {
-            throw new BadRequestError('Missing required fields: title, notes, date');
-        }
-        const created = await this.Tasting.create(t);
-        return this.toTastingDto(created);
-    }
-    async postCountry(country): Promise<CountryDto> {
-        const created = await this.Country.create(country);
-        return {
-            id: created.id,
-            name: created.name,
-            isUsed: false
-        };
-    }
-
-    postMember(member) {
-        return this.Member.create(member);
     }
 
     delGrape(name: string) {
@@ -220,6 +184,42 @@ export class Orm {
         };
     }
 
+
+    patchGrapeByNameAndColor(from: GrapeAttributes, to: GrapeAttributes) {
+
+        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-update
+
+        return this.Grape.update(
+            {name: to.name, color: to.color},
+            {where: {name: from.name}}
+        );
+    }
+
+    async findMembers(): Promise<MemberDto[]> {
+        const members = await this.Member.findAll();
+        return members.map(m => this.toMemberDto(m));
+    }
+
+    postMember(member) {
+        return this.Member.create(member);
+    }
+
+    private toMemberDto(m: MemberInstance): MemberDto {
+        return {
+            id: m.id,
+            given: m.given,
+            surname: m.surname,
+        };
+    }
+
+    async postTasting(t: TastingCreate): Promise<TastingDto> {
+        if (!t.title || !t.notes || !t.date) {
+            throw new BadRequestError('Missing required fields: title, notes, date');
+        }
+        const created = await this.Tasting.create(t);
+        return this.toTastingDto(created);
+    }
+
     private toTastingDto(t: TastingInstance): TastingDto {
         return {
             id: t.id,
@@ -229,12 +229,47 @@ export class Orm {
         };
     }
 
-    private toCountryDto(c: CountryWithWines): CountryDto {
-        return {
-            id: c.id,
-            name: c.name,
-            isUsed: c.wines?.length > 0
-        };
+    findTastings(): Promise<TastingDto[]> {
+        const tastings = this.Tasting.findAll();
+        return tastings.then(ts => ts.map(t => this.toTastingDto(t)));
+    }
+
+    async getTasting(id: number): Promise<TastingDto | null> {
+        const tasting = await this.Tasting.findByPk(id);
+
+        if (!tasting) {
+            return null;
+        }
+
+        return this.toTastingDto(tasting);
+    }
+
+    async postWine(param: {
+        country: number; name: string; systembolaget: number; volume: number; winetype: number
+    }) {
+        return this.Wine.create(param);
+    }
+
+    async findWines(): Promise<WineDto[]> {
+        const wines = await this.Wine.findAll(
+            {
+                include: [
+                    {
+                        model: this.WineType,
+                        as: 'winetypeModel',
+                        attributes: ['id', 'name'],
+                        required: true
+                    },
+                    {
+                        model: this.Country,
+                        as: 'countryModel',
+                        attributes: ['id', 'name'],
+                        required: true
+                    }
+                ]
+            }
+        );
+        return wines.map(this.toWineDto);
     }
 
     private toWineDto(w: WineInstance): WineDto {
@@ -249,22 +284,11 @@ export class Orm {
         };
     }
 
-    private toMemberDto(m: MemberInstance): MemberDto {
-        return {
-            id: m.id,
-            given: m.given,
-            surname: m.surname,
-        };
-    }
 
-    patchGrapeByNameAndColor(from: GrapeAttributes, to: GrapeAttributes) {
-
-        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-update
-
-        return this.Grape.update(
-            {name: to.name, color: to.color},
-            {where: {name: from.name}}
-        );
+    async delWineById(id: number) {
+        return this.Wine.destroy({
+            where: {id: id}
+        });
     }
 
     async findWineTypes(): Promise<WineTypeDto[]> {
@@ -288,31 +312,8 @@ export class Orm {
         }));
     }
 
-
     async postWineType(param: { name: string }) {
         return this.WineType.create(param);
-    }
-
-    async delWineById(id: number) {
-        return this.Wine.destroy({
-            where: {id: id}
-        });
-    }
-
-    async delCountryById(id: number) {
-        const country: CountryWithWines = await this.Country.findByPk(id, {
-            include: [{ model: this.Wine, as: 'wines', attributes: ['id'], required: false }]
-        });
-
-        if (!country) {
-            return 'not_found';
-        }
-        if (country.wines?.length > 0) {
-            return 'in_use';
-        }
-
-        await this.Country.destroy({where: {id: id}})
-        return 'deleted';
     }
 
     async delWineTypeById(id: any) {
