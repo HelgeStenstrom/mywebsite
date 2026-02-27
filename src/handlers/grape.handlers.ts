@@ -7,7 +7,7 @@ export class GrapeHandlers {
 
     getAll() {
         return async (req, res) => {
-            const grapes = await this.orm.findGrapes();
+            const grapes = await this.orm.grapes.findGrapes();
             res.json(grapes);
         };
     }
@@ -15,7 +15,7 @@ export class GrapeHandlers {
     create() {
         return async (req, res) => {
             try {
-                const grape = await this.orm.postGrape(req.body);
+                const grape = await this.orm.grapes.postGrape(req.body);
                 res.status(201).json(grape);
             } catch (e) {
                 if (e.name === 'SequelizeValidationError') {
@@ -43,7 +43,7 @@ export class GrapeHandlers {
         return async (req, res) => {
             const {from, to} = req.body;
 
-            this.orm.patchGrapeByNameAndColor(from, to)
+            this.orm.grapes.patchGrapeByNameAndColor(from, to)
                 .then(() => res.status(200).json("patchGrape called!"))
                 .catch(e => console.error(e));
         };
@@ -57,7 +57,7 @@ export class GrapeHandlers {
         return async (req, res) => {
             try {
                 const id = Number(req.params.id);
-                const grape = await this.orm.getGrape(id);
+                const grape = await this.orm.grapes.getGrape(id);
 
                 if (!grape) {
                     return res.status(404).json({ error: 'Grape not found' });
@@ -78,7 +78,7 @@ export class GrapeHandlers {
         return async (req, res) => {
             const id = req.params.id;
 
-            this.orm.delGrapeById(id)
+            this.orm.grapes.delGrapeById(id)
                 .then((gnum) => {
                     if (gnum)
                         return res.status(204).json("Grape successfully deleted");
@@ -95,7 +95,7 @@ export class GrapeHandlers {
             try {
                 const id = Number(req.params.id);
                 console.log('putGrapeById() called with id = ' + id);
-                await this.orm.putGrape(id, req.body as GrapeCreate);
+                await this.orm.grapes.putGrape(id, req.body as GrapeCreate);
                 console.log('Sending 204, no content');
                 res.status(204).end();
             } catch (e) {

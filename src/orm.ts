@@ -1,5 +1,5 @@
 import {ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
-import {GrapeAttributes, GrapeColor, GrapeCreate, GrapeDto, GrapeInstance} from "./types/grape";
+import {GrapeAttributes, GrapeInstance} from "./types/grape";
 import {MemberDto, MemberInstance} from "./types/member";
 import {TastingCreate, TastingDto, TastingInstance} from "./types/tasting";
 import {CountryDto, CountryInstance, CountryWithWines} from "./types/country";
@@ -12,6 +12,7 @@ import {defineTasting} from "./orm/models/tasting.model";
 import {defineWineType} from "./orm/models/wine-type.model";
 import {defineWine} from "./orm/models/wine.model";
 import {BadRequestError} from "./errors/bad-request-error";
+import {GrapeRepository} from "./orm/repositories/grape-repository";
 
 export class Orm {
 
@@ -23,6 +24,7 @@ export class Orm {
     private readonly Wine: ModelStatic<WineInstance>;
     private readonly WineType: ModelStatic<WineTypeInstance>;
     private readonly Member: ModelStatic<MemberInstance>;
+    grapes: GrapeRepository;
 
 
 
@@ -55,6 +57,8 @@ export class Orm {
             foreignKey: 'winetype',
             as: 'wines'
         });
+
+        this.grapes = new GrapeRepository(this.Grape);
     }
 
     async sync() {
@@ -122,65 +126,6 @@ export class Orm {
             id: c.id,
             name: c.name,
             isUsed: c.wines?.length > 0
-        };
-    }
-
-
-    findGrapes(): Promise<GrapeDto[]> {
-        return this.Grape.findAll()
-            .then(grapes =>
-                grapes.map(g => ({
-                    id: g.id,
-                    name: g.name,
-                    color: g.color  as 'blå' | 'grön' | null
-                }))
-            );
-    }
-
-    async postGrape(grape: GrapeCreate): Promise<GrapeDto> {
-        const created = await this.Grape.create(grape);
-        return this.toGrapeDto(created);
-    }
-
-    async putGrape(id: number, grape: GrapeCreate): Promise<void> {
-        const existing = await this.Grape.findByPk(id);
-
-        if (!existing) {
-            throw new Error(`Grape with id ${id} not found`);
-        }
-
-        await existing.update({
-            name: grape.name,
-            color: grape.color
-        });
-    }
-
-    delGrape(name: string) {
-
-        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy
-        return this.Grape.destroy({
-            where: {name: name}
-        });
-    }
-
-    delGrapeById(id: number) {
-        return this.Grape.destroy({where: {id: id}})
-    }
-
-    async getGrape(id: number): Promise<GrapeDto | null>  {
-        const grape = await this.Grape.findByPk(id);
-        if (!grape) {
-            return null;
-        }
-
-        return this.toGrapeDto(grape);
-    }
-
-    private toGrapeDto(grape: GrapeInstance): GrapeDto {
-        return {
-            id: grape.id,
-            name: grape.name,
-            color: grape.color as GrapeColor
         };
     }
 

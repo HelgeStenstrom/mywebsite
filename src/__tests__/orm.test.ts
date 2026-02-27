@@ -90,8 +90,8 @@ describe('Database tests', () => {
             // and that the ID gets incremented.
             await orm.createTables();
 
-            const first = await orm.postGrape({name: "first", color: "grön"});
-            const second = await orm.postGrape({name: "second", color: "blå"});
+            const first = await orm.grapes.postGrape({name: "first", color: "grön"});
+            const second = await orm.grapes.postGrape({name: "second", color: "blå"});
             expect(first.name).toEqual("first");
             expect(first.color).toEqual("grön");
             expect(first.id).toEqual(1); // TODO: this is not an actual requirement; test something else.
@@ -104,10 +104,10 @@ describe('Database tests', () => {
 
             await orm.createTables();
 
-            await orm.postGrape({name: "first", color: "grön"});
-            const secondPosted = await orm.postGrape({name: "second", color: "blå"});
+            await orm.grapes.postGrape({name: "first", color: "grön"});
+            const secondPosted = await orm.grapes.postGrape({name: "second", color: "blå"});
 
-            const grapesBack = await orm.findGrapes();
+            const grapesBack = await orm.grapes.findGrapes();
 
             expect(grapesBack.length).toEqual(2);
             const firstBack = grapesBack.filter(g => g.name === "first")[0];
@@ -120,15 +120,15 @@ describe('Database tests', () => {
 
             // Setup
             await orm.createTables();
-            await orm.postGrape({name: "g1", color: "grön"});
-            await orm.postGrape({name: "g2", color: "grön"});
-            await orm.postGrape({name: "g3", color: "grön"});
+            await orm.grapes.postGrape({name: "g1", color: "grön"});
+            await orm.grapes.postGrape({name: "g2", color: "grön"});
+            await orm.grapes.postGrape({name: "g3", color: "grön"});
 
             // Exercise
-            await orm.delGrape("g2");
+            await orm.grapes.delGrape("g2");
 
             // Verify
-            const grapes = await orm.findGrapes();
+            const grapes = await orm.grapes.findGrapes();
             expect(grapes.length).toEqual(2);
         });
 
@@ -136,8 +136,8 @@ describe('Database tests', () => {
 
             // Setup
             await orm.createTables();
-            await orm.postGrape({name: "g1", color: "grön"});
-            const prePatchGrapes = await orm.findGrapes();
+            await orm.grapes.postGrape({name: "g1", color: "grön"});
+            const prePatchGrapes = await orm.grapes.findGrapes();
             expect(prePatchGrapes[0].id).toEqual(1);
             expect(prePatchGrapes[0].name).toEqual("g1");
 
@@ -147,7 +147,7 @@ describe('Database tests', () => {
                 {id: 1, name: "g2", color: "blå"})
 
             // Verify
-            const grapes = await orm.findGrapes();
+            const grapes = await orm.grapes.findGrapes();
             expect(grapes.length).toEqual(1);
             expect(grapes[0].id).toEqual(1);
             expect(grapes[0].name).toEqual("g2");
