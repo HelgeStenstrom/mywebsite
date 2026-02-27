@@ -28,12 +28,12 @@ export class Orm {
     private readonly Wine: ModelStatic<WineInstance>;
     private readonly WineType: ModelStatic<WineTypeInstance>;
     private readonly Member: ModelStatic<MemberInstance>;
-    grapes: GrapeRepository;
-    tastings: TastingRepository;
-    countries: CountryRepository;
-    members: MemberRepository;
-    wineTypes: WineTypeRepository;
-    wines: WineRepository;
+    readonly grapes: GrapeRepository;
+    readonly tastings: TastingRepository;
+    readonly countries: CountryRepository;
+    readonly members: MemberRepository;
+    readonly wineTypes: WineTypeRepository;
+    readonly wines: WineRepository;
 
 
 
@@ -49,6 +49,17 @@ export class Orm {
         this.WineType = defineWineType(this.sequelize)
         this.Wine = defineWine(this.sequelize)
 
+        this.defineModelAssociations();
+
+        this.grapes = new GrapeRepository(this.Grape);
+        this.tastings = new TastingRepository(this.Tasting);
+        this.countries = new CountryRepository(this.Country, this.Wine);
+        this.members = new MemberRepository(this.Member);
+        this.wineTypes = new WineTypeRepository(this.WineType, this.Wine);
+        this.wines = new WineRepository(this.Wine, this.Country, this.WineType);
+    }
+
+    private defineModelAssociations() {
         this.Wine.belongsTo(this.Country, {
             foreignKey: 'country',
             as: 'countryModel'
@@ -66,13 +77,6 @@ export class Orm {
             foreignKey: 'winetype',
             as: 'wines'
         });
-
-        this.grapes = new GrapeRepository(this.Grape);
-        this.tastings = new TastingRepository(this.Tasting);
-        this.countries = new CountryRepository(this.Country, this.Wine);
-        this.members = new MemberRepository(this.Member);
-        this.wineTypes = new WineTypeRepository(this.WineType, this.Wine);
-        this.wines = new WineRepository(this.Wine, this.Country, this.WineType);
     }
 
     async sync() {
