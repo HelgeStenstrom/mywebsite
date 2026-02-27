@@ -142,7 +142,7 @@ describe('Database tests', () => {
             expect(prePatchGrapes[0].name).toEqual("g1");
 
             // Exercise
-            await orm.patchGrapeByNameAndColor(
+            await orm.grapes.patchGrapeByNameAndColor(
                 {id: 1, name: 'g1', color: 'grön'},
                 {id: 1, name: "g2", color: "blå"})
 

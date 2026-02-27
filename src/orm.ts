@@ -1,5 +1,5 @@
 import {ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
-import {GrapeAttributes, GrapeInstance} from "./types/grape";
+import {GrapeInstance} from "./types/grape";
 import {MemberInstance} from "./types/member";
 import {TastingInstance} from "./types/tasting";
 import {CountryInstance} from "./types/country";
@@ -84,16 +84,5 @@ export class Orm {
         const opts: SyncOptions = {logging: false}; // TODO: Turn off logging, there's too much!
         return this.sequelize.sync(opts);
     }
-
-    patchGrapeByNameAndColor(from: GrapeAttributes, to: GrapeAttributes) {
-
-        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-update
-
-        return this.Grape.update(
-            {name: to.name, color: to.color},
-            {where: {name: from.name}}
-        );
-    }
-
 
 }
