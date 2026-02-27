@@ -10,7 +10,7 @@ export class MemberHandlers {
     getMembers(): (req, res) => Promise<void> {
         return async (_, res) => {
             try {
-                const members = await this.orm.findMembers();
+                const members = await this.orm.members.findMembers();
                 res.status(200).json(members);
             } catch (err) {
                 console.error('Got error', err);
@@ -28,7 +28,7 @@ export class MemberHandlers {
 
         return async (req, res) => {
             const member = req.body;
-            return this.orm.postMember(member)
+            return this.orm.members.postMember(member)
                 .then(() => res.status(201).json("postMember called!"))
                 .catch(e => console.error(e));
 

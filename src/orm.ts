@@ -1,6 +1,6 @@
 import {ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
 import {GrapeAttributes, GrapeInstance} from "./types/grape";
-import {MemberDto, MemberInstance} from "./types/member";
+import {MemberInstance} from "./types/member";
 import {TastingInstance} from "./types/tasting";
 import {CountryInstance, CountryWithWines} from "./types/country";
 import {WineTypeDto, WineTypeInstance, WineTypeWithWines} from "./types/wine-type";
@@ -14,6 +14,7 @@ import {defineWine} from "./orm/models/wine.model";
 import {GrapeRepository} from "./orm/repositories/grape.repository";
 import {TastingRepository} from "./orm/repositories/tasting.repository";
 import {CountryRepository} from "./orm/repositories/country.repository";
+import {MemberRepository} from "./orm/repositories/member.repository";
 
 export class Orm {
 
@@ -28,6 +29,7 @@ export class Orm {
     grapes: GrapeRepository;
     tastings: TastingRepository;
     countries: CountryRepository;
+    members: MemberRepository;
 
 
 
@@ -64,6 +66,7 @@ export class Orm {
         this.grapes = new GrapeRepository(this.Grape);
         this.tastings = new TastingRepository(this.Tasting);
         this.countries = new CountryRepository(this.Country, this.Wine);
+        this.members = new MemberRepository(this.Member);
     }
 
     async sync() {
@@ -75,7 +78,7 @@ export class Orm {
         const opts: SyncOptions = {logging: false}; // TODO: Turn off logging, there's too much!
         return this.sequelize.sync(opts);
     }
-    
+
     patchGrapeByNameAndColor(from: GrapeAttributes, to: GrapeAttributes) {
 
         // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-update
@@ -84,23 +87,6 @@ export class Orm {
             {name: to.name, color: to.color},
             {where: {name: from.name}}
         );
-    }
-
-    async findMembers(): Promise<MemberDto[]> {
-        const members = await this.Member.findAll();
-        return members.map(m => this.toMemberDto(m));
-    }
-
-    postMember(member) {
-        return this.Member.create(member);
-    }
-
-    private toMemberDto(m: MemberInstance): MemberDto {
-        return {
-            id: m.id,
-            given: m.given,
-            surname: m.surname,
-        };
     }
 
     async postWine(param: {
