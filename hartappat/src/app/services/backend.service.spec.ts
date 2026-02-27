@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 
-import {BackendService, Grape, Member, Tasting, WineView} from './backend.service';
+import {BackendService, Grape, Member, Tasting, WineCreate, WineView} from './backend.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Observable} from "rxjs";
 import {TestScheduler} from "rxjs/testing";
@@ -116,6 +116,9 @@ describe('BackendService', () => {
     });
 
     it('adds a Wine', done => {
+      // Värdet nedan är ändrat för att kompilatorn ska godkänna typen, men testet har inte körts efter det.
+      const aWine: WineCreate = {name: 'N', countryId: 2, wineTypeId: 3, systembolaget: 1234, volume: 750};
+
       backendService.addWine(aWine)
         .subscribe(() => {
           done();
