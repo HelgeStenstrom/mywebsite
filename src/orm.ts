@@ -2,7 +2,7 @@ import {ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
 import {GrapeAttributes, GrapeInstance} from "./types/grape";
 import {MemberDto, MemberInstance} from "./types/member";
 import {TastingInstance} from "./types/tasting";
-import {CountryDto, CountryInstance, CountryWithWines} from "./types/country";
+import {CountryInstance, CountryWithWines} from "./types/country";
 import {WineTypeDto, WineTypeInstance, WineTypeWithWines} from "./types/wine-type";
 import {WineDto, WineInstance} from "./types/wine";
 import {defineMember} from "./orm/models/member.model";
@@ -11,8 +11,9 @@ import {defineGrape} from "./orm/models/grape.model";
 import {defineTasting} from "./orm/models/tasting.model";
 import {defineWineType} from "./orm/models/wine-type.model";
 import {defineWine} from "./orm/models/wine.model";
-import {GrapeRepository} from "./orm/repositories/grape-repository";
+import {GrapeRepository} from "./orm/repositories/grape.repository";
 import {TastingRepository} from "./orm/repositories/tasting.repository";
+import {CountryRepository} from "./orm/repositories/country.repository";
 
 export class Orm {
 
@@ -26,6 +27,7 @@ export class Orm {
     private readonly Member: ModelStatic<MemberInstance>;
     grapes: GrapeRepository;
     tastings: TastingRepository;
+    countries: CountryRepository;
 
 
 
@@ -61,6 +63,7 @@ export class Orm {
 
         this.grapes = new GrapeRepository(this.Grape);
         this.tastings = new TastingRepository(this.Tasting);
+        this.countries = new CountryRepository(this.Country, this.Wine);
     }
 
     async sync() {
@@ -72,66 +75,7 @@ export class Orm {
         const opts: SyncOptions = {logging: false}; // TODO: Turn off logging, there's too much!
         return this.sequelize.sync(opts);
     }
-
-    /**
-     * Return all countries in the database.
-     */
-    async findCountries(): Promise<CountryDto[]> {
-        const countries = await this.Country.findAll({
-            attributes: ['id', 'name'],
-            order: [['name', 'ASC']], // sortera alfabetiskt
-            include: [
-                {
-                    model: this.Wine,
-                    as: 'wines',
-                    attributes: ['id'],
-                    required: false,
-                }
-            ]
-        }) as CountryWithWines[];
-
-        return countries.map(c => ({
-            id: c.id,
-            name: c.name,
-            isUsed: c.wines?.length > 0
-        }));
-    }
-
-    async postCountry(country): Promise<CountryDto> {
-        const created = await this.Country.create(country);
-        return {
-            id: created.id,
-            name: created.name,
-            isUsed: false
-        };
-    }
-
-    async delCountryById(id: number) {
-        const country: CountryWithWines = await this.Country.findByPk(id, {
-            include: [{ model: this.Wine, as: 'wines', attributes: ['id'], required: false }]
-        });
-
-        if (!country) {
-            return 'not_found';
-        }
-        if (country.wines?.length > 0) {
-            return 'in_use';
-        }
-
-        await this.Country.destroy({where: {id: id}})
-        return 'deleted';
-    }
-
-
-    private toCountryDto(c: CountryWithWines): CountryDto {
-        return {
-            id: c.id,
-            name: c.name,
-            isUsed: c.wines?.length > 0
-        };
-    }
-
-
+    
     patchGrapeByNameAndColor(from: GrapeAttributes, to: GrapeAttributes) {
 
         // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-update

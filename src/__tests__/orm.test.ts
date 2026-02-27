@@ -24,10 +24,10 @@ describe('Database tests', () => {
 
         test('post and read back countries', async () => {
             await orm.createTables();
-            await orm.postCountry({name: "Norge"});
-            await orm.postCountry({name: "Finland"});
+            await orm.countries.postCountry({name: "Norge"});
+            await orm.countries.postCountry({name: "Finland"});
 
-            const countries = await orm.findCountries();
+            const countries = await orm.countries.findCountries();
 
             expect(countries).toHaveLength(2);
             expect(countries).toEqual([
@@ -39,22 +39,22 @@ describe('Database tests', () => {
 
         test('try to delete non-existing country', async () => {
             await orm.createTables();
-            await orm.postCountry({name: "Norge"});
+            await orm.countries.postCountry({name: "Norge"});
             const nonExistingId = 17;
-            const deleteResponse = await orm.delCountryById(nonExistingId);
+            const deleteResponse = await orm.countries.delCountryById(nonExistingId);
             expect(deleteResponse).toEqual('not_found');
-            const countryInstances = await orm.findCountries();
+            const countryInstances = await orm.countries.findCountries();
             expect(countryInstances.length).toEqual(1);
         });
 
         test('post and delete country', async() => {
             await orm.createTables();
-            await orm.postCountry({name: "Norge"});
-            const countryInstances = await orm.findCountries();
+            await orm.countries.postCountry({name: "Norge"});
+            const countryInstances = await orm.countries.findCountries();
             const idToDelete = countryInstances[0].id;
-            const deleteResponse = await orm.delCountryById(idToDelete);
+            const deleteResponse = await orm.countries.delCountryById(idToDelete);
             expect(deleteResponse).toEqual('deleted');
-            const instancesAfterDeletion = await orm.findCountries();
+            const instancesAfterDeletion = await orm.countries.findCountries();
             expect(instancesAfterDeletion.length).toEqual(0);
         });
 
@@ -62,7 +62,7 @@ describe('Database tests', () => {
 
             await orm.createTables();
 
-            const countryInstance = await orm.postCountry("A country");
+            const countryInstance = await orm.countries.postCountry("A country");
             const wineTypeInstance = await orm.postWineType({name:"rött"});
             const wineInstance = await orm.postWine({
                 country: countryInstance.id,
@@ -74,7 +74,7 @@ describe('Database tests', () => {
 
             // Deleting the country is expected to fail, because it's used in a wine.
 
-            const numberOfDeletions = await orm.delCountryById(countryInstance.id);
+            const numberOfDeletions = await orm.countries.delCountryById(countryInstance.id);
 
             expect(numberOfDeletions).toEqual(0);
 
@@ -190,7 +190,7 @@ describe('Database tests', () => {
             const wineType = await orm.postWineType({name: "rött"});
 
             // Then ensure that we have the needed country
-            const country = await orm.postCountry({name: "Sverige"});
+            const country = await orm.countries.postCountry({name: "Sverige"});
 
             // post the wine
             await orm.postWine({
@@ -218,7 +218,7 @@ describe('Database tests', () => {
             const wineType = await orm.postWineType({name: "rött"});
 
             // Then ensure that we have the needed country
-            const country = await orm.postCountry({name: "Sverige"});
+            const country = await orm.countries.postCountry({name: "Sverige"});
 
             // post the wine
             const wineToBeDeleted = await orm.postWine({
@@ -267,7 +267,7 @@ describe('Database tests', () => {
             const wineType = await orm.postWineType({name: "rött"});
 
             // Then ensure that we have the needed country
-            const country = await orm.postCountry({name: "Sverige"});
+            const country = await orm.countries.postCountry({name: "Sverige"});
 
             // post the wine
             await orm.postWine({
@@ -296,7 +296,7 @@ describe('Database tests', () => {
             // First ensure that we have the needed winetype
             await orm.postWineType({name: "zzz"});
             await orm.postWineType({name: "rött"}); // Then ensure that we have the needed country
-            await orm.postCountry({name: "Sverige"});
+            await orm.countries.postCountry({name: "Sverige"});
         });
 
         test('check the setup', async () => {
@@ -307,7 +307,7 @@ describe('Database tests', () => {
                 {id: 1, name: "zzz", isUsed: false},
             ]);
 
-            const countries = await orm.findCountries();
+            const countries = await orm.countries.findCountries();
             expect(countries[0].name).toEqual("Sverige");
 
         });
