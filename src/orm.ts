@@ -4,7 +4,7 @@ import {MemberInstance} from "./types/member";
 import {TastingInstance} from "./types/tasting";
 import {CountryInstance} from "./types/country";
 import {WineTypeInstance} from "./types/wine-type";
-import {WineDto, WineInstance} from "./types/wine";
+import {WineInstance} from "./types/wine";
 import {defineMember} from "./orm/models/member.model";
 import {defineCountry} from "./orm/models/country.model";
 import {defineGrape} from "./orm/models/grape.model";
@@ -16,6 +16,7 @@ import {TastingRepository} from "./orm/repositories/tasting.repository";
 import {CountryRepository} from "./orm/repositories/country.repository";
 import {MemberRepository} from "./orm/repositories/member.repository";
 import {WineTypeRepository} from "./orm/repositories/wine-type.repository";
+import {WineRepository} from "./orm/repositories/wine.repository";
 
 export class Orm {
 
@@ -32,6 +33,7 @@ export class Orm {
     countries: CountryRepository;
     members: MemberRepository;
     wineTypes: WineTypeRepository;
+    wines: WineRepository;
 
 
 
@@ -70,6 +72,7 @@ export class Orm {
         this.countries = new CountryRepository(this.Country, this.Wine);
         this.members = new MemberRepository(this.Member);
         this.wineTypes = new WineTypeRepository(this.WineType, this.Wine);
+        this.wines = new WineRepository(this.Wine, this.Country, this.WineType);
     }
 
     async sync() {
@@ -92,51 +95,5 @@ export class Orm {
         );
     }
 
-    async postWine(param: {
-        country: number; name: string; systembolaget: number; volume: number; winetype: number
-    }) {
-        return this.Wine.create(param);
-    }
-
-    async findWines(): Promise<WineDto[]> {
-        const wines = await this.Wine.findAll(
-            {
-                include: [
-                    {
-                        model: this.WineType,
-                        as: 'winetypeModel',
-                        attributes: ['id', 'name'],
-                        required: true
-                    },
-                    {
-                        model: this.Country,
-                        as: 'countryModel',
-                        attributes: ['id', 'name'],
-                        required: true
-                    }
-                ]
-            }
-        );
-        return wines.map(this.toWineDto);
-    }
-
-    private toWineDto(w: WineInstance): WineDto {
-        return {
-            id: w.id,
-            name: w.name,
-            systembolaget: w.systembolaget,
-            volume: w.volume,
-            createdAt: w.createdAt,
-            wineType: w.winetypeModel ?? { id: 0, name: '', isUsed: false },
-            country: w.countryModel ?? { id: 0, name: '', isUsed: false }
-        };
-    }
-
-
-    async delWineById(id: number) {
-        return this.Wine.destroy({
-            where: {id: id}
-        });
-    }
 
 }

@@ -64,7 +64,7 @@ describe('Database tests', () => {
 
             const countryInstance = await orm.countries.postCountry("A country");
             const wineTypeInstance = await orm.wineTypes.postWineType({name:"rött"});
-            const wineInstance = await orm.postWine({
+            const wineInstance = await orm.wines.postWine({
                 country: countryInstance.id,
                 name: "Wine name",
                 volume: 750,
@@ -193,7 +193,7 @@ describe('Database tests', () => {
             const country = await orm.countries.postCountry({name: "Sverige"});
 
             // post the wine
-            await orm.postWine({
+            await orm.wines.postWine({
                 country: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
@@ -201,7 +201,7 @@ describe('Database tests', () => {
                 winetype: wineType['id']
             })
 
-            const wines = await orm.findWines();
+            const wines = await orm.wines.findWines();
             const first = wines[0];
 
             // Verify
@@ -221,7 +221,7 @@ describe('Database tests', () => {
             const country = await orm.countries.postCountry({name: "Sverige"});
 
             // post the wine
-            const wineToBeDeleted = await orm.postWine({
+            const wineToBeDeleted = await orm.wines.postWine({
                 country: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
@@ -230,7 +230,7 @@ describe('Database tests', () => {
             })
 
                   // post another wine
-            const otherWine = await orm.postWine({
+            const otherWine = await orm.wines.postWine({
                 country: country['id'],
                 name: 'Other',
                 systembolaget: 4711,
@@ -240,17 +240,17 @@ describe('Database tests', () => {
 
 
 
-            const winesBefore = await orm.findWines();
+            const winesBefore = await orm.wines.findWines();
 
             expect(winesBefore.length).toEqual(2);
             const first = winesBefore[0];
             expect(first['name']).toEqual('Rödtjut');
 
             // Exercise
-            await orm.delWineById(wineToBeDeleted.id);
+            await orm.wines.delWineById(wineToBeDeleted.id);
 
             // Verify
-            const winesAfter = await orm.findWines();
+            const winesAfter = await orm.wines.findWines();
             expect(winesAfter.length).toEqual(1);
             // Expect one wine to be deleted, and the other wine to remain.
             expect(winesAfter.filter(w => w.id === otherWine.id).length).toEqual(1);
@@ -270,7 +270,7 @@ describe('Database tests', () => {
             const country = await orm.countries.postCountry({name: "Sverige"});
 
             // post the wine
-            await orm.postWine({
+            await orm.wines.postWine({
                 country: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
@@ -279,7 +279,7 @@ describe('Database tests', () => {
             })
 
             // Read back, so that we get a wine to patch
-            await orm.findWines();
+            await orm.wines.findWines();
 
             // TODO: How should we identify wines? The name may not be unique. We need a unique key!
 
