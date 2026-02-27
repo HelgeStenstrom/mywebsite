@@ -63,7 +63,7 @@ describe('Database tests', () => {
             await orm.createTables();
 
             const countryInstance = await orm.countries.postCountry("A country");
-            const wineTypeInstance = await orm.postWineType({name:"rött"});
+            const wineTypeInstance = await orm.wineTypes.postWineType({name:"rött"});
             const wineInstance = await orm.postWine({
                 country: countryInstance.id,
                 name: "Wine name",
@@ -187,7 +187,7 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType = await orm.postWineType({name: "rött"});
+            const wineType = await orm.wineTypes.postWineType({name: "rött"});
 
             // Then ensure that we have the needed country
             const country = await orm.countries.postCountry({name: "Sverige"});
@@ -215,7 +215,7 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType = await orm.postWineType({name: "rött"});
+            const wineType = await orm.wineTypes.postWineType({name: "rött"});
 
             // Then ensure that we have the needed country
             const country = await orm.countries.postCountry({name: "Sverige"});
@@ -264,7 +264,7 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType = await orm.postWineType({name: "rött"});
+            const wineType = await orm.wineTypes.postWineType({name: "rött"});
 
             // Then ensure that we have the needed country
             const country = await orm.countries.postCountry({name: "Sverige"});
@@ -294,13 +294,13 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            await orm.postWineType({name: "zzz"});
-            await orm.postWineType({name: "rött"}); // Then ensure that we have the needed country
+            await orm.wineTypes.postWineType({name: "zzz"});
+            await orm.wineTypes.postWineType({name: "rött"}); // Then ensure that we have the needed country
             await orm.countries.postCountry({name: "Sverige"});
         });
 
         test('check the setup', async () => {
-            const wineTypes = await orm.findWineTypes();
+            const wineTypes = await orm.wineTypes.findWineTypes();
             // Wine types are returned in alphabetical order.
             expect(wineTypes).toEqual([
                 {id: 2, name: "rött", isUsed: false},
@@ -319,10 +319,10 @@ describe('Database tests', () => {
         test('Post and read back winetypes', async () => {
 
             await orm.createTables();
-            await orm.postWineType({name: "rött"});
-            await orm.postWineType({name: "vitt"});
+            await orm.wineTypes.postWineType({name: "rött"});
+            await orm.wineTypes.postWineType({name: "vitt"});
 
-            const wineTypes = await orm.findWineTypes();
+            const wineTypes = await orm.wineTypes.findWineTypes();
 
             expect(wineTypes[0].name).toEqual("rött");
             expect(wineTypes[1].name).toEqual("vitt");

@@ -2,8 +2,8 @@ import {ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
 import {GrapeAttributes, GrapeInstance} from "./types/grape";
 import {MemberInstance} from "./types/member";
 import {TastingInstance} from "./types/tasting";
-import {CountryInstance, CountryWithWines} from "./types/country";
-import {WineTypeDto, WineTypeInstance, WineTypeWithWines} from "./types/wine-type";
+import {CountryInstance} from "./types/country";
+import {WineTypeInstance} from "./types/wine-type";
 import {WineDto, WineInstance} from "./types/wine";
 import {defineMember} from "./orm/models/member.model";
 import {defineCountry} from "./orm/models/country.model";
@@ -15,6 +15,7 @@ import {GrapeRepository} from "./orm/repositories/grape.repository";
 import {TastingRepository} from "./orm/repositories/tasting.repository";
 import {CountryRepository} from "./orm/repositories/country.repository";
 import {MemberRepository} from "./orm/repositories/member.repository";
+import {WineTypeRepository} from "./orm/repositories/wine-type.repository";
 
 export class Orm {
 
@@ -30,6 +31,7 @@ export class Orm {
     tastings: TastingRepository;
     countries: CountryRepository;
     members: MemberRepository;
+    wineTypes: WineTypeRepository;
 
 
 
@@ -67,6 +69,7 @@ export class Orm {
         this.tastings = new TastingRepository(this.Tasting);
         this.countries = new CountryRepository(this.Country, this.Wine);
         this.members = new MemberRepository(this.Member);
+        this.wineTypes = new WineTypeRepository(this.WineType, this.Wine);
     }
 
     async sync() {
@@ -136,44 +139,4 @@ export class Orm {
         });
     }
 
-    async findWineTypes(): Promise<WineTypeDto[]> {
-        const models = await this.WineType.findAll({
-            attributes: ['id', 'name'],
-            order: [['name', 'ASC']],
-            include: [
-                {
-                    model: this.Wine,
-                    as: 'wines',
-                    attributes: ['id'],
-                    required: false
-                }
-            ]
-        }) as WineTypeWithWines[];
-
-        return models.map(t => ({
-            id: t.id,
-            name: t.name,
-            isUsed: t.wines?.length > 0
-        }));
-    }
-
-    async postWineType(param: { name: string }) {
-        return this.WineType.create(param);
-    }
-
-    async delWineTypeById(id: any) {
-        const wineType: CountryWithWines = await this.WineType.findByPk(id, {
-            include: [{ model: this.Wine, as: 'wines', attributes: ['id'], required: false }]
-        });
-
-        if (!wineType) {
-            return 'not_found';
-        }
-        if (wineType.wines?.length > 0) {
-            return 'in_use';
-        }
-
-        await this.WineType.destroy({where: {id: id}})
-        return 'deleted';
-    }
 }
