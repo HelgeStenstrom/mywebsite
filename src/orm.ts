@@ -1,7 +1,7 @@
 import {ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
 import {GrapeAttributes, GrapeInstance} from "./types/grape";
 import {MemberDto, MemberInstance} from "./types/member";
-import {TastingCreate, TastingDto, TastingInstance} from "./types/tasting";
+import {TastingInstance} from "./types/tasting";
 import {CountryDto, CountryInstance, CountryWithWines} from "./types/country";
 import {WineTypeDto, WineTypeInstance, WineTypeWithWines} from "./types/wine-type";
 import {WineDto, WineInstance} from "./types/wine";
@@ -11,8 +11,8 @@ import {defineGrape} from "./orm/models/grape.model";
 import {defineTasting} from "./orm/models/tasting.model";
 import {defineWineType} from "./orm/models/wine-type.model";
 import {defineWine} from "./orm/models/wine.model";
-import {BadRequestError} from "./errors/bad-request-error";
 import {GrapeRepository} from "./orm/repositories/grape-repository";
+import {TastingRepository} from "./orm/repositories/tasting.repository";
 
 export class Orm {
 
@@ -25,6 +25,7 @@ export class Orm {
     private readonly WineType: ModelStatic<WineTypeInstance>;
     private readonly Member: ModelStatic<MemberInstance>;
     grapes: GrapeRepository;
+    tastings: TastingRepository;
 
 
 
@@ -59,6 +60,7 @@ export class Orm {
         });
 
         this.grapes = new GrapeRepository(this.Grape);
+        this.tastings = new TastingRepository(this.Tasting);
     }
 
     async sync() {
@@ -155,38 +157,6 @@ export class Orm {
             given: m.given,
             surname: m.surname,
         };
-    }
-
-    async postTasting(t: TastingCreate): Promise<TastingDto> {
-        if (!t.title || !t.notes || !t.date) {
-            throw new BadRequestError('Missing required fields: title, notes, date');
-        }
-        const created = await this.Tasting.create(t);
-        return this.toTastingDto(created);
-    }
-
-    private toTastingDto(t: TastingInstance): TastingDto {
-        return {
-            id: t.id,
-            title: t.title,
-            notes: t.notes,
-            date: t.date
-        };
-    }
-
-    findTastings(): Promise<TastingDto[]> {
-        const tastings = this.Tasting.findAll();
-        return tastings.then(ts => ts.map(t => this.toTastingDto(t)));
-    }
-
-    async getTasting(id: number): Promise<TastingDto | null> {
-        const tasting = await this.Tasting.findByPk(id);
-
-        if (!tasting) {
-            return null;
-        }
-
-        return this.toTastingDto(tasting);
     }
 
     async postWine(param: {
