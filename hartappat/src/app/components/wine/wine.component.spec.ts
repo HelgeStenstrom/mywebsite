@@ -2,9 +2,11 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {WineComponent} from './wine.component';
 import {By} from "@angular/platform-browser";
-import {WineView} from "../../services/backend.service";
+import {BackendService, WineCreate} from "../../services/backend.service";
 import {FormsModule} from "@angular/forms";
 import {DebugElement} from "@angular/core";
+import {CommonModule} from "@angular/common";
+import {of} from "rxjs";
 
 // Inspired by https://youtu.be/uefGmRcIm3c
 // What building with TDD actually looks like
@@ -12,13 +14,20 @@ import {DebugElement} from "@angular/core";
 describe('WineComponent', () => {
   let component: WineComponent;
   let fixture: ComponentFixture<WineComponent>;
+  const backendServiceMock = {
+    getCountries: () => of([]),
+    getWineTypes: () => of([
+      { id: 3, name: 'Rött' },
+      { id: 4, name: 'Vitt' }
+    ]),
+  };
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [WineComponent],
-      imports: [FormsModule],
-
-    });
+      imports: [CommonModule, FormsModule],
+      providers: [{provide: BackendService, useValue: backendServiceMock}]
+    }).compileComponents();
     fixture = TestBed.createComponent(WineComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -61,37 +70,58 @@ describe('WineComponent', () => {
   }
 
   it('should return an object with wine name', () => {
+    component.countryId = 1;
+    component.wineTypeId = 2;
+    component.wineName = "Ringbolt";
 
     const expectedName = "Ringbolt";
     const element = findElement("name-input").nativeElement;
     element.value = expectedName;
     element.dispatchEvent(new Event('input'));
 
-    const wine: WineView = component.getWine();
+    const wine: WineCreate = component.getWine();
     expect(wine.name).toEqual(expectedName);
   });
 
-  it('should return an object with wine category', () => {
-    const element = findElement("type-input").nativeElement
+  it('getWine() should return correct wineTypeId', () => {
+    component.countryId = 1;
+    component.wineTypeId = 3;
+    component.wineName = "Ringbolt";
 
-    // Before programmatically changing the value:
-    expect(component.getWine().wineType).toEqual("Annat");
+    expect(component.getWine().wineTypeId).toEqual(3);
 
-    const expectedType = "Rött";
-    element.value = expectedType;
-    element.dispatchEvent(new Event('change'));
+    component.wineTypeId = 4;
 
-    const wine = component.getWine();
-    expect(wine.wineType).toEqual(expectedType);
+    expect(component.getWine().wineTypeId).toEqual(4);
+  });
+
+  it('should update wineTypeId when selecting in form', async () => {
+    component.countryId = 1;
+    component.wineTypeId = 3;
+    component.wineName = "Ringbolt";
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    const select = findElement("type-input").nativeElement;
+    select.value = select.options[2].value; // index 0 är "Välj typ", 1 är Rött, 2 är Vitt
+    select.dispatchEvent(new Event('change'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(component.wineTypeId).toEqual(4);
   });
 
   it('should return Systembolaget number', () => {
+
+    component.countryId = 1;
+    component.wineTypeId = 3;
+
     const expectedNumber = 23;
     const element = findElement("systembolaget-input").nativeElement;
     element.value = expectedNumber;
     element.dispatchEvent(new Event('input'));
 
-    const wine: WineView = component.getWine();
+    const wine: WineCreate = component.getWine();
     expect(wine.systembolaget).toEqual(expectedNumber);
   });
 
