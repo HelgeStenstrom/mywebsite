@@ -14,3 +14,8 @@ Most parts from https://medium.com/@tarekabdelkhalek/how-to-create-a-drag-and-dr
   margin: 20px ;
   background-color: #E8E8E8;
 }
+
+:host {
+  display: block;
+  background-color: #e6f0ff;
+}
