@@ -1,13 +1,13 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AddGrapeComponent } from './add-grape.component';
-import { BackendService, Grape } from "../../../services/backend.service";
-import { Observable, of } from "rxjs";
-import { NO_ERRORS_SCHEMA } from "@angular/core";
-import { By } from "@angular/platform-browser";
-import { FormControl, FormGroup } from "@angular/forms";
-import { HttpClientTestingModule } from "@angular/common/http/testing";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
+import {AddGrapeComponent} from './add-grape.component';
+import {BackendService, Grape} from "../../../services/backend.service";
+import {Observable, of} from "rxjs";
+import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {By} from "@angular/platform-browser";
+import {FormControl, FormGroup} from "@angular/forms";
+import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 // Informative: https://testing-angular.com/testing-components-with-children/
 
@@ -86,19 +86,14 @@ describe('AddGrapeComponent with jasmine spies', () => {
 
   beforeEach( async() => {
 
-
-    // from https://testing-angular.com/testing-components-depending-on-services/#faking-service-dependencies
-    fakeBackend = jasmine.createSpyObj<BackendService>(
-      'BackendService',
-      {
-        addGrape: of(void 1),
-        deleteGrape: undefined,
-        getGrapes: undefined,
-        getWines: undefined,
-        patchGrape: undefined,
-        newEvent: undefined,
-      }
-    );
+    fakeBackend = {
+      addGrape: jest.fn().mockReturnValue(of(void 1)),
+      deleteGrape: jest.fn(),
+      getGrapes: jest.fn(),
+      getWines: jest.fn(),
+      patchGrape: jest.fn(),
+      newEvent: jest.fn(),
+    } as unknown as BackendService;
 
     await TestBed.configureTestingModule({
       declarations: [AddGrapeComponent],
