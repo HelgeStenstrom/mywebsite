@@ -12,6 +12,8 @@ interface WineAttributes {
     name: string;
     systembolaget: number;
     volume: number;
+    vintageYear?: number | null;
+    isNonVintage?: boolean;
     createdAt?: Date;
 }
 
@@ -22,6 +24,8 @@ export type WineDto = {
     name: string;
     systembolaget: number;
     volume: number;
+    vintageYear?: number | null;
+    isNonVintage?: boolean;
     createdAt: Date;
     wineType: WineTypeDto;
     country: CountryDto;
