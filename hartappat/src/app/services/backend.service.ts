@@ -30,7 +30,6 @@ export class BackendService {
   addWine(wine: WineCreate): Observable<void> {
 
     const url = `${this.apiBase}/wines`;
-    console.log(`BackendService.addWine: ${wine.name}. url = ${url}`)
     const objectObservable: Observable<void> = this.http.post<void>(url, wine);
     return objectObservable.pipe(catchError(this.handleError));
   }
