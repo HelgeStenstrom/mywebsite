@@ -25,7 +25,7 @@ export class WikipediaService {
 
   getFeatured(): Observable<Featured> {
     const urlViaProxy = environment.proxyUrl +  '/featured';
-    console.log("urlViaProxy = ", urlViaProxy);
+    //console.log("urlViaProxy = ", urlViaProxy);
     //const urlViaProxy = 'http://localhost:3001/featured';
     return this.http.get<Featured>(urlViaProxy);
   }
