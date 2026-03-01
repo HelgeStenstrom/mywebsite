@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 
-import {BackendService, Grape, Member, Tasting, WineCreate, WineView} from './backend.service';
+import {BackendService, Grape, Member, Tasting, WineApi, WineCreate, WineView} from './backend.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Observable} from "rxjs";
 import {TestScheduler} from "rxjs/testing";
@@ -83,7 +83,7 @@ describe('BackendService', () => {
           done();
         });
 
-      const req = httpTestingController.expectOne(`${url}/${aGrape.name}`);
+      const req = httpTestingController.expectOne(`${url}/${aGrape.id}`);
       expect(req.request.method).toEqual('DELETE');
       req.flush(aGrape);
 
@@ -94,7 +94,23 @@ describe('BackendService', () => {
 
   describe('Wines', () => {
 
-    const aWine: WineView = {id: 4711, name: 'N', country: 'Country', wineType: 'Cat', systembolaget: 1234, volume: 750};
+    const aWine: WineView = {
+      id: 4711,
+      name: 'N',
+      country: 'Country',
+      wineType: 'Cat',
+      systembolaget: 1234,
+      volume: 750
+    };
+    const aWineApi: WineApi = {
+      id: 4711,
+      name: 'N',
+      country: {id: 1, name: 'Country'},
+      wineType: {id: 2, name: 'Cat'},
+      systembolaget: 1234,
+      volume: 750
+    };
+
     let url: string;
 
     beforeEach(() => {
@@ -112,7 +128,7 @@ describe('BackendService', () => {
 
       const req = httpTestingController.expectOne(url);
       expect(req.request.method).toEqual('GET');
-      req.flush(expectedWines);
+      req.flush([aWineApi]);
     });
 
     it('adds a Wine', done => {
@@ -170,7 +186,7 @@ describe('BackendService', () => {
           done();
         });
 
-      const url = backendService.apiBase + '/vinprovning';
+      const url = backendService.apiBase + '/tastings';
       const req = httpTestingController.expectOne(url);
       expect(req.request.method).toEqual('GET');
       req.flush(expectedTastings);
