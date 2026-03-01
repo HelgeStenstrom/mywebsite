@@ -17,10 +17,10 @@ describe('WinesComponent', () => {
   beforeEach(async () => {
 
     serviceMock = {
-      // Define mocked methods or properties as needed
-      getWines: jasmine.createSpy().and.returnValue(of([])),
-      addWine: jasmine.createSpy(),
-      //someProperty: 'mocked value'
+      getWines: jest.fn().mockReturnValue(of([])),
+      addWine: jest.fn().mockReturnValue(of(void 1)),
+      getCountries: jest.fn().mockReturnValue(of([])),
+      getWineTypes: jest.fn().mockReturnValue(of([])),
     };
 
     await TestBed.configureTestingModule({
@@ -41,7 +41,13 @@ describe('WinesComponent', () => {
 
   it('should get the wine from the WineComponent, when the button is clicked', () => {
     // Create a spy for the method
-    spyOn(component.wineComponent, 'getWine');
+    jest.spyOn(component.wineComponent, 'getWine').mockReturnValue({
+      name: 'Testvin',
+      countryId: 1,
+      wineTypeId: 2,
+      systembolaget: 12345,
+      volume: 75
+    });
 
     const buttonElement = fixture.debugElement.query(  By.css('[data-test="add-wine-button"]'));
 
@@ -55,13 +61,19 @@ describe('WinesComponent', () => {
 
   it('should add a wine to the list, when the button is clicked', () => {
     // Create a spy for the method
-    spyOn(component.wineComponent, 'getWine');
+    jest.spyOn(component.wineComponent, 'getWine').mockReturnValue({
+      name: 'Testvin',
+      countryId: 1,
+      wineTypeId: 2,
+      systembolaget: 42,
+      volume: 0
+    });
 
     const buttonElement = fixture.debugElement.query(  By.css('[data-test="add-wine-button"]'));
     buttonElement.nativeElement.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
-    expect(serviceMock.addWine).toHaveBeenCalled();
+    expect(serviceMock.addWine).toHaveBeenCalled()
   });
 
   xit('should  bring up a form when the edit button is clicked', () => {

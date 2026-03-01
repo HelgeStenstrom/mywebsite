@@ -50,7 +50,6 @@ export class WinesComponent implements OnInit {
 
   addWineToList() {
     const wine = this._wineComponent.getWine();
-    console.log("Called WineComponent.getWine(), got ", wine);
     const observable = this.service.addWine(wine);
     this.winesAsync$ = observable
       .pipe(
