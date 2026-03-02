@@ -32,12 +32,19 @@ export class WineHandlers {
 
             const wine: WineCreateDto = req.body;
 
+            let vintageYear = wine.vintageYear ?? null;
+            const isNonVintage = wine.isNonVintage ?? false;
+
+            if (isNonVintage) {
+                vintageYear = null;
+            }
+
             const param: WineCreateParams = {
                 name: wine.name,
                 countryId: wine.countryId,
                 wineTypeId: wine.wineTypeId,
-                vintageYear: wine.vintageYear ?? null,
-                isNonVintage: wine.isNonVintage ?? false,
+                vintageYear,
+                isNonVintage,
                 systembolaget: wine.systembolaget,
                 volume: wine.volume,
             };
