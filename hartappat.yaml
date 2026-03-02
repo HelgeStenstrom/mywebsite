@@ -455,10 +455,25 @@ components:
         name:
           type: string
           example: Liebfraumilch
+        systembolaget:
+          type: number
+        volume:
+          type: number
+
+        vintageYear:
+          type: integer
+          nullable: true
+          example: 2019
+
+        isNonVintage:
+          type: boolean
+          example: false
+
         country:
           $ref: '#/components/schemas/CountryDto'
         wineType:
           $ref: '#/components/schemas/WineTypeDto'
+
 
     WineCreate:
       type: object

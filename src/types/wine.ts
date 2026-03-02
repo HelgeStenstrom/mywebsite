@@ -19,6 +19,7 @@ interface WineAttributes {
 
 export interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
 
+// This DTO must match components.schemas.WineDto in hartappat.yaml
 export type WineDto = {
     id: number;
     name: string;
