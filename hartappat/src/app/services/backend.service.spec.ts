@@ -1,6 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 
-import {BackendService, Grape, Member, Tasting, WineApi, WineCreate, WineView} from './backend.service';
+import {BackendService, Grape, Member, WineApi, WineCreate, WineTastingApi, WineView} from './backend.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Observable} from "rxjs";
 import {TestScheduler} from "rxjs/testing";
@@ -179,7 +179,7 @@ describe('BackendService', () => {
 
     it('calls getTastings()', done => {
 
-      const aTasting: Tasting = {title: 'A title', notes: 'some notes', date: 'a date, like 2023-07-20'}
+      const aTasting: WineTastingApi = {title: 'A title', notes: 'some notes', tastingDate: 'a date, like 2023-07-20'}
       const expectedTastings = [aTasting];
 
       backendService.getTastings()

@@ -142,10 +142,10 @@ export class BackendService {
       );
   }
 
-  getTastings(): Observable<Tasting[]> {
+  getTastings(): Observable<WineTastingApi[]> {
 
     const url = `${this.apiBase}/tastings`;
-    return this.http.get<Tasting[]>(url);
+    return this.http.get<WineTastingApi[]>(url);
 
   }
 
@@ -217,11 +217,19 @@ export type Grape = {
   color: string;
 };
 
-export type Tasting = {
+export type WineTastingApi = {
+  id:number;
   title: string;
-  notes: string;
-  date: string;
+  notes?: string;
+  tastingDate: string;
 }
+
+export type WineTasting = {
+  id: number;
+  title: string;
+  notes?: string;
+  tastingDate: Date;
+};
 
 export type Member = {
   given: string;

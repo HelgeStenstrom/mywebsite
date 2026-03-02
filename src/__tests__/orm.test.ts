@@ -178,7 +178,7 @@ describe('Database tests', () => {
 
             const tasting = await orm.tastings.getTasting(1);
             expect(tasting.title).toEqual("Till fisk");
-            expect(tasting.date).toEqual(new Date("2021-03-28"));
+            expect(tasting.tastingDate).toEqual(new Date("2021-03-28"));
 
         });
     });

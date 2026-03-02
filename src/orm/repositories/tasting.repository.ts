@@ -1,4 +1,4 @@
-import {TastingCreate, TastingDto, TastingInstance} from "../../types/tasting";
+import {TastingCreate, TastingDto, TastingInstance} from "../../types/wine-tasting.dto";
 import {ModelStatic} from "sequelize";
 import {BadRequestError} from "../../errors/bad-request-error";
 
@@ -18,7 +18,7 @@ export class TastingRepository {
             id: t.id,
             title: t.title,
             notes: t.notes,
-            date: t.date
+            tastingDate: t.date
         };
     }
 
