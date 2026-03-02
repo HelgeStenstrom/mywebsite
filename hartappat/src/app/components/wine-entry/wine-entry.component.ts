@@ -16,6 +16,8 @@ export class WineEntryComponent implements OnInit {
   wineTypeId?: number;
   systemNumber?: number;
   volume?: number;
+  vintage?: number;
+  protected isNonVintage = false;
 
   constructor(private backendService: BackendService) {
   }
@@ -40,7 +42,10 @@ export class WineEntryComponent implements OnInit {
       countryId:this.countryId,
       systembolaget:this.systemNumber,
       wineTypeId:this.wineTypeId,
-      volume: this.volume};
+      volume: this.volume,
+      vintageYear: this.vintage,
+      isNonVintage: this.isNonVintage,
+    };
   }
 
 }
