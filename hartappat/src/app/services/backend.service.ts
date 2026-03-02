@@ -175,6 +175,8 @@ export type WineCreate = {
   name: string;
   countryId: number;
   wineTypeId: number;
+  vintageYear?: number | null;
+  isNonVintage?: boolean;
   systembolaget?: number;
   volume?: number;
 };
