@@ -8,7 +8,8 @@ const mariaDbOptions : Options = {
     port: 3307,
     pool: {
         max: 5
-    }
+    },
+    logging: false, // false = no logging by Sequelize.
 };
 
 const orm = new Orm('hartappat', 'appuser', 'appuserpass', mariaDbOptions);
