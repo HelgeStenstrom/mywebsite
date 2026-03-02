@@ -7,7 +7,7 @@ export function defineWine(sequelize1: Sequelize): ModelStatic<WineInstance> {
             name: DataTypes.STRING(256),
             countryId: {
                 type: DataTypes.INTEGER,
-                field: 'country', // Name in DB column
+                field: 'country_id', // Name in DB column
                 allowNull: false
             },
             wineTypeId: {

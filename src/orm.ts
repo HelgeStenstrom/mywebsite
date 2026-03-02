@@ -61,11 +61,11 @@ export class Orm {
 
     private defineModelAssociations() {
         this.Wine.belongsTo(this.Country, {
-            foreignKey: 'country',
+            foreignKey: 'country_id',
             as: 'countryModel'
         });
         this.Country.hasMany(this.Wine, {
-            foreignKey: 'country',
+            foreignKey: 'country_id',
             as: 'wines'
         });
 
