@@ -303,7 +303,7 @@ describe('Database tests', () => {
             ) as [number, unknown];
 
             await sequelize.query(`
-                INSERT INTO wines (name, vintage_year, is_non_vintage, country, winetype)
+                INSERT INTO wines (name, vintage_year, is_non_vintage, country, wine_type_id)
                 VALUES ('Testvin', 2019, false, ${countryId}, ${wineTypeId})
             `);
 

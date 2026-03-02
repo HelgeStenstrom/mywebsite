@@ -70,11 +70,11 @@ export class Orm {
         });
 
         this.Wine.belongsTo(this.WineType, {
-            foreignKey: 'winetype',
+            foreignKey: 'wine_type_id',
             as: 'winetypeModel'
         });
         this.WineType.hasMany(this.Wine, {
-            foreignKey: 'winetype',
+            foreignKey: 'wine_type_id',
             as: 'wines'
         });
     }

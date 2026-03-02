@@ -12,7 +12,7 @@ export function defineWine(sequelize1: Sequelize): ModelStatic<WineInstance> {
             },
             wineTypeId: {
                 type: DataTypes.INTEGER,
-                field: 'winetype', // Name in DB column
+                field: 'wine_type_id', // Name in DB column
                 allowNull: false
             },
             systembolaget: DataTypes.INTEGER,
