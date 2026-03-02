@@ -34,6 +34,7 @@ export function defineWine(sequelize1: Sequelize): ModelStatic<WineInstance> {
 
             createdAt: {
                 type: DataTypes.DATE,
+                field: 'created_at',
                 allowNull: true
             }
         },
