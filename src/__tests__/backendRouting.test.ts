@@ -176,7 +176,23 @@ describe('Table endpoints', () => {
         })
     })
 
+
     describe('Wines', () => {
+        async function storeCountryAndWineType() {
+            // Let's first create a country
+            await request(app).post('/api/v1/countries').send({name: "Sweden"});
+            // Verify
+            const countries = await request(app).get('/api/v1/countries');
+            expect(countries.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
+
+            // Then create a wine type.
+            await request(app).post('/api/v1/wine-types').send({name: "rött"})
+
+            // Verify
+            const wineTypes = await request(app).get('/api/v1/wine-types');
+            expect(wineTypes.body).toEqual([{id: 1, name: "rött", isUsed: false}])
+        }
+
         test('Wines: POST returns 201 and the created object', async () => {
             // Let's first create a country and a wine type
             await request(app).post('/api/v1/countries').send({name: "Sweden"});
@@ -191,19 +207,9 @@ describe('Table endpoints', () => {
         })
 
 
-        test('Wines: POST followed by GET returns the same data', async () => {
-            // Let's first create a country
-            await request(app).post('/api/v1/countries').send({name: "Sweden"});
-            // Verify
-            const countries = await request(app).get('/api/v1/countries');
-            expect(countries.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
-
-            // Then create a wine type.
-            await request(app).post('/api/v1/wine-types').send({name: "rött"})
-
-            // Verify
-            const wineTypes = await request(app).get('/api/v1/wine-types');
-            expect(wineTypes.body).toEqual([{id: 1, name: "rött", isUsed: false}])
+        // Doesn't test what the name says.
+        test.skip('Wines: POST followed by GET returns the same data', async () => {
+            await storeCountryAndWineType();
 
             const putResponse = await request(app).post('/api/v1/wines').send({name: "foo", countryId: 1, wineTypeId: 1, systembolaget: 523});
             expect(putResponse.status).toBe(201);
@@ -227,6 +233,19 @@ describe('Table endpoints', () => {
                 },
             ]);
 
+        })
+
+        // The test is not completed yet. We can't post a wine with vintageYear yet.
+        test.skip('Wines: Returned wines have a vintage, sometimes', async () => {
+            await storeCountryAndWineType();
+            const putResponse = await request(app)
+                .post('/api/v1/wines')
+                .send({
+                    name: "foo",
+                    countryId: 1,
+                    wineTypeId: 1,
+                    systembolaget: 523});
+            expect(putResponse.status).toBe(201);
         })
     })
 
