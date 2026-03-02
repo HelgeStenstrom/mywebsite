@@ -261,15 +261,20 @@ describe('Table endpoints', () => {
                 .send({ name: 'Red' })
                 .expect(201);
 
-            await request(app)
+            const res1 = await request(app)
                 .post('/api/v1/wines')
                 .send({
                     name: 'Testvin',
                     countryId: country.body.id,
                     wineTypeId: wineType.body.id,
-                    vintageYear: 2019
+                    vintageYear: 2019,
+                    volume: 0,
+                    systembolaget: 123,
+
                 })
                 .expect(201);
+
+            console.log(res1.body);
 
             const res = await request(app)
                 .get('/api/v1/wines')
@@ -277,7 +282,7 @@ describe('Table endpoints', () => {
 
 
             expect(res.body[0].isNonVintage).toBe(false);
-            //expect(res.body[0].vintageYear).toBe(2019);
+            expect(res.body[0].vintageYear).toBe(2019);
 
         })
 

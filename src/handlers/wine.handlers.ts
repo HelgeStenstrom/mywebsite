@@ -1,5 +1,5 @@
 import {Orm} from "../orm";
-import {WineCreateDto} from "../types/wine";
+import {WineCreateDto, WineCreateParams} from "../types/wine";
 
 export class WineHandlers {
 
@@ -32,7 +32,16 @@ export class WineHandlers {
 
             const wine: WineCreateDto = req.body;
 
-            const param = {name: wine.name, country: wine.countryId, systembolaget: wine.systembolaget, volume: wine.volume, winetype: wine.wineTypeId};
+            const param: WineCreateParams = {
+                name: wine.name,
+                countryId: wine.countryId,
+                wineTypeId: wine.wineTypeId,
+                vintageYear: wine.vintageYear ?? null,
+                isNonVintage: wine.isNonVintage ?? false,
+                systembolaget: wine.systembolaget,
+                volume: wine.volume,
+            };
+
             this.orm.wines.postWine(param)
                 .then(() => res.status(201).json("postWine called!"))
                 .catch(e => console.error(e));

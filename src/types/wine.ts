@@ -10,10 +10,12 @@ interface WineAssociations {
 interface WineAttributes {
     id: number;
     name: string;
-    systembolaget: number;
-    volume: number;
+    country: number;
+    winetype: number;
     vintageYear?: number | null;
     isNonVintage: boolean;
+    systembolaget: number;
+    volume: number;
     createdAt?: Date;
 }
 
@@ -36,6 +38,18 @@ export type WineCreateDto = {
     name: string;
     countryId: number;
     wineTypeId: number;
+    vintageYear?: number | null;
+    isNonVintage?: boolean;
     systembolaget: number;
     volume: number;
+};
+
+export type WineCreateParams = {
+    name: string;
+    countryId: number;
+    wineTypeId: number;
+    vintageYear?: number | null;
+    isNonVintage?: boolean;
+    systembolaget?: number;
+    volume?: number;
 };

@@ -66,10 +66,10 @@ describe('Database tests', () => {
             const countryInstance = await orm.countries.postCountry("A country");
             const wineTypeInstance = await orm.wineTypes.postWineType({name:"rött"});
             const wineInstance = await orm.wines.postWine({
-                country: countryInstance.id,
+                countryId: countryInstance.id,
                 name: "Wine name",
                 volume: 750,
-                winetype: wineTypeInstance.id,
+                wineTypeId: wineTypeInstance.id,
                 systembolaget: null
             });
 
@@ -195,11 +195,11 @@ describe('Database tests', () => {
 
             // post the wine
             await orm.wines.postWine({
-                country: country['id'],
+                countryId: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
                 volume: 750,
-                winetype: wineType['id']
+                wineTypeId: wineType['id']
             })
 
             const wines = await orm.wines.findWines();
@@ -223,20 +223,20 @@ describe('Database tests', () => {
 
             // post the wine
             const wineToBeDeleted = await orm.wines.postWine({
-                country: country['id'],
+                countryId: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
                 volume: 750,
-                winetype: wineType['id']
+                wineTypeId: wineType['id']
             })
 
                   // post another wine
             const otherWine = await orm.wines.postWine({
-                country: country['id'],
+                countryId: country['id'],
                 name: 'Other',
                 systembolaget: 4711,
                 volume: 750,
-                winetype: wineType['id']
+                wineTypeId: wineType['id']
             });
 
 
@@ -272,11 +272,11 @@ describe('Database tests', () => {
 
             // post the wine
             await orm.wines.postWine({
-                country: country['id'],
+                countryId: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
                 volume: 750,
-                winetype: wineType['id']
+                wineTypeId: wineType['id']
             })
 
             // Read back, so that we get a wine to patch

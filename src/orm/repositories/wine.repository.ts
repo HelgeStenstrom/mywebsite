@@ -1,5 +1,5 @@
 import {ModelStatic} from "sequelize";
-import {WineDto, WineInstance} from "../../types/wine";
+import {WineCreateParams, WineDto, WineInstance} from "../../types/wine";
 import {CountryInstance} from "../../types/country";
 import {WineTypeInstance} from "../../types/wine-type";
 
@@ -12,10 +12,16 @@ export class WineRepository {
     ) {}
 
 
-    async postWine(param: {
-        country: number; name: string; systembolaget: number; volume: number; winetype: number
-    }) {
-        return this.Wine.create(param);
+    async postWine(param: WineCreateParams) {
+        return this.Wine.create({
+            name: param.name,
+            country: param.countryId,
+            winetype: param.wineTypeId,
+            systembolaget: param.systembolaget,
+            volume: param.volume,
+            vintageYear: param.vintageYear,
+            isNonVintage: param.isNonVintage
+        });
     }
 
     async findWines(): Promise<WineDto[]> {
