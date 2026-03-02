@@ -10,8 +10,8 @@ interface WineAssociations {
 interface WineAttributes {
     id: number;
     name: string;
-    country: number;
-    winetype: number;
+    countryId: number;
+    wineTypeId: number;
     vintageYear?: number | null;
     isNonVintage: boolean;
     systembolaget: number;

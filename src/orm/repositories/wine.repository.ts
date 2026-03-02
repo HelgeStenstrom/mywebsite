@@ -15,8 +15,8 @@ export class WineRepository {
     async postWine(param: WineCreateParams) {
         return this.Wine.create({
             name: param.name,
-            country: param.countryId,
-            winetype: param.wineTypeId,
+            countryId: param.countryId,
+            wineTypeId: param.wineTypeId,
             systembolaget: param.systembolaget,
             volume: param.volume,
             vintageYear: param.vintageYear,
