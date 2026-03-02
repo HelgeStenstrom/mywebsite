@@ -96,6 +96,9 @@ export class BackendService {
   }
 
   private toWineView(wine: WineApi): WineView {
+    const maybeVintage = wine.vintageYear
+      ? wine.vintageYear.toString()
+      : undefined;
     return {
       id: wine.id,
       name: wine.name,
@@ -104,6 +107,9 @@ export class BackendService {
       systembolaget: wine.systembolaget,
       volume: wine.volume,
       createdAt: wine.createdAt,
+      vintage: wine.isNonVintage
+        ? 'NV'
+        : maybeVintage,
     };
   }
 
@@ -162,6 +168,7 @@ export type WineView = {
   systembolaget?: number;
   volume?: number;
   createdAt?: string;
+  vintage?: string;
 };
 
 export type WineCreate = {
@@ -186,6 +193,8 @@ export type WineApi = {
   systembolaget?: number;
   volume?: number;
   createdAt?: string;
+  vintageYear: number | null;
+  isNonVintage: boolean;
 };
 
 export type CountryApi = {

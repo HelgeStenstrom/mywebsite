@@ -12,6 +12,7 @@
   <th>Namn</th>
   <th>Land</th>
   <th>Typ</th>
+  <th>Årgång</th>
   <th>Volym</th>
   <th>Datum</th>
   <th>Systembolaget</th>
@@ -20,6 +21,7 @@
     <td>{{w.name}}</td>
     <td>{{w.country}}</td>
     <td>{{w.wineType}}</td>
+    <td>{{w.vintage}}</td>
     <td>{{w.volume}}</td>
     <td>{{w.createdAt| date:'yyyy-MM-dd'}}</td>
     <td *ngIf="w.systembolaget">
