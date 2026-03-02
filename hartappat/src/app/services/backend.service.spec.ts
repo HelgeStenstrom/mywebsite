@@ -108,7 +108,9 @@ describe('BackendService', () => {
       country: {id: 1, name: 'Country'},
       wineType: {id: 2, name: 'Cat'},
       systembolaget: 1234,
-      volume: 750
+      volume: 750,
+      vintageYear: null,
+      isNonVintage: false,
     };
 
     let url: string;
