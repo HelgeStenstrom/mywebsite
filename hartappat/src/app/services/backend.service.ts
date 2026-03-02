@@ -142,10 +142,20 @@ export class BackendService {
       );
   }
 
-  getTastings(): Observable<WineTastingApi[]> {
+  getTastings(): Observable<WineTasting[]> {
 
     const url = `${this.apiBase}/tastings`;
-    return this.http.get<WineTastingApi[]>(url);
+
+    return this.http.get<WineTastingApi[]>(url).pipe(
+      map(apiTastings =>
+        apiTastings.map(t => ({
+          id: t.id,
+          title: t.title,
+          notes: t.notes,
+          tastingDate: new Date(t.tastingDate),
+        }))
+      )
+    );
 
   }
 
