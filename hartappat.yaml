@@ -197,7 +197,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Member'
+                $ref: '#/components/schemas/MemberDto'
 
   /tastings:
     get:
@@ -387,7 +387,7 @@ components:
         color:
           $ref: '#/components/schemas/GrapeColor'
 
-    Member:
+    MemberDto:
       type: object
       required: [id, given, surname]
       properties:
@@ -413,7 +413,7 @@ components:
 
     TastingDto:
       type: object
-      required: [ id, title ]
+      required: [ id, title,notes, date ]
       properties:
         id:
           type: integer
