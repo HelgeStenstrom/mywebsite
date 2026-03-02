@@ -221,6 +221,8 @@ describe('Table endpoints', () => {
                     wineType: {"id": 1, "name": "rött"},
                     systembolaget: 523,
                     volume: null,
+                    vintageYear: null,
+                    isNonVintage: false,
                     createdAt: null,
                 },
             ]);

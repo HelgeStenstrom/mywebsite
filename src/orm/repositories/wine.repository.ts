@@ -46,9 +46,11 @@ export class WineRepository {
             name: w.name,
             systembolaget: w.systembolaget,
             volume: w.volume,
+            vintageYear: w.vintageYear ?? null,
+            isNonVintage: w.isNonVintage ?? false,
             createdAt: w.createdAt,
             wineType: w.winetypeModel ?? { id: 0, name: '', isUsed: false },
-            country: w.countryModel ?? { id: 0, name: '', isUsed: false }
+            country: w.countryModel ?? { id: 0, name: '', isUsed: false },
         };
     }
 
