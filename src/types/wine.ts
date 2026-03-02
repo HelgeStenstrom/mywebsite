@@ -23,13 +23,13 @@ export interface WineInstance extends Model<WineAttributes>, WineAttributes, Win
 export type WineDto = {
     id: number;
     name: string;
-    systembolaget: number;
-    volume: number;
+    country: CountryDto;
+    wineType: WineTypeDto;
     vintageYear: number | null;
     isNonVintage: boolean;
+    systembolaget: number;
+    volume: number;
     createdAt: Date;
-    wineType: WineTypeDto;
-    country: CountryDto;
 };
 
 export type WineCreateDto = {

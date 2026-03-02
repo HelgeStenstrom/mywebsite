@@ -447,7 +447,16 @@ components:
 
     WineDto:
       type: object
-      required: [id, name, country, wineType]
+      required:
+        - id
+        - name
+        - country
+        - wineType
+        - vintageYear
+        - isNonVintage
+        - systembolaget
+        - volume
+        - createdAt
       properties:
         id:
           type: integer
@@ -455,24 +464,25 @@ components:
         name:
           type: string
           example: Liebfraumilch
-        systembolaget:
-          type: number
-        volume:
-          type: number
-
-        vintageYear:
-          type: integer
-          nullable: true
-          example: 2019
-
-        isNonVintage:
-          type: boolean
-          example: false
-
         country:
           $ref: '#/components/schemas/CountryDto'
         wineType:
           $ref: '#/components/schemas/WineTypeDto'
+        vintageYear:
+          type: integer
+          nullable: true
+          example: 2019
+        isNonVintage:
+          type: boolean
+          example: false
+        systembolaget:
+          type: number
+        volume:
+          type: number
+        createdAt:
+          type: string
+          format: date-time
+          example: 2023-01-06T14:32:00Z
 
 
     WineCreate:
