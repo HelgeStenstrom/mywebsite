@@ -3,10 +3,10 @@ import {BackendService, CountryApi, WineCreate, WineTypeApi} from "../../service
 
 @Component({
   selector: 'app-wine',
-  templateUrl: './wine.component.html',
-  styleUrls: ['./wine.component.css']
+  templateUrl: './wine-entry.component.html',
+  styleUrls: ['./wine-entry.component.css']
 })
-export class WineComponent implements OnInit {
+export class WineEntryComponent implements OnInit {
   countries: CountryApi[] = [];
   wineTypes: WineTypeApi[] = [];
 

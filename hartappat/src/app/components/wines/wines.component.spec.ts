@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {WinesComponent} from './wines.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {WineComponent} from "../wine/wine.component";
+import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {FormsModule} from "@angular/forms";
 import {By} from "@angular/platform-browser";
 import {BackendService} from "../../services/backend.service";
@@ -25,7 +25,7 @@ describe('WinesComponent', () => {
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, FormsModule],
-      declarations: [ WinesComponent, WineComponent ],
+      declarations: [ WinesComponent, WineEntryComponent ],
       providers:[{provide: BackendService, useValue:serviceMock}]
     })
     .compileComponents();

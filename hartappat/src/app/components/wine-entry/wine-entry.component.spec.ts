@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {WineComponent} from './wine.component';
+import {WineEntryComponent} from './wine-entry.component';
 import {By} from "@angular/platform-browser";
 import {BackendService, WineCreate} from "../../services/backend.service";
 import {FormsModule} from "@angular/forms";
@@ -12,8 +12,8 @@ import {of} from "rxjs";
 // What building with TDD actually looks like
 
 describe('WineComponent', () => {
-  let component: WineComponent;
-  let fixture: ComponentFixture<WineComponent>;
+  let component: WineEntryComponent;
+  let fixture: ComponentFixture<WineEntryComponent>;
   const backendServiceMock = {
     getCountries: () => of([]),
     getWineTypes: () => of([
@@ -24,11 +24,11 @@ describe('WineComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WineComponent],
+      declarations: [WineEntryComponent],
       imports: [CommonModule, FormsModule],
       providers: [{provide: BackendService, useValue: backendServiceMock}]
     }).compileComponents();
-    fixture = TestBed.createComponent(WineComponent);
+    fixture = TestBed.createComponent(WineEntryComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

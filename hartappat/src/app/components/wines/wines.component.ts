@@ -1,6 +1,6 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {BackendService, WineView} from "../../services/backend.service";
-import {WineComponent} from "../wine/wine.component";
+import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {Observable, of, switchMap} from "rxjs";
 
 @Component({
@@ -12,8 +12,8 @@ import {Observable, of, switchMap} from "rxjs";
 export class WinesComponent implements OnInit {
   private service: BackendService;
   wines : WineView[] = [];
-  @ViewChild(WineComponent)
-  private _wineComponent!: WineComponent;
+  @ViewChild(WineEntryComponent)
+  private _wineComponent!: WineEntryComponent;
   winesAsync$: Observable<WineView[]> = of([]);
   constructor(service: BackendService) {
     this.service = service;
@@ -31,7 +31,7 @@ export class WinesComponent implements OnInit {
 
   }
 
-  get wineComponent(): WineComponent {
+  get wineComponent(): WineEntryComponent {
     return this._wineComponent;
   }
 

@@ -32,7 +32,7 @@ import {TastingComponent} from './components/provningar/tasting/tasting.componen
 import {AltDruvorComponent} from './components/alt-druvor/alt-druvor.component';
 import {MembersComponent} from './components/about/members/members.component';
 import {VotingComponent} from './components/voting/voting.component';
-import {WineComponent} from './components/wine/wine.component';
+import {WineEntryComponent} from './components/wine-entry/wine-entry.component';
 import {ExtraHeaderInterceptor} from "./services/interceptors/extra-header-interceptor";
 import {CountriesComponent} from './components/countries/countries.component';
 import {WineTypesComponent} from './components/wine-types/wine-types.component';
@@ -59,7 +59,7 @@ import {WineTypesComponent} from './components/wine-types/wine-types.component';
     AltDruvorComponent,
     MembersComponent,
     VotingComponent,
-    WineComponent,
+    WineEntryComponent,
     CountriesComponent,
     WineTypesComponent
   ],
