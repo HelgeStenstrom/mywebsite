@@ -1,5 +1,6 @@
 import {beforeEach, describe, expect, test} from "@jest/globals";
 import {Orm} from "../orm";
+import {QueryTypes} from "sequelize";
 
 function fail(message) {
     throw new Error(message);
@@ -285,6 +286,37 @@ describe('Database tests', () => {
 
             fail("Test not done yet.");
         });
+
+        test('Post and read back wines with vintage', async () => {
+            await orm.createTables();
+            const wineRepo = orm.wines;
+            const sequelize = orm.sequelize;
+
+            const [countryId] = await sequelize.query(
+                `INSERT INTO countries (name) VALUES ('Testland')`,
+                { type: QueryTypes.INSERT }
+            ) as [number, unknown];
+
+            const [wineTypeId] = await sequelize.query(
+                `INSERT INTO winetypes (name) VALUES ('Rött')`,
+                { type: QueryTypes.INSERT }
+            ) as [number, unknown];
+
+            await sequelize.query(`
+                INSERT INTO wines (name, vintage_year, is_non_vintage, country, winetype)
+                VALUES ('Testvin', 2019, false, ${countryId}, ${wineTypeId})
+            `);
+
+            const [rows] = await sequelize.query(`SELECT * FROM wines`);
+            console.log(rows);
+
+            const wines = await wineRepo.findWines();
+            expect(wines.length).toBe(1);
+            const wineDto = wines[0];
+            expect(wineDto.vintageYear).toBe(2019);
+            expect(wineDto.isNonVintage).toBe(false);
+
+        })
     });
 
     describe('Wine tests with common database setup', () => {
