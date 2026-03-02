@@ -5,6 +5,7 @@ import {Orm} from "../orm";
 import {Options} from "sequelize";
 import {CountryDto} from "../types/country";
 import {WineDto} from "../types/wine";
+import {test} from "@jest/globals";
 
 // TODO: Klargör syftet med denna fil, eller ta bort den. Se till att den uppfyller sitt syfte.
 
@@ -247,6 +248,39 @@ describe('Table endpoints', () => {
                     systembolaget: 523});
             expect(putResponse.status).toBe(201);
         })
+
+        test('can create wine with vintage year', async () => {
+
+            const country = await request(app)
+                .post('/api/v1/countries')
+                .send({ name: 'France' })
+                .expect(201);
+
+            const wineType = await request(app)
+                .post('/api/v1/wine-types')
+                .send({ name: 'Red' })
+                .expect(201);
+
+            await request(app)
+                .post('/api/v1/wines')
+                .send({
+                    name: 'Testvin',
+                    countryId: country.body.id,
+                    wineTypeId: wineType.body.id,
+                    vintageYear: 2019
+                })
+                .expect(201);
+
+            const res = await request(app)
+                .get('/api/v1/wines')
+                .expect(200);
+
+
+            expect(res.body[0].isNonVintage).toBe(false);
+            //expect(res.body[0].vintageYear).toBe(2019);
+
+        })
+
     })
 
     describe('Table interactions', () => {
