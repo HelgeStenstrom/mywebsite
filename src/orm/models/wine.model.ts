@@ -8,6 +8,20 @@ export function defineWine(sequelize1: Sequelize): ModelStatic<WineInstance> {
             systembolaget: DataTypes.INTEGER,
             volume: DataTypes.INTEGER,
 
+
+            vintageYear: {
+                type: DataTypes.INTEGER,
+                field: 'vintage_year',
+                allowNull: true
+            },
+
+            isNonVintage: {
+                type: DataTypes.BOOLEAN,
+                field: 'is_non_vintage',
+                allowNull: false,
+                defaultValue: false
+            },
+
             createdAt: {
                 type: DataTypes.DATE,
                 allowNull: true
