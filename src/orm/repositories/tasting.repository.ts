@@ -23,7 +23,8 @@ export class TastingRepository {
             id: t.id,
             title: t.title,
             notes: t.notes,
-            tastingDate: t.tastingDate
+            tastingDate: t.tastingDate,
+            hosts: [],
         };
     }
 

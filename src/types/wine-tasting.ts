@@ -15,6 +15,8 @@ export type WineTastingDto = {
     title: string;
     notes: string;
     tastingDate: Date;
+
+    hosts: WineTastingHostDto[];
 }
 
 export type WineTastingCreate = {
@@ -25,6 +27,7 @@ export type WineTastingCreate = {
 
 export interface WineTastingHostDto {
     memberId: number;
+    name?: string;
 }
 
 export interface WineTastingWineDto {
