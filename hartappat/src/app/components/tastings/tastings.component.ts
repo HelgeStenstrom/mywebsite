@@ -3,11 +3,11 @@ import {BackendService, WineTasting} from "../../services/backend.service";
 import {Observable, of} from "rxjs";
 
 @Component({
-  selector: 'app-provningar',
-  templateUrl: './provningar.component.html',
-  styleUrls: ['./provningar.component.css']
+  selector: 'app-tastings',
+  templateUrl: './tastings.component.html',
+  styleUrls: ['./tastings.component.css']
 })
-export class ProvningarComponent implements OnInit {
+export class TastingsComponent implements OnInit {
 
   tastings$: Observable<WineTasting[]> = of([]);
 

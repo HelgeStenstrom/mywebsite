@@ -1,14 +1,14 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {ProvningarComponent} from './provningar.component';
+import {TastingsComponent} from './tastings.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {TastingComponent} from "./tasting/tasting.component";
 import {BackendService, WineTastingApi} from "../../services/backend.service";
 import {Observable, of} from "rxjs";
 
-describe('ProvningarComponent', () => {
-  let component: ProvningarComponent;
-  let fixture: ComponentFixture<ProvningarComponent>;
+describe('TastingsComponent', () => {
+  let component: TastingsComponent;
+  let fixture: ComponentFixture<TastingsComponent>;
 
   const backendServiceStub: Partial<BackendService> = {
     getTastings(): Observable<WineTastingApi[]> {
@@ -24,12 +24,12 @@ describe('ProvningarComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      declarations: [ ProvningarComponent, TastingComponent ],
+      declarations: [ TastingsComponent, TastingComponent ],
       providers: [{provide: BackendService, useValue: backendServiceStub}],
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(ProvningarComponent);
+    fixture = TestBed.createComponent(TastingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

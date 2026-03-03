@@ -27,8 +27,8 @@ import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogR
 import {FiledropComponent} from './components/filedrop/filedrop.component';
 import {DndDirective} from './dnd.directive';
 import {TestbenchComponent} from './components/testbench/testbench.component';
-import {ProvningarComponent} from './components/provningar/provningar.component';
-import {TastingComponent} from './components/provningar/tasting/tasting.component';
+import {TastingsComponent} from './components/tastings/tastings.component';
+import {TastingComponent} from './components/tastings/tasting/tasting.component';
 import {AltDruvorComponent} from './components/alt-druvor/alt-druvor.component';
 import {MembersComponent} from './components/about/members/members.component';
 import {VotingComponent} from './components/voting/voting.component';
@@ -54,7 +54,7 @@ import {WineTypesComponent} from './components/wine-types/wine-types.component';
     FiledropComponent,
     DndDirective,
     TestbenchComponent,
-    ProvningarComponent,
+    TastingsComponent,
     TastingComponent,
     AltDruvorComponent,
     MembersComponent,
@@ -78,7 +78,7 @@ import {WineTypesComponent} from './components/wine-types/wine-types.component';
       {path: 'resor', component: TravelsComponent},
       {path: 'about', component: AboutComponent},
       {path: 'voting', component: VotingComponent},
-      {path: 'provningar', component: ProvningarComponent},
+      {path: 'tastings', component: TastingsComponent},
       {path: 'countries', component: CountriesComponent},
       {path: 'wine-types', component: WineTypesComponent},
       {path: 'tests', component: TestbenchComponent},
