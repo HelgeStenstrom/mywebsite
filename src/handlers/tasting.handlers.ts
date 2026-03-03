@@ -1,4 +1,4 @@
-import {WineTastingCreate} from "../types/wine-tasting.dto";
+import {WineTastingCreate} from "../types/wine-tasting";
 import {BadRequestError} from "../errors/bad-request-error";
 import {Orm} from "../orm";
 

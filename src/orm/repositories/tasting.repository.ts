@@ -1,4 +1,4 @@
-import {TastingInstance, WineTastingCreate, WineTastingDto} from "../../types/wine-tasting.dto";
+import {TastingInstance, WineTastingCreate, WineTastingDto} from "../../types/wine-tasting";
 import {ModelStatic} from "sequelize";
 import {BadRequestError} from "../../errors/bad-request-error";
 

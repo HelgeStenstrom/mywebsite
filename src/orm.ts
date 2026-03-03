@@ -1,7 +1,7 @@
 import {ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
 import {GrapeInstance} from "./types/grape";
 import {MemberInstance} from "./types/member";
-import {TastingInstance} from "./types/wine-tasting.dto";
+import {TastingInstance} from "./types/wine-tasting";
 import {CountryInstance} from "./types/country";
 import {WineTypeInstance} from "./types/wine-type";
 import {WineInstance} from "./types/wine";
