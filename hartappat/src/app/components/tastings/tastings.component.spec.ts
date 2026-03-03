@@ -3,7 +3,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TastingsComponent} from './tastings.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {TastingComponent} from "./tasting/tasting.component";
-import {BackendService, WineTastingApi} from "../../services/backend.service";
+import {BackendService, WineTasting} from "../../services/backend.service";
 import {Observable, of} from "rxjs";
 
 describe('TastingsComponent', () => {
@@ -11,11 +11,11 @@ describe('TastingsComponent', () => {
   let fixture: ComponentFixture<TastingsComponent>;
 
   const backendServiceStub: Partial<BackendService> = {
-    getTastings(): Observable<WineTastingApi[]> {
+    getTastings(): Observable<WineTasting[]> {
       return of([
-        {title: 'a title', notes: 'some nuts', tastingDate: 'today'},
-        {title: 'a title', notes: 'some notes', tastingDate: 'yesterday'},
-        {title: 'a title', notes: 'some notes', tastingDate: 'tomorrow'},
+        {id:1,  title: 'a title', notes: 'some nuts', tastingDate: new Date('today')},
+        {id:2,  title: 'a title', notes: 'some notes', tastingDate: new Date('yesterday')},
+        {id:3,  title: 'a title', notes: 'some notes', tastingDate: new Date('tomorrow')},
       ]);
     }
   };

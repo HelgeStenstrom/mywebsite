@@ -1,6 +1,15 @@
 import {TestBed} from '@angular/core/testing';
 
-import {BackendService, Grape, Member, WineApi, WineCreate, WineTastingApi, WineView} from './backend.service';
+import {
+  BackendService,
+  Grape,
+  Member,
+  WineApi,
+  WineCreate,
+  WineTasting,
+  WineTastingApi,
+  WineView
+} from './backend.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Observable} from "rxjs";
 import {TestScheduler} from "rxjs/testing";
@@ -179,8 +188,23 @@ describe('BackendService', () => {
 
     it('calls getTastings()', done => {
 
-      const aTasting: WineTastingApi = {title: 'A title', notes: 'some notes', tastingDate: 'a date, like 2023-07-20'}
-      const expectedTastings = [aTasting];
+      const apiTastings: WineTastingApi[] = [
+        {
+          id: 1,
+          title: 'A title',
+          notes: 'some notes',
+          tastingDate: '2023-07-20',
+        }
+      ];
+
+      const expectedTastings: WineTasting[] = [
+        {
+          id: 1,
+          title: 'A title',
+          notes: 'some notes',
+          tastingDate: new Date('2023-07-20'),
+        }
+      ];
 
       backendService.getTastings()
         .subscribe(result => {
@@ -191,7 +215,7 @@ describe('BackendService', () => {
       const url = backendService.apiBase + '/tastings';
       const req = httpTestingController.expectOne(url);
       expect(req.request.method).toEqual('GET');
-      req.flush(expectedTastings);
+      req.flush(apiTastings);
     });
 
   });
