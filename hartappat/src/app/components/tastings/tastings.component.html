@@ -10,7 +10,7 @@
   <th>Noter</th>
   <th>Vinnare</th>
   <tr *ngFor="let t of tastings$ | async">
-    <td>{{t.tastingDate}}</td>
+    <td>{{t.tastingDate| date:'yyyy-MM-dd'}}</td>
     <td>{{t.title}}</td>
     <td>{{t.notes}}</td>
     <td>ej implementerat</td>
