@@ -210,7 +210,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/TastingDto'
+                  $ref: '#/components/schemas/WineTastingDto'
 
     post:
       summary: Create a new tasting
@@ -221,14 +221,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/TastingCreate'
+              $ref: '#/components/schemas/WineTastingCreate'
       responses:
         201:
           description: Tasting created successfully
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TastingDto'
+                $ref: '#/components/schemas/WineTastingDto'
 
   /tastings/{id}:
     parameters:
@@ -247,7 +247,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TastingDto'
+                $ref: '#/components/schemas/WineTastingDto'
   /wines:
     get:
       description: Returns a list of the wines in the database. Currently, the length of the list is unlimited; that may change.
@@ -411,9 +411,9 @@ components:
           type: string
           example: Stenström
 
-    TastingDto:
+    WineTastingDto:
       type: object
-      required: [ id, title,notes, date ]
+      required: [ id, title, notes, tastingDate]
       properties:
         id:
           type: integer
@@ -424,15 +424,15 @@ components:
         notes:
           type: string
           example: 'Vi provade viner som vi drack i somras. Det var jättetrevligt. Jag skriver mer senare.'
-        date:
+        tastingDate:
           type: string
           format: date
           description: The date the tasting was taking place. In ISO notation.
           example: 2023-01-06
 
-    TastingCreate:
+    WineTastingCreate:
       type: object
-      required: [ title, date ]
+      required: [ title, notes, tastingDate ]
       properties:
         title:
           type: string
@@ -440,7 +440,7 @@ components:
         notes:
           type: string
           example: 'Vi provade viner som vi drack i somras. Det var jättetrevligt. Jag skriver mer senare.'
-        date:
+        tastingDate:
           type: string
           description: The date the tasting was taking place. In ISO notation.
           example: 2023-01-06
