@@ -1,33 +1,38 @@
-import {TastingCreate, TastingDto, TastingInstance} from "../../types/wine-tasting.dto";
+import {TastingInstance, WineTastingCreate, WineTastingDto} from "../../types/wine-tasting.dto";
 import {ModelStatic} from "sequelize";
 import {BadRequestError} from "../../errors/bad-request-error";
 
 export class TastingRepository {
-    constructor(private Tasting: ModelStatic<TastingInstance>) {}
+    constructor(private readonly Tasting: ModelStatic<TastingInstance>) {}
 
-    async postTasting(t: TastingCreate): Promise<TastingDto> {
-        if (!t.title || !t.notes || !t.date) {
-            throw new BadRequestError('Missing required fields: title, notes, date');
+    async postTasting(t: WineTastingCreate): Promise<WineTastingDto> {
+        if (!t.title || !t.notes || !t.tastingDate) {
+            throw new BadRequestError('Missing required fields: title, notes, tastingDate');
         }
-        const created = await this.Tasting.create(t);
+        const toCreate = {
+            title: t.title,
+            notes: t.notes,
+            tastingDate: t.tastingDate,
+        };
+        const created = await this.Tasting.create(toCreate);
         return this.toTastingDto(created);
     }
 
-    private toTastingDto(t: TastingInstance): TastingDto {
+    private toTastingDto(t: TastingInstance): WineTastingDto {
         return {
             id: t.id,
             title: t.title,
             notes: t.notes,
-            tastingDate: t.date
+            tastingDate: t.tastingDate
         };
     }
 
-    findTastings(): Promise<TastingDto[]> {
+    findTastings(): Promise<WineTastingDto[]> {
         const tastings = this.Tasting.findAll();
         return tastings.then(ts => ts.map(t => this.toTastingDto(t)));
     }
 
-    async getTasting(id: number): Promise<TastingDto | null> {
+    async getTasting(id: number): Promise<WineTastingDto | null> {
         const tasting = await this.Tasting.findByPk(id);
 
         if (!tasting) {

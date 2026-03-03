@@ -6,11 +6,16 @@ export function defineTasting(sequelize1: Sequelize): ModelStatic<TastingInstanc
         {
             title: DataTypes.STRING(128),
             notes: DataTypes.TEXT('long'),
-            date: DataTypes.DATE
+            tastingDate: {
+                field: 'tasting_date',
+                type: DataTypes.DATEONLY,
+                allowNull: false,
+            },
         },
         {
-            timestamps: false,
-            tableName: "tasting"
+            timestamps: true,
+            underscored: true,
+            tableName: "wine_tastings",
         }
     );
 }

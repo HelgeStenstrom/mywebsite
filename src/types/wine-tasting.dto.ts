@@ -4,23 +4,23 @@ interface TastingAttributes {
     id: number;
     title: string;
     notes: string;
-    date: Date;
+    tastingDate: Date;
 }
 
 export interface TastingInstance extends Model<TastingAttributes>, TastingAttributes {
 }
 
-export type TastingDto = {
+export type WineTastingDto = {
     id: number;
     title: string;
     notes: string;
     tastingDate: Date;
 }
 
-export type TastingCreate = {
+export type WineTastingCreate = {
     title: string;
     notes: string;
-    date: Date;
+    tastingDate: Date;
 }
 
 export interface WineTastingHostDto {

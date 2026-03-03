@@ -170,15 +170,15 @@ describe('Database tests', () => {
         test('post and read back tasting', async () => {
             await orm.createTables();
 
-            await orm.tastings.postTasting({title: "Till fisk", notes: "hemma hos", date: new Date("2021-03-28")});
-            await orm.tastings.postTasting({title: "Till kött", notes: "hemma hos oss", date: new Date("2022-01-01")});
+            await orm.tastings.postTasting({title: "Till fisk", notes: "hemma hos", tastingDate: new Date("2021-03-28")});
+            await orm.tastings.postTasting({title: "Till kött", notes: "hemma hos oss", tastingDate: new Date("2022-01-01")});
             const tastings = await orm.tastings.findTastings();
 
             expect(tastings[1].title).toEqual("Till kött");
 
             const tasting = await orm.tastings.getTasting(1);
             expect(tasting.title).toEqual("Till fisk");
-            expect(tasting.tastingDate).toEqual(new Date("2021-03-28"));
+            expect(tasting.tastingDate).toEqual("2021-03-28");
 
         });
     });
