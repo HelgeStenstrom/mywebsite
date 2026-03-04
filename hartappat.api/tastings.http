@@ -1,0 +1,21 @@
+@baseUrl = http://localhost:3000/api/v1
+
+### Get all tastings
+GET  {{baseUrl}}/tastings
+Accept: application/json
+
+
+### Get one existing tasting by ID
+GET  {{baseUrl}}/tastings/1
+Accept: application/json
+
+
+### Post a tasting
+POST {{baseUrl}}/tastings
+Content-Type: application/json
+
+{
+  "title": "Titel på en provning",
+  "notes": "Denna text kan vara lång",
+  "tastingDate": "2026-04-30"
+}

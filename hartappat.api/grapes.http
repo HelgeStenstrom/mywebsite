@@ -1,0 +1,21 @@
+@baseUrl = http://localhost:3000/api/v1
+
+### Get all grapes
+GET  {{baseUrl}}/grapes
+Accept: application/json
+
+### Get one grape by ID, which must be preset.
+GET  {{baseUrl}}/grapes/2
+Accept: application/json
+
+
+
+
+### Post a grape
+POST {{baseUrl}}/grapes
+Content-Type: application/json
+
+{
+  "name": "Rondo",
+  "color": "grön"
+}
