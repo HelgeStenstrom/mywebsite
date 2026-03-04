@@ -25,12 +25,12 @@ export type WineTastingCreate = {
     tastingDate: Date;
 }
 
-export interface WineTastingHostDto {
+export type WineTastingHostDto = {
     memberId: number;
     name?: string;
 }
 
-export interface WineTastingWineDto {
+export type WineTastingWineDto = {
     wineId: number;
     purchasePrice?: number;
     currency?: string;
