@@ -23,6 +23,7 @@ export type WineTastingCreate = {
     title: string;
     notes: string;
     tastingDate: Date;
+    hostIds?: number[];
 }
 
 export type WineTastingHostDto = {

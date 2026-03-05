@@ -3,7 +3,10 @@ import {ModelStatic} from "sequelize";
 import {BadRequestError} from "../../errors/bad-request-error";
 
 export class TastingRepository {
-    constructor(private readonly Tasting: ModelStatic<TastingInstance>) {}
+    constructor(
+        private readonly Tasting: ModelStatic<TastingInstance>,
+        private readonly TastingHost: ModelStatic<any>,
+        ) {}
 
     async postTasting(t: WineTastingCreate): Promise<WineTastingDto> {
         if (!t.title || !t.notes || !t.tastingDate) {
@@ -15,6 +18,16 @@ export class TastingRepository {
             tastingDate: t.tastingDate,
         };
         const created = await this.Tasting.create(toCreate);
+
+        if (t.hostIds?.length) {
+            await this.TastingHost.bulkCreate(
+                t.hostIds.map(id => ({
+                    wineTastingId: created.id,
+                    memberId: id
+                }))
+            );
+        }
+
         return this.toTastingDto(created);
     }
 

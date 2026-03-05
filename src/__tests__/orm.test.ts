@@ -181,6 +181,20 @@ describe('Database tests', () => {
             expect(tasting.tastingDate).toEqual("2021-03-28");
 
         });
+
+        test('create tasting with hosts', async () => {
+            await orm.createTables();
+
+            await orm.tastings.postTasting({
+                    title: 'Test',
+                    notes: 'A Note',
+                    tastingDate: new Date("2022-01-01"),
+                    hostIds: [1, 2]
+                }
+            );
+
+           // const hosts = await TastingHost.findAll();
+        })
     });
 
     describe('Wine test', () => {

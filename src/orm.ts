@@ -17,6 +17,7 @@ import {CountryRepository} from "./orm/repositories/country.repository";
 import {MemberRepository} from "./orm/repositories/member.repository";
 import {WineTypeRepository} from "./orm/repositories/wine-type.repository";
 import {WineRepository} from "./orm/repositories/wine.repository";
+import {defineWineTastingHost} from "./orm/models/wine-tasting-host.model";
 
 export class Orm {
 
@@ -28,6 +29,7 @@ export class Orm {
     private readonly Wine: ModelStatic<WineInstance>;
     private readonly WineType: ModelStatic<WineTypeInstance>;
     private readonly Member: ModelStatic<MemberInstance>;
+    private readonly TastingHost: ModelStatic<any>;
     readonly grapes: GrapeRepository;
     readonly tastings: TastingRepository;
     readonly countries: CountryRepository;
@@ -43,16 +45,17 @@ export class Orm {
 
 
         this.Country = defineCountry(this.sequelize);
-        this.Grape = defineGrape(this.sequelize)
-        this.Tasting = defineTasting(this.sequelize)
-        this.Member = defineMember(this.sequelize)
-        this.WineType = defineWineType(this.sequelize)
-        this.Wine = defineWine(this.sequelize)
+        this.Grape = defineGrape(this.sequelize);
+        this.Tasting = defineTasting(this.sequelize);
+        this.Member = defineMember(this.sequelize);
+        this.WineType = defineWineType(this.sequelize);
+        this.Wine = defineWine(this.sequelize);
+        this.TastingHost = defineWineTastingHost(this.sequelize)
 
         this.defineModelAssociations();
 
         this.grapes = new GrapeRepository(this.Grape);
-        this.tastings = new TastingRepository(this.Tasting);
+        this.tastings = new TastingRepository(this.Tasting, this.TastingHost);
         this.countries = new CountryRepository(this.Country, this.Wine);
         this.members = new MemberRepository(this.Member);
         this.wineTypes = new WineTypeRepository(this.WineType, this.Wine);
