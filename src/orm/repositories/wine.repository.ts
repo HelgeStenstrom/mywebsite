@@ -1,5 +1,5 @@
 import {ModelStatic} from "sequelize";
-import {WineCreateParams, WineDto, WineInstance} from "../../types/wine";
+import {WineCreateDto, WineDto, WineInstance} from "../../types/wine";
 import {CountryInstance} from "../../types/country";
 import {WineTypeInstance} from "../../types/wine-type";
 
@@ -12,7 +12,7 @@ export class WineRepository {
     ) {}
 
 
-    async postWine(param: WineCreateParams) {
+    async postWine(param: WineCreateDto) {
         return this.Wine.create({
             name: param.name,
             countryId: param.countryId,

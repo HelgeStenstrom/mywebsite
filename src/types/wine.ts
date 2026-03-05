@@ -21,15 +21,17 @@ export type WineCreateDto = {
     wineTypeId: number;
     vintageYear?: number | null;
     isNonVintage?: boolean;
-    systembolaget: number;
+    systembolaget?: number;
     volume: number;
 };
-
 interface WineAssociations {
     winetypeModel?: WineTypeDto;
     countryModel?: CountryDto;
 }
 
+/**
+ * Used for Sequelize
+ */
 interface WineAttributes {
     id: number;
     name: string;
@@ -42,14 +44,7 @@ interface WineAttributes {
     createdAt?: Date;
 }
 
+/**
+ * Used for Sequelize
+ */
 export interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
-
-export type WineCreateParams = {
-    name: string;
-    countryId: number;
-    wineTypeId: number;
-    vintageYear?: number | null;
-    isNonVintage?: boolean;
-    systembolaget?: number;
-    volume?: number;
-};
