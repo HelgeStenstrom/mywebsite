@@ -17,7 +17,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/CountryDto'
+                  $ref: '#/components/schemas/Country'
     post:
       summary: Adds one country to the list of known countries
       description: Adds one country to the list of known countries.
@@ -34,7 +34,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CountryDto'
+                $ref: '#/components/schemas/Country'
   /countries/{id}:
     get:
       summary: Get one country by id
@@ -53,7 +53,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CountryDto'
+                $ref: '#/components/schemas/Country'
 
     delete:
       summary: Delete one country by id
@@ -83,7 +83,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/GrapeDto'
+                  $ref: '#/components/schemas/Grape'
     post:
       summary: Create a new grape
       description: Creates a new grape with the provided details
@@ -99,7 +99,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GrapeDto'
+                $ref: '#/components/schemas/Grape'
 
   /grapes/{id}:
     parameters:
@@ -125,7 +125,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GrapeDto'
+                $ref: '#/components/schemas/Grape'
     patch:
       summary: Change a grape identified by id
       description: Change the details of a grape, identified by its id.
@@ -134,7 +134,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/GrapeDto'
+              $ref: '#/components/schemas/Grape'
       responses:
         '404':
           description: Grape not found
@@ -147,7 +147,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/GrapeDto'
+                $ref: '#/components/schemas/Grape'
     delete:
       summary: Delete a grape by id
       description: Delete a grape by id
@@ -197,7 +197,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MemberDto'
+                $ref: '#/components/schemas/Member'
 
   /tastings:
     get:
@@ -210,7 +210,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/WineTastingDto'
+                  $ref: '#/components/schemas/WineTasting'
 
     post:
       summary: Create a new tasting
@@ -228,7 +228,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WineTastingDto'
+                $ref: '#/components/schemas/WineTasting'
 
   /tastings/{id}:
     parameters:
@@ -247,7 +247,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WineTastingDto'
+                $ref: '#/components/schemas/WineTasting'
   /wines:
     get:
       description: Returns a list of the wines in the database. Currently, the length of the list is unlimited; that may change.
@@ -259,7 +259,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/WineDto'
+                  $ref: '#/components/schemas/Wine'
     post:
       summary: Adds a wine to the database.
       requestBody:
@@ -297,7 +297,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WineDto'
+                $ref: '#/components/schemas/Wine'
     delete:
       summary: Deletes a wine from the database
       description: Deletes a wine by its ID, from the database
@@ -326,7 +326,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/WineTypeDto'
+                $ref: '#/components/schemas/WineType'
     get:
       summary: Get all wine types
       responses:
@@ -337,11 +337,11 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/WineTypeDto'
+                  $ref: '#/components/schemas/WineType'
 
 components:
   schemas:
-    CountryDto:
+    Country:
       type: object
       required: [id, name, isUsed]
       properties:
@@ -363,7 +363,7 @@ components:
             type: string
             example: Frankrike
 
-    GrapeDto:
+    Grape:
       type: object
       required: [ id, name, color ]
       properties:
@@ -387,7 +387,7 @@ components:
         color:
           $ref: '#/components/schemas/GrapeColor'
 
-    MemberDto:
+    Member:
       type: object
       required: [id, given, surname]
       properties:
@@ -411,7 +411,7 @@ components:
           type: string
           example: Stenström
 
-    WineTastingDto:
+    WineTasting:
       type: object
       required: [ id, title, notes, tastingDate]
       properties:
@@ -429,6 +429,11 @@ components:
           format: date
           description: The date the tasting was taking place. In ISO notation.
           example: 2023-01-06
+        wineTastingHosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/WineTastingHost'
+
 
     WineTastingCreate:
       type: object
@@ -445,7 +450,22 @@ components:
           description: The date the tasting was taking place. In ISO notation.
           example: 2023-01-06
 
-    WineDto:
+    WineTastingHost:
+      type: object
+      required: []
+      description: The host of the wine tasting. One of memberId or name must be set.
+      properties:
+        memberId:
+          type: integer
+          example: 1
+          description: The ID of the host, if set.
+        name:
+          type: string
+          example: "Robert Smith"
+          description: The name of the host, if memberId is not set.
+
+
+    Wine:
       type: object
       required:
         - id
@@ -465,9 +485,9 @@ components:
           type: string
           example: Liebfraumilch
         country:
-          $ref: '#/components/schemas/CountryDto'
+          $ref: '#/components/schemas/Country'
         wineType:
-          $ref: '#/components/schemas/WineTypeDto'
+          $ref: '#/components/schemas/WineType'
         vintageYear:
           type: integer
           nullable: true
@@ -499,7 +519,7 @@ components:
           type: integer
           example: 2
 
-    WineTypeDto:
+    WineType:
       type: object
       required: [id, name, isUsed]
       properties:

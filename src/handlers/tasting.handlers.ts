@@ -1,4 +1,4 @@
-import {WineTastingCreate} from "../types/wine-tasting";
+import {WineTastingCreateDto} from "../types/wine-tasting";
 import {BadRequestError} from "../errors/bad-request-error";
 import {Orm} from "../orm";
 
@@ -46,7 +46,7 @@ export class TastingHandlers {
     postTasting() {
         return async (req, res) => {
             try {
-                const tasting = await this.orm.tastings.postTasting(req.body as WineTastingCreate);
+                const tasting = await this.orm.tastings.postTasting(req.body as WineTastingCreateDto);
                 res.status(201).json(tasting);
             } catch (e) {
                 if (e instanceof BadRequestError) {

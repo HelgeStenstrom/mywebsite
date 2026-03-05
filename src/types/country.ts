@@ -6,6 +6,10 @@ export type CountryDto = {
     isUsed: boolean;
 };
 
+export type CountryCreateDto = {
+    name: string;
+}
+
 interface CountryAttributes {
     id: number;
     name: string;

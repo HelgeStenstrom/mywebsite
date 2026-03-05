@@ -1,4 +1,4 @@
-import {TastingInstance, WineTastingCreate, WineTastingDto} from "../../types/wine-tasting";
+import {TastingInstance, WineTastingCreateDto, WineTastingDto} from "../../types/wine-tasting";
 import {ModelStatic} from "sequelize";
 import {BadRequestError} from "../../errors/bad-request-error";
 
@@ -8,7 +8,7 @@ export class TastingRepository {
         private readonly TastingHost: ModelStatic<any>,
         ) {}
 
-    async postTasting(t: WineTastingCreate): Promise<WineTastingDto> {
+    async postTasting(t: WineTastingCreateDto): Promise<WineTastingDto> {
         if (!t.title || !t.notes || !t.tastingDate) {
             throw new BadRequestError('Missing required fields: title, notes, tastingDate');
         }

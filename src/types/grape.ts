@@ -1,5 +1,16 @@
 import {Model} from "sequelize";
 
+export type GrapeDto = {
+    id: number;
+    name: string;
+    color: GrapeColor;
+};
+
+export type GrapeCreateDto = {
+    name: string;
+    color: GrapeColor;
+}
+
 export interface GrapeAttributes {
     id: number;
     name: string;
@@ -7,16 +18,5 @@ export interface GrapeAttributes {
 }
 
 export interface GrapeInstance extends Model<GrapeAttributes>, GrapeAttributes {}
-
-export type GrapeDto = {
-    id: number;
-    name: string;
-    color: GrapeColor;
-};
-
-export type GrapeCreate = {
-    name: string;
-    color: GrapeColor;
-}
 
 export type GrapeColor = 'blå' | 'grön' | 'annan' | 'okänd';

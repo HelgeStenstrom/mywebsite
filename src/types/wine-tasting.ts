@@ -1,15 +1,5 @@
 import {Model} from "sequelize";
 
-interface TastingAttributes {
-    id: number;
-    title: string;
-    notes: string;
-    tastingDate: Date;
-}
-
-export interface TastingInstance extends Model<TastingAttributes>, TastingAttributes {
-}
-
 export type WineTastingDto = {
     id: number;
     title: string;
@@ -19,7 +9,7 @@ export type WineTastingDto = {
     hosts: WineTastingHostDto[];
 }
 
-export type WineTastingCreate = {
+export type WineTastingCreateDto = {
     title: string;
     notes: string;
     tastingDate: Date;
@@ -36,4 +26,14 @@ export type WineTastingWineDto = {
     purchasePrice?: number;
     currency?: string;
     order?: number;
+}
+
+interface TastingAttributes {
+    id: number;
+    title: string;
+    notes: string;
+    tastingDate: Date;
+}
+
+export interface TastingInstance extends Model<TastingAttributes>, TastingAttributes {
 }

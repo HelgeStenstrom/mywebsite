@@ -1,5 +1,5 @@
 import {ModelStatic} from "sequelize";
-import {GrapeAttributes, GrapeColor, GrapeCreate, GrapeDto, GrapeInstance} from "../../types/grape";
+import {GrapeAttributes, GrapeColor, GrapeCreateDto, GrapeDto, GrapeInstance} from "../../types/grape";
 
 export class GrapeRepository {
     constructor(private Grape: ModelStatic<GrapeInstance>) {}
@@ -15,12 +15,12 @@ export class GrapeRepository {
             );
     }
 
-    async postGrape(grape: GrapeCreate): Promise<GrapeDto> {
+    async postGrape(grape: GrapeCreateDto): Promise<GrapeDto> {
         const created = await this.Grape.create(grape);
         return this.toGrapeDto(created);
     }
 
-    async putGrape(id: number, grape: GrapeCreate): Promise<void> {
+    async putGrape(id: number, grape: GrapeCreateDto): Promise<void> {
         const existing = await this.Grape.findByPk(id);
 
         if (!existing) {

@@ -1,5 +1,16 @@
 import {Model} from "sequelize";
 
+export type MemberDto = {
+    id: number;
+    given: string;
+    surname: string;
+}
+
+export type MemberCreateDto = {
+    given: string;
+    surname: string;
+}
+
 interface MemberAttributes {
     id: number;
     given: string;
@@ -7,9 +18,3 @@ interface MemberAttributes {
 }
 
 export interface MemberInstance extends Model<MemberAttributes>, MemberAttributes {}
-
-export type MemberDto = {
-    id: number;
-    given: string;
-    surname: string;
-}

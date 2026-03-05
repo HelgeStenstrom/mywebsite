@@ -2,25 +2,6 @@ import {Model} from "sequelize";
 import {WineTypeDto} from "./wine-type";
 import {CountryDto} from "./country";
 
-interface WineAssociations {
-    winetypeModel?: WineTypeDto;
-    countryModel?: CountryDto;
-}
-
-interface WineAttributes {
-    id: number;
-    name: string;
-    countryId: number;
-    wineTypeId: number;
-    vintageYear?: number | null;
-    isNonVintage: boolean;
-    systembolaget: number;
-    volume: number;
-    createdAt?: Date;
-}
-
-export interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
-
 // This DTO must match components.schemas.WineDto in hartappat.yaml
 export type WineDto = {
     id: number;
@@ -43,6 +24,25 @@ export type WineCreateDto = {
     systembolaget: number;
     volume: number;
 };
+
+interface WineAssociations {
+    winetypeModel?: WineTypeDto;
+    countryModel?: CountryDto;
+}
+
+interface WineAttributes {
+    id: number;
+    name: string;
+    countryId: number;
+    wineTypeId: number;
+    vintageYear?: number | null;
+    isNonVintage: boolean;
+    systembolaget: number;
+    volume: number;
+    createdAt?: Date;
+}
+
+export interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
 
 export type WineCreateParams = {
     name: string;

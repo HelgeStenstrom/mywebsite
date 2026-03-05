@@ -1,5 +1,5 @@
 import {Orm} from "../orm";
-import {GrapeCreate} from "../types/grape";
+import {GrapeCreateDto} from "../types/grape";
 
 export class GrapeHandlers {
 
@@ -95,7 +95,7 @@ export class GrapeHandlers {
             try {
                 const id = Number(req.params.id);
                 console.log('putGrapeById() called with id = ' + id);
-                await this.orm.grapes.putGrape(id, req.body as GrapeCreate);
+                await this.orm.grapes.putGrape(id, req.body as GrapeCreateDto);
                 console.log('Sending 204, no content');
                 res.status(204).end();
             } catch (e) {
