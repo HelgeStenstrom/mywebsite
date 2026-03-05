@@ -312,7 +312,7 @@ describe('Database tests', () => {
             ) as [number, unknown];
 
             const [wineTypeId] = await sequelize.query(
-                `INSERT INTO winetypes (name) VALUES ('Rött')`,
+                `INSERT INTO wine_types (name) VALUES ('Rött')`,
                 { type: QueryTypes.INSERT }
             ) as [number, unknown];
 

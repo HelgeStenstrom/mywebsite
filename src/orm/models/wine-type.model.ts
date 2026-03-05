@@ -8,7 +8,7 @@ export function defineWineType(sequelize1: Sequelize): ModelStatic<WineTypeInsta
         },
         {
             timestamps: false,
-            tableName: "winetypes"
+            tableName: "wine_types"
         }
     );
 }
