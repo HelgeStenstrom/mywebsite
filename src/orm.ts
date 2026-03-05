@@ -1,7 +1,5 @@
 import {ModelStatic, Options, Sequelize, SyncOptions} from 'sequelize';
 import {GrapeInstance} from "./types/grape";
-import {MemberInstance} from "./types/member";
-import {TastingInstance} from "./types/wine-tasting";
 import {CountryInstance} from "./types/country";
 import {WineTypeInstance} from "./types/wine-type";
 import {WineInstance} from "./types/wine";
@@ -23,13 +21,6 @@ export class Orm {
 
 
     sequelize: Sequelize;
-    private readonly Grape: ModelStatic<GrapeInstance>;
-    private readonly Tasting: ModelStatic<TastingInstance>;
-    private readonly Country: ModelStatic<CountryInstance>;
-    private readonly Wine: ModelStatic<WineInstance>;
-    private readonly WineType: ModelStatic<WineTypeInstance>;
-    private readonly Member: ModelStatic<MemberInstance>;
-    private readonly TastingHost: ModelStatic<any>;
     readonly grapes: GrapeRepository;
     readonly tastings: TastingRepository;
     readonly countries: CountryRepository;
@@ -43,40 +34,43 @@ export class Orm {
     constructor(database: string, dbUserName: string, dbPassword: string, options: Options) {
         this.sequelize = new Sequelize(database, dbUserName, dbPassword, options);
 
+        const country: ModelStatic<CountryInstance> = defineCountry(this.sequelize);
+        const grape: ModelStatic<GrapeInstance> = defineGrape(this.sequelize);
+        const tasting = defineTasting(this.sequelize);
+        const member = defineMember(this.sequelize);
+        const wineType = defineWineType(this.sequelize);
+        const tastingHost = defineWineTastingHost(this.sequelize);
+        const wine = defineWine(this.sequelize);
 
-        this.Country = defineCountry(this.sequelize);
-        this.Grape = defineGrape(this.sequelize);
-        this.Tasting = defineTasting(this.sequelize);
-        this.Member = defineMember(this.sequelize);
-        this.WineType = defineWineType(this.sequelize);
-        this.Wine = defineWine(this.sequelize);
-        this.TastingHost = defineWineTastingHost(this.sequelize)
+        this.defineModelAssociations(country, wine, wineType);
 
-        this.defineModelAssociations();
-
-        this.grapes = new GrapeRepository(this.Grape);
-        this.tastings = new TastingRepository(this.Tasting, this.TastingHost);
-        this.countries = new CountryRepository(this.Country, this.Wine);
-        this.members = new MemberRepository(this.Member);
-        this.wineTypes = new WineTypeRepository(this.WineType, this.Wine);
-        this.wines = new WineRepository(this.Wine, this.Country, this.WineType);
+        this.grapes = new GrapeRepository(grape);
+        this.tastings = new TastingRepository(tasting, tastingHost);
+        this.countries = new CountryRepository(country, wine);
+        this.members = new MemberRepository(member);
+        this.wineTypes = new WineTypeRepository(wineType, wine);
+        this.wines = new WineRepository(wine, country, wineType);
     }
 
-    private defineModelAssociations() {
-        this.Wine.belongsTo(this.Country, {
+    private defineModelAssociations(
+        country: ModelStatic<CountryInstance>,
+        wine: ModelStatic<WineInstance>,
+        wineType: ModelStatic<WineTypeInstance>,
+    ) {
+        wine.belongsTo(country, {
             foreignKey: 'country_id',
             as: 'countryModel'
         });
-        this.Country.hasMany(this.Wine, {
+        country.hasMany(wine, {
             foreignKey: 'country_id',
             as: 'wines'
         });
 
-        this.Wine.belongsTo(this.WineType, {
+        wine.belongsTo(wineType, {
             foreignKey: 'wine_type_id',
             as: 'winetypeModel'
         });
-        this.WineType.hasMany(this.Wine, {
+        wineType.hasMany(wine, {
             foreignKey: 'wine_type_id',
             as: 'wines'
         });
