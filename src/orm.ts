@@ -42,7 +42,8 @@ export class Orm {
         const tastingHost = defineWineTastingHost(this.sequelize);
         const wine = defineWine(this.sequelize);
 
-        this.defineModelAssociations(country, wine, wineType);
+        this.connectWineAndCountry(wine, country);
+        this.connectWineAndWineType(wine, wineType);
 
         this.grapes = new GrapeRepository(grape);
         this.tastings = new TastingRepository(tasting, tastingHost);
@@ -52,19 +53,9 @@ export class Orm {
         this.wines = new WineRepository(wine, country, wineType);
     }
 
-    private defineModelAssociations(
-        country: ModelStatic<CountryInstance>,
+    private connectWineAndWineType(
         wine: ModelStatic<WineInstance>,
-        wineType: ModelStatic<WineTypeInstance>,
-    ) {
-        wine.belongsTo(country, {
-            foreignKey: 'country_id',
-            as: 'countryModel'
-        });
-        country.hasMany(wine, {
-            foreignKey: 'country_id',
-            as: 'wines'
-        });
+        wineType: ModelStatic<WineTypeInstance>) {
 
         wine.belongsTo(wineType, {
             foreignKey: 'wine_type_id',
@@ -72,6 +63,20 @@ export class Orm {
         });
         wineType.hasMany(wine, {
             foreignKey: 'wine_type_id',
+            as: 'wines'
+        });
+    }
+
+    private connectWineAndCountry(
+        wine: ModelStatic<WineInstance>,
+        country: ModelStatic<CountryInstance>) {
+
+        wine.belongsTo(country, {
+            foreignKey: 'country_id',
+            as: 'countryModel'
+        });
+        country.hasMany(wine, {
+            foreignKey: 'country_id',
             as: 'wines'
         });
     }
