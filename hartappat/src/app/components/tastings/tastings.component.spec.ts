@@ -13,9 +13,9 @@ describe('TastingsComponent', () => {
   const backendServiceStub: Partial<BackendService> = {
     getTastings(): Observable<WineTasting[]> {
       return of([
-        {id:1,  title: 'a title', notes: 'some nuts', tastingDate: new Date('today')},
-        {id:2,  title: 'a title', notes: 'some notes', tastingDate: new Date('yesterday')},
-        {id:3,  title: 'a title', notes: 'some notes', tastingDate: new Date('tomorrow')},
+        {id:1,  title: 'a title', notes: 'some nuts', tastingDate: new Date('2026-03-05')},
+        {id:2,  title: 'a title', notes: 'some notes', tastingDate: new Date('2026-03-04')},
+        {id:3,  title: 'a title', notes: 'some notes', tastingDate: new Date('2026-03-06')},
       ]);
     }
   };
