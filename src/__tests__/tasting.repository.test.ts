@@ -1,22 +1,32 @@
-import {Sequelize} from 'sequelize';
+import {ModelStatic, Sequelize} from 'sequelize';
 import {defineTasting} from '../orm/models/tasting.model';
 import {TastingRepository} from '../orm/repositories/tasting.repository';
 import {defineWineTastingHost} from "../orm/models/wine-tasting-host.model";
+import {defineMember} from "../orm/models/member.model";
+import {connectTastingAndTastingHost} from "../orm";
+import {TastingInstance, WineTastingHostInstance} from "../types/wine-tasting";
+import {MemberInstance} from "../types/member";
 
 describe('TastingRepository', () => {
     let sequelize: Sequelize;
-    let WineTasting: any;
     let tastingRepository: TastingRepository;
-    let WineTastingHost: any;
+    let wineTastingDefinition:  ModelStatic<TastingInstance>;
+    let wineTastingHostDefinition:  ModelStatic<WineTastingHostInstance>;
+    let memberDefinition:  ModelStatic<MemberInstance>;
 
     beforeEach(async () => {
         sequelize = new Sequelize('test', 'test', 'test', {dialect: "sqlite" ,  logging: false });
 
-        WineTasting = defineTasting(sequelize);
-        WineTastingHost = defineWineTastingHost(sequelize);
+        wineTastingDefinition = defineTasting(sequelize);
+        wineTastingHostDefinition = defineWineTastingHost(sequelize);
+        memberDefinition = defineMember(sequelize);
+
+        connectTastingAndTastingHost(wineTastingDefinition, memberDefinition, wineTastingHostDefinition,);
+
+
         await sequelize.sync({ force: true });
 
-        tastingRepository = new TastingRepository(WineTasting);
+        tastingRepository = new TastingRepository(wineTastingDefinition, wineTastingHostDefinition, memberDefinition);
 
     });
 
@@ -26,7 +36,7 @@ describe('TastingRepository', () => {
 
     it('returns WineTastingDto with empty hosts array', async () => {
         // arrange
-        await WineTasting.create({
+        await wineTastingDefinition.create({
             title: 'Test tasting',
             notes: 'Some notes',
             tastingDate: new Date('2023-07-20'),
@@ -49,15 +59,20 @@ describe('TastingRepository', () => {
 
     test('returns WineTastingDto with hosts when hosts exist', async () => {
         // arrange
-        const tasting = await WineTasting.create({
+        const member = await memberDefinition.create({
+            given: 'Helge',
+            surname: 'Stenström',
+        });
+
+        const tasting = await wineTastingDefinition.create({
             title: 'Test tasting',
             notes: 'Some notes',
             tastingDate: new Date('2023-07-20'),
         });
 
-        await WineTastingHost.create({
+        await wineTastingHostDefinition.create({
             wineTastingId: tasting.id,
-            memberId: 42,
+            memberId: member.id,
         });
 
         // act
@@ -66,12 +81,42 @@ describe('TastingRepository', () => {
         // assert
         expect(result).toHaveLength(1);
 
+        expect(member.id).toEqual(1);
+
         expect(result[0]).toEqual({
             id: expect.any(Number),
             title: 'Test tasting',
             notes: 'Some notes',
             tastingDate: '2023-07-20',
-            hosts: [],
+            hosts: [{ memberId: member.id }],
         });
     });
+
+    test('it returns hosts when fetching tastings', async () => {
+
+        // Setup
+        const tasting = await wineTastingDefinition.create({
+            title: 'Testprovning',
+            notes: 'Testanteckningar',
+            tastingDate: new Date('2024-01-01'),
+        });
+
+        const member = await memberDefinition.create({
+            given: 'Helge',
+            surname: 'Stenström',
+        })
+
+        await wineTastingHostDefinition.create({
+            wineTastingId: tasting.id,
+            memberId: member.id,
+        })
+
+        // Exercise
+        const result = await tastingRepository.findTastings();
+
+        // Verify
+        expect(result).toHaveLength(1);
+        expect(result[0].hosts).toHaveLength(1);
+        expect(result[0].hosts[0].memberId).toEqual(member.id);
+    })
 });

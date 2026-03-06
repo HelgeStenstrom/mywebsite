@@ -185,6 +185,9 @@ describe('Database tests', () => {
         test('create tasting with hosts', async () => {
             await orm.createTables();
 
+            await orm.members.postMember({ given: 'Helge', surname: 'Stenström' });
+            await orm.members.postMember({ given: 'Anna', surname: 'Andersson' });
+
             await orm.tastings.postTasting({
                     title: 'Test',
                     notes: 'A Note',

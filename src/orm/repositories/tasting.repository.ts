@@ -1,11 +1,13 @@
-import {TastingInstance, WineTastingCreateDto, WineTastingDto} from "../../types/wine-tasting";
+import {TastingInstance, WineTastingCreateDto, WineTastingDto, WineTastingHostInstance} from "../../types/wine-tasting";
 import {ModelStatic} from "sequelize";
 import {BadRequestError} from "../../errors/bad-request-error";
+import {MemberInstance} from "../../types/member";
 
 export class TastingRepository {
     constructor(
         private readonly Tasting: ModelStatic<TastingInstance>,
-        private readonly TastingHost: ModelStatic<any>,
+        private readonly TastingHost: ModelStatic<WineTastingHostInstance>,
+        private readonly Member: ModelStatic<MemberInstance>,
         ) {}
 
     async postTasting(t: WineTastingCreateDto): Promise<WineTastingDto> {
@@ -37,12 +39,23 @@ export class TastingRepository {
             title: t.title,
             notes: t.notes,
             tastingDate: t.tastingDate,
-            hosts: [],
+            hosts: (t.wineTastingHosts ?? []).map(h => ({
+                memberId: h.memberId,
+            })),
         };
     }
 
     findTastings(): Promise<WineTastingDto[]> {
-        const tastings = this.Tasting.findAll();
+        const tastings = this.Tasting.findAll(
+            {
+                include: [{
+                        model: this.TastingHost,
+                        as: 'wineTastingHosts',
+                        include: [{model: this.Member, as: 'member'}]
+                    }
+                ]
+            }
+        );
         return tastings.then(ts => ts.map(t => this.toTastingDto(t)));
     }
 

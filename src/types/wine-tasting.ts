@@ -35,5 +35,15 @@ interface TastingAttributes {
     tastingDate: Date;
 }
 
+
+interface WineTastingHostAttributes {
+    wineTastingId: number;
+    memberId: number;
+}
+
+export interface WineTastingHostInstance
+    extends Model<WineTastingHostAttributes>, WineTastingHostAttributes {}
+
 export interface TastingInstance extends Model<TastingAttributes>, TastingAttributes {
+    wineTastingHosts?: WineTastingHostInstance[];
 }
