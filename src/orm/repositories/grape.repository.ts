@@ -4,15 +4,9 @@ import {GrapeAttributes, GrapeColor, GrapeCreateDto, GrapeDto, GrapeInstance} fr
 export class GrapeRepository {
     constructor(private Grape: ModelStatic<GrapeInstance>) {}
 
-    findGrapes(): Promise<GrapeDto[]> {
-        return this.Grape.findAll()
-            .then(grapes =>
-                grapes.map(g => ({
-                    id: g.id,
-                    name: g.name,
-                    color: g.color  as 'blå' | 'grön' | null
-                }))
-            );
+    async findGrapes(): Promise<GrapeDto[]> {
+        const grapes = await this.Grape.findAll();
+        return grapes.map(g => (this.toGrapeDto(g)));
     }
 
     async postGrape(grape: GrapeCreateDto): Promise<GrapeDto> {

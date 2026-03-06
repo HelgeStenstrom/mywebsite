@@ -45,18 +45,18 @@ export class TastingRepository {
         };
     }
 
-    findTastings(): Promise<WineTastingDto[]> {
-        const tastings = this.Tasting.findAll(
+    async findTastings(): Promise<WineTastingDto[]> {
+        const tastings = await this.Tasting.findAll(
             {
                 include: [{
-                        model: this.TastingHost,
-                        as: 'wineTastingHosts',
-                        include: [{model: this.Member, as: 'member'}]
-                    }
+                    model: this.TastingHost,
+                    as: 'wineTastingHosts',
+                    include: [{model: this.Member, as: 'member'}]
+                }
                 ]
             }
         );
-        return tastings.then(ts => ts.map(t => this.toTastingDto(t)));
+        return tastings.map(t => this.toTastingDto(t));
     }
 
     async getTasting(id: number): Promise<WineTastingDto | null> {
