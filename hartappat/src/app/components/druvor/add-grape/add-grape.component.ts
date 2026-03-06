@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Inject, OnInit, Output } from '@angular/core';
-import { FormControl, FormGroup } from "@angular/forms";
-import { BackendService, Grape } from "../../../services/backend.service";
-import { MAT_DIALOG_DATA, MatDialogRef } from "@angular/material/dialog";
-import { Observable } from "rxjs";
+import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup} from "@angular/forms";
+import {BackendService, Grape} from "../../../services/backend.service";
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-add-grape',
@@ -34,7 +34,7 @@ export class AddGrapeComponent implements OnInit {
   }
 
   private isEditCall() {
-    return Object.keys(this.dialogRef).length !== 0;
+    return this.grapeToEdit?.id > 0;
   }
 
   addGrape(): void {
