@@ -7,7 +7,7 @@ export class GrapeHandlers {
 
     getAll() {
         return async (req, res) => {
-            const grapes = await this.orm.grapes.findGrapes();
+            const grapes = await this.orm.grapes.findAll();
             res.json(grapes);
         };
     }
@@ -15,7 +15,7 @@ export class GrapeHandlers {
     create() {
         return async (req, res) => {
             try {
-                const grape = await this.orm.grapes.postGrape(req.body);
+                const grape = await this.orm.grapes.create(req.body);
                 res.status(201).json(grape);
             } catch (e) {
                 if (e.name === 'SequelizeValidationError') {
@@ -57,7 +57,7 @@ export class GrapeHandlers {
         return async (req, res) => {
             try {
                 const id = Number(req.params.id);
-                const grape = await this.orm.grapes.getGrape(id);
+                const grape = await this.orm.grapes.findById(id);
 
                 if (!grape) {
                     return res.status(404).json({ error: 'Grape not found' });
@@ -78,7 +78,7 @@ export class GrapeHandlers {
         return async (req, res) => {
             const id = req.params.id;
 
-            this.orm.grapes.delGrapeById(id)
+            this.orm.grapes.delete(id)
                 .then((gnum) => {
                     if (gnum)
                         return res.status(204).json("Grape successfully deleted");
@@ -95,7 +95,7 @@ export class GrapeHandlers {
             try {
                 const id = Number(req.params.id);
                 console.log('putGrapeById() called with id = ' + id);
-                await this.orm.grapes.putGrape(id, req.body as GrapeCreateDto);
+                await this.orm.grapes.update(id, req.body as GrapeCreateDto);
                 console.log('Sending 204, no content');
                 res.status(204).end();
             } catch (e) {

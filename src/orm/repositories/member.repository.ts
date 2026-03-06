@@ -3,14 +3,14 @@ import {MemberCreateDto, MemberDto, MemberInstance} from "../../types/member";
 
 export class MemberRepository {
 
-    constructor(private Member: ModelStatic<MemberInstance>) {}
+    constructor(private readonly Member: ModelStatic<MemberInstance>) {}
 
-    async findMembers(): Promise<MemberDto[]> {
+    async findAll(): Promise<MemberDto[]> {
         const members = await this.Member.findAll();
         return members.map(m => this.toMemberDto(m));
     }
 
-    async postMember(member:MemberCreateDto): Promise<MemberDto> {
+    async create(member:MemberCreateDto): Promise<MemberDto> {
         const memberInstance = await this.Member.create(member);
         return this.toMemberDto(memberInstance);
     }

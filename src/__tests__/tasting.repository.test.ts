@@ -43,7 +43,7 @@ describe('TastingRepository', () => {
         });
 
         // act
-        const result = await tastingRepository.findTastings();
+        const result = await tastingRepository.findAll();
 
         // assert
         expect(result).toHaveLength(1);
@@ -76,7 +76,7 @@ describe('TastingRepository', () => {
         });
 
         // act
-        const result = await tastingRepository.findTastings();
+        const result = await tastingRepository.findAll();
 
         // assert
         expect(result).toHaveLength(1);
@@ -112,7 +112,7 @@ describe('TastingRepository', () => {
         })
 
         // Exercise
-        const result = await tastingRepository.findTastings();
+        const result = await tastingRepository.findAll();
 
         // Verify
         expect(result).toHaveLength(1);

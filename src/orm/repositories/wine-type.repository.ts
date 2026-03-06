@@ -6,12 +6,12 @@ import {WineInstance} from "../../types/wine";
 export class WineTypeRepository {
 
     constructor(
-        private WineType: ModelStatic<WineTypeInstance>,
-        private Wine: ModelStatic<WineInstance>,
+        private readonly WineType: ModelStatic<WineTypeInstance>,
+        private readonly Wine: ModelStatic<WineInstance>,
     ) {}
 
 
-    async findWineTypes(): Promise<WineTypeDto[]> {
+    async findAll(): Promise<WineTypeDto[]> {
         const models = await this.WineType.findAll({
             attributes: ['id', 'name'],
             order: [['name', 'ASC']],
@@ -32,11 +32,11 @@ export class WineTypeRepository {
         }));
     }
 
-    async postWineType(param: { name: string }) {
+    async create(param: { name: string }) {
         return this.WineType.create(param);
     }
 
-    async delWineTypeById(id: any) {
+    async delete(id: number) {
         const wineType: CountryWithWines = await this.WineType.findByPk(id, {
             include: [{ model: this.Wine, as: 'wines', attributes: ['id'], required: false }]
         });

@@ -14,7 +14,7 @@ export class TastingHandlers {
     getTasting(): (req, res) => Promise<void> {
         return async (req, res) => {
             try {
-                const tasting = await this.orm.tastings.getTasting(Number(req.params.id));
+                const tasting = await this.orm.tastings.findById(Number(req.params.id));
 
                 if (!tasting) {
                     return res.status(404).json({ error: 'Tasting not found' });
@@ -34,7 +34,7 @@ export class TastingHandlers {
     getTastings(): (req, res) => Promise<void> {
         return async (req, res) => {
             try {
-                const tastings = await this.orm.tastings.findTastings(); // returnerar TastingDto[]
+                const tastings = await this.orm.tastings.findAll(); // returnerar TastingDto[]
                 res.status(200).json(tastings);                 // skickar DTO-listan som JSON
             } catch (e) {
                 console.error(e);
@@ -46,7 +46,7 @@ export class TastingHandlers {
     postTasting() {
         return async (req, res) => {
             try {
-                const tasting = await this.orm.tastings.postTasting(req.body as WineTastingCreateDto);
+                const tasting = await this.orm.tastings.create(req.body as WineTastingCreateDto);
                 res.status(201).json(tasting);
             } catch (e) {
                 if (e instanceof BadRequestError) {

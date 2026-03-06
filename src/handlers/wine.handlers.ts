@@ -12,7 +12,7 @@ export class WineHandlers {
     getWines(): (req, res) => Promise<void> {
         return async (_, res) => {
             try {
-                const wines = await this.orm.wines.findWines();
+                const wines = await this.orm.wines.findAll();
                 res.status(200).json(wines);
             } catch (err) {
                 console.error('Got error', err);
@@ -40,7 +40,7 @@ export class WineHandlers {
             }
 
 
-            this.orm.wines.postWine(wine)
+            this.orm.wines.create(wine)
                 .then(() => res.status(201).json("postWine called!"))
                 .catch(e => console.error(e));
 
@@ -55,7 +55,7 @@ export class WineHandlers {
         return async (req, res) => {
             const id = req.params.id;
 
-            this.orm.wines.delWineById(id)
+            this.orm.wines.delete(id)
                 .then((gnum) => {
                     if (gnum)
                         return res.status(204).json("Wine successfully deleted");

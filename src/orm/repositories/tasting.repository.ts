@@ -10,7 +10,7 @@ export class TastingRepository {
         private readonly Member: ModelStatic<MemberInstance>,
         ) {}
 
-    async postTasting(t: WineTastingCreateDto): Promise<WineTastingDto> {
+    async create(t: WineTastingCreateDto): Promise<WineTastingDto> {
         if (!t.title || !t.notes || !t.tastingDate) {
             throw new BadRequestError('Missing required fields: title, notes, tastingDate');
         }
@@ -45,7 +45,7 @@ export class TastingRepository {
         };
     }
 
-    async findTastings(): Promise<WineTastingDto[]> {
+    async findAll(): Promise<WineTastingDto[]> {
         const tastings = await this.Tasting.findAll(
             {
                 include: [{
@@ -59,7 +59,7 @@ export class TastingRepository {
         return tastings.map(t => this.toTastingDto(t));
     }
 
-    async getTasting(id: number): Promise<WineTastingDto | null> {
+    async findById(id: number): Promise<WineTastingDto | null> {
         const tasting = await this.Tasting.findByPk(id,
             {
                 include: [{

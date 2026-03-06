@@ -26,10 +26,10 @@ describe('Database tests', () => {
 
         test('post and read back countries', async () => {
             await orm.createTables();
-            await orm.countries.postCountry({name: "Norge"});
-            await orm.countries.postCountry({name: "Finland"});
+            await orm.countries.create({name: "Norge"});
+            await orm.countries.create({name: "Finland"});
 
-            const countries = await orm.countries.findCountries();
+            const countries = await orm.countries.findAll();
 
             expect(countries).toHaveLength(2);
             expect(countries).toEqual([
@@ -41,22 +41,22 @@ describe('Database tests', () => {
 
         test('try to delete non-existing country', async () => {
             await orm.createTables();
-            await orm.countries.postCountry({name: "Norge"});
+            await orm.countries.create({name: "Norge"});
             const nonExistingId = 17;
-            const deleteResponse = await orm.countries.delCountryById(nonExistingId);
+            const deleteResponse = await orm.countries.delete(nonExistingId);
             expect(deleteResponse).toEqual('not_found');
-            const countryInstances = await orm.countries.findCountries();
+            const countryInstances = await orm.countries.findAll();
             expect(countryInstances.length).toEqual(1);
         });
 
         test('post and delete country', async() => {
             await orm.createTables();
-            await orm.countries.postCountry({name: "Norge"});
-            const countryInstances = await orm.countries.findCountries();
+            await orm.countries.create({name: "Norge"});
+            const countryInstances = await orm.countries.findAll();
             const idToDelete = countryInstances[0].id;
-            const deleteResponse = await orm.countries.delCountryById(idToDelete);
+            const deleteResponse = await orm.countries.delete(idToDelete);
             expect(deleteResponse).toEqual('deleted');
-            const instancesAfterDeletion = await orm.countries.findCountries();
+            const instancesAfterDeletion = await orm.countries.findAll();
             expect(instancesAfterDeletion.length).toEqual(0);
         });
 
@@ -64,9 +64,9 @@ describe('Database tests', () => {
 
             await orm.createTables();
 
-            const countryInstance = await orm.countries.postCountry("A country");
-            const wineTypeInstance = await orm.wineTypes.postWineType({name:"rött"});
-            const wineInstance = await orm.wines.postWine({
+            const countryInstance = await orm.countries.create("A country");
+            const wineTypeInstance = await orm.wineTypes.create({name:"rött"});
+            const wineInstance = await orm.wines.create({
                 countryId: countryInstance.id,
                 name: "Wine name",
                 volume: 750,
@@ -76,7 +76,7 @@ describe('Database tests', () => {
 
             // Deleting the country is expected to fail, because it's used in a wine.
 
-            const numberOfDeletions = await orm.countries.delCountryById(countryInstance.id);
+            const numberOfDeletions = await orm.countries.delete(countryInstance.id);
 
             expect(numberOfDeletions).toEqual(0);
 
@@ -92,8 +92,8 @@ describe('Database tests', () => {
             // and that the ID gets incremented.
             await orm.createTables();
 
-            const first = await orm.grapes.postGrape({name: "first", color: "grön"});
-            const second = await orm.grapes.postGrape({name: "second", color: "blå"});
+            const first = await orm.grapes.create({name: "first", color: "grön"});
+            const second = await orm.grapes.create({name: "second", color: "blå"});
             expect(first.name).toEqual("first");
             expect(first.color).toEqual("grön");
             expect(first.id).toEqual(1); // TODO: this is not an actual requirement; test something else.
@@ -106,10 +106,10 @@ describe('Database tests', () => {
 
             await orm.createTables();
 
-            await orm.grapes.postGrape({name: "first", color: "grön"});
-            const secondPosted = await orm.grapes.postGrape({name: "second", color: "blå"});
+            await orm.grapes.create({name: "first", color: "grön"});
+            const secondPosted = await orm.grapes.create({name: "second", color: "blå"});
 
-            const grapesBack = await orm.grapes.findGrapes();
+            const grapesBack = await orm.grapes.findAll();
 
             expect(grapesBack.length).toEqual(2);
             const firstBack = grapesBack.filter(g => g.name === "first")[0];
@@ -122,15 +122,15 @@ describe('Database tests', () => {
 
             // Setup
             await orm.createTables();
-            await orm.grapes.postGrape({name: "g1", color: "grön"});
-            await orm.grapes.postGrape({name: "g2", color: "grön"});
-            await orm.grapes.postGrape({name: "g3", color: "grön"});
+            await orm.grapes.create({name: "g1", color: "grön"});
+            await orm.grapes.create({name: "g2", color: "grön"});
+            await orm.grapes.create({name: "g3", color: "grön"});
 
             // Exercise
-            await orm.grapes.delGrape("g2");
+            await orm.grapes.deleteByName("g2");
 
             // Verify
-            const grapes = await orm.grapes.findGrapes();
+            const grapes = await orm.grapes.findAll();
             expect(grapes.length).toEqual(2);
         });
 
@@ -138,8 +138,8 @@ describe('Database tests', () => {
 
             // Setup
             await orm.createTables();
-            await orm.grapes.postGrape({name: "g1", color: "grön"});
-            const prePatchGrapes = await orm.grapes.findGrapes();
+            await orm.grapes.create({name: "g1", color: "grön"});
+            const prePatchGrapes = await orm.grapes.findAll();
             expect(prePatchGrapes[0].id).toEqual(1);
             expect(prePatchGrapes[0].name).toEqual("g1");
 
@@ -149,7 +149,7 @@ describe('Database tests', () => {
                 {id: 1, name: "g2", color: "blå"})
 
             // Verify
-            const grapes = await orm.grapes.findGrapes();
+            const grapes = await orm.grapes.findAll();
             expect(grapes.length).toEqual(1);
             expect(grapes[0].id).toEqual(1);
             expect(grapes[0].name).toEqual("g2");
@@ -160,7 +160,7 @@ describe('Database tests', () => {
         test('Post returns the created member', async () => {
             await orm.createTables();
             const toCreate: MemberCreateDto = {given: "Nomen", surname: "Nescio"};
-            const member: MemberDto = await orm.members.postMember(toCreate);
+            const member: MemberDto = await orm.members.create(toCreate);
 
             expect(member.given).toEqual("Nomen");
             expect(member.surname).toEqual("Nescio");
@@ -170,9 +170,9 @@ describe('Database tests', () => {
 
         test('Post and read back members', async () => {
             await orm.createTables();
-            await orm.members.postMember({given: "Nomen", surname: "Nescio"})
+            await orm.members.create({given: "Nomen", surname: "Nescio"})
 
-            const members = await orm.members.findMembers();
+            const members = await orm.members.findAll();
             expect(members[0].given).toEqual("Nomen");
         });
     });
@@ -182,13 +182,13 @@ describe('Database tests', () => {
         test('post and read back tasting', async () => {
             await orm.createTables();
 
-            await orm.tastings.postTasting({title: "Till fisk", notes: "hemma hos", tastingDate: new Date("2021-03-28")});
-            await orm.tastings.postTasting({title: "Till kött", notes: "hemma hos oss", tastingDate: new Date("2022-01-01")});
-            const tastings = await orm.tastings.findTastings();
+            await orm.tastings.create({title: "Till fisk", notes: "hemma hos", tastingDate: new Date("2021-03-28")});
+            await orm.tastings.create({title: "Till kött", notes: "hemma hos oss", tastingDate: new Date("2022-01-01")});
+            const tastings = await orm.tastings.findAll();
 
             expect(tastings[1].title).toEqual("Till kött");
 
-            const tasting = await orm.tastings.getTasting(1);
+            const tasting = await orm.tastings.findById(1);
             expect(tasting.title).toEqual("Till fisk");
             expect(tasting.tastingDate).toEqual("2021-03-28");
 
@@ -197,10 +197,10 @@ describe('Database tests', () => {
         test('create tasting with hosts', async () => {
             await orm.createTables();
 
-            await orm.members.postMember({ given: 'Helge', surname: 'Stenström' });
-            await orm.members.postMember({ given: 'Anna', surname: 'Andersson' });
+            await orm.members.create({ given: 'Helge', surname: 'Stenström' });
+            await orm.members.create({ given: 'Anna', surname: 'Andersson' });
 
-            await orm.tastings.postTasting({
+            await orm.tastings.create({
                     title: 'Test',
                     notes: 'A Note',
                     tastingDate: new Date("2022-01-01"),
@@ -217,13 +217,13 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType = await orm.wineTypes.postWineType({name: "rött"});
+            const wineType = await orm.wineTypes.create({name: "rött"});
 
             // Then ensure that we have the needed country
-            const country = await orm.countries.postCountry({name: "Sverige"});
+            const country = await orm.countries.create({name: "Sverige"});
 
             // post the wine
-            await orm.wines.postWine({
+            await orm.wines.create({
                 countryId: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
@@ -231,7 +231,7 @@ describe('Database tests', () => {
                 wineTypeId: wineType['id']
             })
 
-            const wines = await orm.wines.findWines();
+            const wines = await orm.wines.findAll();
             const first = wines[0];
 
             // Verify
@@ -245,13 +245,13 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType = await orm.wineTypes.postWineType({name: "rött"});
+            const wineType = await orm.wineTypes.create({name: "rött"});
 
             // Then ensure that we have the needed country
-            const country = await orm.countries.postCountry({name: "Sverige"});
+            const country = await orm.countries.create({name: "Sverige"});
 
             // post the wine
-            const wineToBeDeleted = await orm.wines.postWine({
+            const wineToBeDeleted = await orm.wines.create({
                 countryId: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
@@ -260,7 +260,7 @@ describe('Database tests', () => {
             })
 
                   // post another wine
-            const otherWine = await orm.wines.postWine({
+            const otherWine = await orm.wines.create({
                 countryId: country['id'],
                 name: 'Other',
                 systembolaget: 4711,
@@ -270,17 +270,17 @@ describe('Database tests', () => {
 
 
 
-            const winesBefore = await orm.wines.findWines();
+            const winesBefore = await orm.wines.findAll();
 
             expect(winesBefore.length).toEqual(2);
             const first = winesBefore[0];
             expect(first['name']).toEqual('Rödtjut');
 
             // Exercise
-            await orm.wines.delWineById(wineToBeDeleted.id);
+            await orm.wines.delete(wineToBeDeleted.id);
 
             // Verify
-            const winesAfter = await orm.wines.findWines();
+            const winesAfter = await orm.wines.findAll();
             expect(winesAfter.length).toEqual(1);
             // Expect one wine to be deleted, and the other wine to remain.
             expect(winesAfter.filter(w => w.id === otherWine.id).length).toEqual(1);
@@ -294,13 +294,13 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            const wineType = await orm.wineTypes.postWineType({name: "rött"});
+            const wineType = await orm.wineTypes.create({name: "rött"});
 
             // Then ensure that we have the needed country
-            const country = await orm.countries.postCountry({name: "Sverige"});
+            const country = await orm.countries.create({name: "Sverige"});
 
             // post the wine
-            await orm.wines.postWine({
+            await orm.wines.create({
                 countryId: country['id'],
                 name: 'Rödtjut',
                 systembolaget: 4711,
@@ -309,7 +309,7 @@ describe('Database tests', () => {
             })
 
             // Read back, so that we get a wine to patch
-            await orm.wines.findWines();
+            await orm.wines.findAll();
 
             // TODO: How should we identify wines? The name may not be unique. We need a unique key!
 
@@ -339,7 +339,7 @@ describe('Database tests', () => {
             const [rows] = await sequelize.query(`SELECT * FROM wines`);
             console.log(rows);
 
-            const wines = await wineRepo.findWines();
+            const wines = await wineRepo.findAll();
             expect(wines.length).toBe(1);
             const wineDto = wines[0];
             expect(wineDto.vintageYear).toBe(2019);
@@ -355,20 +355,20 @@ describe('Database tests', () => {
             await orm.createTables();
 
             // First ensure that we have the needed winetype
-            await orm.wineTypes.postWineType({name: "zzz"});
-            await orm.wineTypes.postWineType({name: "rött"}); // Then ensure that we have the needed country
-            await orm.countries.postCountry({name: "Sverige"});
+            await orm.wineTypes.create({name: "zzz"});
+            await orm.wineTypes.create({name: "rött"}); // Then ensure that we have the needed country
+            await orm.countries.create({name: "Sverige"});
         });
 
         test('check the setup', async () => {
-            const wineTypes = await orm.wineTypes.findWineTypes();
+            const wineTypes = await orm.wineTypes.findAll();
             // Wine types are returned in alphabetical order.
             expect(wineTypes).toEqual([
                 {id: 2, name: "rött", isUsed: false},
                 {id: 1, name: "zzz", isUsed: false},
             ]);
 
-            const countries = await orm.countries.findCountries();
+            const countries = await orm.countries.findAll();
             expect(countries[0].name).toEqual("Sverige");
 
         });
@@ -380,10 +380,10 @@ describe('Database tests', () => {
         test('Post and read back winetypes', async () => {
 
             await orm.createTables();
-            await orm.wineTypes.postWineType({name: "rött"});
-            await orm.wineTypes.postWineType({name: "vitt"});
+            await orm.wineTypes.create({name: "rött"});
+            await orm.wineTypes.create({name: "vitt"});
 
-            const wineTypes = await orm.wineTypes.findWineTypes();
+            const wineTypes = await orm.wineTypes.findAll();
 
             expect(wineTypes[0].name).toEqual("rött");
             expect(wineTypes[1].name).toEqual("vitt");

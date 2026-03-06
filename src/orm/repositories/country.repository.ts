@@ -5,14 +5,14 @@ import {WineInstance} from "../../types/wine";
 export class CountryRepository {
 
     constructor(
-        private Country: ModelStatic<CountryInstance>,
-        private Wine: ModelStatic<WineInstance>
+        private readonly Country: ModelStatic<CountryInstance>,
+        private readonly Wine: ModelStatic<WineInstance>
     ) {}
 
     /**
      * Return all countries in the database.
      */
-    async findCountries(): Promise<CountryDto[]> {
+    async findAll(): Promise<CountryDto[]> {
         const countries = await this.Country.findAll({
             attributes: ['id', 'name'],
             order: [['name', 'ASC']], // sortera alfabetiskt
@@ -33,7 +33,7 @@ export class CountryRepository {
         }));
     }
 
-    async postCountry(country): Promise<CountryDto> {
+    async create(country): Promise<CountryDto> {
         const created = await this.Country.create(country);
         return {
             id: created.id,
@@ -42,7 +42,7 @@ export class CountryRepository {
         };
     }
 
-    async delCountryById(id: number) {
+    async delete(id: number) {
         const country: CountryWithWines = await this.Country.findByPk(id, {
             include: [{ model: this.Wine, as: 'wines', attributes: ['id'], required: false }]
         });

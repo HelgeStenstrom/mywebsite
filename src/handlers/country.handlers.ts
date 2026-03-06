@@ -13,7 +13,7 @@ export class CountryHandlers {
     getCountries(): (req, res) => Promise<void> {
         return async (_, res) => {
             try {
-                const countries = await this.orm.countries.findCountries();
+                const countries = await this.orm.countries.findAll();
                 res.status(200).json(countries);
             } catch (err) {
                 console.error('Got error', err);
@@ -34,7 +34,7 @@ export class CountryHandlers {
 
             try {
 
-                const country = await this.orm.countries.postCountry(req.body);
+                const country = await this.orm.countries.create(req.body);
 
                 res.status(201).json(country);
             } catch (e) {
@@ -50,7 +50,7 @@ export class CountryHandlers {
         return async (req, res) => {
             const id = req.params.id;
 
-            const result = await this.orm.countries.delCountryById(id);
+            const result = await this.orm.countries.delete(id);
 
             switch (result) {
                 case 'deleted':

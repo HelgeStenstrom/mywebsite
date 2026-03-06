@@ -2,19 +2,19 @@ import {ModelStatic} from "sequelize";
 import {GrapeAttributes, GrapeColor, GrapeCreateDto, GrapeDto, GrapeInstance} from "../../types/grape";
 
 export class GrapeRepository {
-    constructor(private Grape: ModelStatic<GrapeInstance>) {}
+    constructor(private readonly Grape: ModelStatic<GrapeInstance>) {}
 
-    async findGrapes(): Promise<GrapeDto[]> {
+    async findAll(): Promise<GrapeDto[]> {
         const grapes = await this.Grape.findAll();
         return grapes.map(g => (this.toGrapeDto(g)));
     }
 
-    async postGrape(grape: GrapeCreateDto): Promise<GrapeDto> {
+    async create(grape: GrapeCreateDto): Promise<GrapeDto> {
         const created = await this.Grape.create(grape);
         return this.toGrapeDto(created);
     }
 
-    async putGrape(id: number, grape: GrapeCreateDto): Promise<void> {
+    async update(id: number, grape: GrapeCreateDto): Promise<void> {
         const existing = await this.Grape.findByPk(id);
 
         if (!existing) {
@@ -27,7 +27,7 @@ export class GrapeRepository {
         });
     }
 
-    delGrape(name: string) {
+    deleteByName(name: string) {
 
         // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy
         return this.Grape.destroy({
@@ -35,11 +35,11 @@ export class GrapeRepository {
         });
     }
 
-    delGrapeById(id: number) {
+    delete(id: number) {
         return this.Grape.destroy({where: {id: id}})
     }
 
-    async getGrape(id: number): Promise<GrapeDto | null>  {
+    async findById(id: number): Promise<GrapeDto | null>  {
         const grape = await this.Grape.findByPk(id);
         if (!grape) {
             return null;
