@@ -1,6 +1,7 @@
 import {beforeEach, describe, expect, test} from "@jest/globals";
 import {Orm} from "../orm";
 import {QueryTypes} from "sequelize";
+import {MemberCreateDto, MemberDto} from "../types/member";
 
 function fail(message) {
     throw new Error(message);
@@ -156,6 +157,17 @@ describe('Database tests', () => {
     });
 
     describe('Members tests', () => {
+        test('Post returns the created member', async () => {
+            await orm.createTables();
+            const toCreate: MemberCreateDto = {given: "Nomen", surname: "Nescio"};
+            const member: MemberDto = await orm.members.postMember(toCreate);
+
+            expect(member.given).toEqual("Nomen");
+            expect(member.surname).toEqual("Nescio");
+            expect(member.id).toEqual(1);
+
+        });
+
         test('Post and read back members', async () => {
             await orm.createTables();
             await orm.members.postMember({given: "Nomen", surname: "Nescio"})

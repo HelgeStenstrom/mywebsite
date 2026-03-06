@@ -97,8 +97,7 @@ describe('Endpoint handler tests', () => {
         const promise1 = memberHandlingFunction(req, res);
         setTimeout(() => {
             expect(res.status).toHaveBeenCalled();
-            expect(res.status).toHaveBeenCalledWith(201); // FAIL med flit, just nu.
-            expect(res.json).toHaveBeenCalledWith("postMember called!");
+            expect(res.status).toHaveBeenCalledWith(201);
 
             promise1.then(() => {
                 done();
@@ -128,8 +127,7 @@ describe('Endpoint handler tests', () => {
         return promise.then(() => {
 
             expect(res.status).toHaveBeenCalled();
-            expect(res.status).toHaveBeenCalledWith(201); // FAIL med flit, just nu.
-            expect(res.json).toHaveBeenCalledWith("postMember called!");
+            expect(res.status).toHaveBeenCalledWith(201);
         });
 
     });

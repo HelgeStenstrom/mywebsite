@@ -1,4 +1,5 @@
 import {Orm} from "../orm";
+import {MemberInstance} from "../types/member";
 
 export class MemberHandlers {
 
@@ -29,7 +30,7 @@ export class MemberHandlers {
         return async (req, res) => {
             const member = req.body;
             return this.orm.members.postMember(member)
-                .then(() => res.status(201).json("postMember called!"))
+                .then((created: MemberInstance) => res.status(201).json(created))
                 .catch(e => console.error(e));
 
         };

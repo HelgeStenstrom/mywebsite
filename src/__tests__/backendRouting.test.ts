@@ -288,6 +288,65 @@ describe('Table endpoints', () => {
 
     })
 
+    describe('Tastings', () => {
+        test('POST followed by GET returns the same data', async () => {
+            const putResponse = await request(app)
+                .post('/api/v1/tastings')
+                .send({
+                    title: 'Röda viner',
+                    notes: 'Mycket trevligt',
+                    tastingDate: "2022-01-01",
+                });
+            expect(putResponse.status).toBe(201);
+
+            const getResponse = await request(app)
+                .get('/api/v1/tastings');
+
+            expect(getResponse.status).toBe(200);
+            expect(getResponse.body.length).toBe(1);
+            expect(getResponse.body).toEqual([{
+                id: expect.any(Number),
+                title: 'Röda viner',
+                notes: 'Mycket trevligt',
+                tastingDate: "2022-01-01",
+                hosts: [],
+            }])
+        });
+
+        test('POST with hosts followed by GET returns hosts', async () => {
+            const memberResponse = await request(app)
+                .post('/api/v1/members')
+                .send({ given: 'Nomen', surname: 'Nescio' });
+
+            expect(memberResponse.status).toBe(201);
+            const memberId = memberResponse.body.id;
+            expect(memberId).toBe(1);
+
+            const postResponse = await request(app)
+                .post('/api/v1/tastings')
+                .send({
+                    title: 'Röda viner',
+                    notes: 'Mycket trevligt',
+                    tastingDate: '2023-07-20',
+                    hostIds: [memberId],
+                });
+            expect(postResponse.status).toBe(201);
+
+
+            const getResponse = await request(app)
+                .get('/api/v1/tastings');
+
+            expect(getResponse.body).toEqual([{
+                id: expect.any(Number),
+                title: 'Röda viner',
+                notes: 'Mycket trevligt',
+                tastingDate: "2023-07-20",
+                hosts: [{memberId}],
+            }])
+
+        })
+    })
+
     describe('Table interactions', () => {
         test('When a Wine uses a WineType and a Country, it shows when getting WineTypes and Countries', async () => {
             // Let's first create a country and a wine type

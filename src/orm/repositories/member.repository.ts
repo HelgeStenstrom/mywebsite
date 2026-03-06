@@ -1,5 +1,5 @@
 import {ModelStatic} from "sequelize";
-import {MemberDto, MemberInstance} from "../../types/member";
+import {MemberCreateDto, MemberDto, MemberInstance} from "../../types/member";
 
 export class MemberRepository {
 
@@ -10,8 +10,9 @@ export class MemberRepository {
         return members.map(m => this.toMemberDto(m));
     }
 
-    postMember(member) {
-        return this.Member.create(member);
+    async postMember(member:MemberCreateDto): Promise<MemberDto> {
+        const memberInstance = await this.Member.create(member);
+        return this.toMemberDto(memberInstance);
     }
 
     private toMemberDto(m: MemberInstance): MemberDto {
