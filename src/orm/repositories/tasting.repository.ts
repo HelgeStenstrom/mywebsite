@@ -60,7 +60,16 @@ export class TastingRepository {
     }
 
     async getTasting(id: number): Promise<WineTastingDto | null> {
-        const tasting = await this.Tasting.findByPk(id);
+        const tasting = await this.Tasting.findByPk(id,
+            {
+                include: [{
+                    model: this.TastingHost,
+                    as: 'wineTastingHosts',
+                    include: [{model: this.Member, as: 'member'}]
+                }
+                ]
+            }
+        );
 
         if (!tasting) {
             return null;

@@ -12,11 +12,13 @@ export function defineWineTastingHost(
                 field: 'wine_tasting_id',
                 type: DataTypes.INTEGER,
                 allowNull: false,
+                primaryKey: true,
             },
             memberId: {
                 field: 'member_id',
                 type: DataTypes.INTEGER,
                 allowNull: false,
+                primaryKey: true,
             },
         },
         {
