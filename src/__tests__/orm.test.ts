@@ -118,22 +118,6 @@ describe('Database tests', () => {
             expect(secondBack.color).toEqual("blå");
         });
 
-        test('delete a grape by name', async () => {
-
-            // Setup
-            await orm.createTables();
-            await orm.grapes.create({name: "g1", color: "grön"});
-            await orm.grapes.create({name: "g2", color: "grön"});
-            await orm.grapes.create({name: "g3", color: "grön"});
-
-            // Exercise
-            await orm.grapes.deleteByName("g2");
-
-            // Verify
-            const grapes = await orm.grapes.findAll();
-            expect(grapes.length).toEqual(2);
-        });
-
         test('patch a grape', async () => {
 
             // Setup

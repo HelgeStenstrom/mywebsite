@@ -27,14 +27,6 @@ export class GrapeRepository {
         });
     }
 
-    deleteByName(name: string) {
-
-        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-destroy
-        return this.Grape.destroy({
-            where: {name: name}
-        });
-    }
-
     delete(id: number) {
         return this.Grape.destroy({where: {id: id}})
     }
