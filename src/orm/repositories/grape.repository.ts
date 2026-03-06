@@ -1,5 +1,5 @@
 import {ModelStatic} from "sequelize";
-import {GrapeAttributes, GrapeColor, GrapeCreateDto, GrapeDto, GrapeInstance} from "../../types/grape";
+import {GrapeColor, GrapeCreateDto, GrapeDto, GrapeInstance} from "../../types/grape";
 
 export class GrapeRepository {
     constructor(private readonly Grape: ModelStatic<GrapeInstance>) {}
@@ -14,17 +14,15 @@ export class GrapeRepository {
         return this.toGrapeDto(created);
     }
 
-    async update(id: number, grape: GrapeCreateDto): Promise<void> {
-        const existing = await this.Grape.findByPk(id);
 
-        if (!existing) {
-            throw new Error(`Grape with id ${id} not found`);
+    async update(id: number, grape: GrapeCreateDto): Promise<GrapeDto | null> {
+        await this.Grape.update(grape, {where: {id}});
+
+        const updated = await this.Grape.findByPk(id);
+        if (!updated) {
+            return null;
         }
-
-        await existing.update({
-            name: grape.name,
-            color: grape.color
-        });
+        return this.toGrapeDto(updated);
     }
 
     delete(id: number) {
@@ -40,15 +38,6 @@ export class GrapeRepository {
         return this.toGrapeDto(grape);
     }
 
-    patchGrapeByNameAndColor(from: GrapeAttributes, to: GrapeAttributes) {
-
-        // See https://sequelize.org/api/v6/class/src/model.js~model#static-method-update
-
-        return this.Grape.update(
-            {name: to.name, color: to.color},
-            {where: {name: from.name}}
-        );
-    }
 
 
     private toGrapeDto(grape: GrapeInstance): GrapeDto {

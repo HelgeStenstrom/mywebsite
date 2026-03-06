@@ -41,11 +41,16 @@ export class GrapeHandlers {
     patchGrape(): (req, res) => Promise<void>  {
 
         return async (req, res) => {
-            const {from, to} = req.body;
 
-            this.orm.grapes.patchGrapeByNameAndColor(from, to)
-                .then(() => res.status(200).json("patchGrape called!"))
-                .catch(e => console.error(e));
+            const id = parseInt(req.params.id);
+            const data: GrapeCreateDto = req.body;
+
+            const updated = await this.orm.grapes.update(id, data);
+            if (!updated) {
+                res.status(404).json({ status: 404, message: 'Grape not found' });
+                return;
+            }
+            res.status(200).json(updated);
         };
     }
 

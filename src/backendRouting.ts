@@ -35,11 +35,10 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.get('/api/v1/grapes', grapeHandlers.getAll());
     router.post('/api/v1/grapes', grapeHandlers.create());
-    router.patch('/api/v1/grapes', grapeHandlers.patchGrape());
 
     router.delete('/api/v1/grapes/:id', grapeHandlers.deleteGrapeById());
     router.get('/api/v1/grapes/:id', grapeHandlers.getGrapeById());
-    router.put('/api/v1/grapes/:id', grapeHandlers.putGrapeById());
+    router.patch('/api/v1/grapes/:id', grapeHandlers.patchGrape());
 
     router.get('/api/v1/members', memberHandlers.getMembers());
     router.post('/api/v1/members', memberHandlers.postMember());

@@ -118,26 +118,6 @@ describe('Database tests', () => {
             expect(secondBack.color).toEqual("blå");
         });
 
-        test('patch a grape', async () => {
-
-            // Setup
-            await orm.createTables();
-            await orm.grapes.create({name: "g1", color: "grön"});
-            const prePatchGrapes = await orm.grapes.findAll();
-            expect(prePatchGrapes[0].id).toEqual(1);
-            expect(prePatchGrapes[0].name).toEqual("g1");
-
-            // Exercise
-            await orm.grapes.patchGrapeByNameAndColor(
-                {id: 1, name: 'g1', color: 'grön'},
-                {id: 1, name: "g2", color: "blå"})
-
-            // Verify
-            const grapes = await orm.grapes.findAll();
-            expect(grapes.length).toEqual(1);
-            expect(grapes[0].id).toEqual(1);
-            expect(grapes[0].name).toEqual("g2");
-        });
     });
 
     describe('Members tests', () => {

@@ -103,6 +103,28 @@ describe('Table endpoints', () => {
             expect(response.status).toBe(400);
         })
 
+        test('PATCH by id updates the grape', async () => {
+            // First post a grape
+            const postResponse = await request(app)
+                .post('/api/v1/grapes')
+                .send({name: "before", color: "grön"});
+            expect(postResponse.status).toBe(201);
+
+            const id = postResponse.body.id;
+
+            const patchResponse = await request(app)
+                .patch(`/api/v1/grapes/${id}`)
+                .send({name: "after", color: "blå"});
+
+            expect(patchResponse.status).toBe(200);
+            expect(patchResponse.body).toEqual({
+                id,
+                name: 'after',
+                color: 'blå',
+            });
+
+        })
+
         test('PATCH a Grape', async () => {
             // First post a grape
             await request(app).post('/api/v1/grapes').send({name: "before", color: "grön"});
@@ -113,9 +135,10 @@ describe('Table endpoints', () => {
             expect(before.body).toEqual({id: 1, color: "grön", name: "before"});
 
             // Now patch it
-            await request(app).patch('/api/v1/grapes').send({
-                from: {name: "before", color: "grön"},
-                to: {name: "after", color: "blå"}
+            await request(app).patch('/api/v1/grapes/1').send({
+                id: 1,
+                name: "after",
+                color: "blå",
             });
 
             // Verify name and color
@@ -123,26 +146,8 @@ describe('Table endpoints', () => {
             expect(after.status).toBe(200);
             expect(after.body).toEqual({id: 1, color: "blå", name: "after"});
 
-        })
+        });
 
-        test('PUT a Grape by ID', async () => {
-            // First post a grape
-            await request(app).post('/api/v1/grapes').send({name: "before", color: "grön"});
-
-            // Verify name and color
-            const before = await request(app).get('/api/v1/grapes/1');
-            expect(before.status).toBe(200);
-            expect(before.body).toEqual({id: 1, color: "grön", name: "before"});
-
-            // Now put it
-            const putResponse =  await request(app).put('/api/v1/grapes/1').send({name: "after", color: "blå"});
-            expect(putResponse.status).toBe(204);
-
-            // Verify name and color
-            const after = await request(app).get('/api/v1/grapes/1');
-            expect(after.status).toBe(200);
-            expect(after.body).toEqual({id: 1, color: "blå", name: "after"});
-        })
 
     })
 
