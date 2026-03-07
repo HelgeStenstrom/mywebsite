@@ -54,9 +54,9 @@ export class AddGrapeComponent implements OnInit {
       } else {
         patchGrape$ = this.service.addGrape(g);
       }
-      patchGrape$.subscribe(() => {
-        this.service.newEvent(g);
-        this.grapeAdded.emit(g);
+      patchGrape$.subscribe((savedGrape) => {
+        this.service.newEvent(savedGrape);
+        this.grapeAdded.emit(savedGrape);
       });
     }
   }

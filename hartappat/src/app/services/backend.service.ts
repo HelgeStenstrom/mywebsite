@@ -119,12 +119,6 @@ export class BackendService {
     return objectObservable.pipe(catchError(this.handleError));
   }
 
-  patchGrapeOld(from: Grape, to: Grape): Observable<void> {
-    const url = `${this.apiBase}/grapes`;
-    const objectObservable: Observable<void> = this.http.patch<void>(url, {from, to});
-    return objectObservable.pipe(catchError(this.handleError));
-  }
-
   private handleError(error: HttpErrorResponse): Observable<never> { // From https://angular.io/guide/http#getting-error-details
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -234,7 +228,7 @@ export type Grape = {
 };
 
 export type WineTastingApi = {
-  id:number;
+  id: number;
   title: string;
   notes?: string;
   tastingDate: string;
