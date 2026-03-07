@@ -45,6 +45,13 @@ export class GrapeHandlers {
             const id = parseInt(req.params.id);
             const data: GrapeCreateDto = req.body;
 
+            console.log(`id = {}`, id);
+            console.log(data);
+
+            if (!id || isNaN(id) || id <= 0) {
+                return res.status(400).send({ error: 'Invalid grape id' });
+            }
+
             const updated = await this.orm.grapes.update(id, data);
             if (!updated) {
                 res.status(404).json({ status: 404, message: 'Grape not found' });

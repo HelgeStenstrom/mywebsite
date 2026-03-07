@@ -47,9 +47,9 @@ export class AddGrapeComponent implements OnInit {
         color: formValue.color
       };
 
-      let patchGrape$: Observable<void>;
+      let patchGrape$: Observable<Grape>;
       if (this.isEditCall()) {
-        patchGrape$ = this.service.patchGrape(this.grapeToEdit, g);
+        patchGrape$ = this.service.patchGrape(this.grapeToEdit.id, g);
         this.closeDialog();
       } else {
         patchGrape$ = this.service.addGrape(g);
@@ -58,9 +58,6 @@ export class AddGrapeComponent implements OnInit {
         this.service.newEvent(g);
         this.grapeAdded.emit(g);
       });
-
-      // TODO: Jag vill att detta formulär ska uppdatera grape$ i DruvorComponent.
-
     }
   }
 

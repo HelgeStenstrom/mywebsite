@@ -16,7 +16,8 @@ export class GrapeRepository {
 
 
     async update(id: number, grape: GrapeCreateDto): Promise<GrapeDto | null> {
-        await this.Grape.update(grape, {where: {id}});
+        const { id: _ignored, ...safeData } = grape as any;
+        await this.Grape.update(safeData, {where: {id}});
 
         const updated = await this.Grape.findByPk(id);
         if (!updated) {

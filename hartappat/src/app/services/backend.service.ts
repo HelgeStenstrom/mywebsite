@@ -34,9 +34,9 @@ export class BackendService {
     return objectObservable.pipe(catchError(this.handleError));
   }
 
-  addGrape(grape: Grape): Observable<void> {
+  addGrape(grape: Grape): Observable<Grape> {
     const url = `${this.apiBase}/grapes`;
-    const objectObservable: Observable<void> = this.http.post<void>(url, grape);
+    const objectObservable: Observable<Grape> = this.http.post<Grape>(url, grape);
     return objectObservable.pipe(catchError(this.handleError));
   }
 
@@ -113,7 +113,13 @@ export class BackendService {
     };
   }
 
-  patchGrape(from: Grape, to: Grape): Observable<void> {
+  patchGrape(id: number, to: Grape): Observable<Grape> {
+    const url = `${this.apiBase}/grapes/${id}`;
+    const objectObservable: Observable<Grape> = this.http.patch<Grape>(url, to);
+    return objectObservable.pipe(catchError(this.handleError));
+  }
+
+  patchGrapeOld(from: Grape, to: Grape): Observable<void> {
     const url = `${this.apiBase}/grapes`;
     const objectObservable: Observable<void> = this.http.patch<void>(url, {from, to});
     return objectObservable.pipe(catchError(this.handleError));
