@@ -365,7 +365,12 @@ describe('Table endpoints', () => {
             expect(wineTypes.body).toEqual([{id: 1, name: "rött", isUsed: false}])
 
             // Now create a wine that uses the country.
-            await request(app).post('/api/v1/wines').send({name: "foo", countryId: 1, wineTypeId: 1, systembolaget: 523});
+            await request(app).post('/api/v1/wines').send({
+                name: "foo",
+                countryId: 1,
+                wineTypeId: 1,
+                systembolaget: 523
+            });
 
             // Verify that the country and wine type are now used.
             const countries2 = await request(app).get('/api/v1/countries');
@@ -382,7 +387,7 @@ describe('Table endpoints', () => {
             expect(countries3.body).toEqual([{id: 1, name: "Sweden", isUsed: false}]);
             expect(wineTypes3.body).toEqual([{id: 1, name: "rött", isUsed: false}]);
 
-        })
+        });
 
         test('Trying to delete a country that is used by a wine throws an error', async () => {
             // Let's first create a country

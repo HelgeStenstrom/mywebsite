@@ -12,16 +12,37 @@ export class WineRepository {
     ) {}
 
 
-    async create(param: WineCreateDto) {
-        return this.Wine.create({
+    async create(param: WineCreateDto): Promise<WineDto> {
+        const created = await this.Wine.create({
             name: param.name,
             countryId: param.countryId,
             wineTypeId: param.wineTypeId,
             systembolaget: param.systembolaget,
             volume: param.volume,
-            vintageYear: param.vintageYear,
-            isNonVintage: param.isNonVintage
+            vintageYear: param.vintageYear?? null,
+            isNonVintage: param.isNonVintage ?? false,
         });
+
+        const withIncludes = await this.Wine.findByPk(created.id, {
+            include: [
+                {
+                    model: this.WineType,
+                    as: 'winetypeModel',
+                    attributes: ['id', 'name'],
+                    required: true
+                },
+                {
+                    model: this.Country,
+                    as: 'countryModel',
+                    attributes: ['id', 'name'],
+                }
+            ]
+        });
+        if (!withIncludes) {
+            throw new Error(`Wine with id ${created.id} not found after create`);
+        }
+        const plain = withIncludes.get({ plain: true });
+        return this.toWineDto(plain as WineInstance);
     }
 
     async findAll(): Promise<WineDto[]> {

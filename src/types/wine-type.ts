@@ -5,14 +5,15 @@ export type WineTypeDto = {
     id: number;
     name: string;
     isUsed: boolean;
-};
-
-interface WineTypeAttributes {
+}
+export type WineTypeRef = {
     id: number;
     name: string;
-}
+};
 
-export interface WineTypeInstance extends Model<WineTypeAttributes>, WineTypeAttributes {
+
+
+export interface WineTypeInstance extends Model<WineTypeRef>, WineTypeRef {
 }
 
 export interface WineTypeWithWines extends WineTypeInstance {

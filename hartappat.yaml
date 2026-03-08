@@ -467,12 +467,16 @@ components:
 
     Wine:
       type: object
+      description: >
+        Exactly one of the following must apply:
+        (1) vintageYear is set and isNonVintage is false,
+        (2) isNonVintage is true and vintageYear is null/omitted,
+        (3) both are null/false/omitted (vintage unknown).
       required:
         - id
         - name
         - country
         - wineType
-        - vintageYear
         - isNonVintage
         - systembolaget
         - volume
@@ -492,9 +496,16 @@ components:
           type: integer
           nullable: true
           example: 2019
+          description: >
+            Vintage year. Mutually exclusive with isNonVintage=true.
+            Omit or set to null if unknown or non-vintage.
         isNonVintage:
           type: boolean
+          default: false
           example: false
+          description: >
+            Set to true if wine is non-vintage (NV).
+            If true, vintageYear must be null or omitted.
         systembolaget:
           type: number
         volume:

@@ -1,13 +1,13 @@
 import {Model} from "sequelize";
-import {WineTypeDto} from "./wine-type";
-import {CountryDto} from "./country";
+import {WineTypeDto, WineTypeRef} from "./wine-type";
+import {CountryDto, CountryRef} from "./country";
 
 // This DTO must match components.schemas.WineDto in hartappat.yaml
 export type WineDto = {
     id: number;
     name: string;
-    country: CountryDto;
-    wineType: WineTypeDto;
+    country: CountryRef;
+    wineType: WineTypeRef;
     vintageYear: number | null;
     isNonVintage: boolean;
     systembolaget: number;
@@ -20,7 +20,7 @@ export type WineCreateDto = {
     countryId: number;
     wineTypeId: number;
     vintageYear?: number | null;
-    isNonVintage?: boolean;
+    isNonVintage: boolean;
     systembolaget?: number;
     volume: number;
 };
