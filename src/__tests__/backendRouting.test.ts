@@ -1,34 +1,14 @@
-import {setupEndpoints} from "../backendRouting";
-import express, {Express} from "express";
+import express from "express";
 import request from "supertest";
-import {Orm} from "../orm";
-import {Options} from "sequelize";
 import {CountryDto} from "../types/country";
 import {WineDto} from "../types/wine";
 import {test} from "@jest/globals";
+import {createTestApp} from "../testUtils";
 
 // TODO: Klargör syftet med denna fil, eller ta bort den. Se till att den uppfyller sitt syfte.
 
 // Syfte: verifiera att http-anrop till endpoints returnerar förväntat data.
 
-async function createTestApp(): Promise<Express> {
-    const app = express();
-    app.use(express.json());
-
-    const sequelizeDbOptions: Options = {
-        dialect: 'sqlite',
-        storage: ':memory:',
-        logging: false
-    };
-
-    const orm = new Orm('test', 'test', 'test', sequelizeDbOptions);
-
-    await orm.sync();
-
-    setupEndpoints(app, orm);
-
-    return app;
-}
 
 describe('Table endpoints', () => {
     let app: express.Express;

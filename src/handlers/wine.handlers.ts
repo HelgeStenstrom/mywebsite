@@ -31,14 +31,9 @@ export class WineHandlers {
         return async (req, res) => {
 
             const wine: WineCreateDto = req.body;
-
-            let vintageYear = wine.vintageYear ?? null;
-            const isNonVintage = wine.isNonVintage ?? false;
-
-            if (isNonVintage) {
-                vintageYear = null;
+            if (wine.isNonVintage && wine.vintageYear) {
+                return res.status(400).json({ error: 'vintageYear must be null when isNonVintage is true' });
             }
-
 
             this.orm.wines.create(wine)
                 .then(() => res.status(201).send())
