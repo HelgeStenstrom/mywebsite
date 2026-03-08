@@ -67,5 +67,56 @@ describe('WineRepository', () => {
         expect(created).toEqual(expected)
     });
 
+    test('create wine with vintage year saves vintageYear correctly', async () => {
+        const country = await countryDefinition.create({name: "test"})
+        const wineType = await wineTypeDefinition.create({name: "test"});
+
+        const created = await wineRepository.create({
+            countryId: country.id,
+            name: "Test",
+            volume: 0, // TODO: make optional
+            wineTypeId: wineType.id,
+            isNonVintage: false,
+            vintageYear: 2023,
+        })
+
+        expect(created.vintageYear).toEqual(2023);
+        expect(created.isNonVintage).toEqual(false);
+    });
+
+    test('create non-vintage wine saves isNonVintage correctly', async () => {
+        const country = await countryDefinition.create({name: "test"})
+        const wineType = await wineTypeDefinition.create({name: "test"});
+
+        const created = await wineRepository.create({
+            countryId: country.id,
+            name: "Test",
+            volume: 0, // TODO: make optional
+            wineTypeId: wineType.id,
+            isNonVintage: true,
+            vintageYear: 2023,
+        })
+
+        expect(created.vintageYear).toBeNull(); // Because isNonVintage is true, we should not save vintageYear
+        expect(created.isNonVintage).toEqual(true);
+
+    });
+
+    test('create wine with unknown vintage saves both as null/false', async () => {
+        const country = await countryDefinition.create({name: "Sverige"})
+        const wineType = await wineTypeDefinition.create({name: "rött"});
+
+        const created = await wineRepository.create({
+            countryId: country.id,
+            isNonVintage: false,
+            name: "",
+            volume: 0,
+            wineTypeId: wineType.id,
+        });
+
+        expect(created.vintageYear).toBeNull();
+        expect(created.isNonVintage).toEqual(false);
+    });
+
     }
 )

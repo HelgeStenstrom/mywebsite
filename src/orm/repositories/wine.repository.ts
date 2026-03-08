@@ -19,7 +19,7 @@ export class WineRepository {
             wineTypeId: param.wineTypeId,
             systembolaget: param.systembolaget,
             volume: param.volume,
-            vintageYear: param.vintageYear?? null,
+            vintageYear: param.isNonVintage ? null : (param.vintageYear ?? null),
             isNonVintage: param.isNonVintage ?? false,
         });
 
