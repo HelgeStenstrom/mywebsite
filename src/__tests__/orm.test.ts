@@ -71,7 +71,8 @@ describe('Database tests', () => {
                 name: "Wine name",
                 volume: 750,
                 wineTypeId: wineTypeInstance.id,
-                systembolaget: null
+                systembolaget: null,
+                isNonVintage: false,
             });
 
             // Deleting the country is expected to fail, because it's used in a wine.
@@ -192,7 +193,8 @@ describe('Database tests', () => {
                 name: 'Rödtjut',
                 systembolaget: 4711,
                 volume: 750,
-                wineTypeId: wineType['id']
+                wineTypeId: wineType['id'],
+                isNonVintage: false,
             })
 
             const wines = await orm.wines.findAll();
@@ -220,7 +222,8 @@ describe('Database tests', () => {
                 name: 'Rödtjut',
                 systembolaget: 4711,
                 volume: 750,
-                wineTypeId: wineType['id']
+                wineTypeId: wineType['id'],
+                isNonVintage: false,
             })
 
                   // post another wine
@@ -229,7 +232,8 @@ describe('Database tests', () => {
                 name: 'Other',
                 systembolaget: 4711,
                 volume: 750,
-                wineTypeId: wineType['id']
+                wineTypeId: wineType['id'],
+                isNonVintage: false,
             });
 
 
@@ -269,7 +273,8 @@ describe('Database tests', () => {
                 name: 'Rödtjut',
                 systembolaget: 4711,
                 volume: 750,
-                wineTypeId: wineType['id']
+                wineTypeId: wineType['id'],
+                isNonVintage: false,
             })
 
             // Read back, so that we get a wine to patch
