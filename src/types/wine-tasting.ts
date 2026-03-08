@@ -28,7 +28,7 @@ export type WineTastingWineDto = {
     order?: number;
 }
 
-interface TastingAttributes {
+interface WineTastingAttributes {
     id: number;
     title: string;
     notes: string;
@@ -44,6 +44,6 @@ interface WineTastingHostAttributes {
 export interface WineTastingHostInstance
     extends Model<WineTastingHostAttributes>, WineTastingHostAttributes {}
 
-export interface TastingInstance extends Model<TastingAttributes>, TastingAttributes {
+export interface WineTastingInstance extends Model<WineTastingAttributes>, WineTastingAttributes {
     wineTastingHosts?: WineTastingHostInstance[];
 }

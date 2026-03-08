@@ -1,11 +1,16 @@
-import {TastingInstance, WineTastingCreateDto, WineTastingDto, WineTastingHostInstance} from "../../types/wine-tasting";
+import {
+    WineTastingCreateDto,
+    WineTastingDto,
+    WineTastingHostInstance,
+    WineTastingInstance
+} from "../../types/wine-tasting";
 import {ModelStatic} from "sequelize";
 import {BadRequestError} from "../../errors/bad-request-error";
 import {MemberInstance} from "../../types/member";
 
 export class TastingRepository {
     constructor(
-        private readonly Tasting: ModelStatic<TastingInstance>,
+        private readonly Tasting: ModelStatic<WineTastingInstance>,
         private readonly TastingHost: ModelStatic<WineTastingHostInstance>,
         private readonly Member: ModelStatic<MemberInstance>,
         ) {}
@@ -33,7 +38,7 @@ export class TastingRepository {
         return this.toTastingDto(created);
     }
 
-    private toTastingDto(t: TastingInstance): WineTastingDto {
+    private toTastingDto(t: WineTastingInstance): WineTastingDto {
         return {
             id: t.id,
             title: t.title,

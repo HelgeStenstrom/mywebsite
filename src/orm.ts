@@ -16,7 +16,7 @@ import {MemberRepository} from "./orm/repositories/member.repository";
 import {WineTypeRepository} from "./orm/repositories/wine-type.repository";
 import {WineRepository} from "./orm/repositories/wine.repository";
 import {defineWineTastingHost} from "./orm/models/wine-tasting-host.model";
-import {TastingInstance, WineTastingHostInstance} from "./types/wine-tasting";
+import {WineTastingHostInstance, WineTastingInstance} from "./types/wine-tasting";
 import {MemberInstance} from "./types/member";
 
 export class Orm {
@@ -38,7 +38,7 @@ export class Orm {
 
         const country: ModelStatic<CountryInstance> = defineCountry(this.sequelize);
         const grape: ModelStatic<GrapeInstance> = defineGrape(this.sequelize);
-        const tasting: ModelStatic<TastingInstance> = defineTasting(this.sequelize);
+        const tasting: ModelStatic<WineTastingInstance> = defineTasting(this.sequelize);
         const member: ModelStatic<MemberInstance> = defineMember(this.sequelize);
         const wineType:ModelStatic<WineTypeInstance> = defineWineType(this.sequelize);
         const tastingHost: ModelStatic<WineTastingHostInstance> = defineWineTastingHost(this.sequelize);
@@ -99,7 +99,7 @@ export function connectWineAndCountry(
 
 
 export function connectTastingAndTastingHost(
-    tasting: ModelStatic<TastingInstance>,
+    tasting: ModelStatic<WineTastingInstance>,
     member: ModelStatic<MemberInstance>,
     tastingHost: ModelStatic<WineTastingHostInstance>) {
 

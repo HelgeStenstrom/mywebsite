@@ -4,13 +4,13 @@ import {TastingRepository} from '../orm/repositories/tasting.repository';
 import {defineWineTastingHost} from "../orm/models/wine-tasting-host.model";
 import {defineMember} from "../orm/models/member.model";
 import {connectTastingAndTastingHost} from "../orm";
-import {TastingInstance, WineTastingHostInstance} from "../types/wine-tasting";
+import {WineTastingHostInstance, WineTastingInstance} from "../types/wine-tasting";
 import {MemberInstance} from "../types/member";
 
 describe('TastingRepository', () => {
     let sequelize: Sequelize;
     let tastingRepository: TastingRepository;
-    let wineTastingDefinition:  ModelStatic<TastingInstance>;
+    let wineTastingDefinition:  ModelStatic<WineTastingInstance>;
     let wineTastingHostDefinition:  ModelStatic<WineTastingHostInstance>;
     let memberDefinition:  ModelStatic<MemberInstance>;
 

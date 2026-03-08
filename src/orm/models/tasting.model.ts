@@ -1,7 +1,7 @@
 import {DataTypes, ModelStatic, Sequelize} from "sequelize";
-import {TastingInstance} from "../../types/wine-tasting";
+import {WineTastingInstance} from "../../types/wine-tasting";
 
-export function defineTasting(sequelize1: Sequelize): ModelStatic<TastingInstance> {
+export function defineTasting(sequelize1: Sequelize): ModelStatic<WineTastingInstance> {
     return sequelize1.define("tasting",
         {
             title: DataTypes.STRING(128),
