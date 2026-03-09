@@ -311,6 +311,56 @@ paths:
         '204':
           description: Wine deleted successfully
 
+  /tastings/{id}/wines:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the tasting
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      summary: Get all wines for a tasting
+      description: Returns a list of wines for a given tasting
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WineTastingWine'
+        '404':
+          description: Tasting not found
+          content:
+            application/json:
+              schema:
+                $ref:  '#/components/schemas/ErrorResponse'
+    post:
+      summary: Add a wine to a tasting
+      description: Adds a wine to an existing tasting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WineTastingWineCreate'
+      responses:
+        '201':
+          description: Wine added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WineTastingWine'
+        '404':
+          description: Tasting not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /wine-types:
     post:
       summary: Create a new wine type
@@ -453,7 +503,7 @@ components:
     WineTastingHost:
       type: object
       required: []
-      description: The host of the wine tasting. One of memberId or name must be set.
+      description: The host of the wine tasting. One of 'memberId' or 'name' must be set.
       properties:
         memberId:
           type: integer
@@ -464,6 +514,35 @@ components:
           example: "Robert Smith"
           description: The name of the host, if memberId is not set.
 
+    WineTastingWine:
+      type: object
+      required: [id, wineId, position]
+      properties:
+        id:
+          type: integer
+        wineId:
+          type: integer
+        position:
+          type: integer
+        purchasePrice:
+          type: integer
+          nullable: true
+        averageScore:
+          type: number
+          format: float
+          nullable: true
+
+    WineTastingWineCreate:
+      type: object
+      required: [wineId, position]
+      properties:
+        wineId:
+          type: integer
+        position:
+          type: integer
+        purchasePrice:
+          type: integer
+          nullable: true
 
     Wine:
       type: object
