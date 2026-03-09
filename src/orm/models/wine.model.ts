@@ -15,9 +15,15 @@ export function defineWine(sequelize1: Sequelize): ModelStatic<WineInstance> {
                 field: 'wine_type_id', // Name in DB column
                 allowNull: false
             },
-            systembolaget: DataTypes.INTEGER,
+            systembolaget: {
+                type: DataTypes.INTEGER,
+                allowNull: true
+            },
 
-            volume: DataTypes.INTEGER,
+            volume: {
+                type: DataTypes.INTEGER,
+                allowNull: true
+            },
 
             vintageYear: {
                 type: DataTypes.INTEGER,

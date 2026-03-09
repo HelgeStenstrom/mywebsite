@@ -10,9 +10,9 @@ export type WineDto = {
     wineType: WineTypeRef;
     vintageYear: number | null;
     isNonVintage: boolean;
-    systembolaget: number;
-    volume: number;
-    createdAt: Date;
+    systembolaget: number | null;
+    volume: number | null;
+    createdAt: Date; // TODO: bör det kunna vara null?
 };
 
 export type WineCreateDto = {
@@ -20,10 +20,11 @@ export type WineCreateDto = {
     countryId: number;
     wineTypeId: number;
     vintageYear?: number | null;
-    isNonVintage: boolean;
-    systembolaget?: number;
-    volume: number;
+    isNonVintage?: boolean | null; // default is set by WineRepository
+    systembolaget?: number | null;
+    volume?: number | null;
 };
+
 interface WineAssociations {
     winetypeModel?: WineTypeDto;
     countryModel?: CountryDto;
@@ -39,9 +40,9 @@ interface WineAttributes {
     wineTypeId: number;
     vintageYear?: number | null;
     isNonVintage: boolean;
-    systembolaget: number;
-    volume: number;
-    createdAt?: Date;
+    systembolaget: number | null;
+    volume: number | null;
+    createdAt?: Date; // TODO: bör det kunna vara null?
 }
 
 /**
