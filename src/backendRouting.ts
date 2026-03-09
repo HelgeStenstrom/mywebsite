@@ -9,6 +9,7 @@ import {TastingHandlers} from "./handlers/tasting.handlers";
 import {CountryHandlers} from "./handlers/country.handlers";
 import {WineTypeHandlers} from "./handlers/wine-type.handlers";
 import {WineHandlers} from "./handlers/wine.handlers";
+import {WineTastingWineHandlers} from "./handlers/wine-tasting-wine.handlers";
 
 function getConfiguredApp(): Express {
     const app: Express = express();
@@ -28,6 +29,7 @@ export function setupEndpoints(router: Express, orm: Orm) {
     const countryHandlers = new CountryHandlers(orm);
     const wineTypeHandlers = new WineTypeHandlers(orm);
     const wineHandlers = new WineHandlers(orm);
+    const wineTastingWineHandlers = new WineTastingWineHandlers(orm);
 
 
     router.get('/api/v1/countries', countryHandlers.getCountries());
@@ -44,9 +46,12 @@ export function setupEndpoints(router: Express, orm: Orm) {
     router.get('/api/v1/members', memberHandlers.getMembers());
     router.post('/api/v1/members', memberHandlers.postMember());
 
+    router.get('/api/v1/tastings/:id/wines', wineTastingWineHandlers.getTastingWines());
+    router.post('/api/v1/tastings/:id/wines', wineTastingWineHandlers.postTastingWine());
     router.get('/api/v1/tastings/:id', tastingHandlers.getTasting());
     router.get('/api/v1/tastings/', tastingHandlers.getTastings());
     router.post('/api/v1/tastings/', tastingHandlers.postTasting());
+
 
     router.get('/api/v1/wines', wineHandlers.getWines());
     router.post('/api/v1/wines', wineHandlers.postWine());

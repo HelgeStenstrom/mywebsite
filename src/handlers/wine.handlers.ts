@@ -36,7 +36,7 @@ export class WineHandlers {
             }
 
             this.orm.wines.create(wine)
-                .then(() => res.status(201).send())
+                .then((created) => res.status(201).json(created))
                 .catch(e => console.error(e));
 
         };
