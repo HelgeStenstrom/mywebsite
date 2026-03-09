@@ -1,4 +1,5 @@
 import express, {Express} from "express";
+import "express-async-errors";
 import cors from "cors";
 
 import {Orm} from "./orm";
@@ -56,4 +57,8 @@ export function setupEndpoints(router: Express, orm: Orm) {
     router.get('/api/v1/wine-types', wineTypeHandlers.getWineTypes());
     router.delete('/api/v1/wine-types/:id', wineTypeHandlers.deleteWineTypeById());
 
+    app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+        console.error('Unhandled error:', err);
+        res.status(503).json({ error: 'Service temporarily unavailable' });
+    })
 }
