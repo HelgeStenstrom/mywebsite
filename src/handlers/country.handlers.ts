@@ -54,7 +54,7 @@ export class CountryHandlers {
 
             switch (result) {
                 case 'deleted':
-                    return res.status(204).json("Country successfully deleted");
+                    return res.status(204).send();
                 case 'not_found':
                     return res.status(404).json({error: 'Country not found'});
                 case 'in_use':
