@@ -16,7 +16,7 @@ import {MemberRepository} from "./orm/repositories/member.repository";
 import {WineTypeRepository} from "./orm/repositories/wine-type.repository";
 import {WineRepository} from "./orm/repositories/wine.repository";
 import {defineWineTastingHost} from "./orm/models/wine-tasting-host.model";
-import {WineTastingHostInstance, WineTastingInstance} from "./types/wine-tasting";
+import {WineTastingHostInstance, WineTastingInstance, WineTastingWineInstance} from "./types/wine-tasting";
 import {MemberInstance} from "./types/member";
 
 export class Orm {
@@ -29,6 +29,7 @@ export class Orm {
     readonly members: MemberRepository;
     readonly wineTypes: WineTypeRepository;
     readonly wines: WineRepository;
+    //readonly tastingWines: WineTastingWineRepository;
 
 
 
@@ -114,5 +115,19 @@ export function connectTastingAndTastingHost(
         as: 'member' //
     });
 
+}
+
+
+export function connectTastingAndTastingWine(
+    tasting: ModelStatic<WineTastingInstance>,
+    wineTastingWine: ModelStatic<WineTastingWineInstance>) {
+    tasting.hasMany(wineTastingWine, {
+        foreignKey: 'wine_tasting_id',
+        as: 'wineTastingWines'
+    });
+    wineTastingWine.belongsTo(tasting, {
+        foreignKey: 'wine_tasting_id',
+        as: 'wineTasting'
+    });
 }
 

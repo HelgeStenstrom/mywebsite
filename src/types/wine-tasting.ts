@@ -21,12 +21,7 @@ export type WineTastingHostDto = {
     name?: string;
 }
 
-export type WineTastingWineDto = {
-    wineId: number;
-    purchasePrice?: number;
-    currency?: string;
-    order?: number;
-}
+
 
 interface WineTastingAttributes {
     id: number;
@@ -34,7 +29,6 @@ interface WineTastingAttributes {
     notes: string;
     tastingDate: Date;
 }
-
 
 interface WineTastingHostAttributes {
     wineTastingId: number;
@@ -44,6 +38,35 @@ interface WineTastingHostAttributes {
 export interface WineTastingHostInstance
     extends Model<WineTastingHostAttributes>, WineTastingHostAttributes {}
 
+
 export interface WineTastingInstance extends Model<WineTastingAttributes>, WineTastingAttributes {
     wineTastingHosts?: WineTastingHostInstance[];
+    wineTastingWines?: WineTastingWineInstance[];
 }
+
+
+export type WineTastingWineDto = {
+    id:number;
+    wineId: number;
+    position: number;
+    purchasePrice?: number | null;
+    averageScore?: number | null;
+}
+
+export type WineTastingWineCreateDto = {
+    wineId: number;
+    position: number;
+    purchasePrice?: number | null;
+}
+
+interface WineTastingWineAttributes {
+    id: number;
+    wineTastingId: number;
+    wineId: number;
+    position: number;
+    purchasePrice?: number | null;
+    averageScore?: number | null;
+}
+
+export interface WineTastingWineInstance
+    extends Model<WineTastingWineAttributes>, WineTastingWineAttributes {}
