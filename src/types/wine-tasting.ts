@@ -5,7 +5,15 @@ export type WineTastingDto = {
     title: string;
     notes: string;
     tastingDate: Date;
+    hosts: WineTastingHostDto[];
+    wines: WineTastingWineDto[];
+}
 
+export type WineTastingSummaryDto = {
+    id: number;
+    title: string;
+    notes: string;
+    tastingDate: Date;
     hosts: WineTastingHostDto[];
 }
 

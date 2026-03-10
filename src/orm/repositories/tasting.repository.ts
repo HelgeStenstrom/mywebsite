@@ -2,7 +2,9 @@ import {
     WineTastingCreateDto,
     WineTastingDto,
     WineTastingHostInstance,
-    WineTastingInstance
+    WineTastingInstance,
+    WineTastingSummaryDto,
+    WineTastingWineInstance
 } from "../../types/wine-tasting";
 import {ModelStatic} from "sequelize";
 import {BadRequestError} from "../../errors/bad-request-error";
@@ -13,6 +15,7 @@ export class TastingRepository {
         private readonly Tasting: ModelStatic<WineTastingInstance>,
         private readonly TastingHost: ModelStatic<WineTastingHostInstance>,
         private readonly Member: ModelStatic<MemberInstance>,
+        private readonly WineTastingWine: ModelStatic<WineTastingWineInstance>,
         ) {}
 
     async create(t: WineTastingCreateDto): Promise<WineTastingDto> {
@@ -38,7 +41,7 @@ export class TastingRepository {
         return this.toTastingDto(created);
     }
 
-    private toTastingDto(t: WineTastingInstance): WineTastingDto {
+    private toTastingSummaryDto(t: WineTastingInstance): WineTastingSummaryDto {
         return {
             id: t.id,
             title: t.title,
@@ -50,7 +53,28 @@ export class TastingRepository {
         };
     }
 
-    async findAll(): Promise<WineTastingDto[]> {
+    private toTastingDto(t: WineTastingInstance): WineTastingDto {
+        return {
+            id: t.id,
+            title: t.title,
+            notes: t.notes,
+            tastingDate: t.tastingDate,
+            hosts: (t.wineTastingHosts ?? [])
+                .map(h => ({
+                    memberId: h.memberId,
+                })),
+            wines: (t.wineTastingWines ?? [])
+                .map(w => ({
+                    id: w.id,
+                    wineId: w.wineId,
+                    position: w.position,
+                    purchasePrice: w.purchasePrice ?? null,
+                    averageScore: w.averageScore ?? null,
+                }))
+        };
+    }
+
+    async findAll(): Promise<WineTastingSummaryDto[]> {
         const tastings = await this.Tasting.findAll(
             {
                 include: [{
@@ -61,17 +85,22 @@ export class TastingRepository {
                 ]
             }
         );
-        return tastings.map(t => this.toTastingDto(t));
+        return tastings.map(t => this.toTastingSummaryDto(t));
     }
 
     async findById(id: number): Promise<WineTastingDto | null> {
         const tasting = await this.Tasting.findByPk(id,
             {
-                include: [{
-                    model: this.TastingHost,
-                    as: 'wineTastingHosts',
-                    include: [{model: this.Member, as: 'member'}]
-                }
+                include: [
+                    {
+                        model: this.TastingHost,
+                        as: 'wineTastingHosts',
+                        include: [{model: this.Member, as: 'member'}]
+                    },
+                    {
+                        model: this.WineTastingWine,
+                        as: 'wineTastingWines',
+                    }
                 ]
             }
         );
