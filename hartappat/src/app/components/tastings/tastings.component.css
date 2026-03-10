@@ -1,3 +1,9 @@
+:host {
+  display: block;
+  background-color: #f0e0e0;
+}
+
+
 .bordered td {
   border: #006600 solid;
   padding: 5px;
