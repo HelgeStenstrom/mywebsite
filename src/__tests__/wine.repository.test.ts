@@ -6,7 +6,10 @@ import {WineTypeInstance} from "../types/wine-type";
 import {defineWine} from "../orm/models/wine.model";
 import {defineCountry} from "../orm/models/country.model";
 import {defineWineType} from "../orm/models/wine-type.model";
-import {connectWineAndCountry, connectWineAndWineType} from "../orm";
+import {connectWineAndCountry, connectWineAndWineTastingWine, connectWineAndWineType} from "../orm";
+import {defineTasting} from "../orm/models/tasting.model";
+import {defineWineTastingWine} from "../orm/models/wine-tasting-wine.model";
+import {WineTastingInstance, WineTastingWineInstance} from "../types/wine-tasting";
 
 describe('WineRepository', () => {
     let sequelize: Sequelize;
@@ -14,6 +17,8 @@ describe('WineRepository', () => {
     let wineDefinition: ModelStatic<WineInstance>;
     let countryDefinition: ModelStatic<CountryInstance>;
     let wineTypeDefinition: ModelStatic<WineTypeInstance>;
+    let wineTastingWineDefinition: ModelStatic<WineTastingWineInstance>;
+    let tastingDefinition: ModelStatic<WineTastingInstance>;
 
     beforeEach(async () => {
         sequelize = new Sequelize('test', 'test', 'test', {dialect: "sqlite" ,  logging: false });
@@ -21,13 +26,16 @@ describe('WineRepository', () => {
         wineDefinition = defineWine(sequelize);
         countryDefinition = defineCountry(sequelize);
         wineTypeDefinition = defineWineType(sequelize);
+        wineTastingWineDefinition = defineWineTastingWine(sequelize);
+        tastingDefinition = defineTasting(sequelize);
 
         connectWineAndWineType(wineDefinition, wineTypeDefinition);
         connectWineAndCountry(wineDefinition, countryDefinition);
+        connectWineAndWineTastingWine(wineDefinition, wineTastingWineDefinition);
 
         await sequelize.sync({force: true})
 
-        wineRepository = new WineRepository(wineDefinition, countryDefinition, wineTypeDefinition);
+        wineRepository = new WineRepository(wineDefinition, countryDefinition, wineTypeDefinition, wineTastingWineDefinition,);
     })
 
     afterEach(async () => {
@@ -62,7 +70,8 @@ describe('WineRepository', () => {
                 id: 1,
                 name: "Sverige",
             },
-            volume: 0
+            volume: 0,
+            isUsed: false,
         };
         expect(created).toEqual(expected)
     });
@@ -116,6 +125,33 @@ describe('WineRepository', () => {
 
         expect(created.vintageYear).toBeNull();
         expect(created.isNonVintage).toEqual(false);
+    });
+
+    test('delete returns in_use when wine is used in a tasting', async () => {
+
+        const country = await countryDefinition.create({name: 'Frankrike'});
+        const wineType = await wineTypeDefinition.create({name: 'Rött'});
+        const wine = await wineDefinition.create({
+            name: 'Testvin',
+            countryId: country.id,
+            wineTypeId: wineType.id,
+            isNonVintage: false,
+        });
+
+        const tasting = await tastingDefinition.create({
+            title: 'Test provning',
+            notes: 'Noter',
+            tastingDate: new Date('2024-01-15'),
+        });
+
+        await wineTastingWineDefinition.create({
+            wineTastingId: tasting.id,
+            wineId: wine.id,
+            position: 1,
+        });
+
+        const result = await wineRepository.delete(wine.id);
+        expect(result).toBe('in_use');
     });
 
     }

@@ -13,6 +13,7 @@ export type WineDto = {
     systembolaget: number | null;
     volume: number | null;
     createdAt: Date; // TODO: bör det kunna vara null?
+    isUsed: boolean;
 };
 
 export type WineCreateDto = {
@@ -28,6 +29,7 @@ export type WineCreateDto = {
 interface WineAssociations {
     winetypeModel?: WineTypeDto;
     countryModel?: CountryDto;
+    wineTastingWines?: { id: number }[];
 }
 
 /**
@@ -49,3 +51,7 @@ interface WineAttributes {
  * Used for Sequelize
  */
 export interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
+
+export interface WineWithTasting extends WineInstance {
+    wineTastingWines?: { id: number }[];
+}

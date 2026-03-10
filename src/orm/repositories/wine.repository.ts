@@ -2,6 +2,7 @@ import {ModelStatic} from "sequelize";
 import {WineCreateDto, WineDto, WineInstance} from "../../types/wine";
 import {CountryInstance} from "../../types/country";
 import {WineTypeInstance} from "../../types/wine-type";
+import {WineTastingWineInstance} from "../../types/wine-tasting";
 
 export class WineRepository {
 
@@ -9,6 +10,7 @@ export class WineRepository {
         private readonly Wine: ModelStatic<WineInstance>,
         private readonly Country: ModelStatic<CountryInstance>,
         private readonly WineType: ModelStatic<WineTypeInstance>,
+        private readonly WineTastingWine: ModelStatic<WineTastingWineInstance>,
     ) {}
 
 
@@ -60,6 +62,12 @@ export class WineRepository {
                         as: 'countryModel',
                         attributes: ['id', 'name'],
                         required: true
+                    },
+                    {
+                        model: this.WineTastingWine,
+                        as: 'wineTastingWines',
+                        attributes: ['id'],
+                        required: false
                     }
                 ]
             }
@@ -78,13 +86,32 @@ export class WineRepository {
             createdAt: w.createdAt,
             wineType: w.winetypeModel ?? { id: 0, name: '', isUsed: false },
             country: w.countryModel ?? { id: 0, name: '', isUsed: false },
+            isUsed: (w.wineTastingWines?.length ?? 0) > 0,
         };
     }
 
 
     async delete(id: number) {
-        return this.Wine.destroy({
+        const wine = await this.Wine.findByPk(id, {
+            include: [{
+                model: this.WineTastingWine,
+                as: 'wineTastingWines',
+                attributes: ['id'],
+                required: false
+            }]
+        });
+
+        if (!wine) {
+            return 'not_found';
+        }
+
+        if ((wine.wineTastingWines?.length ?? 0) > 0) {
+            return 'in_use';
+        }
+
+        await this.Wine.destroy({
             where: {id: id}
         });
+        return 'deleted';
     }
 }

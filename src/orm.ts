@@ -52,13 +52,14 @@ export class Orm {
         connectWineAndWineType(wine, wineType);
         connectTastingAndTastingHost(tasting, member, tastingHost);
         connectTastingAndTastingWine(tasting, wineTastingWine);
+        connectWineAndWineTastingWine(wine, wineTastingWine);
 
         this.grapes = new GrapeRepository(grape);
         this.tastings = new TastingRepository(tasting, tastingHost, member, wineTastingWine);
         this.countries = new CountryRepository(country, wine);
         this.members = new MemberRepository(member);
         this.wineTypes = new WineTypeRepository(wineType, wine);
-        this.wines = new WineRepository(wine, country, wineType);
+        this.wines = new WineRepository(wine, country, wineType, wineTastingWine);
         this.tastingWines = new WineTastingWineRepository(wineTastingWine)
     }
 
@@ -136,3 +137,16 @@ export function connectTastingAndTastingWine(
     });
 }
 
+export function connectWineAndWineTastingWine(
+    wine: ModelStatic<WineInstance>,
+    wineTastingWine: ModelStatic<WineTastingWineInstance>
+) {
+    wine.hasMany(wineTastingWine, {
+        foreignKey: 'wine_id',
+        as: 'wineTastingWines'
+    });
+    wineTastingWine.belongsTo(wine, {
+        foreignKey: 'wine_id',
+        as: 'wine'
+    });
+}
