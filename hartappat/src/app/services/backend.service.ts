@@ -110,6 +110,7 @@ export class BackendService {
       vintage: wine.isNonVintage
         ? 'NV'
         : maybeVintage,
+      isUsed: wine.isUsed,
     };
   }
 
@@ -185,6 +186,7 @@ export type WineView = {
   volume?: number;
   createdAt?: string;
   vintage?: string;
+  isUsed: boolean;
 };
 
 export type WineCreate = {
@@ -213,6 +215,7 @@ export type WineApi = {
   createdAt?: string;
   vintageYear: number | null;
   isNonVintage: boolean;
+  isUsed: boolean;
 };
 
 export type CountryApi = {
