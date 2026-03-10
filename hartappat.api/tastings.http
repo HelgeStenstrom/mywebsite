@@ -19,3 +19,7 @@ Content-Type: application/json
   "notes": "Denna text kan vara lång",
   "tastingDate": "2026-04-30"
 }
+
+### Get wines of one existing tasting by ID
+GET  {{baseUrl}}/tastings/1/wines
+Accept: application/json
