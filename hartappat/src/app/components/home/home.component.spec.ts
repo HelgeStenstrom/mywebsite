@@ -36,6 +36,11 @@ describe('HomeComponent', () => {
 class MockAboutComponent {
 }
 
+
+/**
+ * TODO: ta bort detta, eftersom komponenten vinprovning inte längre finns.
+ */
+
 @Component({
   selector: 'app-vinprovning',
   template: ''

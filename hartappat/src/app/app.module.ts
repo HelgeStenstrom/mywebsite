@@ -8,7 +8,6 @@ import {RouterModule} from "@angular/router";
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 
 import {AppComponent} from './app.component';
-import {VinprovningComponent} from './components/vinprovning/vinprovning.component';
 import {DruvorComponent} from './components/druvor/druvor.component';
 import {AddGrapeComponent} from './components/druvor/add-grape/add-grape.component';
 import {HomeComponent} from './components/home/home.component';
@@ -40,7 +39,6 @@ import {WineTypesComponent} from './components/wine-types/wine-types.component';
 @NgModule({
   declarations: [
     AppComponent,
-    VinprovningComponent,
     DruvorComponent,
     AddGrapeComponent,
     HomeComponent,
