@@ -168,6 +168,12 @@ export class BackendService {
     const url = `${this.apiBase}/wine-types`;
     return this.http.post<WineTypeApi>(url, {name});
   }
+
+  getTastingWines(tastingId: number): Observable<WineTastingWine[]> {
+    const url = `${this.apiBase}/tastings/${tastingId}/wines`;
+
+    return this.http.get<WineTastingWine[]>(url).pipe(catchError(this.handleError));
+  }
 }
 
 export type WineView = {
@@ -245,3 +251,17 @@ export type Member = {
   given: string;
   surname: string;
 }
+
+export type WineTastingWine = {
+  id: number;
+  wineId: number;
+  position: number;
+  purchasePrice?: number | null;
+  averageScore?: number | null;
+};
+
+export type WineTastingWineCreate = {
+  wineId: number;
+  position: number;
+  purchasePrice?: number | null;
+};
