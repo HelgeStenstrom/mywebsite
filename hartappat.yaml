@@ -210,7 +210,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/WineTasting'
+                  $ref: '#/components/schemas/WineTastingSummary'
 
     post:
       summary: Create a new tasting
@@ -461,6 +461,30 @@ components:
           type: string
           example: Stenström
 
+    WineTastingSummary:
+      type: object
+      required: [ id, title, notes, tastingDate]
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: 'Röda viner från Danmark'
+        notes:
+          type: string
+          example: 'Vi provade viner som vi drack i somras.'
+        tastingDate:
+          type: string
+          format: date
+          description: The date the tasting was taking place. In ISO notation.
+          example: 2023-01-06
+        wineTastingHosts:
+          type: array
+          items:
+            $ref: '#/components/schemas/WineTastingHost'
+
+
     WineTasting:
       type: object
       required: [ id, title, notes, tastingDate]
@@ -473,7 +497,7 @@ components:
           example: 'Röda viner från Danmark'
         notes:
           type: string
-          example: 'Vi provade viner som vi drack i somras. Det var jättetrevligt. Jag skriver mer senare.'
+          example: 'Vi provade viner som vi drack i somras.'
         tastingDate:
           type: string
           format: date
@@ -483,6 +507,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WineTastingHost'
+        wines:
+          type: array
+          items:
+            $ref: '#/components/schemas/WineTastingWine'
 
 
     WineTastingCreate:
