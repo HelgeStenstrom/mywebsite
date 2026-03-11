@@ -38,4 +38,38 @@ describe('Wine handlers test', () => {
                 .expect(expectedStatus);
         });
 
+    test('GET /wines/:id returns the wine', async () => {
+        const country = await request(app)
+            .post('/api/v1/countries')
+            .send({ name: 'Sverige' })
+            .expect(201);
+
+        const wineType = await request(app)
+            .post('/api/v1/wine-types')
+            .send({ name: 'rött' })
+            .expect(201);
+
+        const created = await request(app)
+            .post('/api/v1/wines')
+            .send({
+                name: 'Testvin',
+                countryId: country.body.id,
+                wineTypeId: wineType.body.id,
+                isNonVintage: false,
+            })
+            .expect(201);
+
+        const found = await request(app)
+            .get(`/api/v1/wines/${created.body.id}`)
+            .expect(200);
+
+        expect(found.body).toEqual(created.body);
+    });
+
+    test('GET /wines/:id returns 404 when not found', async () => {
+        await request(app)
+            .get('/api/v1/wines/99999')
+            .expect(404);
+    });
+
 });

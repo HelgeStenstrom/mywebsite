@@ -63,4 +63,16 @@ export class WineHandlers {
     }
 
 
+    getWineById(): (req, res) => Promise<void> {
+        return async (req, res) => {
+            const id = Number(req.params.id);
+
+            const wine = await this.orm.wines.findById(id);
+            if (!wine) {
+                res.status(404).json({ message: `Wine with id ${id} not found` });
+                return;
+            }
+            res.status(200).json(wine);
+        }
+    }
 }

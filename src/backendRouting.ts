@@ -52,11 +52,12 @@ export function setupEndpoints(router: Express, orm: Orm) {
     router.get('/api/v1/tastings/', tastingHandlers.getTastings());
     router.post('/api/v1/tastings/', tastingHandlers.postTasting());
 
+    router.delete('/api/v1/wines/:id', wineHandlers.deleteWineById());
+    router.get('/api/v1/wines/:id', wineHandlers.getWineById());
 
     router.get('/api/v1/wines', wineHandlers.getWines());
-    router.post('/api/v1/wines', wineHandlers.postWine());
 
-    router.delete('/api/v1/wines/:id', wineHandlers.deleteWineById());
+    router.post('/api/v1/wines', wineHandlers.postWine());
 
     router.post('/api/v1/wine-types', wineTypeHandlers.postWineType());
     router.get('/api/v1/wine-types', wineTypeHandlers.getWineTypes());

@@ -58,7 +58,10 @@ export class WineRepository {
                 {
                     model: this.WineType,
                     as: 'winetypeModel',
-                }
+                },
+
+                { model: this.WineTastingWine,
+                    as: 'wineTastingWines' },
             ]
         });
         if (!withIncludes) {
