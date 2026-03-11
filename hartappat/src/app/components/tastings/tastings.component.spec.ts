@@ -17,6 +17,9 @@ describe('TastingsComponent', () => {
         {id:2,  title: 'a title', notes: 'some notes', tastingDate: new Date('2026-03-04')},
         {id:3,  title: 'a title', notes: 'some notes', tastingDate: new Date('2026-03-06')},
       ]);
+    },
+    getTasting(id: number): Observable<WineTasting> {  // lägg till denna
+      return of({ id, title: 'a title', notes: 'some notes', tastingDate: new Date('2026-03-05') });
     }
   };
 
@@ -50,4 +53,3 @@ describe('TastingsComponent', () => {
 
 });
 
-// class MockBackendService

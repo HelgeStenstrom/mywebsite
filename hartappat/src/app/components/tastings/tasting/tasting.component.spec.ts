@@ -2,6 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TastingComponent} from './tasting.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {WineTasting} from "../../../services/backend.service";
 
 describe('TastingComponent', () => {
   let component: TastingComponent;
@@ -16,6 +17,7 @@ describe('TastingComponent', () => {
 
     fixture = TestBed.createComponent(TastingComponent);
     component = fixture.componentInstance;
+    component.tasting = { id: 1 } as WineTasting;
     fixture.detectChanges();
   });
 
