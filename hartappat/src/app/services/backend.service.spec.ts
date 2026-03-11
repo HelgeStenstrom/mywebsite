@@ -144,6 +144,29 @@ describe('BackendService', () => {
       req.flush([aWineApi]);
     });
 
+    it('should fetch a wine by id', done => {
+      const mockWine: WineApi = {
+        id: 42,
+        name: 'Château Margaux',
+        country: { id: 1, name: 'France' },
+        wineType: { id: 1, name: 'Red' },
+        vintageYear: 2018,
+        isNonVintage: false,
+        isUsed: false
+      };
+
+      backendService.getWine(42)
+        .subscribe(wine => {
+          expect(wine).toEqual(mockWine);
+          done();
+        });
+
+      const req = httpTestingController.expectOne(`${url}/42`);
+      expect(req.request.method).toBe('GET');
+      req.flush(mockWine);
+
+    })
+
     it('adds a Wine', done => {
       // Värdet nedan är ändrat för att kompilatorn ska godkänna typen, men testet har inte körts efter det.
       const aWine: WineCreate = {name: 'N', countryId: 2, wineTypeId: 3, systembolaget: 1234, volume: 750};

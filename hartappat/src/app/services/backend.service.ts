@@ -85,6 +85,10 @@ export class BackendService {
       .pipe(catchError(this.handleError));
   }
 
+  getWine(id: number): Observable<WineApi> {
+   return this.http.get<WineApi>(`${this.apiBase}/wines/${id}`);
+  }
+
   getWines(): Observable<WineView[]> {
     const url: string = this.apiBase + '/wines';
     return this.http.get<WineApi[]>(url).pipe(
