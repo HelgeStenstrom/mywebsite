@@ -78,6 +78,8 @@ import {CreateTastingComponent} from './components/tastings/create-tasting/creat
       {path: 'resor', component: TravelsComponent},
       {path: 'about', component: AboutComponent},
       {path: 'voting', component: VotingComponent},
+      {path: 'tastings/new', component: CreateTastingComponent},
+      {path: 'tastings/:id', component: TastingComponent},
       {path: 'tastings', component: TastingsComponent},
       {path: 'countries', component: CountriesComponent},
       {path: 'wine-types', component: WineTypesComponent},

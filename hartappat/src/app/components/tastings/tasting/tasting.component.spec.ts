@@ -3,6 +3,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TastingComponent} from './tasting.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {WineTasting} from "../../../services/backend.service";
+import {RouterTestingModule} from "@angular/router/testing";
 
 describe('TastingComponent', () => {
   let component: TastingComponent;
@@ -11,7 +12,7 @@ describe('TastingComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [TastingComponent],
-      imports: [HttpClientTestingModule]
+      imports: [HttpClientTestingModule, RouterTestingModule]
     })
       .compileComponents();
 

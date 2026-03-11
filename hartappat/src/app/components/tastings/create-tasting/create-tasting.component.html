@@ -1,1 +1,27 @@
-<p>create-tasting works!</p>
+<p>create-tasting works! CreateTastingComponent</p>
+
+
+<form [formGroup]="tastingForm">
+  <mat-form-field appearance="fill">
+    <mat-label>Titel</mat-label>
+    <input formControlName="title" type="text" matInput placeholder="Ex. Höstprovning 2024">
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Anteckningar</mat-label>
+    <textarea formControlName="notes" matInput rows="3"></textarea>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Datum</mat-label>
+    <input formControlName="tastingDate" type="date" matInput>
+  </mat-form-field>
+
+  <button mat-raised-button
+          type="submit"
+          color="primary"
+          [disabled]="!tastingForm.valid"
+          (click)="createTasting()"
+  >Skapa provning
+  </button>
+</form>

@@ -197,6 +197,12 @@ export class BackendService {
 
     return this.http.get<WineTastingWine[]>(url).pipe(catchError(this.handleError));
   }
+
+  createTasting(tasting: WineTastingCreate): Observable<WineTasting> {
+    const url = `${this.apiBase}/tastings`;
+    return this.http.post<WineTasting>(url, tasting).pipe(catchError(this.handleError));
+  }
+
 }
 
 export type WineView = {
@@ -256,6 +262,12 @@ export type Grape = {
   id: number;
   name: string;
   color: string;
+};
+
+export type WineTastingCreate = {
+  title: string;
+  notes?: string;
+  tastingDate: string;
 };
 
 export type WineTastingApi = {
