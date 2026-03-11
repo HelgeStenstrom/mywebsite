@@ -143,7 +143,7 @@ export class BackendService {
       );
   }
 
-  getTastings(): Observable<WineTasting[]> {
+  getTastings(): Observable<WineTastingSummary[]> {
 
     const url = `${this.apiBase}/tastings`;
 
@@ -154,8 +154,26 @@ export class BackendService {
           title: t.title,
           notes: t.notes,
           tastingDate: new Date(t.tastingDate),
+          hosts: t.hosts,
         }))
       )
+    );
+
+  }
+
+  getTasting(id: number): Observable<WineTasting> {
+
+    const url =  `${this.apiBase}/tastings/${id}`;
+
+    return this.http.get<WineTastingApi>(url).pipe(
+      map(t => ({
+          id: t.id,
+          title: t.title,
+          notes: t.notes,
+          tastingDate: new Date(t.tastingDate),
+          hosts: t.hosts,
+          wines: t.wines,
+        }))
     );
 
   }
@@ -241,13 +259,31 @@ export type WineTastingApi = {
   title: string;
   notes?: string;
   tastingDate: string;
+  hosts?: WineTastingHost[];
+  wines?: WineTastingWine[];
 }
+
+export type WineTastingSummary = {
+  id: number;
+  title: string;
+  notes?: string;
+  tastingDate: Date;
+  hosts?: WineTastingHost[];
+};
+
 
 export type WineTasting = {
   id: number;
   title: string;
   notes?: string;
   tastingDate: Date;
+  hosts?: WineTastingHost[];
+  wines?: WineTastingWine[];
+};
+
+export type WineTastingHost = {
+  memberId: number;
+  name?: string;
 };
 
 export type Member = {

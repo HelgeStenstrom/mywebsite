@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService, WineTasting} from "../../services/backend.service";
+import {BackendService, WineTastingSummary} from "../../services/backend.service";
 import {Observable, of} from "rxjs";
 
 @Component({
@@ -9,9 +9,9 @@ import {Observable, of} from "rxjs";
 })
 export class TastingsComponent implements OnInit {
 
-  tastings$: Observable<WineTasting[]> = of([]);
+  tastings$: Observable<WineTastingSummary[]> = of([]);
 
-  constructor(private service: BackendService) { }
+  constructor(private readonly service: BackendService) { }
 
   ngOnInit(): void {
 

@@ -2,3 +2,8 @@
   display: block;
   background-color: #f0e6ff;
 }
+
+.bordered td {
+  border: #006600 solid;
+  padding: 5px;
+}

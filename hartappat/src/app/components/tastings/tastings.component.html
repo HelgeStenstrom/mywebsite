@@ -27,6 +27,9 @@
          Parametrisera den med t: Tasting -->
     <h3>{{t.title}}</h3>
     <div>{{t.notes}}</div>
-    <app-tasting data-test="tasting"></app-tasting>
+    <app-tasting
+      [tasting]="t"
+      data-test="tasting"
+    ></app-tasting>
   </div>
 </div>

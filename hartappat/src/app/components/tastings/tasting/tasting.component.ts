@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {BackendService, WineTasting, WineTastingWine} from "../../../services/backend.service";
+import {BackendService, WineTasting} from "../../../services/backend.service";
 import {Observable} from "rxjs";
 
 @Component({
@@ -10,13 +10,13 @@ import {Observable} from "rxjs";
 export class TastingComponent implements OnInit {
 
   @Input() tasting!: WineTasting;
-  wines$!: Observable<WineTastingWine[]>;
+  fullTasting$!: Observable<WineTasting>;
 
 
   constructor(private readonly service: BackendService) {}
 
     ngOnInit(): void {
-     //this.wines$ = this.service.getTastingWines(this.tasting.id);
+    this.fullTasting$ = this.service.getTasting(this.tasting.id);
     }
 
 

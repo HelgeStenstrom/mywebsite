@@ -104,6 +104,7 @@ describe('BackendService', () => {
   describe('Wines', () => {
 
     const aWine: WineView = {
+      isUsed: false,
       id: 4711,
       name: 'N',
       country: 'Country',
@@ -112,6 +113,7 @@ describe('BackendService', () => {
       volume: 750
     };
     const aWineApi: WineApi = {
+      isUsed: false,
       id: 4711,
       name: 'N',
       country: {id: 1, name: 'Country'},

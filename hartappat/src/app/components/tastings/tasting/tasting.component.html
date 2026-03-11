@@ -1,1 +1,34 @@
-<p>tasting works!</p>
+<p>TastingComponent</p>
+
+<div *ngIf="fullTasting$ | async as tasting ">
+  <p><strong>ID:</strong> {{ tasting.id }}</p>
+  <p><strong>Datum:</strong> {{ tasting.tastingDate| date:'yyyy-MM-dd' }}</p>
+  <p><strong>Titel:</strong> {{ tasting.title }}</p>
+  <p><strong>Noter:</strong> {{ tasting.notes }}</p>
+
+  <p><strong>Värdar:</strong></p>
+  <ul>
+    <li *ngFor="let h  of tasting.hosts">
+      Medlem ID: {{ h.memberId }}
+    </li>
+  </ul>
+
+  <p><strong>Viner:</strong></p>
+  <table class="bordered">
+    <tr>
+      <th>Position</th>
+      <th>Vin ID</th>
+      <th>Pris</th>
+      <th>Medelbetyg</th>
+    </tr>
+
+    <tr *ngFor="let w of tasting.wines">
+      <td>{{ w.position }}</td>
+      <td>{{ w.wineId }}</td>
+      <td>{{ w.purchasePrice }}</td>
+      <td>{{ w.averageScore }}</td>
+    </tr>
+
+  </table>
+
+</div>
