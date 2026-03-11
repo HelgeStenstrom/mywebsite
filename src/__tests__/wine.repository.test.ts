@@ -20,23 +20,23 @@ describe('WineRepository', () => {
     let wineTastingWineDefinition: ModelStatic<WineTastingWineInstance>;
     let tastingDefinition: ModelStatic<WineTastingInstance>;
 
-    beforeEach(async () => {
-        sequelize = new Sequelize('test', 'test', 'test', {dialect: "sqlite" ,  logging: false });
+        beforeEach(async () => {
+            sequelize = new Sequelize('test', 'test', 'test', {dialect: "sqlite", logging: false});
 
-        wineDefinition = defineWine(sequelize);
-        countryDefinition = defineCountry(sequelize);
-        wineTypeDefinition = defineWineType(sequelize);
-        wineTastingWineDefinition = defineWineTastingWine(sequelize);
-        tastingDefinition = defineTasting(sequelize);
+            wineDefinition = defineWine(sequelize);
+            countryDefinition = defineCountry(sequelize);
+            wineTypeDefinition = defineWineType(sequelize);
+            wineTastingWineDefinition = defineWineTastingWine(sequelize);
+            tastingDefinition = defineTasting(sequelize);
 
-        connectWineAndWineType(wineDefinition, wineTypeDefinition);
-        connectWineAndCountry(wineDefinition, countryDefinition);
-        connectWineAndWineTastingWine(wineDefinition, wineTastingWineDefinition);
+            connectWineAndWineType(wineDefinition, wineTypeDefinition);
+            connectWineAndCountry(wineDefinition, countryDefinition);
+            connectWineAndWineTastingWine(wineDefinition, wineTastingWineDefinition);
 
-        await sequelize.sync({force: true})
+            await sequelize.sync({force: true})
 
-        wineRepository = new WineRepository(wineDefinition, countryDefinition, wineTypeDefinition, wineTastingWineDefinition,);
-    })
+            wineRepository = new WineRepository(wineDefinition, countryDefinition, wineTypeDefinition, wineTastingWineDefinition,);
+        });
 
     afterEach(async () => {
         await sequelize.close();
@@ -153,6 +153,39 @@ describe('WineRepository', () => {
         const result = await wineRepository.delete(wine.id);
         expect(result).toBe('in_use');
     });
+
+    test('find wine by id', async () =>{
+        const country = await countryDefinition.create({name: "Sverige"});
+        const wineType = await wineTypeDefinition.create({id: 1, name: "rött"});
+
+        const toCreate: WineCreateDto = {
+            name: 'Testvin',
+            countryId: country.id,
+            wineTypeId: wineType.id,
+            isNonVintage: false,
+        };
+
+        const created = await wineRepository.create(toCreate);
+
+        const id = created.id;
+
+        const found: WineDto = await wineRepository.findById(id);
+
+        expect(found).toEqual({
+            id:1,
+            name: 'Testvin',
+            country: {id:1,name: "Sverige"},
+            wineType: {id:1, name: "rött"},
+            createdAt: null,
+            isUsed: false,
+            isNonVintage: false,
+            systembolaget: null,
+            vintageYear: null,
+            volume: null,
+        });
+
+
+    })
 
     }
 )

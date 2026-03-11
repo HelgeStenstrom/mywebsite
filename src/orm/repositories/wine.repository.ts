@@ -47,6 +47,27 @@ export class WineRepository {
         return this.toWineDto(plain as WineInstance);
     }
 
+    async findById(id: number): Promise<WineDto | null> {
+
+        const withIncludes = await this.Wine.findByPk(id, {
+            include: [
+                {
+                    model: this.Country,
+                    as: 'countryModel',
+                },
+                {
+                    model: this.WineType,
+                    as: 'winetypeModel',
+                }
+            ]
+        });
+        if (!withIncludes) {
+            return null;
+        }
+        const plain = withIncludes.get({ plain: true });
+        return this.toWineDto(plain as WineInstance);
+    }
+
     async findAll(): Promise<WineDto[]> {
         const wines = await this.Wine.findAll(
             {
@@ -75,6 +96,7 @@ export class WineRepository {
         return wines.map(this.toWineDto);
     }
 
+
     private toWineDto(w: WineInstance): WineDto {
         return {
             id: w.id,
@@ -89,7 +111,6 @@ export class WineRepository {
             isUsed: (w.wineTastingWines?.length ?? 0) > 0,
         };
     }
-
 
     async delete(id: number) {
         const wine = await this.Wine.findByPk(id, {
