@@ -35,6 +35,7 @@ import {WineEntryComponent} from './components/wine-entry/wine-entry.component';
 import {ExtraHeaderInterceptor} from "./services/interceptors/extra-header-interceptor";
 import {CountriesComponent} from './components/countries/countries.component';
 import {WineTypesComponent} from './components/wine-types/wine-types.component';
+import {CreateTastingComponent} from './components/tastings/create-tasting/create-tasting.component';
 
 @NgModule({
   declarations: [
@@ -59,7 +60,8 @@ import {WineTypesComponent} from './components/wine-types/wine-types.component';
     VotingComponent,
     WineEntryComponent,
     CountriesComponent,
-    WineTypesComponent
+    WineTypesComponent,
+    CreateTastingComponent
   ],
   imports: [
     BrowserModule,
