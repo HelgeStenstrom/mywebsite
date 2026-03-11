@@ -28,6 +28,7 @@ export class WineTastingWineHandlers {
             }
 
             const data: WineTastingWineCreateDto = req.body;
+            console.log(data);
             const created = await this.orm.tastingWines.create(tastingId, data);
             res.status(201).json(created);
         };    }

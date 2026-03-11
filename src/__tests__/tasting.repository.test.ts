@@ -4,14 +4,16 @@ import {TastingRepository} from '../orm/repositories/tasting.repository';
 import {defineWineTastingHost} from "../orm/models/wine-tasting-host.model";
 import {defineMember} from "../orm/models/member.model";
 import {connectTastingAndTastingHost} from "../orm";
-import {WineTastingHostInstance, WineTastingInstance} from "../types/wine-tasting";
+import {WineTastingHostInstance, WineTastingInstance, WineTastingWineInstance} from "../types/wine-tasting";
 import {MemberInstance} from "../types/member";
+import {defineWineTastingWine} from "../orm/models/wine-tasting-wine.model";
 
 describe('TastingRepository', () => {
     let sequelize: Sequelize;
     let tastingRepository: TastingRepository;
     let wineTastingDefinition:  ModelStatic<WineTastingInstance>;
     let wineTastingHostDefinition:  ModelStatic<WineTastingHostInstance>;
+    let wineTastingWineDefinition:  ModelStatic<WineTastingWineInstance>;
     let memberDefinition:  ModelStatic<MemberInstance>;
 
     beforeEach(async () => {
@@ -20,13 +22,18 @@ describe('TastingRepository', () => {
         wineTastingDefinition = defineTasting(sequelize);
         wineTastingHostDefinition = defineWineTastingHost(sequelize);
         memberDefinition = defineMember(sequelize);
+        wineTastingWineDefinition = defineWineTastingWine(sequelize);
 
         connectTastingAndTastingHost(wineTastingDefinition, memberDefinition, wineTastingHostDefinition,);
 
 
         await sequelize.sync({ force: true });
 
-        tastingRepository = new TastingRepository(wineTastingDefinition, wineTastingHostDefinition, memberDefinition);
+        tastingRepository = new TastingRepository(
+            wineTastingDefinition,
+            wineTastingHostDefinition,
+            memberDefinition,
+            wineTastingWineDefinition);
 
     });
 
@@ -34,7 +41,7 @@ describe('TastingRepository', () => {
         await sequelize.close();
     });
 
-    it('returns WineTastingDto with empty hosts array', async () => {
+    it('returns WineTastingDto with an empty hosts array', async () => {
         // arrange
         await wineTastingDefinition.create({
             title: 'Test tasting',
