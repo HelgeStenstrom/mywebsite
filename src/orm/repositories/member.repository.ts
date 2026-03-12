@@ -22,4 +22,15 @@ export class MemberRepository {
             surname: m.surname,
         };
     }
+
+    async delete(id: number) {
+        const member = await this.Member.findByPk(id);
+
+        if (!member) {
+            return 'not_found';
+        }
+
+        await this.Member.destroy({where: {id: id}})
+        return 'deleted';
+    }
 }

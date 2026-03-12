@@ -199,6 +199,41 @@ paths:
               schema:
                 $ref: '#/components/schemas/Member'
 
+  /members/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the member
+        required: true
+    get:
+      summary: Returns a member by id
+      description: Returns a member by id, with details
+      responses:
+        '404':
+          description: Member not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        200:
+          description: Successful GET operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+    delete:
+      summary: Delete a member by id
+      description: Delete a member by id
+      responses:
+        204:
+          description: Member deleted successfully
+        404:
+          description: Member not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /tastings:
     get:
       description: Returns a list of all tastings

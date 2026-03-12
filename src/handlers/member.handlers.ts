@@ -35,4 +35,23 @@ export class MemberHandlers {
 
         };
     }
+
+    deleteMemberById() {
+        return async (req, res) => {
+            const id  = Number(req.params.id);
+
+            const result = await this.orm.members.delete(id);
+            switch (result) {
+                case 'deleted':
+                    return res.status(204).send();
+                case 'not_found':
+                    return res.status(404).json({error: 'Member not found'});
+                // case 'in_use':
+                //     return res.status(409).json({error: 'Member is in use'});
+                default:
+                    return res.status(503).json({error: 'Unknown error'});
+            }
+
+        }
+    }
 }
