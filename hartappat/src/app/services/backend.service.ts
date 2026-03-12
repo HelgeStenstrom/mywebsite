@@ -4,6 +4,10 @@ import {Observable, Subject, throwError} from "rxjs";
 import {catchError, map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 
+import {WineApi, WineCreate, WineView} from "../models/wine.model";
+
+export type { WineView, WineApi, WineCreate } from '../models/wine.model';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -211,46 +215,6 @@ export class BackendService {
 
 }
 
-export type WineView = {
-  id: number;
-  name: string;
-  country: string;
-  wineType: string;
-  systembolaget?: number;
-  volume?: number;
-  createdAt?: string;
-  vintage?: string;
-  isUsed: boolean;
-};
-
-export type WineCreate = {
-  name: string;
-  countryId: number;
-  wineTypeId: number;
-  vintageYear?: number | null;
-  isNonVintage?: boolean;
-  systembolaget?: number;
-  volume?: number;
-};
-
-export type WineApi = {
-  id: number;
-  name: string;
-  country: {
-    id: number;
-    name: string;
-  };
-  wineType: {
-    id: number;
-    name: string;
-  };
-  systembolaget?: number;
-  volume?: number;
-  createdAt?: string;
-  vintageYear: number | null;
-  isNonVintage: boolean;
-  isUsed: boolean;
-};
 
 export type CountryApi = {
   id: number;
