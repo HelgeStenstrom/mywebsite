@@ -45,9 +45,6 @@ export class GrapeHandlers {
             const id = parseInt(req.params.id);
             const data: GrapeCreateDto = req.body;
 
-            console.log(`id = {}`, id);
-            console.log(data);
-
             if (!id || isNaN(id) || id <= 0) {
                 return res.status(400).send({ error: 'Invalid grape id' });
             }

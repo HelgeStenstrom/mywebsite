@@ -6,6 +6,12 @@ export function defineMember(sequelize1: Sequelize): ModelStatic<MemberInstance>
         {
             given: DataTypes.TEXT,
             surname: DataTypes.TEXT,
+            isActive: {
+                field: 'is_active',
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: true,
+            },
         },
         {
             timestamps: false,

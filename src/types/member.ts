@@ -15,6 +15,7 @@ interface MemberAttributes {
     id: number;
     given: string;
     surname: string;
+    isActive: boolean;
 }
 
 export interface MemberInstance extends Model<MemberAttributes>, MemberAttributes {}

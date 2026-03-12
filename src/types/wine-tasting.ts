@@ -26,10 +26,11 @@ export type WineTastingCreateDto = {
 
 export type WineTastingHostDto = {
     memberId: number;
-    name?: string;
 }
 
-
+export type WineTastingHostCreateDto = {
+    memberId: number;
+};
 
 interface WineTastingAttributes {
     id: number;
