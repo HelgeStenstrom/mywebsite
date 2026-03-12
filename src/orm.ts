@@ -20,6 +20,7 @@ import {WineTastingHostInstance, WineTastingInstance, WineTastingWineInstance} f
 import {MemberInstance} from "./types/member";
 import {WineTastingWineRepository} from "./orm/repositories/wine-tasting-wine.repository";
 import {defineWineTastingWine} from "./orm/models/wine-tasting-wine.model";
+import {WineTastingHostRepository} from "./orm/repositories/wine-tasting-host.repository";
 
 export class Orm {
 
@@ -32,6 +33,7 @@ export class Orm {
     readonly wineTypes: WineTypeRepository;
     readonly wines: WineRepository;
     readonly tastingWines: WineTastingWineRepository;
+    readonly wineTastingHosts: WineTastingHostRepository;
 
 
 
@@ -61,6 +63,7 @@ export class Orm {
         this.wineTypes = new WineTypeRepository(wineType, wine);
         this.wines = new WineRepository(wine, country, wineType, wineTastingWine);
         this.tastingWines = new WineTastingWineRepository(wineTastingWine)
+        this.wineTastingHosts = new WineTastingHostRepository(tastingHost);
     }
 
 

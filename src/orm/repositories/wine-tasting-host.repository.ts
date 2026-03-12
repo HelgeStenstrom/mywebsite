@@ -11,7 +11,8 @@ export class WineTastingHostRepository {
     async create(wineTastingId: number, host: WineTastingHostCreateDto): Promise<WineTastingHostDto> {
 
         const memberId = host.memberId;
-        return this.WineTastingHost.create({wineTastingId, memberId});
+        const created = await this.WineTastingHost.create({wineTastingId, memberId});
+        return this.toDto(created);
     }
 
 
