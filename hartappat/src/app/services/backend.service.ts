@@ -27,31 +27,16 @@ export class BackendService {
     return this.grapesSubject.asObservable();
   }
 
-  addWine(wine: WineCreate): Observable<void> {
-
-    const url = `${this.apiBase}/wines`;
-    const objectObservable: Observable<void> = this.http.post<void>(url, wine);
-    return objectObservable.pipe(catchError(this.handleError));
+  addCountry(name: string) {
+    const url = `${this.apiBase}/countries`;
+    return this.http.post<CountryApi>(url, {name});
   }
 
-  addGrape(grape: Grape): Observable<Grape> {
-    const url = `${this.apiBase}/grapes`;
-    const objectObservable: Observable<Grape> = this.http.post<Grape>(url, grape);
-    return objectObservable.pipe(catchError(this.handleError));
+  getCountries(): Observable<CountryApi[]> {
+    return this.http
+      .get<CountryApi[]>(`${this.apiBase}/countries`)
+      .pipe(catchError(this.handleError));
   }
-
-  deleteGrape(grape: Grape): Observable<Grape> {
-    const url: string = this.apiBase + `/grapes/${grape.id}`;
-
-    return this.http.delete<Grape>(url);
-  }
-
-
-  deleteWineType(id: number) {
-    const url: string = this.apiBase + `/wine-types/${id}`;
-    return this.http.delete<void>(url);
-  }
-
 
   deleteCountry(id: number) {
     const url: string = this.apiBase + `/countries/${id}`;
@@ -59,10 +44,10 @@ export class BackendService {
   }
 
 
-  deleteWine(wine: WineView): Observable<WineView> {
-    const url: string = this.apiBase + `/wines/${wine.id}`;
-
-    return this.http.delete<WineView>(url);
+  addGrape(grape: Grape): Observable<Grape> {
+    const url = `${this.apiBase}/grapes`;
+    const objectObservable: Observable<Grape> = this.http.post<Grape>(url, grape);
+    return objectObservable.pipe(catchError(this.handleError));
   }
 
   getGrapes(): Observable<Grape[]> {
@@ -73,16 +58,89 @@ export class BackendService {
         catchError(this.handleError));
   }
 
-  getCountries(): Observable<CountryApi[]> {
-    return this.http
-      .get<CountryApi[]>(`${this.apiBase}/countries`)
-      .pipe(catchError(this.handleError));
+  patchGrape(id: number, to: Grape): Observable<Grape> {
+    const url = `${this.apiBase}/grapes/${id}`;
+    const objectObservable: Observable<Grape> = this.http.patch<Grape>(url, to);
+    return objectObservable.pipe(catchError(this.handleError));
   }
 
-  getWineTypes(): Observable<WineTypeApi[]> {
-    return this.http
-      .get<WineTypeApi[]>(`${this.apiBase}/wine-types`)
-      .pipe(catchError(this.handleError));
+  deleteGrape(grape: Grape): Observable<Grape> {
+    const url: string = this.apiBase + `/grapes/${grape.id}`;
+
+    return this.http.delete<Grape>(url);
+  }
+
+
+
+  getMembers$(): Observable<Member[]> {
+    const url = `${this.apiBase}/members`;
+    return this.http.get<any[]>(url)
+      .pipe(
+        map(ms => ms
+          .map(m => ({given: m.given, surname: m.surname}))),
+      );
+  }
+
+
+  createTasting(tasting: WineTastingCreate): Observable<WineTasting> {
+    const url = `${this.apiBase}/tastings`;
+    return this.http.post<WineTasting>(url, tasting).pipe(catchError(this.handleError));
+  }
+
+  getTasting(id: number): Observable<WineTasting> {
+
+    const url =  `${this.apiBase}/tastings/${id}`;
+
+    return this.http.get<WineTastingApi>(url).pipe(
+      map(t => ({
+        id: t.id,
+        title: t.title,
+        notes: t.notes,
+        tastingDate: new Date(t.tastingDate),
+        hosts: t.hosts,
+        wines: t.wines,
+      }))
+    );
+
+  }
+
+
+
+  getTastings(): Observable<WineTastingSummary[]> {
+
+    const url = `${this.apiBase}/tastings`;
+
+    return this.http.get<WineTastingApi[]>(url).pipe(
+      map(apiTastings =>
+        apiTastings.map(t => ({
+          id: t.id,
+          title: t.title,
+          notes: t.notes,
+          tastingDate: new Date(t.tastingDate),
+          hosts: t.hosts,
+        }))
+      )
+    );
+
+  }
+
+  getTastingWines(tastingId: number): Observable<WineTastingWine[]> {
+    const url = `${this.apiBase}/tastings/${tastingId}/wines`;
+
+    return this.http.get<WineTastingWine[]>(url).pipe(catchError(this.handleError));
+  }
+
+  addWine(wine: WineCreate): Observable<void> {
+
+    const url = `${this.apiBase}/wines`;
+    const objectObservable: Observable<void> = this.http.post<void>(url, wine);
+    return objectObservable.pipe(catchError(this.handleError));
+  }
+
+  deleteWine(wine: WineView): Observable<WineView> {
+    const url: string = this.apiBase + `/wines/${wine.id}`;
+
+    return this.http.delete<WineView>(url);
   }
 
   getWine(id: number): Observable<WineApi> {
@@ -98,6 +156,25 @@ export class BackendService {
       catchError(this.handleError)
     );
   }
+
+
+  addWineType(name: string) {
+    const url = `${this.apiBase}/wine-types`;
+    return this.http.post<WineTypeApi>(url, {name});
+  }
+
+  getWineTypes(): Observable<WineTypeApi[]> {
+    return this.http
+      .get<WineTypeApi[]>(`${this.apiBase}/wine-types`)
+      .pipe(catchError(this.handleError));
+  }
+
+
+  deleteWineType(id: number) {
+    const url: string = this.apiBase + `/wine-types/${id}`;
+    return this.http.delete<void>(url);
+  }
+
 
   private toWineView(wine: WineApi): WineView {
     const maybeVintage = wine.vintageYear
@@ -118,12 +195,6 @@ export class BackendService {
     };
   }
 
-  patchGrape(id: number, to: Grape): Observable<Grape> {
-    const url = `${this.apiBase}/grapes/${id}`;
-    const objectObservable: Observable<Grape> = this.http.patch<Grape>(url, to);
-    return objectObservable.pipe(catchError(this.handleError));
-  }
-
   private handleError(error: HttpErrorResponse): Observable<never> { // From https://angular.io/guide/http#getting-error-details
     if (error.status === 0) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -136,71 +207,6 @@ export class BackendService {
     }
     // Return an observable with a user-facing error message.
     return throwError(() => new Error('Something bad happened; please try again later.'));
-  }
-
-  getMembers$(): Observable<Member[]> {
-    const url = `${this.apiBase}/members`;
-    return this.http.get<any[]>(url)
-      .pipe(
-        map(ms => ms
-          .map(m => ({given: m.given, surname: m.surname}))),
-      );
-  }
-
-  getTastings(): Observable<WineTastingSummary[]> {
-
-    const url = `${this.apiBase}/tastings`;
-
-    return this.http.get<WineTastingApi[]>(url).pipe(
-      map(apiTastings =>
-        apiTastings.map(t => ({
-          id: t.id,
-          title: t.title,
-          notes: t.notes,
-          tastingDate: new Date(t.tastingDate),
-          hosts: t.hosts,
-        }))
-      )
-    );
-
-  }
-
-  getTasting(id: number): Observable<WineTasting> {
-
-    const url =  `${this.apiBase}/tastings/${id}`;
-
-    return this.http.get<WineTastingApi>(url).pipe(
-      map(t => ({
-          id: t.id,
-          title: t.title,
-          notes: t.notes,
-          tastingDate: new Date(t.tastingDate),
-          hosts: t.hosts,
-          wines: t.wines,
-        }))
-    );
-
-  }
-
-  addCountry(name: string) {
-    const url = `${this.apiBase}/countries`;
-    return this.http.post<CountryApi>(url, {name});
-  }
-
-  addWineType(name: string) {
-    const url = `${this.apiBase}/wine-types`;
-    return this.http.post<WineTypeApi>(url, {name});
-  }
-
-  getTastingWines(tastingId: number): Observable<WineTastingWine[]> {
-    const url = `${this.apiBase}/tastings/${tastingId}/wines`;
-
-    return this.http.get<WineTastingWine[]>(url).pipe(catchError(this.handleError));
-  }
-
-  createTasting(tasting: WineTastingCreate): Observable<WineTasting> {
-    const url = `${this.apiBase}/tastings`;
-    return this.http.post<WineTasting>(url, tasting).pipe(catchError(this.handleError));
   }
 
 }
