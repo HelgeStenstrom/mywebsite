@@ -113,4 +113,10 @@ export class TastingRepository {
     }
 
 
+    async deleteTastingById(id: number): Promise<boolean> {
+        await this.WineTastingWine.destroy({ where: { wineTastingId: id } });
+        await this.TastingHost.destroy({ where: { wineTastingId: id } });
+        const deleted = await this.Tasting.destroy({ where: { id } });
+        return deleted > 0;
+    }
 }

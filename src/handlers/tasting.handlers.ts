@@ -28,6 +28,18 @@ export class TastingHandlers {
         };
     }
 
+    deleteTastingById() {
+        return async (req, res) => {
+            const id = req.params.id;
+            const deleted = await this.orm.tastings.deleteTastingById(id);
+            if (!deleted) {
+                res.status(404).json({ message: `Tasting with id ${id} not found` });
+                return;
+            }
+            res.status(204).send();
+        }
+    }
+
     /**
      * Get all tastings from the database.
      */
