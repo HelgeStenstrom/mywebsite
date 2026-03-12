@@ -248,6 +248,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/WineTasting'
+    delete:
+      summary: Delete a wine tasting by id
+      description: Removes a wine tasting from the database
+      responses:
+        204:
+          description: Tasting deleted successfully
+        404:
+          description: Tasting not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /wines:
     get:
       description: Returns a list of the wines in the database. Currently, the length of the list is unlimited; that may change.
