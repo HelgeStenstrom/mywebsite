@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService, WineTypeApi} from "../../services/backend/backend.service";
+import {WineTypeApi} from "../../services/backend/backend.service";
+import {WineTypeService} from "../../services/backend/wine-type.service";
 
 @Component({
   selector: 'app-wine-types',
@@ -11,21 +12,21 @@ export class WineTypesComponent implements OnInit {
   wineTypes: WineTypeApi[] = [];
   newWineType = '';
 
-  constructor(private backendService: BackendService) {}
+  constructor(private readonly wineTypeService: WineTypeService,) {}
 
   ngOnInit(): void {
     this.loadWineTypes();
   }
 
   private loadWineTypes(): void {
-    this.backendService.getWineTypes().subscribe(c => {
+    this.wineTypeService.getWineTypes().subscribe(c => {
       this.wineTypes = c;
     });
   }
 
   protected deleteWineType(id: number) {
 
-    this.backendService.deleteWineType(id).subscribe({
+    this.wineTypeService.deleteWineType(id).subscribe({
       next: () => {
         this.wineTypes = this.wineTypes.filter(c => c.id !== id);
       },
@@ -39,7 +40,7 @@ export class WineTypesComponent implements OnInit {
     if (!this.newWineType.trim()) return; // ignore empty strings
 
 
-    this.backendService.addWineType(this.newWineType.trim())
+    this.wineTypeService.addWineType(this.newWineType.trim())
       .subscribe({
         next: (created) => {
           this.wineTypes.push(created);

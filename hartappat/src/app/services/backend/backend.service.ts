@@ -160,24 +160,6 @@ export class BackendService {
   }
 
 
-  addWineType(name: string) {
-    const url = `${this.apiBase}/wine-types`;
-    return this.http.post<WineTypeApi>(url, {name});
-  }
-
-  getWineTypes(): Observable<WineTypeApi[]> {
-    return this.http
-      .get<WineTypeApi[]>(`${this.apiBase}/wine-types`)
-      .pipe(catchError(this.handleError));
-  }
-
-
-  deleteWineType(id: number) {
-    const url: string = this.apiBase + `/wine-types/${id}`;
-    return this.http.delete<void>(url);
-  }
-
-
   private toWineView(wine: WineApi): WineView {
     const maybeVintage = wine.vintageYear
       ? wine.vintageYear.toString()

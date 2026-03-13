@@ -1,14 +1,14 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {WineTypesComponent} from './wine-types.component';
-import {BackendService} from '../../services/backend/backend.service';
 import {of} from 'rxjs';
 import {FormsModule} from '@angular/forms';
+import {WineTypeService} from "../../services/backend/wine-type.service";
 
 describe('WineTypesComponent', () => {
   let component: WineTypesComponent;
   let fixture: ComponentFixture<WineTypesComponent>;
 
-  const backendServiceMock = {
+  const serviceMock = {
     getWineTypes: () => of([]),
   };
 
@@ -16,7 +16,7 @@ describe('WineTypesComponent', () => {
     TestBed.configureTestingModule({
       declarations: [WineTypesComponent],
       imports: [FormsModule],
-      providers: [{provide: BackendService, useValue: backendServiceMock}]
+      providers: [{provide: WineTypeService, useValue: serviceMock}]
     });
     fixture = TestBed.createComponent(WineTypesComponent);
     component = fixture.componentInstance;

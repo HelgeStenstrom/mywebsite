@@ -2,12 +2,13 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {WineEntryComponent} from './wine-entry.component';
 import {By} from "@angular/platform-browser";
-import {BackendService, WineCreate} from "../../services/backend/backend.service";
+import {WineCreate} from "../../services/backend/backend.service";
 import {FormsModule} from "@angular/forms";
 import {DebugElement} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {of} from "rxjs";
 import {CountryService} from "../../services/backend/country.service";
+import {WineTypeService} from "../../services/backend/wine-type.service";
 
 // Inspired by https://youtu.be/uefGmRcIm3c
 // What building with TDD actually looks like
@@ -15,24 +16,27 @@ import {CountryService} from "../../services/backend/country.service";
 describe('WineComponent', () => {
   let component: WineEntryComponent;
   let fixture: ComponentFixture<WineEntryComponent>;
-  const backendServiceMock = {
+
+
+
+  const countryServiceMock = {
     getCountries: () => of([]),
+  };
+
+  const wineTypeServiceMock = {
     getWineTypes: () => of([
       { id: 3, name: 'Rött' },
       { id: 4, name: 'Vitt' }
     ]),
-  };
-  const countryServiceMock = {
-    getCountries: () => of([]),
-  };
+  }
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [WineEntryComponent],
       imports: [CommonModule, FormsModule],
       providers: [
-        {provide: BackendService, useValue: backendServiceMock},
         {provide: CountryService, useValue: countryServiceMock},
+        {provide: WineTypeService, useValue: wineTypeServiceMock},
       ]
     }).compileComponents();
     fixture = TestBed.createComponent(WineEntryComponent);

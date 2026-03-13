@@ -8,6 +8,7 @@ import {By} from "@angular/platform-browser";
 import {BackendService} from "../../services/backend/backend.service";
 import {CountryService} from "../../services/backend/country.service";
 import {of} from "rxjs";
+import {WineTypeService} from "../../services/backend/wine-type.service";
 
 describe('WinesComponent', () => {
   let component: WinesComponent;
@@ -15,17 +16,21 @@ describe('WinesComponent', () => {
 
   let backendServiceMock: Partial<BackendService>;
   let countryServiceMock: Partial<CountryService>;
+  let wineTypeServiceMock: Partial<WineTypeService>;
 
   beforeEach(async () => {
 
     backendServiceMock = {
       getWines: jest.fn().mockReturnValue(of([])),
       addWine: jest.fn().mockReturnValue(of(void 1)),
-      getWineTypes: jest.fn().mockReturnValue(of([])),
     };
 
     countryServiceMock = {
       getCountries: jest.fn().mockReturnValue(of([])),
+    };
+
+    wineTypeServiceMock = {
+      getWineTypes: jest.fn().mockReturnValue(of([])),
     }
 
     await TestBed.configureTestingModule({
@@ -33,7 +38,9 @@ describe('WinesComponent', () => {
       declarations: [ WinesComponent, WineEntryComponent ],
       providers: [
         {provide: BackendService, useValue: backendServiceMock},
-        {provide: CountryService, useValue: countryServiceMock}]
+        {provide: CountryService, useValue: countryServiceMock},
+        {provide: WineTypeService, useValue: wineTypeServiceMock},
+      ]
     })
     .compileComponents();
 
