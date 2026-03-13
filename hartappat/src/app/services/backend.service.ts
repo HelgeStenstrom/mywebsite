@@ -9,14 +9,16 @@ import {
   WineTasting,
   WineTastingApi,
   WineTastingCreate,
-  WineTastingHost,
   WineTastingSummary,
-  WineTastingWine,
-  WineTastingWineCreate
+  WineTastingWine
 } from '../models/tasting.model';
+
+import {CountryApi, Grape, Member, WineTypeApi} from '../models/common.model';
+
 
 export type { WineView, WineApi, WineCreate } from '../models/wine.model';
 export type {WineTasting, WineTastingSummary, WineTastingWine, WineTastingApi, WineTastingHost, WineTastingCreate, WineTastingWineCreate} from '../models/tasting.model';
+export type {CountryApi, WineTypeApi, Grape, Member} from '../models/common.model';
 
 
 
@@ -228,27 +230,3 @@ export class BackendService {
 }
 
 
-export type CountryApi = {
-  id: number;
-  name: string;
-  isUsed: boolean;
-};
-
-export type WineTypeApi = {
-  id: number;
-  name: string;
-  isUsed: boolean;
-};
-
-export type Grape = {
-  id: number;
-  name: string;
-  color: string;
-};
-
-
-
-export type Member = {
-  given: string;
-  surname: string;
-}
