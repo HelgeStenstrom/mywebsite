@@ -16,6 +16,11 @@ export type Grape = {
   color: string;
 };
 
+export type GrapeCreate = {
+  name: string;
+  color: string;
+};
+
 
 
 export type MemberCreate = {
