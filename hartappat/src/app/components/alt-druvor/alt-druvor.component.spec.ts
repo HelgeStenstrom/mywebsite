@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AltDruvorComponent} from './alt-druvor.component';
-import {BackendService, Grape} from "../../services/backend.service";
+import {BackendService, Grape} from "../../services/backend/backend.service";
 import {of} from "rxjs";
 
 describe('AltDruvorComponent', () => {

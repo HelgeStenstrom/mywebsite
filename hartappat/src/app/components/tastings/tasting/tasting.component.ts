@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {BackendService, WineTasting} from "../../../services/backend.service";
+import {BackendService, WineTasting} from "../../../services/backend/backend.service";
 import {Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 

@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {WineTypesComponent} from './wine-types.component';
-import {BackendService} from '../../services/backend.service';
+import {BackendService} from '../../services/backend/backend.service';
 import {of} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 

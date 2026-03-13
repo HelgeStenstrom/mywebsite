@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService, WineTastingSummary} from "../../services/backend.service";
+import {BackendService, WineTastingSummary} from "../../services/backend/backend.service";
 import {Observable, of} from "rxjs";
 
 @Component({

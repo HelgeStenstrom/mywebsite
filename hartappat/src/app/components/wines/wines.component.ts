@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {BackendService, WineView} from "../../services/backend.service";
+import {BackendService, WineView} from "../../services/backend/backend.service";
 import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {Observable, of, switchMap} from "rxjs";
 

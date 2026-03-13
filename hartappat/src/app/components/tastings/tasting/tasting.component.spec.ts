@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TastingComponent} from './tasting.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
-import {WineTasting} from "../../../services/backend.service";
+import {WineTasting} from "../../../services/backend/backend.service";
 import {RouterTestingModule} from "@angular/router/testing";
 
 describe('TastingComponent', () => {

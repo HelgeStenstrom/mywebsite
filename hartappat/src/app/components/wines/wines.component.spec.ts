@@ -5,7 +5,7 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {FormsModule} from "@angular/forms";
 import {By} from "@angular/platform-browser";
-import {BackendService} from "../../services/backend.service";
+import {BackendService} from "../../services/backend/backend.service";
 import {of} from "rxjs";
 
 describe('WinesComponent', () => {

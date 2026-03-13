@@ -3,7 +3,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TastingsComponent} from './tastings.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {TastingComponent} from "./tasting/tasting.component";
-import {BackendService, WineTasting} from "../../services/backend.service";
+import {BackendService, WineTasting} from "../../services/backend/backend.service";
 import {Observable, of} from "rxjs";
 import {CreateTastingComponent} from "./create-tasting/create-tasting.component";
 import {RouterTestingModule} from "@angular/router/testing";

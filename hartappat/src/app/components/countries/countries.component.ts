@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService, CountryApi} from "../../services/backend.service";
+import {BackendService, CountryApi} from "../../services/backend/backend.service";
 
 @Component({
   selector: 'app-countries',

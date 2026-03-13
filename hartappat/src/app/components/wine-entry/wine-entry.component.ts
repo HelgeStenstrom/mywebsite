@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService, CountryApi, WineCreate, WineTypeApi} from "../../services/backend.service";
+import {BackendService, CountryApi, WineCreate, WineTypeApi} from "../../services/backend/backend.service";
 
 @Component({
   selector: 'app-wine',

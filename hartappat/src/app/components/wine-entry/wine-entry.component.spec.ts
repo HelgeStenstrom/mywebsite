@@ -2,7 +2,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {WineEntryComponent} from './wine-entry.component';
 import {By} from "@angular/platform-browser";
-import {BackendService, WineCreate} from "../../services/backend.service";
+import {BackendService, WineCreate} from "../../services/backend/backend.service";
 import {FormsModule} from "@angular/forms";
 import {DebugElement} from "@angular/core";
 import {CommonModule} from "@angular/common";

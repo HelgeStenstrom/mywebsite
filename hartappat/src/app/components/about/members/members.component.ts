@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService} from "../../../services/backend.service";
+import {BackendService} from "../../../services/backend/backend.service";
 import {EMPTY, Observable} from "rxjs";
 
 @Component({

@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MembersComponent} from './members.component';
-import {BackendService, Member, WineView} from "../../../services/backend.service";
+import {BackendService, Member, WineView} from "../../../services/backend/backend.service";
 import {Observable, of} from "rxjs";
 
 describe('MembersComponent', () => {
