@@ -1,6 +1,6 @@
 import {Observable} from "rxjs";
 import {catchError} from "rxjs/operators";
-import {CountryApi} from "../../models/common.model";
+import {WineTypeApi} from "../../models/common.model";
 import {environment} from "../../../environments/environment";
 import {HttpClient} from "@angular/common/http";
 import {handleError} from "./handle-error";
@@ -9,26 +9,25 @@ import {Injectable} from "@angular/core";
 @Injectable({
   providedIn: 'root'
 })
-export class CountryService {
+export class WineTypeService {
   public readonly apiBase = environment.apiUrl + '/api/v1';
 
-  constructor(private readonly http: HttpClient) {}
-
-  addCountry(name: string) {
-    const url = `${this.apiBase}/countries`;
-    return this.http.post<CountryApi>(url, {name});
+  constructor(private readonly http: HttpClient) {
   }
 
-  getCountries(): Observable<CountryApi[]> {
+  addWineType(name: string) {
+    const url = `${this.apiBase}/wine-types`;
+    return this.http.post<WineTypeApi>(url, {name});
+  }
+
+  getWineTypes(): Observable<WineTypeApi[]> {
     return this.http
-      .get<CountryApi[]>(`${this.apiBase}/countries`)
+      .get<WineTypeApi[]>(`${this.apiBase}/wine-types`)
       .pipe(catchError(handleError));
   }
 
-  deleteCountry(id: number) {
-    const url: string = this.apiBase + `/countries/${id}`;
+  deleteWineType(id: number) {
+    const url: string = this.apiBase + `/wine-types/${id}`;
     return this.http.delete<void>(url);
   }
-
-
 }

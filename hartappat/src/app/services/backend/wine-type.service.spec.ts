@@ -1,63 +1,64 @@
 import {TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
-import {CountryService} from './country.service';
-import {CountryApi} from '../../models/common.model';
+import {WineTypeService} from './wine-type.service';
+import {WineTypeApi} from '../../models/common.model';
 
-describe('CountryService', () => {
+describe('WineTypeService', () => {
 
-  let service: CountryService;
+  let service: WineTypeService;
   let httpTestingController: HttpTestingController;
   let url: string;
 
-  const aCountry: CountryApi = {id: 1, name: 'Sverige', isUsed: false};
+  const aWineType: WineTypeApi = {id: 1, name: 'Rött', isUsed: false};
 
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
-      providers: [CountryService],
+      providers: [WineTypeService],
     });
-    service = TestBed.inject(CountryService);
+    service = TestBed.inject(WineTypeService);
     httpTestingController = TestBed.inject(HttpTestingController);
-    url = service.apiBase + '/countries';
+    url = service.apiBase + '/wine-types';
   });
 
   afterEach(() => {
     httpTestingController.verify();
   });
 
-  test('it gets countries', done => {
+  test('It gets wine types', done => {
     service
-      .getCountries()
+      .getWineTypes()
       .subscribe(result => {
-        expect(result).toEqual([aCountry]);
+        expect(result).toEqual([aWineType]);
         done();
       });
 
     const req = httpTestingController.expectOne(url);
     expect(req.request.method).toEqual('GET');
-    req.flush([aCountry]);
-  });
+    req.flush([aWineType]);
+  })
 
-  test('it adds a country', done => {
-    service.addCountry('Sverige').subscribe(result => {
-      expect(result).toEqual(aCountry);
+  test('It adds a wine type', done => {
+    service.addWineType('rött').subscribe(result => {
+      expect(result).toEqual(aWineType);
       done();
     });
 
     const req = httpTestingController.expectOne(url);
     expect(req.request.method).toEqual('POST');
-    expect(req.request.body).toEqual({name: 'Sverige'});
-    req.flush(aCountry);
-  });
+    expect(req.request.body).toEqual({name: 'rött'})
+    req.flush(aWineType);
+  })
 
-  test('it deletes a country', done => {
-    service.deleteCountry(1).subscribe(() => {
+  test('It deletes a wine-type', done => {
+    service.deleteWineType(1).subscribe(() => {
       done();
     });
 
     const req = httpTestingController.expectOne(`${url}/1`);
     expect(req.request.method).toEqual('DELETE');
     req.flush(null);
-  });
+
+  })
 
 });
