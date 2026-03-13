@@ -31,7 +31,7 @@ export class GrapeService {
         catchError(handleError));
   }
 
-  patchGrape(id: number, to: Grape): Observable<Grape> {
+  patchGrape(id: number, to: GrapeCreate): Observable<Grape> {
     const url = `${this.apiBase}/grapes/${id}`;
     const objectObservable: Observable<Grape> = this.http.patch<Grape>(url, to);
     return objectObservable.pipe(catchError(handleError));

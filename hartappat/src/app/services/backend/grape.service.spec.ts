@@ -63,7 +63,7 @@ describe('GrapeService', () => {
   })
 
   test('It patches a grape', done => {
-    service.patchGrape(1, aGrape)
+    service.patchGrape(1, aGrapeCreate)
       .subscribe(result => {
         expect(result).toEqual(aGrape);
         done();
@@ -71,7 +71,7 @@ describe('GrapeService', () => {
 
     const req = httpTestingController.expectOne(`${url}/1`);
     expect(req.request.method).toEqual('PATCH');
-    expect(req.request.body).toEqual(aGrape);
+    expect(req.request.body).toEqual(aGrapeCreate);
     req.flush(aGrape);
 
   })

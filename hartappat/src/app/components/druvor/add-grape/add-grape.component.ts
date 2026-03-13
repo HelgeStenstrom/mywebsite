@@ -2,7 +2,7 @@ import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Observable} from "rxjs";
-import {Grape} from "../../../models/common.model";
+import {Grape, GrapeCreate} from "../../../models/common.model";
 import {GrapeService} from "../../../services/backend/grape.service";
 
 @Component({
@@ -42,8 +42,7 @@ export class AddGrapeComponent implements OnInit {
 
     const formValue = this.grapeForm.value;
     if (formValue.name && formValue.color) {
-      const g:Grape = {
-        id: -1,
+      const g:GrapeCreate = {
         name: formValue.name,
         color: formValue.color
       };

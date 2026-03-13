@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AddGrapeComponent} from './add-grape.component';
-import {BackendService} from "../../../services/backend/backend.service";
 import {Observable, of} from "rxjs";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
@@ -31,7 +30,7 @@ describe('AddGrapeComponent test with mock', () => {
       imports: [HttpClientTestingModule],
       declarations: [AddGrapeComponent],
       providers: [
-        {provide: BackendService, useValue: grapeServiceStub},
+        {provide: GrapeService, useValue: grapeServiceStub},
         {provide: MAT_DIALOG_DATA, useValue: {}},
         {provide: MatDialogRef, useValue: {}}],
       schemas: [NO_ERRORS_SCHEMA]})
@@ -80,16 +79,12 @@ describe('AddGrapeComponent with jasmine spies', () => {
   let component: AddGrapeComponent;
   let fixture: ComponentFixture<AddGrapeComponent>;
 
-  let fakeBackend: BackendService;
+
   let grapeServiceStub : Partial<GrapeService>;
   let wineServiceStub : Partial<WineService>;
 
 
   beforeEach( async() => {
-
-    fakeBackend = {
-      newEvent: jest.fn(),
-    } as unknown as BackendService;
 
     grapeServiceStub = {
       addGrape: jest.fn().mockReturnValue(of(void 1)),
@@ -105,7 +100,6 @@ describe('AddGrapeComponent with jasmine spies', () => {
     await TestBed.configureTestingModule({
       declarations: [AddGrapeComponent],
       providers: [
-        {provide: BackendService, useValue: fakeBackend},
         {provide: GrapeService, useValue: grapeServiceStub},
         {provide: WineService, useValue: wineServiceStub},
         {provide: MatDialogRef, useValue: {}},

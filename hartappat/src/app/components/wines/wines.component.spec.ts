@@ -5,7 +5,6 @@ import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {FormsModule} from "@angular/forms";
 import {By} from "@angular/platform-browser";
-import {BackendService} from "../../services/backend/backend.service";
 import {CountryService} from "../../services/backend/country.service";
 import {of} from "rxjs";
 import {WineTypeService} from "../../services/backend/wine-type.service";
@@ -15,16 +14,11 @@ describe('WinesComponent', () => {
   let component: WinesComponent;
   let fixture: ComponentFixture<WinesComponent>;
 
-  let backendServiceMock: Partial<BackendService>;
   let countryServiceMock: Partial<CountryService>;
   let wineTypeServiceMock: Partial<WineTypeService>;
   let wineServiceMock: Partial<WineService>;
 
   beforeEach(async () => {
-
-    backendServiceMock = {
-
-    };
 
     wineServiceMock = {
       getWines: jest.fn().mockReturnValue(of([])),
@@ -43,7 +37,6 @@ describe('WinesComponent', () => {
       imports: [HttpClientTestingModule, FormsModule],
       declarations: [ WinesComponent, WineEntryComponent ],
       providers: [
-        {provide: BackendService, useValue: backendServiceMock},
         {provide: CountryService, useValue: countryServiceMock},
         {provide: WineTypeService, useValue: wineTypeServiceMock},
         {provide: WineService, useValue: wineServiceMock},
