@@ -45,22 +45,6 @@ export class BackendService {
     return this.grapesSubject.asObservable();
   }
 
-  addCountry(name: string) {
-    const url = `${this.apiBase}/countries`;
-    return this.http.post<CountryApi>(url, {name});
-  }
-
-  getCountries(): Observable<CountryApi[]> {
-    return this.http
-      .get<CountryApi[]>(`${this.apiBase}/countries`)
-      .pipe(catchError(this.handleError));
-  }
-
-  deleteCountry(id: number) {
-    const url: string = this.apiBase + `/countries/${id}`;
-    return this.http.delete<void>(url);
-  }
-
 
   addGrape(grape: Grape): Observable<Grape> {
     const url = `${this.apiBase}/grapes`;

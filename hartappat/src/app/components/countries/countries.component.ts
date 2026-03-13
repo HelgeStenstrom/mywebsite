@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService, CountryApi} from "../../services/backend/backend.service";
+import {CountryApi} from "../../models/common.model";
+import {CountryService} from "../../services/backend/country.service";
 
 @Component({
   selector: 'app-countries',
@@ -11,21 +12,21 @@ export class CountriesComponent implements OnInit {
   countries: CountryApi[] = [];
   newCountryName = '';
 
-  constructor(private backendService: BackendService) {}
+  constructor(private countryService: CountryService) {}
 
   ngOnInit(): void {
     this.loadCountries();
   }
 
   private loadCountries() {
-    this.backendService.getCountries().subscribe(c => {
+    this.countryService.getCountries().subscribe(c => {
       this.countries = c;
     });
   }
 
   protected deleteCountry(id: number) {
 
-    this.backendService.deleteCountry(id).subscribe({
+    this.countryService.deleteCountry(id).subscribe({
       next: () => {
         this.countries = this.countries.filter(c => c.id !== id);
       },
@@ -39,7 +40,7 @@ export class CountriesComponent implements OnInit {
     if (!this.newCountryName.trim()) return; // ignore empty strings
 
 
-    this.backendService.addCountry(this.newCountryName.trim())
+    this.countryService.addCountry(this.newCountryName.trim())
       .subscribe({
         next: (created) => {
           this.countries.push(created); // lägg till direkt i listan

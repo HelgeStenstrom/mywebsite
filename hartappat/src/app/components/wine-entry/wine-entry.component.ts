@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {BackendService, CountryApi, WineCreate, WineTypeApi} from "../../services/backend/backend.service";
+import {CountryService} from "../../services/backend/country.service";
 
 @Component({
   selector: 'app-wine',
@@ -19,11 +20,14 @@ export class WineEntryComponent implements OnInit {
   vintage?: number;
   protected isNonVintage = false;
 
-  constructor(private backendService: BackendService) {
+  constructor(
+    private readonly backendService: BackendService,
+    private readonly countryService: CountryService,
+    ) {
   }
 
   ngOnInit(): void {
-    this.backendService.getCountries().subscribe(countries => {
+    this.countryService.getCountries().subscribe(countries => {
       this.countries = countries;
     });
 

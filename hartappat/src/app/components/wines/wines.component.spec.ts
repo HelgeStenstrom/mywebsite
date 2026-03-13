@@ -6,27 +6,34 @@ import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {FormsModule} from "@angular/forms";
 import {By} from "@angular/platform-browser";
 import {BackendService} from "../../services/backend/backend.service";
+import {CountryService} from "../../services/backend/country.service";
 import {of} from "rxjs";
 
 describe('WinesComponent', () => {
   let component: WinesComponent;
   let fixture: ComponentFixture<WinesComponent>;
 
-  let serviceMock: Partial<BackendService>;
+  let backendServiceMock: Partial<BackendService>;
+  let countryServiceMock: Partial<CountryService>;
 
   beforeEach(async () => {
 
-    serviceMock = {
+    backendServiceMock = {
       getWines: jest.fn().mockReturnValue(of([])),
       addWine: jest.fn().mockReturnValue(of(void 1)),
-      getCountries: jest.fn().mockReturnValue(of([])),
       getWineTypes: jest.fn().mockReturnValue(of([])),
     };
+
+    countryServiceMock = {
+      getCountries: jest.fn().mockReturnValue(of([])),
+    }
 
     await TestBed.configureTestingModule({
       imports: [HttpClientTestingModule, FormsModule],
       declarations: [ WinesComponent, WineEntryComponent ],
-      providers:[{provide: BackendService, useValue:serviceMock}]
+      providers: [
+        {provide: BackendService, useValue: backendServiceMock},
+        {provide: CountryService, useValue: countryServiceMock}]
     })
     .compileComponents();
 
@@ -73,7 +80,7 @@ describe('WinesComponent', () => {
     buttonElement.nativeElement.dispatchEvent(new Event('click'));
     fixture.detectChanges();
 
-    expect(serviceMock.addWine).toHaveBeenCalled()
+    expect(backendServiceMock.addWine).toHaveBeenCalled()
   });
 
   // The test is not implemented yet
