@@ -4,7 +4,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Observable} from "rxjs";
 import {Grape} from "../../../models/common.model";
 import {GrapeService} from "../../../services/backend/grape.service";
-import {BackendService} from "../../../services/backend/backend.service";
 
 @Component({
   selector: 'app-add-grape',
@@ -23,7 +22,6 @@ export class AddGrapeComponent implements OnInit {
 
   constructor(
     private grapeService: GrapeService,
-    private backendService: BackendService,
     public dialogRef: MatDialogRef<AddGrapeComponent>,
     @Inject(MAT_DIALOG_DATA) public grapeToEdit: Grape
   ) {
@@ -58,7 +56,6 @@ export class AddGrapeComponent implements OnInit {
         patchGrape$ = this.grapeService.addGrape(g);
       }
       patchGrape$.subscribe((savedGrape) => {
-        this.backendService.newEvent(savedGrape);
         this.grapeAdded.emit(savedGrape);
       });
     }
