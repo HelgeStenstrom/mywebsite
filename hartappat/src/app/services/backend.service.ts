@@ -5,8 +5,20 @@ import {catchError, map} from "rxjs/operators";
 import {environment} from "../../environments/environment";
 
 import {WineApi, WineCreate, WineView} from "../models/wine.model";
+import {
+  WineTasting,
+  WineTastingApi,
+  WineTastingCreate,
+  WineTastingHost,
+  WineTastingSummary,
+  WineTastingWine,
+  WineTastingWineCreate
+} from '../models/tasting.model';
 
 export type { WineView, WineApi, WineCreate } from '../models/wine.model';
+export type {WineTasting, WineTastingSummary, WineTastingWine, WineTastingApi, WineTastingHost, WineTastingCreate, WineTastingWineCreate} from '../models/tasting.model';
+
+
 
 @Injectable({
   providedIn: 'root'
@@ -234,59 +246,9 @@ export type Grape = {
   color: string;
 };
 
-export type WineTastingCreate = {
-  title: string;
-  notes?: string;
-  tastingDate: string;
-};
 
-export type WineTastingApi = {
-  id: number;
-  title: string;
-  notes?: string;
-  tastingDate: string;
-  hosts?: WineTastingHost[];
-  wines?: WineTastingWine[];
-}
-
-export type WineTastingSummary = {
-  id: number;
-  title: string;
-  notes?: string;
-  tastingDate: Date;
-  hosts?: WineTastingHost[];
-};
-
-
-export type WineTasting = {
-  id: number;
-  title: string;
-  notes?: string;
-  tastingDate: Date;
-  hosts?: WineTastingHost[];
-  wines?: WineTastingWine[];
-};
-
-export type WineTastingHost = {
-  memberId: number;
-  name?: string;
-};
 
 export type Member = {
   given: string;
   surname: string;
 }
-
-export type WineTastingWine = {
-  id: number;
-  wineId: number;
-  position: number;
-  purchasePrice?: number | null;
-  averageScore?: number | null;
-};
-
-export type WineTastingWineCreate = {
-  wineId: number;
-  position: number;
-  purchasePrice?: number | null;
-};
