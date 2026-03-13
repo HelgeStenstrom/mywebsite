@@ -11,10 +11,10 @@ import {HttpClient} from "@angular/common/http";
 export class MemberService {
   public readonly apiBase = environment.apiUrl + '/api/v1';
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
   }
 
-  getMembers$(): Observable<Member[]> {
+  getMembers(): Observable<Member[]> {
     const url = `${this.apiBase}/members`;
     return this.http.get<any[]>(url)
       .pipe(

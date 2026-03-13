@@ -72,18 +72,6 @@ export class BackendService {
     return this.http.delete<Grape>(url);
   }
 
-
-
-  getMembers$(): Observable<Member[]> {
-    const url = `${this.apiBase}/members`;
-    return this.http.get<any[]>(url)
-      .pipe(
-        map(ms => ms
-          .map(m => ({id: m.id, given: m.given, surname: m.surname}))),
-      );
-  }
-
-
   createTasting(tasting: WineTastingCreate): Observable<WineTasting> {
     const url = `${this.apiBase}/tastings`;
     return this.http.post<WineTasting>(url, tasting).pipe(catchError(this.handleError));

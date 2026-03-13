@@ -28,7 +28,7 @@ describe('MemberService', () => {
 
 
   test('It gets members', done => {
-    service.getMembers$()
+    service.getMembers()
       .subscribe(result => {
         expect(result).toEqual([aMember]);
         done();

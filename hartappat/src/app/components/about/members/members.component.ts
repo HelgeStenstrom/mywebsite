@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService} from "../../../services/backend/backend.service";
 import {EMPTY, Observable} from "rxjs";
+import {MemberService} from "../../../services/backend/member.service";
+import {Member} from "../../../models/common.model";
 
 @Component({
   selector: 'app-members',
@@ -9,14 +10,14 @@ import {EMPTY, Observable} from "rxjs";
 })
 export class MembersComponent implements OnInit {
 
-  members$: Observable<any[]> = EMPTY;
+  members$: Observable<Member[]> = EMPTY;
 
-  constructor(private service: BackendService) {
+  constructor(private readonly service: MemberService) {
   }
 
   ngOnInit(): void {
 
-    this.members$ = this.service.getMembers$();
+    this.members$ = this.service.getMembers();
   }
 
 
