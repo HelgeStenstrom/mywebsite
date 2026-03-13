@@ -1,7 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {BackendService, WineTasting} from "../../../services/backend/backend.service";
+import {WineTasting} from "../../../models/tasting.model";
 import {Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
+import {TastingService} from "../../../services/backend/tasting.service";
 
 @Component({
   selector: 'app-tasting',
@@ -15,7 +16,7 @@ export class TastingComponent implements OnInit {
 
 
   constructor(
-    private readonly service: BackendService,
+    private readonly service: TastingService,
     private readonly route: ActivatedRoute,
   ) {
   }

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
-import {BackendService} from '../../../services/backend/backend.service';
+import {TastingService} from "../../../services/backend/tasting.service";
 
 @Component({
   selector: 'app-create-tasting',
@@ -14,7 +14,7 @@ export class CreateTastingComponent implements OnInit {
 
   constructor(
     private readonly fb: FormBuilder,
-    private readonly service: BackendService,
+    private readonly service: TastingService,
     private readonly router: Router,
   ) {}
 

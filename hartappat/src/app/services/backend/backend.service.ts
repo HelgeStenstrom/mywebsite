@@ -1,19 +1,13 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from "@angular/common/http";
 import {Observable, Subject, throwError} from "rxjs";
-import {catchError, map} from "rxjs/operators";
+import {catchError} from "rxjs/operators";
 import {environment} from "../../../environments/environment";
 
 import {WineApi, WineCreate, WineView} from "../../models/wine.model";
-import {
-  WineTasting,
-  WineTastingApi,
-  WineTastingCreate,
-  WineTastingSummary,
-  WineTastingWine
-} from '../../models/tasting.model';
+import {WineTastingApi, WineTastingCreate, WineTastingSummary, WineTastingWine} from '../../models/tasting.model';
 
-import {CountryApi, Grape, Member, WineTypeApi} from '../../models/common.model';
+import {Grape} from '../../models/common.model';
 
 
 export type { WineView, WineApi, WineCreate } from '../../models/wine.model';
@@ -32,9 +26,9 @@ export class BackendService {
   /**
    * Subject baserat på https://stackoverflow.com/questions/40313770/how-to-trigger-function-from-one-component-to-another-in-angular2
    */
-  private grapesSubject: Subject<Grape> = new Subject<Grape>();
+  private readonly grapesSubject: Subject<Grape> = new Subject<Grape>();
 
-  constructor(private http: HttpClient) {
+  constructor(private readonly http: HttpClient) {
   }
 
   newEvent(event: Grape): void {
@@ -70,54 +64,6 @@ export class BackendService {
     const url: string = this.apiBase + `/grapes/${grape.id}`;
 
     return this.http.delete<Grape>(url);
-  }
-
-  createTasting(tasting: WineTastingCreate): Observable<WineTasting> {
-    const url = `${this.apiBase}/tastings`;
-    return this.http.post<WineTasting>(url, tasting).pipe(catchError(this.handleError));
-  }
-
-  getTasting(id: number): Observable<WineTasting> {
-
-    const url =  `${this.apiBase}/tastings/${id}`;
-
-    return this.http.get<WineTastingApi>(url).pipe(
-      map(t => ({
-        id: t.id,
-        title: t.title,
-        notes: t.notes,
-        tastingDate: new Date(t.tastingDate),
-        hosts: t.hosts,
-        wines: t.wines,
-      }))
-    );
-
-  }
-
-
-
-  getTastings(): Observable<WineTastingSummary[]> {
-
-    const url = `${this.apiBase}/tastings`;
-
-    return this.http.get<WineTastingApi[]>(url).pipe(
-      map(apiTastings =>
-        apiTastings.map(t => ({
-          id: t.id,
-          title: t.title,
-          notes: t.notes,
-          tastingDate: new Date(t.tastingDate),
-          hosts: t.hosts,
-        }))
-      )
-    );
-
-  }
-
-  getTastingWines(tastingId: number): Observable<WineTastingWine[]> {
-    const url = `${this.apiBase}/tastings/${tastingId}/wines`;
-
-    return this.http.get<WineTastingWine[]>(url).pipe(catchError(this.handleError));
   }
 
 

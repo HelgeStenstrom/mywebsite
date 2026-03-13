@@ -17,7 +17,7 @@ export type WineTastingSummary = {
   id: number;
   title: string;
   notes?: string;
-  tastingDate: Date;
+  tastingDate: string;
   hosts?: WineTastingHost[];
 };
 
@@ -26,7 +26,7 @@ export type WineTasting = {
   id: number;
   title: string;
   notes?: string;
-  tastingDate: Date;
+  tastingDate: string;
   hosts?: WineTastingHost[];
   wines?: WineTastingWine[];
 };
