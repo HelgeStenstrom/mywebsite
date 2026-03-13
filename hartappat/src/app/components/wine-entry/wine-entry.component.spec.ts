@@ -2,13 +2,13 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {WineEntryComponent} from './wine-entry.component';
 import {By} from "@angular/platform-browser";
-import {WineCreate} from "../../services/backend/backend.service";
 import {FormsModule} from "@angular/forms";
 import {DebugElement} from "@angular/core";
 import {CommonModule} from "@angular/common";
 import {of} from "rxjs";
 import {CountryService} from "../../services/backend/country.service";
 import {WineTypeService} from "../../services/backend/wine-type.service";
+import {WineCreate} from "../../models/wine.model";
 
 // Inspired by https://youtu.be/uefGmRcIm3c
 // What building with TDD actually looks like

@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService, Grape} from "../../services/backend/backend.service";
+import {BackendService} from "../../services/backend/backend.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AddGrapeComponent} from "./add-grape/add-grape.component";
 import {Observable, of, switchMap} from "rxjs";
+import {Grape} from "../../models/common.model";
 
 @Component({
   selector: 'app-druvor',

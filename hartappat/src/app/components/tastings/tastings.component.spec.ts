@@ -3,12 +3,12 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TastingsComponent} from './tastings.component';
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {TastingComponent} from "./tasting/tasting.component";
-import {WineTasting} from "../../services/backend/backend.service";
 import {Observable, of} from "rxjs";
 import {CreateTastingComponent} from "./create-tasting/create-tasting.component";
 import {RouterTestingModule} from "@angular/router/testing";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {TastingService} from "../../services/backend/tasting.service";
+import {WineTasting} from "../../models/tasting.model";
 
 describe('TastingsComponent', () => {
   let component: TastingsComponent;

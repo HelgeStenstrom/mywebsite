@@ -1,10 +1,11 @@
 import {TestBed} from '@angular/core/testing';
 
-import {BackendService, Grape} from './backend.service';
+import {BackendService,} from './backend.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Observable} from "rxjs";
 import {TestScheduler} from "rxjs/testing";
 import {WineService} from "./wine.service";
+import {Grape} from "../../models/common.model";
 
 describe('BackendService', () => {
 

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
-import {WineTastingSummary} from "../../services/backend/backend.service";
 import {Observable, of} from "rxjs";
 import {TastingService} from "../../services/backend/tasting.service";
+import {WineTastingSummary} from "../../models/tasting.model";
 
 @Component({
   selector: 'app-tastings',

@@ -1,8 +1,9 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {BackendService, Grape} from "../../../services/backend/backend.service";
+import {BackendService,} from "../../../services/backend/backend.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Observable} from "rxjs";
+import {Grape} from "../../../models/common.model";
 
 @Component({
   selector: 'app-add-grape',

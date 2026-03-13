@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {WineTypeApi} from "../../services/backend/backend.service";
 import {WineTypeService} from "../../services/backend/wine-type.service";
+import {WineTypeApi} from "../../models/common.model";
 
 @Component({
   selector: 'app-wine-types',

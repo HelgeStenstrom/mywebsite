@@ -4,16 +4,7 @@ import {Observable, Subject, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {environment} from "../../../environments/environment";
 
-import {WineApi, WineCreate, WineView} from "../../models/wine.model";
-import {WineTastingApi, WineTastingCreate, WineTastingSummary, WineTastingWine} from '../../models/tasting.model';
-
 import {Grape} from '../../models/common.model';
-
-
-export type { WineView, WineApi, WineCreate } from '../../models/wine.model';
-export type {WineTasting, WineTastingSummary, WineTastingWine, WineTastingApi, WineTastingHost, WineTastingCreate, WineTastingWineCreate} from '../../models/tasting.model';
-export type {CountryApi, WineTypeApi, Grape, Member} from '../../models/common.model';
-
 
 
 @Injectable({

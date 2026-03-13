@@ -1,8 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {WineView} from "../../services/backend/backend.service";
 import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {Observable, of, switchMap} from "rxjs";
 import {WineService} from "../../services/backend/wine.service";
+import {WineView} from "../../models/wine.model";
 
 @Component({
   selector: 'app-wines',

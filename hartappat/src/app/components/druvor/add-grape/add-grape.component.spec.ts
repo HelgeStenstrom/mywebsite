@@ -1,13 +1,14 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AddGrapeComponent} from './add-grape.component';
-import {BackendService, Grape} from "../../../services/backend/backend.service";
+import {BackendService} from "../../../services/backend/backend.service";
 import {Observable, of} from "rxjs";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {FormControl, FormGroup} from "@angular/forms";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Grape} from "../../../models/common.model";
 
 // Informative: https://testing-angular.com/testing-components-with-children/
 

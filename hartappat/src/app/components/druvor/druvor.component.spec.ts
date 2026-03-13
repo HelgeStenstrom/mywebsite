@@ -1,11 +1,12 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DruvorComponent} from './druvor.component';
-import {BackendService, Grape} from "../../services/backend/backend.service";
+import {BackendService} from "../../services/backend/backend.service";
 import {Observable, of} from "rxjs";
 import {DebugElement, NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {MatDialog} from "@angular/material/dialog";
+import {Grape} from "../../models/common.model";
 
 describe('DruvorComponent', () => {
   let druvorComponent: DruvorComponent;

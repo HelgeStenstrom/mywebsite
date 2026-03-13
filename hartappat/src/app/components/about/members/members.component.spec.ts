@@ -1,9 +1,9 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {MembersComponent} from './members.component';
-import {Member} from "../../../services/backend/backend.service";
 import {Observable, of} from "rxjs";
 import {MemberService} from "../../../services/backend/member.service";
+import {Member} from "../../../models/common.model";
 
 describe('MembersComponent', () => {
   let component: MembersComponent;
