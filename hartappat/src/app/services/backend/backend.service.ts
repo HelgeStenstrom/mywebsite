@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from "@angular/common/http";
-import {Observable, Subject, throwError} from "rxjs";
-import {catchError} from "rxjs/operators";
+import {HttpClient} from "@angular/common/http";
+import {Subject} from "rxjs";
 import {environment} from "../../../environments/environment";
 
 import {Grape} from '../../models/common.model';
@@ -30,47 +29,6 @@ export class BackendService {
     return this.grapesSubject.asObservable();
   }
 
-
-  addGrape(grape: Grape): Observable<Grape> {
-    const url = `${this.apiBase}/grapes`;
-    const objectObservable: Observable<Grape> = this.http.post<Grape>(url, grape);
-    return objectObservable.pipe(catchError(this.handleError));
-  }
-
-  getGrapes(): Observable<Grape[]> {
-    const url: string = this.apiBase + '/grapes';
-    return this.http
-      .get<Grape[]>(url)
-      .pipe(
-        catchError(this.handleError));
-  }
-
-  patchGrape(id: number, to: Grape): Observable<Grape> {
-    const url = `${this.apiBase}/grapes/${id}`;
-    const objectObservable: Observable<Grape> = this.http.patch<Grape>(url, to);
-    return objectObservable.pipe(catchError(this.handleError));
-  }
-
-  deleteGrape(grape: Grape): Observable<Grape> {
-    const url: string = this.apiBase + `/grapes/${grape.id}`;
-
-    return this.http.delete<Grape>(url);
-  }
-
-
-  private handleError(error: HttpErrorResponse): Observable<never> { // From https://angular.io/guide/http#getting-error-details
-    if (error.status === 0) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong.
-      console.error(
-        `Backend returned code ${error.status}, body was: `, error.error);
-    }
-    // Return an observable with a user-facing error message.
-    return throwError(() => new Error('Something bad happened; please try again later.'));
-  }
 
 }
 

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {BackendService} from "../../services/backend/backend.service";
 import {MatDialog} from "@angular/material/dialog";
 import {AddGrapeComponent} from "./add-grape/add-grape.component";
 import {Observable, of, switchMap} from "rxjs";
 import {Grape} from "../../models/common.model";
+import {GrapeService} from "../../services/backend/grape.service";
 
 @Component({
   selector: 'app-druvor',
@@ -13,7 +13,7 @@ import {Grape} from "../../models/common.model";
 export class DruvorComponent implements OnInit {
   grapes$: Observable<Grape[]> = of([]);
 
-  constructor(private dialog: MatDialog, private service: BackendService) {}
+  constructor(private readonly dialog: MatDialog, private readonly service: GrapeService) {}
 
   ngOnInit(): void {
     this.grapes$ = this.service.getGrapes();
@@ -24,7 +24,7 @@ export class DruvorComponent implements OnInit {
   }
 
   deleteGrape(grape: Grape) {
-    const deletedGrape$ = this.service.deleteGrape(grape);
+    const deletedGrape$ = this.service.deleteGrape(grape.id);
 
     this.grapes$ = deletedGrape$.pipe(
       switchMap(() => this.service.getGrapes())

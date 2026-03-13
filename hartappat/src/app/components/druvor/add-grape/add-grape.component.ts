@@ -1,9 +1,10 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup} from "@angular/forms";
-import {BackendService,} from "../../../services/backend/backend.service";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Observable} from "rxjs";
 import {Grape} from "../../../models/common.model";
+import {GrapeService} from "../../../services/backend/grape.service";
+import {BackendService} from "../../../services/backend/backend.service";
 
 @Component({
   selector: 'app-add-grape',
@@ -21,7 +22,8 @@ export class AddGrapeComponent implements OnInit {
   });
 
   constructor(
-    private service: BackendService,
+    private grapeService: GrapeService,
+    private backendService: BackendService,
     public dialogRef: MatDialogRef<AddGrapeComponent>,
     @Inject(MAT_DIALOG_DATA) public grapeToEdit: Grape
   ) {
@@ -50,13 +52,13 @@ export class AddGrapeComponent implements OnInit {
 
       let patchGrape$: Observable<Grape>;
       if (this.isEditCall()) {
-        patchGrape$ = this.service.patchGrape(this.grapeToEdit.id, g);
+        patchGrape$ = this.grapeService.patchGrape(this.grapeToEdit.id, g);
         this.closeDialog();
       } else {
-        patchGrape$ = this.service.addGrape(g);
+        patchGrape$ = this.grapeService.addGrape(g);
       }
       patchGrape$.subscribe((savedGrape) => {
-        this.service.newEvent(savedGrape);
+        this.backendService.newEvent(savedGrape);
         this.grapeAdded.emit(savedGrape);
       });
     }

@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
-import {BackendService,} from "../../services/backend/backend.service";
 import {Grape} from "../../models/common.model";
+import {GrapeService} from "../../services/backend/grape.service";
 
 @Component({
   selector: 'app-alt-druvor',
@@ -11,7 +11,7 @@ import {Grape} from "../../models/common.model";
 export class AltDruvorComponent implements OnInit {
   grapes: Observable<(Grape)[]>;
 
-  constructor(private service: BackendService) {
+  constructor(private service: GrapeService) {
     this.grapes = service.getGrapes();
   }
 
@@ -21,7 +21,7 @@ export class AltDruvorComponent implements OnInit {
 
   deleteGrape(grape: Grape) : Observable<Grape[]> {
 
-    return this.service.deleteGrape(grape)
+    return this.service.deleteGrape(grape.id)
       .pipe(() => this.service.getGrapes());
 
   }

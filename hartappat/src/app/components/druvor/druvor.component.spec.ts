@@ -1,12 +1,12 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {DruvorComponent} from './druvor.component';
-import {BackendService} from "../../services/backend/backend.service";
 import {Observable, of} from "rxjs";
 import {DebugElement, NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {MatDialog} from "@angular/material/dialog";
 import {Grape} from "../../models/common.model";
+import {GrapeService} from "../../services/backend/grape.service";
 
 describe('DruvorComponent', () => {
   let druvorComponent: DruvorComponent;
@@ -15,18 +15,13 @@ describe('DruvorComponent', () => {
   const cs: Grape = {id: 1, name:'Cabernet Sauvignon', color:'blå'};
   const riesling: Grape = {id: 2, name:'Riesling', color:'grön'};
 
-  const backendServiceStub: Partial<BackendService> = {
+  const grapeServiceStub: Partial<GrapeService> = {
     getGrapes(): Observable<Grape[]> {
-      // console.log('getGrapes() within backendServiceStup was called');
-
       return of([riesling, cs]);
     },
 
-    get events(): Observable<Grape> {
-      return of({id:1, name:'a name', color: 'a color'})
-    },
 
-    deleteGrape(grape: Grape): Observable<Grape> {
+    deleteGrape(id: number): Observable<Grape> {
       // console.log('deleteGrape() within backendServiceStup was called');
       return of({id: 1, name:'Name', color:'color'});
     }
@@ -36,7 +31,7 @@ describe('DruvorComponent', () => {
     await TestBed.configureTestingModule({
       declarations: [ DruvorComponent ],
       providers: [
-        {provide: BackendService, useValue: backendServiceStub},
+        {provide: GrapeService, useValue: grapeServiceStub},
         {provide: MatDialog, useValue: {}}
       ],
       schemas:[NO_ERRORS_SCHEMA]

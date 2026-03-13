@@ -1,9 +1,9 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AltDruvorComponent} from './alt-druvor.component';
-import {BackendService} from "../../services/backend/backend.service";
 import {of} from "rxjs";
 import {Grape} from "../../models/common.model";
+import {GrapeService} from "../../services/backend/grape.service";
 
 describe('AltDruvorComponent', () => {
   let component: AltDruvorComponent;
@@ -12,7 +12,7 @@ describe('AltDruvorComponent', () => {
     {id: 1, name: 'Rondo', color: 'blå'},
     {id: 2, name: 'Solaris', color: 'grön'}];
 
-  const backendServiceStub = {
+  const grapeServiceStub = {
     addGrape: jest.fn().mockReturnValue(of(void 1)),
     deleteGrape: jest.fn().mockReturnValue(of({id: 1, name:'not deleted yet', color:'a color'})),
     getGrapes: jest.fn().mockReturnValue(of(defaultGrapes)),
@@ -23,7 +23,7 @@ describe('AltDruvorComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [ AltDruvorComponent ],
-      providers: [{provide: BackendService, useValue: backendServiceStub}]
+      providers: [{provide: GrapeService, useValue: grapeServiceStub}]
     })
     .compileComponents();
 
@@ -61,7 +61,7 @@ describe('AltDruvorComponent', () => {
 
 
     it('should call backend getGrapes', () => {
-      expect(backendServiceStub.getGrapes).toHaveBeenCalled();
+      expect(grapeServiceStub.getGrapes).toHaveBeenCalled();
     });
 
 
@@ -71,8 +71,8 @@ describe('AltDruvorComponent', () => {
     const aGrape: Grape = {id: 1, name: 'a name', color: 'a color'};
     component.deleteGrape(aGrape)
       .subscribe((grapes: Grape[]) => {
-          expect(backendServiceStub.deleteGrape).toHaveBeenCalledWith(aGrape);
-          expect(backendServiceStub.getGrapes).toHaveBeenCalledTimes(2); // In constructor, in delete method
+          expect(grapeServiceStub.deleteGrape).toHaveBeenCalledWith(aGrape);
+          expect(grapeServiceStub.getGrapes).toHaveBeenCalledTimes(2); // In constructor, in delete method
           expect(grapes).toBe(defaultGrapes);
         });
 

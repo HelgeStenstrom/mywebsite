@@ -9,6 +9,8 @@ import {FormControl, FormGroup} from "@angular/forms";
 import {HttpClientTestingModule} from "@angular/common/http/testing";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Grape} from "../../../models/common.model";
+import {GrapeService} from "../../../services/backend/grape.service";
+import {WineService} from "../../../services/backend/wine.service";
 
 // Informative: https://testing-angular.com/testing-components-with-children/
 
@@ -17,7 +19,7 @@ describe('AddGrapeComponent test with mock', () => {
   let fixture: ComponentFixture<AddGrapeComponent>;
 
   const cs: Grape = {id: 0, name: 'Cabernet Sauvignon', color: 'blå'};
-  const backendServiceStub: Partial<BackendService> = {
+  const grapeServiceStub: Partial<GrapeService> = {
     getGrapes(): Observable<Grape[]> {
       const r: Grape = {id: 0, name: 'Riesling', color: 'grön'};
       return of([r, cs]);
@@ -29,7 +31,7 @@ describe('AddGrapeComponent test with mock', () => {
       imports: [HttpClientTestingModule],
       declarations: [AddGrapeComponent],
       providers: [
-        {provide: BackendService, useValue: backendServiceStub},
+        {provide: BackendService, useValue: grapeServiceStub},
         {provide: MAT_DIALOG_DATA, useValue: {}},
         {provide: MatDialogRef, useValue: {}}],
       schemas: [NO_ERRORS_SCHEMA]})
@@ -79,22 +81,33 @@ describe('AddGrapeComponent with jasmine spies', () => {
   let fixture: ComponentFixture<AddGrapeComponent>;
 
   let fakeBackend: BackendService;
+  let grapeServiceStub : Partial<GrapeService>;
+  let wineServiceStub : Partial<WineService>;
+
 
   beforeEach( async() => {
 
     fakeBackend = {
+      newEvent: jest.fn(),
+    } as unknown as BackendService;
+
+    grapeServiceStub = {
       addGrape: jest.fn().mockReturnValue(of(void 1)),
       deleteGrape: jest.fn(),
       getGrapes: jest.fn(),
-      getWines: jest.fn(),
       patchGrape: jest.fn(),
-      newEvent: jest.fn(),
-    } as unknown as BackendService;
+    }
+
+    wineServiceStub = {
+      getWines: jest.fn(),
+    }
 
     await TestBed.configureTestingModule({
       declarations: [AddGrapeComponent],
       providers: [
         {provide: BackendService, useValue: fakeBackend},
+        {provide: GrapeService, useValue: grapeServiceStub},
+        {provide: WineService, useValue: wineServiceStub},
         {provide: MatDialogRef, useValue: {}},
         {provide: MAT_DIALOG_DATA, useValue: {}},
       ],
@@ -109,16 +122,16 @@ describe('AddGrapeComponent with jasmine spies', () => {
   it('Doesnt call the backend when adding a grape, if there is no grape definition', () => {
 
     component.addGrape();
-    expect(fakeBackend.addGrape).toHaveBeenCalledTimes(0);  // Fails now; why?
-    expect(fakeBackend.getGrapes).toHaveBeenCalledTimes(0);
+    expect(grapeServiceStub.addGrape).toHaveBeenCalledTimes(0);  // Fails now; why?
+    expect(grapeServiceStub.getGrapes).toHaveBeenCalledTimes(0);
   });
 
   it('calls the backend when adding a grape', () => {
     component.grapeForm.setValue({name: 'saf', color: 'sdf'});
 
     component.addGrape();
-    expect(fakeBackend.addGrape).toHaveBeenCalled();  // Fails now; why?
-    expect(fakeBackend.getGrapes).toHaveBeenCalledTimes(0);
+    expect(grapeServiceStub.addGrape).toHaveBeenCalled();  // Fails now; why?
+    expect(grapeServiceStub.getGrapes).toHaveBeenCalledTimes(0);
   });
 
 });
