@@ -1,7 +1,8 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
-import {BackendService, WineView} from "../../services/backend/backend.service";
+import {WineView} from "../../services/backend/backend.service";
 import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {Observable, of, switchMap} from "rxjs";
+import {WineService} from "../../services/backend/wine.service";
 
 @Component({
   selector: 'app-wines',
@@ -9,25 +10,22 @@ import {Observable, of, switchMap} from "rxjs";
   styleUrls: ['./wines.component.css']
 })
 
-export class WinesComponent implements OnInit {
-  private service: BackendService;
+class WinesComponent implements OnInit {
+
   wines : WineView[] = [];
   @ViewChild(WineEntryComponent)
   private _wineComponent!: WineEntryComponent;
   winesAsync$: Observable<WineView[]> = of([]);
-  constructor(service: BackendService) {
-    this.service = service;
-
-  }
+  constructor(private readonly wineService: WineService,) {}
 
   ngOnInit(): void {
 
-    this.service.getWines()
+    this.wineService.getWines()
       .subscribe((w: WineView[]) => {
       this.wines = w;
     });
 
-    this.winesAsync$ = this.service.getWines();
+    this.winesAsync$ = this.wineService.getWines();
 
   }
 
@@ -41,19 +39,21 @@ export class WinesComponent implements OnInit {
 
   delete(w: WineView) {
 
-    const deletedWine$ = this.service.deleteWine(w);
+    const deletedWine$ = this.wineService.deleteWine(w);
 
     this.winesAsync$ = deletedWine$.pipe(
-      switchMap(() => this.service.getWines())
+      switchMap(() => this.wineService.getWines())
     );
   }
 
   addWineToList() {
     const wine = this._wineComponent.getWine();
-    const observable = this.service.addWine(wine);
+    const observable = this.wineService.addWine(wine);
     this.winesAsync$ = observable
       .pipe(
-        switchMap(() => this.service.getWines())
+        switchMap(() => this.wineService.getWines())
       )
   }
 }
+
+export default WinesComponent

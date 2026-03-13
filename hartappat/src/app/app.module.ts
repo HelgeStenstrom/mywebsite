@@ -14,7 +14,7 @@ import {HomeComponent} from './components/home/home.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
 import {AboutComponent} from './components/about/about.component';
-import {WinesComponent} from './components/wines/wines.component';
+import WinesComponent from './components/wines/wines.component';
 import {TravelsComponent} from './components/travels/travels.component';
 import {VinmonopoletComponent} from './components/vinmonopolet/vinmonopolet.component';
 import {WikipediaComponent} from './components/wikipedia/wikipedia.component';

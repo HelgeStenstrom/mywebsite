@@ -1,13 +1,15 @@
 import {TestBed} from '@angular/core/testing';
 
-import {BackendService, Grape, WineApi, WineCreate, WineTasting, WineTastingApi, WineView} from './backend.service';
+import {BackendService, Grape, WineTasting, WineTastingApi} from './backend.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Observable} from "rxjs";
 import {TestScheduler} from "rxjs/testing";
+import {WineService} from "./wine.service";
 
 describe('BackendService', () => {
 
   let backendService: BackendService;
+  let wineService: WineService;
   let testScheduler: TestScheduler;
   let httpTestingController: HttpTestingController;
 
@@ -15,7 +17,7 @@ describe('BackendService', () => {
     TestBed.configureTestingModule(
       {
         imports: [HttpClientTestingModule],
-        providers: [BackendService],
+        providers: [BackendService, WineService],
       }
     );
 
@@ -24,6 +26,7 @@ describe('BackendService', () => {
     });
 
     backendService = TestBed.inject(BackendService);
+    wineService = TestBed.inject(WineService);
     httpTestingController = TestBed.inject(HttpTestingController);
 
   });
@@ -89,89 +92,6 @@ describe('BackendService', () => {
 
     });
 
-
-  });
-
-  describe('Wines', () => {
-
-    const aWine: WineView = {
-      isUsed: false,
-      id: 4711,
-      name: 'N',
-      country: 'Country',
-      wineType: 'Cat',
-      systembolaget: 1234,
-      volume: 750
-    };
-    const aWineApi: WineApi = {
-      isUsed: false,
-      id: 4711,
-      name: 'N',
-      country: {id: 1, name: 'Country'},
-      wineType: {id: 2, name: 'Cat'},
-      systembolaget: 1234,
-      volume: 750,
-      vintageYear: null,
-      isNonVintage: false,
-    };
-
-    let url: string;
-
-    beforeEach(() => {
-      url = backendService.apiBase + '/wines';
-    });
-
-    it('gets the Wines', done => {
-      const expectedWines: WineView[] = [aWine];
-
-      backendService.getWines()
-        .subscribe(result => {
-          expect(result).toEqual(expectedWines);
-          done();
-        });
-
-      const req = httpTestingController.expectOne(url);
-      expect(req.request.method).toEqual('GET');
-      req.flush([aWineApi]);
-    });
-
-    it('should fetch a wine by id', done => {
-      const mockWine: WineApi = {
-        id: 42,
-        name: 'Château Margaux',
-        country: { id: 1, name: 'France' },
-        wineType: { id: 1, name: 'Red' },
-        vintageYear: 2018,
-        isNonVintage: false,
-        isUsed: false
-      };
-
-      backendService.getWine(42)
-        .subscribe(wine => {
-          expect(wine).toEqual(mockWine);
-          done();
-        });
-
-      const req = httpTestingController.expectOne(`${url}/42`);
-      expect(req.request.method).toBe('GET');
-      req.flush(mockWine);
-
-    })
-
-    it('adds a Wine', done => {
-      // Värdet nedan är ändrat för att kompilatorn ska godkänna typen, men testet har inte körts efter det.
-      const aWine: WineCreate = {name: 'N', countryId: 2, wineTypeId: 3, systembolaget: 1234, volume: 750};
-
-      backendService.addWine(aWine)
-        .subscribe(() => {
-          done();
-        });
-
-      const req = httpTestingController.expectOne(url);
-      expect(req.request.method).toEqual('POST');
-      expect(req.request.body).toEqual(aWine);
-      req.flush(aWine);
-    });
 
   });
 

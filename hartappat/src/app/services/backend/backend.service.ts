@@ -120,52 +120,6 @@ export class BackendService {
     return this.http.get<WineTastingWine[]>(url).pipe(catchError(this.handleError));
   }
 
-  addWine(wine: WineCreate): Observable<void> {
-
-    const url = `${this.apiBase}/wines`;
-    const objectObservable: Observable<void> = this.http.post<void>(url, wine);
-    return objectObservable.pipe(catchError(this.handleError));
-  }
-
-  deleteWine(wine: WineView): Observable<WineView> {
-    const url: string = this.apiBase + `/wines/${wine.id}`;
-
-    return this.http.delete<WineView>(url);
-  }
-
-  getWine(id: number): Observable<WineApi> {
-   return this.http.get<WineApi>(`${this.apiBase}/wines/${id}`);
-  }
-
-  getWines(): Observable<WineView[]> {
-    const url: string = this.apiBase + '/wines';
-    return this.http.get<WineApi[]>(url).pipe(
-      map(wines =>
-        wines.map(wine => this.toWineView(wine))
-      ),
-      catchError(this.handleError)
-    );
-  }
-
-
-  private toWineView(wine: WineApi): WineView {
-    const maybeVintage = wine.vintageYear
-      ? wine.vintageYear.toString()
-      : undefined;
-    return {
-      id: wine.id,
-      name: wine.name,
-      country: wine.country.name,
-      wineType: wine.wineType.name,
-      systembolaget: wine.systembolaget,
-      volume: wine.volume,
-      createdAt: wine.createdAt,
-      vintage: wine.isNonVintage
-        ? 'NV'
-        : maybeVintage,
-      isUsed: wine.isUsed,
-    };
-  }
 
   private handleError(error: HttpErrorResponse): Observable<never> { // From https://angular.io/guide/http#getting-error-details
     if (error.status === 0) {
