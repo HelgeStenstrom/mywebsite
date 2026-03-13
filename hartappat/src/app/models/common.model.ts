@@ -18,7 +18,13 @@ export type Grape = {
 
 
 
+export type MemberCreate = {
+  given: string;
+  surname: string;
+}
+
 export type Member = {
+  id: number;
   given: string;
   surname: string;
 }

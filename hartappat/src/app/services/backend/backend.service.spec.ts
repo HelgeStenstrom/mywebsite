@@ -1,15 +1,6 @@
 import {TestBed} from '@angular/core/testing';
 
-import {
-  BackendService,
-  Grape,
-  Member,
-  WineApi,
-  WineCreate,
-  WineTasting,
-  WineTastingApi,
-  WineView
-} from './backend.service';
+import {BackendService, Grape, WineApi, WineCreate, WineTasting, WineTastingApi, WineView} from './backend.service';
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
 import {Observable} from "rxjs";
 import {TestScheduler} from "rxjs/testing";
@@ -184,30 +175,6 @@ describe('BackendService', () => {
 
   });
 
-  describe('Members', () => {
-
-    it('calls getMembers()', done => {
-
-      const aMemberFromBackend = {given: 'Nomen', surname: 'Nescio'};
-      const membersFromBackend = [aMemberFromBackend];
-      const expectedMember: Member = {given: 'Nomen', surname: 'Nescio'};
-      const expectedMembers = [expectedMember];
-
-      const url = backendService.apiBase + '/members';
-
-      backendService.getMembers$()
-        .subscribe(result => {
-          expect(result).toEqual(expectedMembers);
-          done();
-        });
-
-      const req = httpTestingController.expectOne(url);
-      expect(req.request.method).toEqual('GET');
-      req.flush(membersFromBackend);
-
-    });
-
-  });
 
   describe('Tastings', () => {
 
