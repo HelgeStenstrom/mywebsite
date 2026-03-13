@@ -23,7 +23,6 @@ import {MatSelectModule} from "@angular/material/select";
 import {MatRadioModule} from "@angular/material/radio";
 import {MatInputModule} from "@angular/material/input";
 import {MAT_DIALOG_DATA, MAT_DIALOG_DEFAULT_OPTIONS, MatDialogModule, MatDialogRef} from "@angular/material/dialog";
-import {FiledropComponent} from './components/filedrop/filedrop.component';
 import {DndDirective} from './dnd.directive';
 import {TestbenchComponent} from './components/testbench/testbench.component';
 import {TastingsComponent} from './components/tastings/tastings.component';
@@ -50,7 +49,6 @@ import {CreateTastingComponent} from './components/tastings/create-tasting/creat
     TravelsComponent,
     VinmonopoletComponent,
     WikipediaComponent,
-    FiledropComponent,
     DndDirective,
     TestbenchComponent,
     TastingsComponent,
