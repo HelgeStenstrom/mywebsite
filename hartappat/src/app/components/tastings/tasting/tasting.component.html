@@ -9,7 +9,7 @@
   <p><strong>Värdar:</strong></p>
   <ul>
     <li *ngFor="let h  of tasting.hosts">
-      Medlem ID: {{ h.memberId }}
+      Medlem ID: {{ h.memberId }}, {{ memberNames.get(h.memberId) ?? 'Okänd' }}
     </li>
   </ul>
 
