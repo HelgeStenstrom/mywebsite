@@ -31,7 +31,11 @@ export class TastingComponent implements OnInit {
     this.memberService.getMembers().subscribe(members => {
       members.forEach(m => this.memberNames.set(m.id, m.given));
     });
+  }
 
+  onWineAdded(): void {
+    const id = this.tasting?.id ?? Number(this.route.snapshot.paramMap.get('id'));
+    this.fullTasting$ = this.service.getTasting(id);
   }
 
 

@@ -57,6 +57,7 @@ export class AddWineToTastingComponent implements OnInit {
         wineId: this.form.value.wineId,
         position: this.form.value.position,
         purchasePrice: this.form.value.purchasePrice,
+        averageScore: this.form.value.averageScore,
       };
       this.tastingService.addWineToTasting(this.tastingId, data).subscribe(() => {
         this.wineAdded.emit();
