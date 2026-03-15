@@ -54,4 +54,41 @@ export class MemberHandlers {
 
         }
     }
+
+    patchMemberById() {
+        return async (req, res) => {
+            const id = Number(req.params.id);
+            const data = req.body;
+            if (!id || isNaN(id) || id <= 0) {
+                return res.status(400).send({ error: 'Invalid member id' });
+            }
+
+            const updated = await this.orm.members.update(id, data);
+            if (!updated) {
+                res.status(404).json({ status: 404, message: 'Member not found' });
+                return;
+            }
+            res.status(200).json(updated);
+        }
+    }
+
+    getMemberById() {
+        return async (req, res) => {
+            try {
+                const id = Number(req.params.id);
+                const member = await this.orm.members.findById(id);
+
+                if (!member) {
+                   return res.status(404).json({ message: `Member with id ${id} not found` });
+
+                }
+                res.status(200).json(member);
+
+            } catch (e) {
+                console.error(e);
+                res.status(500).end();
+            }
+
+        }
+    }
 }

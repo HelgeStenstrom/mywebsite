@@ -47,6 +47,8 @@ export function setupEndpoints(router: Express, orm: Orm) {
     router.get('/api/v1/members', memberHandlers.getMembers());
     router.post('/api/v1/members', memberHandlers.postMember());
     router.delete('/api/v1/members/:id', memberHandlers.deleteMemberById());
+    router.patch('/api/v1/members/:id', memberHandlers.patchMemberById());
+    router.get('/api/v1/members/:id', memberHandlers.getMemberById());
 
     router.post('/api/v1/tastings/:id/wines', wineTastingWineHandlers.postTastingWine());
     router.get('/api/v1/tastings/:id/wines', wineTastingWineHandlers.getTastingWines());

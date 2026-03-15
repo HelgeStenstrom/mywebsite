@@ -33,4 +33,23 @@ export class MemberRepository {
         await this.Member.destroy({where: {id: id}})
         return 'deleted';
     }
+
+    async findById(id: number) {
+        const member = await this.Member.findByPk(id);
+        if (!member) {
+            return null;
+        }
+        return this.toMemberDto(member);
+    }
+
+    async update(id: number, member: MemberCreateDto): Promise<MemberDto|null> {
+        const { id: _ignored, ...safeData } = member as any;
+        await this.Member.update(safeData, {where: {id}})
+
+        const updated = await this.Member.findByPk(id);
+        if (!updated) {
+            return null;
+        }
+        return this.toMemberDto(updated);
+    }
 }
