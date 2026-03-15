@@ -1,7 +1,7 @@
 import {TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {TastingService} from './tasting.service';
-import {WineTastingApi, WineTastingCreate} from '../../models/tasting.model';
+import {WineTastingApi, WineTastingCreate, WineTastingWine, WineTastingWineCreate} from '../../models/tasting.model';
 
 describe('TastingService', () => {
 
@@ -93,5 +93,30 @@ describe('TastingService', () => {
   })
 
 
+  test('It adds a wine to a tasting', done => {
+    const wineCreate: WineTastingWineCreate = {
+      wineId: 1,
+      position: 2,
+      purchasePrice: 129,
+    };
+
+    const expectedWine: WineTastingWine = {
+      id: 1,
+      wineId: 1,
+      position: 2,
+      purchasePrice: 129,
+      averageScore: null,
+    };
+
+    service.addWineToTasting(1, wineCreate).subscribe(result => {
+      expect(result).toEqual(expectedWine);
+      done();
+    });
+
+    const req = httpTestingController.expectOne(`${url}/1/wines`);
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual(wineCreate);
+    req.flush(expectedWine);
+  });
 
 });

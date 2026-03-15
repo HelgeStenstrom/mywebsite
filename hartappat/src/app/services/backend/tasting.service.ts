@@ -1,7 +1,13 @@
 import {environment} from "../../../environments/environment";
 import {Observable} from "rxjs";
 import {catchError, map} from "rxjs/operators";
-import {WineTasting, WineTastingCreate, WineTastingSummary, WineTastingWine} from "../../models/tasting.model";
+import {
+  WineTasting,
+  WineTastingCreate,
+  WineTastingSummary,
+  WineTastingWine,
+  WineTastingWineCreate
+} from "../../models/tasting.model";
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {handleError} from "./handle-error";
@@ -38,6 +44,10 @@ export class TastingService {
   }
 
 
+  addWineToTasting(tastingId: number, wine: WineTastingWineCreate): Observable<WineTastingWine> {
+    const url = `${this.apiBase}/tastings/${tastingId}/wines`;
+    return this.http.post<WineTastingWine>(url, wine).pipe(catchError(handleError));
+  }
 
   getTastings(): Observable<WineTastingSummary[]> {
 

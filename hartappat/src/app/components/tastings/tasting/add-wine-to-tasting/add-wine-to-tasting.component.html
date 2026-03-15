@@ -1,1 +1,37 @@
 <p>add-wine-to-tasting works!</p>
+<div>
+  <h3>Lägg till vin</h3>
+  <form [formGroup]="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Sök vin</mat-label>
+      <input formControlName="search" matInput placeholder="Skriv för att söka...">
+    </mat-form-field>
+
+    <ul *ngIf="filteredWines.length > 0 && form.value.search">
+      <li *ngFor="let w of filteredWines" (click)="selectWine(w)" style="cursor:pointer">
+        {{w.name}} ({{w.country}}, {{w.wineType}})
+      </li>
+    </ul>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Position</mat-label>
+      <input formControlName="position" type="number" matInput>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Inköpspris</mat-label>
+      <input formControlName="purchasePrice" type="number" matInput>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Medelbetyg</mat-label>
+      <input formControlName="averageScore" type="number" matInput>
+    </mat-form-field>
+
+    <button mat-raised-button color="primary"
+            [disabled]="!form.valid"
+            (click)="submit()">
+      Lägg till
+    </button>
+  </form>
+</div>
