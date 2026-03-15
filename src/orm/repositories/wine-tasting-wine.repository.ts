@@ -18,7 +18,7 @@ export class WineTastingWineRepository {
             wineId: wine.wineId,
             position: wine.position,
             purchasePrice: wine.purchasePrice ?? null,
-            averageScore: null,
+            averageScore: wine.averageScore ?? null,
         })
 
         return this.toDto(created);

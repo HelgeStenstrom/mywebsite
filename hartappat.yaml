@@ -618,6 +618,10 @@ components:
         purchasePrice:
           type: integer
           nullable: true
+        averageScore:
+          type: number
+          format: float
+          nullable: true
 
     Wine:
       type: object

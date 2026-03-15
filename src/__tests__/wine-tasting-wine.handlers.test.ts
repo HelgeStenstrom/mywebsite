@@ -63,7 +63,7 @@ describe('WineTastingWine handler tests', () => {
         });
     })
 
-    test('GET /tastings/:id/wines returns list of wines', async () => {
+    test('GET /tastings/:id/wines returns list of wines with price and score', async () => {
         const tasting = await request(app)
             .post('/api/v1/tastings')
             .send({
@@ -98,6 +98,7 @@ describe('WineTastingWine handler tests', () => {
                 wineId: wine.body.id,
                 position: 1,
                 purchasePrice: 129,
+                averageScore: 13.1,
             })
             .expect(201);
 
@@ -110,7 +111,7 @@ describe('WineTastingWine handler tests', () => {
             wineId: wine.body.id,
             position: 1,
             purchasePrice: 129,
-            averageScore: null,
+            averageScore: 13.1,
         }]);
     });
 

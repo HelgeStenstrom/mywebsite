@@ -39,6 +39,7 @@ describe('WineTastingWineRepository', () => {
             wineId: 0,
             position: 0,
             purchasePrice: 129,
+            averageScore: 12.3,
         }
 
         await repository.create(tasting.id, toCreate);
@@ -50,7 +51,7 @@ describe('WineTastingWineRepository', () => {
             wineId: 0,
             position: 0,
             purchasePrice: 129,
-            averageScore: null,
+            averageScore: 12.3,
         })
     })
 

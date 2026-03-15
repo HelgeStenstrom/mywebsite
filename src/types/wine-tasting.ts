@@ -66,6 +66,7 @@ export type WineTastingWineCreateDto = {
     wineId: number;
     position: number;
     purchasePrice?: number | null;
+    averageScore?: number | null;
 }
 
 interface WineTastingWineAttributes {
