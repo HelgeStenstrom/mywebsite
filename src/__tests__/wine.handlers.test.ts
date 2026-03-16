@@ -10,6 +10,29 @@ describe('Wine handlers test', () => {
         app = await createTestApp();
     });
 
+    async function postAWine() {
+        const country = await request(app)
+            .post('/api/v1/countries')
+            .send({name: 'Sverige'})
+            .expect(201);
+
+        const wineType = await request(app)
+            .post('/api/v1/wine-types')
+            .send({name: 'rött'})
+            .expect(201);
+
+        const wine = await request(app)
+            .post('/api/v1/wines')
+            .send({
+                name: 'Testvin',
+                countryId: country.body.id,
+                wineTypeId: wineType.body.id,
+                isNonVintage: false,
+            })
+            .expect(201);
+        return wine;
+    }
+
     test.each([
         { isNonVintage: true,  vintageYear: 2019, expectedStatus: 400 },
         { isNonVintage: true,  vintageYear: null, expectedStatus: 201 },
@@ -40,25 +63,7 @@ describe('Wine handlers test', () => {
 
     test('GET wines/:id for a wine that is in a tasting, returns it marked as in use.', async () => {
         // First create a wine
-        const country = await request(app)
-            .post('/api/v1/countries')
-            .send({ name: 'Sverige' })
-            .expect(201);
-
-        const wineType = await request(app)
-            .post('/api/v1/wine-types')
-            .send({ name: 'rött' })
-            .expect(201);
-
-        const wine = await request(app)
-            .post('/api/v1/wines')
-            .send({
-                name: 'Testvin',
-                countryId: country.body.id,
-                wineTypeId: wineType.body.id,
-                isNonVintage: false,
-            })
-            .expect(201);
+        const wine = await postAWine();
 
 
         // also create a tasting
@@ -110,25 +115,7 @@ describe('Wine handlers test', () => {
     })
 
     test('GET /wines/:id returns the wine', async () => {
-        const country = await request(app)
-            .post('/api/v1/countries')
-            .send({ name: 'Sverige' })
-            .expect(201);
-
-        const wineType = await request(app)
-            .post('/api/v1/wine-types')
-            .send({ name: 'rött' })
-            .expect(201);
-
-        const created = await request(app)
-            .post('/api/v1/wines')
-            .send({
-                name: 'Testvin',
-                countryId: country.body.id,
-                wineTypeId: wineType.body.id,
-                isNonVintage: false,
-            })
-            .expect(201);
+        const created = await postAWine();
 
         const found = await request(app)
             .get(`/api/v1/wines/${created.body.id}`)
@@ -142,5 +129,35 @@ describe('Wine handlers test', () => {
             .get('/api/v1/wines/99999')
             .expect(404);
     });
+
+
+    test('PATCH /wines/:id returns 404 when not found', async () => {
+        await request(app)
+            .patch('/api/v1/wines/99999')
+            .send({name: 'test'})
+            .expect(404);
+    });
+
+    test('PATCH /wines/:id returns 200 with updated wine', async () => {
+        const created = await postAWine();
+
+        const res = await request(app)
+            .patch(`/api/v1/wines/${created.body.id}`)
+            .send({name: 'New name'})
+            .expect(200);
+
+        expect(res.body.name).toBe('New name');
+    })
+
+    test('PATCH /wines/:id can add vintageYear', async () => {
+        const created = await postAWine();
+        const res = await request(app)
+            .patch(`/api/v1/wines/${created.body.id}`)
+            .send({vintageYear: 2020})
+            .expect(200);
+
+        expect(res.body.vintageYear).toBe(2020);
+
+    })
 
 });

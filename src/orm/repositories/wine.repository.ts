@@ -139,4 +139,15 @@ export class WineRepository {
         });
         return 'deleted';
     }
+
+    async update(id: number, wine: WineCreateDto): Promise<WineDto | null> {
+        const { id: _ignored, ...safeData } = wine as any;
+        await this.Wine.update(safeData, {where: {id}})
+
+        const updated = await this.Wine.findByPk(id);
+        if (!updated) {
+            return null;
+        }
+        return this.toWineDto(updated);
+    }
 }

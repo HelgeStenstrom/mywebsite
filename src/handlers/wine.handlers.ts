@@ -75,4 +75,21 @@ export class WineHandlers {
             res.status(200).json(wine);
         }
     }
+
+    patchWineById() {
+        return async (req, res) => {
+            const id = Number(req.params.id);
+            const data = req.body;
+            if (!id || isNaN(id) || id <= 0) {
+                return res.status(400).send({ error: 'Invalid wine id' });
+            }
+
+            const updated = await this.orm.wines.update(id, data);
+            if (!updated) {
+                res.status(404).json({ status: 404, message: 'Wine not found' });
+                return;
+            }
+            res.status(200).json(updated);
+        }
+    }
 }
