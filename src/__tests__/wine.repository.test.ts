@@ -1,15 +1,21 @@
 import {ModelStatic, Sequelize} from "sequelize";
-import {WineCreateDto, WineDto, WineInstance} from "../types/wine";
+import {WineCreateDto, WineDto, WineGrapeInstance, WineInstance} from "../types/wine";
 import {WineRepository} from "../orm/repositories/wine.repository";
 import {CountryInstance} from "../types/country";
 import {WineTypeInstance} from "../types/wine-type";
 import {defineWine} from "../orm/models/wine.model";
 import {defineCountry} from "../orm/models/country.model";
 import {defineWineType} from "../orm/models/wine-type.model";
-import {connectWineAndCountry, connectWineAndWineTastingWine, connectWineAndWineType} from "../orm";
+import {
+    connectWineAndCountry,
+    connectWineAndWineGrape,
+    connectWineAndWineTastingWine,
+    connectWineAndWineType
+} from "../orm";
 import {defineTasting} from "../orm/models/tasting.model";
 import {defineWineTastingWine} from "../orm/models/wine-tasting-wine.model";
 import {WineTastingInstance, WineTastingWineInstance} from "../types/wine-tasting";
+import {defineWineGrape} from "../orm/models/wine-grape.model";
 
 describe('WineRepository', () => {
     let sequelize: Sequelize;
@@ -19,6 +25,7 @@ describe('WineRepository', () => {
     let wineTypeDefinition: ModelStatic<WineTypeInstance>;
     let wineTastingWineDefinition: ModelStatic<WineTastingWineInstance>;
     let tastingDefinition: ModelStatic<WineTastingInstance>;
+    let wineGrapeDefinition: ModelStatic<WineGrapeInstance>;
 
         beforeEach(async () => {
             sequelize = new Sequelize('test', 'test', 'test', {dialect: "sqlite", logging: false});
@@ -27,15 +34,21 @@ describe('WineRepository', () => {
             countryDefinition = defineCountry(sequelize);
             wineTypeDefinition = defineWineType(sequelize);
             wineTastingWineDefinition = defineWineTastingWine(sequelize);
-            tastingDefinition = defineTasting(sequelize);
+            tastingDefinition = defineTasting(sequelize);wineGrapeDefinition = defineWineGrape(sequelize);
 
             connectWineAndWineType(wineDefinition, wineTypeDefinition);
             connectWineAndCountry(wineDefinition, countryDefinition);
             connectWineAndWineTastingWine(wineDefinition, wineTastingWineDefinition);
+            connectWineAndWineGrape(wineDefinition, wineGrapeDefinition);
 
             await sequelize.sync({force: true})
 
-            wineRepository = new WineRepository(wineDefinition, countryDefinition, wineTypeDefinition, wineTastingWineDefinition,);
+            wineRepository = new WineRepository(
+                wineDefinition,
+                countryDefinition,
+                wineTypeDefinition,
+                wineTastingWineDefinition,
+                wineGrapeDefinition,);
         });
 
     afterEach(async () => {
@@ -64,6 +77,7 @@ describe('WineRepository', () => {
                 id: 1,
                 name: "rött",
             },
+            grapes: [],
             id: 1,
             name: 'Testvin',
             country: {
@@ -176,6 +190,7 @@ describe('WineRepository', () => {
             name: 'Testvin',
             country: {id:1,name: "Sverige"},
             wineType: {id:1, name: "rött"},
+            grapes: [],
             createdAt: null,
             isUsed: false,
             isNonVintage: false,
@@ -186,6 +201,33 @@ describe('WineRepository', () => {
 
 
     })
+
+    test('find wine by id includes grapes', async () => {
+        const country = await countryDefinition.create({name: "Sverige"});
+        const wineType = await wineTypeDefinition.create({name: "rött"});
+
+        const created = await wineRepository.create({
+            name: 'Testvin',
+            countryId: country.id,
+            wineTypeId: wineType.id,
+            isNonVintage: false,
+        });
+
+        await wineGrapeDefinition.create({
+            wineId: created.id,
+            grapeId: 1,
+            percentage: 75.5,
+        });
+
+        const found = await wineRepository.findById(created.id);
+
+        expect(found.grapes).toEqual([{
+            id: expect.any(Number),
+            wineId: created.id,
+            grapeId: 1,
+            percentage: 75.5,
+        }]);
+    });
 
     }
 )

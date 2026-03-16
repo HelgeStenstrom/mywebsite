@@ -8,6 +8,7 @@ export type WineDto = {
     name: string;
     country: CountryRef;
     wineType: WineTypeRef;
+    grapes?: WineGrapeDto[];
     vintageYear: number | null;
     isNonVintage: boolean;
     systembolaget: number | null;
@@ -30,6 +31,7 @@ interface WineAssociations {
     winetypeModel?: WineTypeDto;
     countryModel?: CountryDto;
     wineTastingWines?: { id: number }[];
+    wineGrapes?: WineGrapeDto[];
 }
 
 /**

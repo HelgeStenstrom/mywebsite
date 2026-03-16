@@ -1,5 +1,5 @@
 import {ModelStatic} from "sequelize";
-import {WineCreateDto, WineDto, WineInstance} from "../../types/wine";
+import {WineCreateDto, WineDto, WineGrapeInstance, WineInstance} from "../../types/wine";
 import {CountryInstance} from "../../types/country";
 import {WineTypeInstance} from "../../types/wine-type";
 import {WineTastingWineInstance} from "../../types/wine-tasting";
@@ -11,6 +11,7 @@ export class WineRepository {
         private readonly Country: ModelStatic<CountryInstance>,
         private readonly WineType: ModelStatic<WineTypeInstance>,
         private readonly WineTastingWine: ModelStatic<WineTastingWineInstance>,
+        private readonly WineGrape: ModelStatic<WineGrapeInstance>,
     ) {}
 
     // TODO: Find if code duplication in the includes structures can be removed
@@ -61,8 +62,11 @@ export class WineRepository {
                     as: 'winetypeModel',
                 },
 
-                { model: this.WineTastingWine,
-                    as: 'wineTastingWines' },
+                {
+                    model: this.WineTastingWine,
+                    as: 'wineTastingWines'
+                },
+                {model: this.WineGrape, as: 'wineGrapes'},
             ]
         });
         if (!withIncludes) {
@@ -106,6 +110,12 @@ export class WineRepository {
             id: w.id,
             name: w.name,
             systembolaget: w.systembolaget,
+            grapes: (w.wineGrapes ?? []).map(g => ({
+                id: g.id,
+                wineId: g.wineId,
+                grapeId: g.grapeId,
+                percentage: g.percentage ?? null,
+            })),
             volume: w.volume,
             vintageYear: w.vintageYear ?? null,
             isNonVintage: w.isNonVintage ?? false,

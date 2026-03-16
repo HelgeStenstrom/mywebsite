@@ -160,4 +160,33 @@ describe('Wine handlers test', () => {
 
     })
 
+
+    test('GET /wines/:id returns grapes for the wine', async () => {
+        const wine = await postAWine();
+
+        const grape = await request(app)
+            .post('/api/v1/grapes')
+            .send({name: 'Pinot Noir', color: 'blå'})
+            .expect(201);
+
+        await request(app)
+            .post(`/api/v1/wines/${wine.body.id}/grapes`)
+            .send({
+                grapeId: grape.body.id,
+                percentage: 75.5,
+            })
+            .expect(201);
+
+        const found = await request(app)
+            .get(`/api/v1/wines/${wine.body.id}`)
+            .expect(200);
+
+        expect(found.body.grapes).toEqual([{
+            id: expect.any(Number),
+            wineId: wine.body.id,
+            grapeId: grape.body.id,
+            percentage: 75.5,
+        }]);
+    });
+
 });

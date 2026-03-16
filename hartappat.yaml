@@ -701,6 +701,10 @@ components:
           $ref: '#/components/schemas/Country'
         wineType:
           $ref: '#/components/schemas/WineType'
+        grapes:
+          type: array
+          items:
+            $ref: '#/components/schemas/WineGrape'
         vintageYear:
           type: integer
           nullable: true

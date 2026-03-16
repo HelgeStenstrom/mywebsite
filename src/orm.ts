@@ -52,24 +52,24 @@ export class Orm {
         const tastingHost: ModelStatic<WineTastingHostInstance> = defineWineTastingHost(this.sequelize);
         const wine: ModelStatic<WineInstance> = defineWine(this.sequelize);
         const wineTastingWine: ModelStatic<WineTastingWineInstance> = defineWineTastingWine(this.sequelize);
-        const grapeGrape: ModelStatic<WineGrapeInstance> = defineWineGrape(this.sequelize);
+        const wineGrape: ModelStatic<WineGrapeInstance> = defineWineGrape(this.sequelize);
 
         connectWineAndCountry(wine, country);
         connectWineAndWineType(wine, wineType);
         connectTastingAndTastingHost(tasting, member, tastingHost);
         connectTastingAndTastingWine(tasting, wineTastingWine);
         connectWineAndWineTastingWine(wine, wineTastingWine);
-        connectWineAndWineGrape(wine, grapeGrape);
+        connectWineAndWineGrape(wine, wineGrape);
 
         this.grapes = new GrapeRepository(grape);
         this.tastings = new TastingRepository(tasting, tastingHost, member, wineTastingWine);
         this.countries = new CountryRepository(country, wine);
         this.members = new MemberRepository(member);
         this.wineTypes = new WineTypeRepository(wineType, wine);
-        this.wines = new WineRepository(wine, country, wineType, wineTastingWine);
+        this.wines = new WineRepository(wine, country, wineType, wineTastingWine, wineGrape);
         this.tastingWines = new WineTastingWineRepository(wineTastingWine)
         this.wineTastingHosts = new WineTastingHostRepository(tastingHost);
-        this.wineGrapes = new WineGrapeRepository(grapeGrape);
+        this.wineGrapes = new WineGrapeRepository(wineGrape);
     }
 
 
