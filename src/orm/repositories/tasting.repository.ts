@@ -119,4 +119,16 @@ export class TastingRepository {
         const deleted = await this.Tasting.destroy({ where: { id } });
         return deleted > 0;
     }
+
+    async update(id: number, tasting: WineTastingCreateDto): Promise<WineTastingDto | null> {
+        const {id: _ignored, ...safeData} = tasting as any;
+        await this.Tasting.update(safeData, {where: {id}})
+
+        const updated = await this.Tasting.findByPk(id);
+        if (!updated) {
+            return null;
+        }
+        return this.toTastingDto(updated)
+
+    }
 }

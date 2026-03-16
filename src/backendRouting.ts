@@ -59,6 +59,8 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.get('/api/v1/tastings/:id', tastingHandlers.getTasting());
     router.delete('/api/v1/tastings/:id', tastingHandlers.deleteTastingById());
+    router.patch('/api/v1/tastings/:id', tastingHandlers.patchTastingById());
+
     router.get('/api/v1/tastings/', tastingHandlers.getTastings());
     router.post('/api/v1/tastings/', tastingHandlers.postTasting());
 

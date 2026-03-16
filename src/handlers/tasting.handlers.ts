@@ -81,4 +81,23 @@ export class TastingHandlers {
         }
     }
 
+    patchTastingById() {
+        return async (req, res) => {
+            const id = Number(req.params.id);
+
+            if (!id || isNaN(id) || id <= 0) {
+                return res.status(400).send({ error: 'Invalid tasting id' });
+            }
+
+
+            const { title, notes, tastingDate } = req.body;
+            const updated = await this.orm.tastings.update(id, { title, notes, tastingDate });
+            if (!updated) {
+                res.status(404).json({ status: 404, message: 'Tasting not found' });
+                return;
+            }
+            res.status(200).json(updated);
+        }
+
+    }
 }
