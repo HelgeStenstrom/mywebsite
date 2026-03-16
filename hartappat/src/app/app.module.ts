@@ -38,6 +38,7 @@ import {CreateTastingComponent} from './components/tastings/create-tasting/creat
 import {
   AddWineToTastingComponent
 } from './components/tastings/tasting/add-wine-to-tasting/add-wine-to-tasting.component';
+import {WineGrapesComponent} from './components/wine-grapes/wine-grapes.component';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import {
     CountriesComponent,
     WineTypesComponent,
     CreateTastingComponent,
-    AddWineToTastingComponent
+    AddWineToTastingComponent,
+    WineGrapesComponent
   ],
   imports: [
     BrowserModule,
