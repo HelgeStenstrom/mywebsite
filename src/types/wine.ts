@@ -55,3 +55,25 @@ export interface WineInstance extends Model<WineAttributes>, WineAttributes, Win
 export interface WineWithTasting extends WineInstance {
     wineTastingWines?: { id: number }[];
 }
+
+
+export type WineGrapeDto = {
+    id: number;
+    wineId: number;
+    grapeId: number;
+    percentage: number | null;
+};
+
+export type WineGrapeCreateDto = {
+    grapeId: number;
+    percentage?: number | null;
+};
+
+export interface WineGrapeAttributes {
+    id: number;
+    wineId: number;
+    grapeId: number;
+    percentage?: number | null;
+}
+
+export interface WineGrapeInstance extends Model<WineGrapeAttributes>, WineGrapeAttributes {}

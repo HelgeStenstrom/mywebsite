@@ -773,6 +773,8 @@ components:
       properties:
         id:
           type: integer
+        wineId:
+          type: integer
         grapeId:
           type: integer
         percentage:

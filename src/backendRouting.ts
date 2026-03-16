@@ -11,6 +11,7 @@ import {WineTypeHandlers} from "./handlers/wine-type.handlers";
 import {WineHandlers} from "./handlers/wine.handlers";
 import {WineTastingWineHandlers} from "./handlers/wine-tasting-wine.handlers";
 import {WineTastingHostHandlers} from "./handlers/wine-tasting-host.handlers";
+import {WineGrapeHandlers} from "./handlers/wine-grape.handlers";
 
 function getConfiguredApp(): Express {
     const app: Express = express();
@@ -32,6 +33,7 @@ export function setupEndpoints(router: Express, orm: Orm) {
     const wineHandlers = new WineHandlers(orm);
     const wineTastingWineHandlers = new WineTastingWineHandlers(orm);
     const wineTastingHostHandlers = new WineTastingHostHandlers(orm);
+    const wineGrapeHandlers = new WineGrapeHandlers(orm);
 
     router.get('/api/v1/countries', countryHandlers.getCountries());
     router.post('/api/v1/countries', countryHandlers.postCountries());
@@ -75,6 +77,9 @@ export function setupEndpoints(router: Express, orm: Orm) {
     router.post('/api/v1/wine-types', wineTypeHandlers.postWineType());
     router.get('/api/v1/wine-types', wineTypeHandlers.getWineTypes());
     router.delete('/api/v1/wine-types/:id', wineTypeHandlers.deleteWineTypeById());
+
+    router.get('/api/v1/wines/:id/grapes', wineGrapeHandlers.getWineGrapes());
+    router.post('/api/v1/wines/:id/grapes', wineGrapeHandlers.postWineGrape());
 
     app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
         console.error('Unhandled error:', err);
