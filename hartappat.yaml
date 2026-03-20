@@ -408,6 +408,35 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /wines/{id}/grapes{wineGrapeId}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the wine
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: wineGrapeId
+        in: path
+        description: ID of the grape to delette
+        required: true
+        schema:
+          type: integer
+          format: int64
+    delete:
+      summary: Delete a grape from a wine
+      description: Deletes a grape from an existing wine
+      responses:
+        204:
+          description: Grape deleted successfully from wine
+        404:
+          description: Grape not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /tastings/{id}/wines:
     parameters:
       - name: id

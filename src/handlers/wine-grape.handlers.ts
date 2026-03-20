@@ -27,4 +27,30 @@ export class WineGrapeHandlers {
             res.status(201).json(created);
         };
     }
+
+    deleteWineGrapeById() {
+        return async (req, res) => {
+            const wineId = Number(req.params.id);
+            const wineGrapeId = Number(req.params.wineGrapeId);
+
+            // wineId doesn't seem to be needed to be able to delete a wine grape,
+            // but let's test that the selected wine actually contains the grape to be deleted.
+
+            const wineGrapeDtos = await this.orm.wines.findById(wineId);
+            if (!wineGrapeDtos) {
+                return res.status(404).json({error: 'Wine not found'});
+            }
+            const wineGrapeIds = wineGrapeDtos.grapes.map(g => g.id);
+
+            if (!wineGrapeIds.includes(Number(wineGrapeId))) {
+                return res.status(404).json({error: 'Wine grape not found'});
+            }
+
+            const deleted = await this.orm.wineGrapes.delete(wineGrapeId);
+            if (!deleted) {
+                return res.status(404).json({error: 'Wine grape not found'});
+            }
+            res.status(204).send();
+        };
+    }
 }

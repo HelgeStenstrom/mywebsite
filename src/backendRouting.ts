@@ -80,6 +80,7 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.get('/api/v1/wines/:id/grapes', wineGrapeHandlers.getWineGrapes());
     router.post('/api/v1/wines/:id/grapes', wineGrapeHandlers.postWineGrape());
+    router.delete('/api/v1/wines/:id/grapes/:wineGrapeId', wineGrapeHandlers.deleteWineGrapeById());
 
     app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
         console.error('Unhandled error:', err);

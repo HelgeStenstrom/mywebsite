@@ -40,3 +40,15 @@ export type WineApi = {
   isUsed: boolean;
 };
 
+export type WineGrape = {
+  id: number;
+  wineId: number;
+  grapeId: number;
+  percentage: number | null;
+};
+
+export type WineGrapeCreate = {
+  grapeId: number;
+  percentage?: number | null;
+};
+

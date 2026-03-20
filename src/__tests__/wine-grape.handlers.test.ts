@@ -94,4 +94,52 @@ describe('WineGrape handler tests', () => {
 
         expect(res.body.percentage).toBeNull();
     });
+
+    test('DELETE a non-existing wine grape returns 404', async () => {
+        const wineWithoutGrapes = await postAWine();
+
+        await request(app)
+            .delete(`/api/v1/wines/${wineWithoutGrapes.body.id}/grapes/99999`)
+            .expect(404);
+    });
+
+    test('DELETE a wine grape returns 204', async () => {
+        const wine = await postAWine();
+        const grape = await postAGrape();
+
+        const res = await request(app)
+            .post(`/api/v1/wines/${wine.body.id}/grapes`)
+            .send({
+                grapeId: grape.body.id,
+                percentage: 75.5,
+            })
+            .expect(201);
+
+        await request(app)
+            .delete(`/api/v1/wines/${wine.body.id}/grapes/${res.body.id}`)
+            .expect(204);
+    });
+
+    test('DELETE a wine grape removes the grape from the wine', async () => {
+        const wine = await postAWine();
+        const grape = await postAGrape();
+        const wineGrape = await request(app)
+            .post(`/api/v1/wines/${wine.body.id}/grapes`)
+            .send({
+                grapeId: grape.body.id,
+                percentage: 75.5,
+            })
+            .expect(201);
+
+        const res = await request(app)
+            .delete(`/api/v1/wines/${wine.body.id}/grapes/${wineGrape.body.id}`)
+            .expect(204);
+
+        const found = await request(app)
+            .get(`/api/v1/wines/${wine.body.id}`)
+            .expect(200);
+
+        expect(found.body.grapes).toEqual([]);
+
+    })
 });
