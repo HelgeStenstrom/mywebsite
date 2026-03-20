@@ -21,7 +21,10 @@ export class MemberService {
         map(ms => ms
           .map(m => ({
             id: m.id,
-            given: m.given, surname: m.surname}))),
+            given: m.given,
+            surname: m.surname})
+          )
+        ),
       );
   }
 

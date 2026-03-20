@@ -1,6 +1,6 @@
 import {WineService} from "./wine.service";
 import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
-import {WineApi, WineCreate, WineView} from "../../models/wine.model";
+import {WineApi, WineCreate, WineGrape, WineGrapeCreate, WineView} from "../../models/wine.model";
 import {TestBed} from "@angular/core/testing";
 
 
@@ -100,6 +100,41 @@ describe('WineService', () => {
     const req = httpTestingController.expectOne(`${url}/1`);
     expect(req.request.method).toEqual('DELETE');
     req.flush(null);
+  })
+
+  describe('WineGrapeservice', () => {
+
+    test('returns wine grapes for a given wine id', () => {
+      const mockGrapes: WineGrape[] = [
+        { id: 1, wineId: 10, grapeId: 3, percentage: 75 },
+        { id: 2, wineId: 10, grapeId: 5, percentage: 25 },
+      ];
+
+      service.getWineGrapes(10).subscribe(result => {
+        expect(result).toEqual(mockGrapes);
+      });
+
+      const req = httpTestingController.expectOne(`${url}/10/grapes` );
+      expect(req.request.method).toBe('GET');
+      req.flush(mockGrapes);
+    });
+
+
+
+    test('posts grape and returns created wine grape', () => {
+      const toCreate: WineGrapeCreate = { grapeId: 3, percentage: 75 };
+      const mockResponse: WineGrape = { id: 1, wineId: 10, grapeId: 3, percentage: 75 };
+
+      service.addWineGrape(10, toCreate).subscribe(result => {
+        expect(result).toEqual(mockResponse);
+      });
+
+      const req = httpTestingController.expectOne(`${url}/10/grapes`);
+      expect(req.request.method).toBe('POST');
+      expect(req.request.body).toEqual(toCreate);
+      req.flush(mockResponse, { status: 201, statusText: 'Created' });
+    });
+
   })
 
 });

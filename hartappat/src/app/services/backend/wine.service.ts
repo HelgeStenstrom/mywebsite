@@ -3,7 +3,7 @@ import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {catchError, map} from "rxjs/operators";
-import {WineApi, WineCreate, WineView} from "../../models/wine.model";
+import {WineApi, WineCreate, WineGrape, WineGrapeCreate, WineView} from "../../models/wine.model";
 import {handleError} from "./handle-error";
 
 @Injectable({
@@ -44,6 +44,12 @@ export class WineService {
   }
 
 
+  getWineGrapes(wineId: number): Observable<WineGrape[]> {
+    const url: string = this.apiBase + `/wines/${wineId}/grapes`;
+    return this.http.get<WineGrape[]>(url)
+      .pipe(catchError(handleError));
+  }
+
   private toWineView(wine: WineApi): WineView {
     const maybeVintage = wine.vintageYear
       ? wine.vintageYear.toString()
@@ -63,4 +69,9 @@ export class WineService {
     };
   }
 
+  addWineGrape(wineId: number, toCreate: WineGrapeCreate): Observable<WineGrape> {
+    const url = `${this.apiBase}/wines/${wineId}/grapes`;
+    const objectObservable: Observable<WineGrape> = this.http.post<WineGrape>(url, toCreate);
+    return objectObservable.pipe(catchError(handleError));
+  }
 }
