@@ -1,6 +1,9 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AddWineToTastingComponent} from './add-wine-to-tasting.component';
+import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {ReactiveFormsModule} from "@angular/forms";
+import {NO_ERRORS_SCHEMA} from '@angular/core';
 
 describe('AddWineToTastingComponent', () => {
   let component: AddWineToTastingComponent;
@@ -8,7 +11,12 @@ describe('AddWineToTastingComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AddWineToTastingComponent]
+      declarations: [AddWineToTastingComponent],
+      imports: [
+        HttpClientTestingModule,
+        ReactiveFormsModule,
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     fixture = TestBed.createComponent(AddWineToTastingComponent);
     component = fixture.componentInstance;
