@@ -135,6 +135,16 @@ describe('WineService', () => {
       req.flush(mockResponse, { status: 201, statusText: 'Created' });
     });
 
+    test('deletes a wine grape', () => {
+      const wineId = 10;
+      service.deleteWineGrape(wineId, 1).subscribe();
+
+      const wineGrapeId = 1;
+      const req = httpTestingController.expectOne(`${url}/${wineId}/grapes/${wineGrapeId}`);
+      expect(req.request.method).toBe('DELETE');
+      req.flush(null, { status: 204, statusText: 'No Content' });
+    });
+
   })
 
 });
