@@ -3,6 +3,7 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {WineDetailComponent} from './wine-detail.component';
 import {RouterTestingModule} from "@angular/router/testing";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {ActivatedRoute, convertToParamMap} from "@angular/router";
 
 describe('WineDetailComponent', () => {
   let component: WineDetailComponent;
@@ -11,7 +12,17 @@ describe('WineDetailComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [WineDetailComponent],
-      imports: [RouterTestingModule],
+      imports: [RouterTestingModule.withRoutes([])],
+      providers: [
+      {
+        provide: ActivatedRoute,
+        useValue: {
+          snapshot: {
+            paramMap: convertToParamMap({ id: '42' }),
+          },
+        },
+      },
+    ],
       schemas: [NO_ERRORS_SCHEMA],
     });
     fixture = TestBed.createComponent(WineDetailComponent);
@@ -23,9 +34,13 @@ describe('WineDetailComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  // TODO: Add tests to check that the wine ID is fetched from the route
-  test.skip('should fetch wine ID from route', () => {
+  test('sets wineId from route parameter', () => {
+    const fixture = TestBed.createComponent(WineDetailComponent);
+    const component = fixture.componentInstance;
 
-    expect(component.wineId).toBe(1);
-  })
+    fixture.detectChanges();
+
+    expect(component.wineId).toBe(42);
+  });
+
 });
