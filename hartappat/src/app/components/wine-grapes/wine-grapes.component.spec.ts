@@ -76,5 +76,34 @@ describe('WineGrapesComponent', () => {
   });
 
 
+  test('adds a wine grape and refreshes the list', () => {
+    const updatedList: WineGrape[] = [...mockWineGrapes, { id: 3, wineId: 10, grapeId: 3, percentage: 50 }];
+
+    wineServiceMock.addWineGrape.mockReturnValue(of({ id: 3, wineId: 10, grapeId: 3, percentage: 50 }));
+    wineServiceMock.getWineGrapes.mockReturnValue(of(updatedList));
+
+    component.selectedGrapeId = 3;
+    component.percentage = 50;
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('[data-test="add-grape-button"]');
+    button.click();
+
+    expect(wineServiceMock.addWineGrape).toHaveBeenCalledWith(10, { grapeId: 3, percentage: 50 });
+    expect(wineServiceMock.getWineGrapes).toHaveBeenCalledTimes(2);
+  });
+
+  test('deletes a wine grape and refreshes the list', () => {
+    const updatedList: WineGrape[] = [mockWineGrapes[1]];
+
+    wineServiceMock.deleteWineGrape.mockReturnValue(of(void 0));
+    wineServiceMock.getWineGrapes.mockReturnValue(of(updatedList));
+
+    const buttons = fixture.nativeElement.querySelectorAll('[data-test="delete-grape-button"]');
+    buttons[0].click();
+
+    expect(wineServiceMock.deleteWineGrape).toHaveBeenCalledWith(10, 1);
+    expect(wineServiceMock.getWineGrapes).toHaveBeenCalledTimes(2);
+  });
 
 });

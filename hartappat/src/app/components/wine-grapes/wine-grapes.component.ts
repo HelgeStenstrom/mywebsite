@@ -17,6 +17,8 @@ export class WineGrapesComponent  implements OnInit {
   searchTerm = '' ;
   allGrapes: Grape[] = [];
   filteredGrapes: Grape[] = [];
+  selectedGrapeId?: number;
+  percentage?: number;
 
   constructor(private readonly wineService: WineService,
               private readonly grapeService: GrapeService,) { }
@@ -38,4 +40,24 @@ export class WineGrapesComponent  implements OnInit {
     this.filteredGrapes = filtered;
   }
 
+
+  addGrape(): void {
+    if (!this.selectedGrapeId) return;
+
+    const toCreate = {
+      grapeId: this.selectedGrapeId,
+      percentage: this.percentage,
+    };
+    this.wineService
+      .addWineGrape(this.wineId, toCreate)
+      .subscribe(() => {
+        this.wineGrapes$ = this.wineService.getWineGrapes(this.wineId);
+      });
+  }
+
+
+  protected deleteGrape(id: number) {
+    this.wineService.deleteWineGrape(this.wineId, id);
+    this.wineGrapes$ = this.wineService.getWineGrapes(this.wineId);
+  }
 }

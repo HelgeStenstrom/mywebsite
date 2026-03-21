@@ -75,9 +75,8 @@ export class WineService {
     return objectObservable.pipe(catchError(handleError));
   }
 
-  deleteWineGrape(wineId: number, wineGrapeId: number) {
+  deleteWineGrape(wineId: number, wineGrapeId: number): Observable<void> {
     const url = `${this.apiBase}/wines/${wineId}/grapes/${wineGrapeId}`;
-    const objectObservable: Observable<WineGrape> = this.http.delete<WineGrape>(url);
-    return objectObservable.pipe(catchError(handleError));
+    return this.http.delete<void>(url).pipe(catchError(handleError));
   }
 }

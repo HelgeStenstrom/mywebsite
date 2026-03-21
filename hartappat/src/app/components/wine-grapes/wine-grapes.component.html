@@ -2,4 +2,13 @@
 
 <div *ngFor="let wineGrape of wineGrapes$ | async">
   <p data-test="wine-grape-item">{{wineGrape.wineId}}: {{wineGrape.grapeId}}</p>
+  <button
+    (click)="deleteGrape(wineGrape.id)"
+    data-test="delete-grape-button"
+  >Ta bort</button>
 </div>
+
+<button
+  data-test="add-grape-button"
+  (click)="addGrape()"
+>Lägg till druva</button>
