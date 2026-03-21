@@ -1,1 +1,5 @@
 <p>wine-grapes works!</p>
+
+<div *ngFor="let wineGrape of wineGrapes$ | async">
+  <p data-test="wine-grape-item">{{wineGrape.wineId}}: {{wineGrape.grapeId}}</p>
+</div>
