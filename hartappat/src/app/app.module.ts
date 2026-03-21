@@ -39,6 +39,7 @@ import {
   AddWineToTastingComponent
 } from './components/tastings/tasting/add-wine-to-tasting/add-wine-to-tasting.component';
 import {WineGrapesComponent} from './components/wine-grapes/wine-grapes.component';
+import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import {WineGrapesComponent} from './components/wine-grapes/wine-grapes.componen
     WineTypesComponent,
     CreateTastingComponent,
     AddWineToTastingComponent,
-    WineGrapesComponent
+    WineGrapesComponent,
+    WineDetailComponent
   ],
   imports: [
     BrowserModule,
