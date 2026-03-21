@@ -22,6 +22,19 @@
   </tr>
 </table>
 
+<select [(ngModel)]="selectedGrapeId" data-test="grape-select">
+  <option [ngValue]="undefined">Välj druva</option>
+  <option *ngFor="let grape of filteredGrapes" [ngValue]="grape.id">
+    {{ grape.name }}
+  </option>
+</select>
+
+<input type="text" [(ngModel)]="searchTerm" (input)="updateFilter()" placeholder="Sök druva">
+
+<input type="number" [(ngModel)]="percentage" placeholder="Procent (valfritt)">
+
+
+
 <button
   data-test="add-grape-button"
   (click)="addGrape()"
