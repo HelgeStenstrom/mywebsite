@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {CountryService} from "../../services/backend/country.service";
 import {WineTypeService} from "../../services/backend/wine-type.service";
 import {CountryApi, WineTypeApi} from "../../models/common.model";
 import {WineCreate} from "../../models/wine.model";
+import {WineService} from "../../services/backend/wine.service";
 
 @Component({
   selector: 'app-wine',
@@ -10,11 +11,11 @@ import {WineCreate} from "../../models/wine.model";
   styleUrls: ['./wine-entry.component.css']
 })
 export class WineEntryComponent implements OnInit {
+  @Input() wineId?: number;
   countries: CountryApi[] = [];
   wineTypes: WineTypeApi[] = [];
 
   wineName = "";
-  typeSelect = "Annat";
   countryId?: number;
   wineTypeId?: number;
   systemNumber?: number;
@@ -25,12 +26,26 @@ export class WineEntryComponent implements OnInit {
   constructor(
     private readonly countryService: CountryService,
     private readonly wineTypeService: WineTypeService,
+    private readonly wineService: WineService,
     ) {
   }
 
   ngOnInit(): void {
     this.countryService.getCountries().subscribe(countries => {
       this.countries = countries;
+
+      if (this.wineId) {
+
+        this.wineService
+          .getWine(this.wineId)
+          .subscribe(wine => {
+            this.wineName = wine.name;
+            this.countryId = wine.country.id;
+            this.wineTypeId = wine.wineType.id;
+            this.vintage = wine.vintageYear ?? undefined;
+          })
+
+      }
     });
 
     this.wineTypeService.getWineTypes().subscribe(types => {

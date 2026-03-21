@@ -9,6 +9,7 @@ import {of} from "rxjs";
 import {CountryService} from "../../services/backend/country.service";
 import {WineTypeService} from "../../services/backend/wine-type.service";
 import {WineCreate} from "../../models/wine.model";
+import {WineService} from "../../services/backend/wine.service";
 
 // Inspired by https://youtu.be/uefGmRcIm3c
 // What building with TDD actually looks like
@@ -30,6 +31,19 @@ describe('WineComponent', () => {
     ]),
   }
 
+  const wineServiceMock = {
+    getWine: jest.fn().mockReturnValue(of({
+      id: 1,
+      name: 'Testvin',
+      country: { id: 1, name: 'Sverige' },
+      wineType: { id: 3, name: 'Rött' },
+      vintageYear: 2020,
+      isNonVintage: false,
+      isUsed: false,
+    })),
+    patchWine: jest.fn(),
+  };
+
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [WineEntryComponent],
@@ -37,11 +51,12 @@ describe('WineComponent', () => {
       providers: [
         {provide: CountryService, useValue: countryServiceMock},
         {provide: WineTypeService, useValue: wineTypeServiceMock},
+        { provide: WineService, useValue: wineServiceMock },
       ]
     }).compileComponents();
     fixture = TestBed.createComponent(WineEntryComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
+ //   fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -126,6 +141,7 @@ describe('WineComponent', () => {
 
     component.countryId = 1;
     component.wineTypeId = 3;
+    fixture.detectChanges();
 
     const expectedNumber = 23;
     const element = findElement("systembolaget-input").nativeElement;
@@ -134,6 +150,16 @@ describe('WineComponent', () => {
 
     const wine: WineCreate = component.getWine();
     expect(wine.systembolaget).toEqual(expectedNumber);
+  });
+
+  test('prefills form fields when wineId is set', () => {
+    component.wineId = 1;
+    fixture.detectChanges();
+
+    expect(component.wineName).toBe('Testvin');
+    expect(component.countryId).toBe(1);
+    expect(component.wineTypeId).toBe(3);
+    expect(component.vintage).toEqual(2020);
   });
 
 });
