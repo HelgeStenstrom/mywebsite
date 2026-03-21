@@ -79,4 +79,11 @@ export class WineService {
     const url = `${this.apiBase}/wines/${wineId}/grapes/${wineGrapeId}`;
     return this.http.delete<void>(url).pipe(catchError(handleError));
   }
+
+  patchWine(wineId: number, patch: Partial<WineCreate>): Observable<WineView> {
+    const url = `${this.apiBase}/wines/${wineId}`;
+    const objectObservable: Observable<WineView> = this.http.patch<WineView>(url, patch);
+    return objectObservable.pipe(catchError(handleError));
+
+  }
 }

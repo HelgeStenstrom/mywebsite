@@ -145,6 +145,21 @@ describe('WineService', () => {
       req.flush(null, { status: 204, statusText: 'No Content' });
     });
 
+
+    test('patches a wine and returns the updated wine', () => {
+      const patch: Partial<WineCreate> = { name: 'Nytt namn' };
+      const mockResponse: WineApi = { ...aWineApi, name: 'Nytt namn' };
+
+      service.patchWine(1, patch).subscribe(result => {
+        expect(result).toEqual(mockResponse);
+      });
+
+      const req = httpTestingController.expectOne(`${url}/1`);
+      expect(req.request.method).toBe('PATCH');
+      expect(req.request.body).toEqual(patch);
+      req.flush(mockResponse);
+    });
+
   })
 
 });
