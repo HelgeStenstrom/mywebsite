@@ -3,6 +3,7 @@ import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {Observable, of, switchMap} from "rxjs";
 import {WineService} from "../../services/backend/wine.service";
 import {WineView} from "../../models/wine.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-wines',
@@ -16,7 +17,8 @@ class WinesComponent implements OnInit {
   @ViewChild(WineEntryComponent)
   private _wineComponent!: WineEntryComponent;
   winesAsync$: Observable<WineView[]> = of([]);
-  constructor(private readonly wineService: WineService,) {}
+  constructor(private readonly wineService: WineService,
+              private readonly router: Router,) {}
 
   ngOnInit(): void {
 
@@ -34,7 +36,7 @@ class WinesComponent implements OnInit {
   }
 
   edit(w: WineView) {
-    // TODO: Implement edit(wine)
+    this.router.navigate(['/wines', w.id]);
   }
 
   delete(w: WineView) {

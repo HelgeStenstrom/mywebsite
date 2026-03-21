@@ -86,6 +86,7 @@ import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.co
       {path: 'voting', component: VotingComponent},
       {path: 'tastings/new', component: CreateTastingComponent},
       {path: 'tastings/:id', component: TastingComponent},
+      {path: 'wines/:id', component: WineDetailComponent},
       {path: 'tastings', component: TastingsComponent},
       {path: 'countries', component: CountriesComponent},
       {path: 'wine-types', component: WineTypesComponent},
