@@ -14,7 +14,7 @@ import {WineService} from "../../services/backend/wine.service";
 // Inspired by https://youtu.be/uefGmRcIm3c
 // What building with TDD actually looks like
 
-describe('WineComponent', () => {
+describe('WineEntryComponent', () => {
   let component: WineEntryComponent;
   let fixture: ComponentFixture<WineEntryComponent>;
 
@@ -41,10 +41,12 @@ describe('WineComponent', () => {
       isNonVintage: false,
       isUsed: false,
     })),
-    patchWine: jest.fn(),
+    patchWine: jest.fn().mockReturnValue(of({})),
+    addWine: jest.fn().mockReturnValue(of({})),
   };
 
   beforeEach(() => {
+    jest.clearAllMocks();
     TestBed.configureTestingModule({
       declarations: [WineEntryComponent],
       imports: [CommonModule, FormsModule],
@@ -56,7 +58,6 @@ describe('WineComponent', () => {
     }).compileComponents();
     fixture = TestBed.createComponent(WineEntryComponent);
     component = fixture.componentInstance;
- //   fixture.detectChanges();
   });
 
   it('should create', () => {
@@ -160,6 +161,39 @@ describe('WineComponent', () => {
     expect(component.countryId).toBe(1);
     expect(component.wineTypeId).toBe(3);
     expect(component.vintage).toEqual(2020);
+  });
+
+  test('should have a save button', () => {
+    fixture.detectChanges();
+    const button = fixture.nativeElement.querySelector('[data-test="add-wine-button"]');
+    expect(button).toBeTruthy();
+  });
+
+  test('calls addWine when saving without wineId', () => {
+    wineServiceMock.addWine = jest.fn().mockReturnValue(of({}));
+    component.wineName = 'Testvin';
+    component.countryId = 1;
+    component.wineTypeId = 3;
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('[data-test="add-wine-button"]');
+    button.click();
+
+    expect(wineServiceMock.addWine).toHaveBeenCalled();
+  });
+
+  test('calls patchWine when saving with wineId', () => {
+    component.wineId = 1;
+    component.wineName = 'Testvin';
+    component.countryId = 1;
+    component.wineTypeId = 3;
+    fixture.detectChanges();
+
+    const button = fixture.nativeElement.querySelector('[data-test="add-wine-button"]');
+    button.click();
+
+    expect(wineServiceMock.patchWine).toHaveBeenCalled();
+    expect(wineServiceMock.addWine).not.toHaveBeenCalled();
   });
 
 });

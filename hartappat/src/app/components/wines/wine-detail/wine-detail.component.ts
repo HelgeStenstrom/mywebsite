@@ -27,4 +27,9 @@ export class WineDetailComponent implements OnInit {
     });
   }
 
+  protected onWineSaved(): void {
+    this.wineService.getWine(this.wineId).subscribe(wine => {
+      this.wine = wine;
+    });
+  }
 }

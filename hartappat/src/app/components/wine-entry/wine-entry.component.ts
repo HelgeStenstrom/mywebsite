@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {CountryService} from "../../services/backend/country.service";
 import {WineTypeService} from "../../services/backend/wine-type.service";
 import {CountryApi, WineTypeApi} from "../../models/common.model";
@@ -69,4 +69,19 @@ export class WineEntryComponent implements OnInit {
     };
   }
 
+
+
+  @Output() wineSaved = new EventEmitter<void>();
+
+  save(): void {
+    if (this.wineId) {
+      this.wineService.patchWine(this.wineId, this.getWine()).subscribe(() => {
+        this.wineSaved.emit();
+      });
+    } else {
+      this.wineService.addWine(this.getWine()).subscribe(() => {
+        this.wineSaved.emit();
+      });
+    }
+  }
 }

@@ -2,6 +2,8 @@
 
 <h1>Detaljer om {{ wine?.name }}</h1>
 
+<app-wine-entry [wineId]="wineId" (wineSaved)="onWineSaved()"></app-wine-entry>
+
 <table *ngIf="wine">
   <tr><th>Namn</th><td>{{ wine.name }}</td></tr>
   <tr><th>Land</th><td>{{ wine.country.name }}</td></tr>

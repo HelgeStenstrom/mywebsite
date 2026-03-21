@@ -1,8 +1,7 @@
 <h2>Viner vi känner till (WinesComponent)</h2>
 
 <h2>Lägg till ett vin</h2>
-<app-wine-entry></app-wine-entry>
-<button (click)="addWineToList()" data-test="add-wine-button">Lägg till vinet enligt ovan</button>
+<app-wine-entry  (wineSaved)="onWineSaved()"></app-wine-entry>
 
 <h2>Viner som finns i databasen</h2>
 

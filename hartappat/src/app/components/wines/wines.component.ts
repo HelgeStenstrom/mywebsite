@@ -56,6 +56,9 @@ class WinesComponent implements OnInit {
         switchMap(() => this.wineService.getWines())
       )
   }
-}
+
+  onWineSaved(): void {
+    this.winesAsync$ = this.wineService.getWines();
+  }}
 
 export default WinesComponent
