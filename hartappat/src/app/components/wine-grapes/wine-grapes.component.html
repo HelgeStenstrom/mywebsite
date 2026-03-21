@@ -1,12 +1,26 @@
 <p>wine-grapes works!</p>
 
-<div *ngFor="let wineGrape of wineGrapes$ | async">
-  <p data-test="wine-grape-item">{{wineGrape.wineId}}: {{wineGrape.grapeId}}</p>
-  <button
-    (click)="deleteGrape(wineGrape.id)"
-    data-test="delete-grape-button"
-  >Ta bort</button>
-</div>
+<table>
+  <tr>
+    <th>Druva</th>
+    <th>Färg</th>
+    <th>Procent</th>
+  </tr>
+  <tr *ngFor="let wineGrape of wineGrapes$ | async"
+     data-test="wine-grape-item">
+    <td>{{ getGrapeName(wineGrape.grapeId) }}</td>
+    <td>{{ getGrapeColor(wineGrape.grapeId) }}</td>
+    <td>{{wineGrape.percentage}}</td>
+    <button mat-icon-button
+            color="warn"
+            (click)="deleteGrape(wineGrape.id)"
+            data-test="delete-grape-button"
+    >
+      <mat-icon>delete</mat-icon>
+    </button>
+
+  </tr>
+</table>
 
 <button
   data-test="add-grape-button"

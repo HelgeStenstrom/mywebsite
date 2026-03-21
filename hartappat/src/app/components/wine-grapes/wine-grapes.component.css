@@ -2,3 +2,10 @@
   display: block;
   background-color: #aff0eb;
 }
+
+td {
+  background-color: aliceblue;
+  padding: 3px;
+  margin: 2px;
+  border: 4px solid white;
+}

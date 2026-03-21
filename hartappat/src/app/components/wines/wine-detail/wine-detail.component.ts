@@ -1,5 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
+import {WineService} from "../../../services/backend/wine.service";
+import {WineApi} from "../../../models/wine.model";
 
 @Component({
   selector: 'app-wine-detail',
@@ -9,12 +11,20 @@ import {ActivatedRoute} from "@angular/router";
 export class WineDetailComponent implements OnInit {
   wineId!: number;
 
-  constructor(private readonly route: ActivatedRoute) {}
+  wine?: WineApi;
+
+  constructor(
+    private readonly wineService: WineService,
+    private readonly route: ActivatedRoute) {}
 
 
 
   ngOnInit(): void {
     this.wineId = Number(this.route.snapshot.paramMap.get('id'))
+
+    this.wineService.getWine(this.wineId).subscribe(wine => {
+      this.wine = wine;
+    });
   }
 
 }

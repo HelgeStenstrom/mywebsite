@@ -4,6 +4,8 @@ import {WineDetailComponent} from './wine-detail.component';
 import {RouterTestingModule} from "@angular/router/testing";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {ActivatedRoute, convertToParamMap} from "@angular/router";
+import {WineService} from "../../../services/backend/wine.service";
+import {of} from "rxjs";
 
 describe('WineDetailComponent', () => {
   let component: WineDetailComponent;
@@ -14,15 +16,30 @@ describe('WineDetailComponent', () => {
       declarations: [WineDetailComponent],
       imports: [RouterTestingModule.withRoutes([])],
       providers: [
-      {
-        provide: ActivatedRoute,
-        useValue: {
-          snapshot: {
-            paramMap: convertToParamMap({ id: '42' }),
+        {
+          provide: ActivatedRoute,
+          useValue: {
+            snapshot: {
+              paramMap: convertToParamMap({id: '42'}),
+            },
           },
         },
-      },
-    ],
+
+        {
+          provide: WineService,
+          useValue: {
+            getWine: jest.fn().mockReturnValue(of({
+              id: 42,
+              name: 'Testvin',
+              country: {id: 1, name: 'Sverige'},
+              wineType: {id: 1, name: 'Rött'},
+              vintageYear: 2020,
+              isNonVintage: false,
+              isUsed: false,
+            })),
+          },
+        },
+      ],
       schemas: [NO_ERRORS_SCHEMA],
     });
     fixture = TestBed.createComponent(WineDetailComponent);

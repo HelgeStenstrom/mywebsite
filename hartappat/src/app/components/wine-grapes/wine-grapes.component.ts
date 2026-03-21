@@ -10,23 +10,26 @@ import {Grape} from "../../models/common.model";
   templateUrl: './wine-grapes.component.html',
   styleUrls: ['./wine-grapes.component.css']
 })
-export class WineGrapesComponent  implements OnInit {
+export class WineGrapesComponent implements OnInit {
   @Input() wineId!: number;
 
   wineGrapes$: Observable<WineGrape[]> = of([]);
-  searchTerm = '' ;
+  searchTerm = '';
   allGrapes: Grape[] = [];
   filteredGrapes: Grape[] = [];
   selectedGrapeId?: number;
   percentage?: number;
 
   constructor(private readonly wineService: WineService,
-              private readonly grapeService: GrapeService,) { }
+              private readonly grapeService: GrapeService,) {
+  }
 
   ngOnInit(): void {
-    this.wineGrapes$ = this.wineService.getWineGrapes(this.wineId); this.grapeService.getGrapes().subscribe(grapes => {
+    this.wineGrapes$ = this.wineService.getWineGrapes(this.wineId);
+    this.grapeService.getGrapes().subscribe(grapes => {
       this.allGrapes = grapes;
     });
+
 
   }
 
@@ -57,7 +60,17 @@ export class WineGrapesComponent  implements OnInit {
 
 
   protected deleteGrape(id: number) {
-    this.wineService.deleteWineGrape(this.wineId, id);
-    this.wineGrapes$ = this.wineService.getWineGrapes(this.wineId);
+    this.wineService.deleteWineGrape(this.wineId, id)
+      .subscribe(() => {
+        this.wineGrapes$ = this.wineService.getWineGrapes(this.wineId);
+      })
   }
+
+  getGrapeName(grapeId: number): string {
+    return this.allGrapes.find(g => g.id === grapeId)?.name ?? '?';
+  }
+  getGrapeColor(grapeId: number): string {
+    return this.allGrapes.find(g => g.id === grapeId)?.color ?? '?';
+  }
+
 }
