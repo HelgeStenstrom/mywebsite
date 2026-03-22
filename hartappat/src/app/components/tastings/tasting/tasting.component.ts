@@ -51,4 +51,10 @@ export class TastingComponent implements OnInit {
   }
 
 
+  protected deleteWine(id: number) {
+    const tastingId = this.tasting?.id ?? Number(this.route.snapshot.paramMap.get('id'));
+    this.service.deleteWineFromTasting(tastingId, id).subscribe(() => {
+      this.fullTasting$ = this.service.getTasting(tastingId);
+    });
+  }
 }

@@ -26,6 +26,7 @@ describe('TastingComponent', () => {
 
   const tastingServiceMock = {
     getTasting: jest.fn().mockReturnValue(of(mockTasting)),
+    deleteWineFromTasting: jest.fn().mockReturnValue(of(void 0)),
   };
 
   const memberServiceMock = {
@@ -45,6 +46,8 @@ describe('TastingComponent', () => {
   };
 
   beforeEach(async () => {
+    jest.clearAllMocks();
+
     await TestBed.configureTestingModule({
       declarations: [TastingComponent],
       imports: [ RouterTestingModule],
@@ -83,5 +86,23 @@ describe('TastingComponent', () => {
     expect(cells[0].textContent).toContain('Rött');
   });
 
+  test('deletes a wine from tasting and refreshes', () => {
+    const firstWine = mockTasting.wines?.[0];
+    const secondWine = mockTasting.wines?.[1];
+    const updatedTasting = {
+      ...mockTasting,
+      wines: [secondWine],
+    };
+
+    tastingServiceMock.deleteWineFromTasting = jest.fn().mockReturnValue(of(void 0));
+    tastingServiceMock.getTasting = jest.fn().mockReturnValue(of(updatedTasting));
+
+    const buttons = fixture.nativeElement.querySelectorAll('[data-test="delete-tasting-wine-button"]');
+    buttons[0].click();
+
+    expect(tastingServiceMock.deleteWineFromTasting).toHaveBeenCalledWith(1, firstWine?.id);
+
+    expect(tastingServiceMock.deleteWineFromTasting).toHaveBeenCalledWith(1, firstWine?.id);
+  });
 
 });
