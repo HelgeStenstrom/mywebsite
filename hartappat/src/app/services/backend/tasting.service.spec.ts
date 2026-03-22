@@ -1,7 +1,13 @@
 import {TestBed} from '@angular/core/testing';
 import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
 import {TastingService} from './tasting.service';
-import {WineTastingApi, WineTastingCreate, WineTastingWine, WineTastingWineCreate} from '../../models/tasting.model';
+import {
+  WineTastingApi,
+  WineTastingCreate,
+  WineTastingWine,
+  WineTastingWineCreate,
+  WineTastingWineUpdate
+} from '../../models/tasting.model';
 
 describe('TastingService', () => {
 
@@ -130,6 +136,27 @@ describe('TastingService', () => {
     const req = httpTestingController.expectOne(`${url}/${tastingId}/wines/${wineInTastingId}`);
     expect(req.request.method).toEqual('DELETE');
     req.flush(null, { status: 204, statusText: 'No Content' });
+  });
+
+  test('It patches a wine in a tasting', done => {
+    const update: WineTastingWineUpdate = { position: 5, purchasePrice: 199, averageScore: 14.5 };
+    const mockResponse: WineTastingWine = {
+      id: 1,
+      wineId: 1,
+      position: 5,
+      purchasePrice: 199,
+      averageScore: 14.5,
+    };
+
+    service.patchWineInTasting(1, 1, update).subscribe(result => {
+      expect(result).toEqual(mockResponse);
+      done();
+    });
+
+    const req = httpTestingController.expectOne(`${url}/1/wines/1`);
+    expect(req.request.method).toEqual('PATCH');
+    expect(req.request.body).toEqual(update);
+    req.flush(mockResponse);
   });
 
 });

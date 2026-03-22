@@ -6,7 +6,8 @@ import {
   WineTastingCreate,
   WineTastingSummary,
   WineTastingWine,
-  WineTastingWineCreate
+  WineTastingWineCreate,
+  WineTastingWineUpdate
 } from "../../models/tasting.model";
 import {Injectable} from "@angular/core";
 import {HttpClient} from "@angular/common/http";
@@ -82,5 +83,10 @@ export class TastingService {
   deleteWineFromTasting(tastingId: number, wineInTastingId: number) {
     const url: string = this.apiBase + `/tastings/${tastingId}/wines/${wineInTastingId}`;
     return this.http.delete<void>(url);
+  }
+
+  patchWineInTasting(tastingId: number, wineInTastingId: number, update: WineTastingWineUpdate) {
+    const url: string = this.apiBase + `/tastings/${tastingId}/wines/${wineInTastingId}`;
+    return this.http.patch<void>(url, update);
   }
 }
