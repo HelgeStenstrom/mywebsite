@@ -78,7 +78,7 @@ describe('WineTastingWineRepository', () => {
         const created = await repository.create(tasting.id, { wineId: wine.id, position: 1 });
 
         // Exercise
-        const deleted = await repository.delete(created.id);
+        const deleted = await repository.delete(tasting.id, created.id);
 
         // Verify
         expect(deleted).toBe('deleted');
@@ -88,7 +88,7 @@ describe('WineTastingWineRepository', () => {
     });
 
     test('delete returns "not_found" when tasting wine does not exist', async () => {
-        const result = await repository.delete(9999);
+        const result = await repository.delete(42, 9999);
 
         expect(result).toBe('not_found');
     });

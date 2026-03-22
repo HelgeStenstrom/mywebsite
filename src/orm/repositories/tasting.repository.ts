@@ -19,7 +19,7 @@ export class TastingRepository {
         ) {}
 
     async create(t: WineTastingCreateDto): Promise<WineTastingDto> {
-        if (!t.title || !t.notes || !t.tastingDate) {
+        if (!t.title || t.notes === undefined || t.notes === null || !t.tastingDate) {
             throw new BadRequestError('Missing required fields: title, notes, tastingDate');
         }
         const toCreate = {

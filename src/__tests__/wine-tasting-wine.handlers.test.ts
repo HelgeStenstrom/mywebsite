@@ -115,4 +115,80 @@ describe('WineTastingWine handler tests', () => {
         }]);
     });
 
+    test('DELETE /tastings/:id/wines/:tastingWineId returns 404 when not found', async () => {
+        await request(app)
+            .delete(`/api/v1/tastings/1/wines/9999`)
+            .expect(404);
+    });
+
+    test('DELETE /tastings/:id/wines/:tastingWineId returns 204', async () => {
+        const tasting = await request(app)
+            .post('/api/v1/tastings')
+            .send({ title: 'Test tasting', notes: 'Anteckningar', tastingDate: '2024-01-15' })
+            .expect(201);
+
+        const country = await request(app)
+            .post('/api/v1/countries')
+            .send({ name: 'Test' })
+            .expect(201);
+
+        const wineType = await request(app)
+            .post('/api/v1/wine-types')
+            .send({ name: 'Rött' })
+            .expect(201);
+
+        const wine = await request(app)
+            .post('/api/v1/wines')
+            .send({ name: 'Testvin', countryId: country.body.id, wineTypeId: wineType.body.id })
+            .expect(201);
+
+        const tastingWine = await request(app)
+            .post(`/api/v1/tastings/${tasting.body.id}/wines`)
+            .send({ wineId: wine.body.id, position: 1 })
+            .expect(201);
+
+        await request(app)
+            .delete(`/api/v1/tastings/${tasting.body.id}/wines/${tastingWine.body.id}`)
+            .expect(204);
+    });
+
+    test('DELETE /tastings/:id/wines/:tastingWineId returns 404 when wine belongs to different tasting', async () => {
+        const tasting1 = await request(app)
+            .post('/api/v1/tastings')
+            .send({ title: 'Provning 1', notes: '', tastingDate: '2024-01-15' })
+            .expect(201);
+
+        console.log('status:', tasting1.status);
+        console.log('body:', tasting1.body);
+
+        const tasting2 = await request(app)
+            .post('/api/v1/tastings')
+            .send({ title: 'Provning 2', notes: '', tastingDate: '2024-01-16' })
+            .expect(201);
+
+        const country = await request(app)
+            .post('/api/v1/countries')
+            .send({ name: 'Test' })
+            .expect(201);
+
+        const wineType = await request(app)
+            .post('/api/v1/wine-types')
+            .send({ name: 'Rött' })
+            .expect(201);
+
+        const wine = await request(app)
+            .post('/api/v1/wines')
+            .send({ name: 'Testvin', countryId: country.body.id, wineTypeId: wineType.body.id })
+            .expect(201);
+
+        const tastingWine = await request(app)
+            .post(`/api/v1/tastings/${tasting1.body.id}/wines`)
+            .send({ wineId: wine.body.id, position: 1 })
+            .expect(201);
+
+        await request(app)
+            .delete(`/api/v1/tastings/${tasting2.body.id}/wines/${tastingWine.body.id}`)
+            .expect(404);
+    });
+
 });

@@ -31,4 +31,19 @@ export class WineTastingWineHandlers {
             const created = await this.orm.tastingWines.create(tastingId, data);
             res.status(201).json(created);
         };    }
+
+    deleteTastingWine() {
+
+        return async (req, res) => {
+            const tastingId = parseInt(req.params.id);
+            const tastingWineId = parseInt(req.params.tastingWineId);
+
+            const deleted = await this.orm.tastingWines.delete(tastingId, tastingWineId);
+            if (deleted === "deleted") {
+                res.status(204).send();
+            }
+            return res.status(404).json({error: 'Wine tasting wine not found'});
+        }
+
+    }
 }

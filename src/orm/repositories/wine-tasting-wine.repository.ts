@@ -46,8 +46,12 @@ export class WineTastingWineRepository {
 
     }
 
-    async delete(id: number) {
-        const number = await this.WineTastingWine.destroy({where: {id: id}});
+    async delete(wineTastingId: number, tastingWineId: number) {
+        const existing = await this.WineTastingWine.findOne({ where: { id: tastingWineId, wineTastingId } });
+        if (!existing) {
+            return 'not_found';
+        }
+        const number = await this.WineTastingWine.destroy({where: {id: tastingWineId}});
         if (number === 0) {
             return 'not_found';
         }
