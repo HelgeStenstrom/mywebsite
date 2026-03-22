@@ -119,4 +119,17 @@ describe('TastingService', () => {
     req.flush(expectedWine);
   });
 
+
+  test('It deletes a wine from a tasting', done => {
+    const tastingId = 1;
+    const wineInTastingId = 5;
+    service.deleteWineFromTasting(tastingId, wineInTastingId).subscribe(() => {
+      done();
+    });
+
+    const req = httpTestingController.expectOne(`${url}/${tastingId}/wines/${wineInTastingId}`);
+    expect(req.request.method).toEqual('DELETE');
+    req.flush(null, { status: 204, statusText: 'No Content' });
+  });
+
 });

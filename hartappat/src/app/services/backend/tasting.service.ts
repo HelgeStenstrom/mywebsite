@@ -79,4 +79,8 @@ export class TastingService {
     return this.http.delete<void>(url);
   }
 
+  deleteWineFromTasting(tastingId: number, wineInTastingId: number) {
+    const url: string = this.apiBase + `/tastings/${tastingId}/wines/${wineInTastingId}`;
+    return this.http.delete<void>(url);
+  }
 }
