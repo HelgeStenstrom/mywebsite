@@ -25,7 +25,10 @@
     </tr>
 
     <tr *ngFor="let w of tasting.wines">
-      <td>{{ w.position }}</td>
+      <td>
+        <span  *ngIf="!isEditing(w.id)" (click)="startEdit(w)" data-test="position-value">{{ w.position }}</span>
+        <input *ngIf="isEditing(w.id)" [(ngModel)]="editValues.position" type="number" data-test="position-input">
+      </td>
       <td data-test="wine-name">{{ wineMap.get(w.wineId)?.name }}</td>
       <td data-test="wine-country">{{ wineMap.get(w.wineId)?.country?.name }}</td>
       <td data-test="wine-type">{{ wineMap.get(w.wineId)?.wineType?.name }}</td>
@@ -40,6 +43,13 @@
           <mat-icon>delete</mat-icon>
         </button>
       </td>
+
+      <td *ngIf="isEditing(w.id)">
+        <button (click)="saveEdit(w.id)" data-test="save-tasting-wine-button">Spara</button>
+        <button (click)="cancelEdit()">Avbryt</button>
+      </td>
+      <td *ngIf="!isEditing(w.id)"></td>
+
     </tr>
 
   </table>

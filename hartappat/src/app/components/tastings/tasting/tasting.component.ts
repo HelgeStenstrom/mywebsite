@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {WineTasting} from "../../../models/tasting.model";
+import {WineTasting, WineTastingWine} from "../../../models/tasting.model";
 import {Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {TastingService} from "../../../services/backend/tasting.service";
@@ -18,7 +18,8 @@ export class TastingComponent implements OnInit {
   fullTasting$!: Observable<WineTasting>;
   memberNames: Map<number, string> = new Map();
   wineMap: Map<number, WineApi> = new Map();
-
+  editingId: number | null = null;
+  editValues: Partial<WineTastingWine> = {};
 
   constructor(
     private readonly service: TastingService,
@@ -56,5 +57,29 @@ export class TastingComponent implements OnInit {
     this.service.deleteWineFromTasting(tastingId, id).subscribe(() => {
       this.fullTasting$ = this.service.getTasting(tastingId);
     });
+  }
+
+  startEdit(w: WineTastingWine): void {
+    this.editingId = w.id;
+    this.editValues = { position: w.position, purchasePrice: w.purchasePrice, averageScore: w.averageScore };
+  }
+
+  isEditing(id: number): boolean {
+    return this.editingId === id;
+  }
+
+  saveEdit(id: number): void {
+    this.service.patchWineInTasting(this.getTastingId(), id, this.editValues).subscribe(() => {
+      this.editingId = null;
+      this.fullTasting$ = this.service.getTasting(this.getTastingId());
+    });
+  }
+
+  protected cancelEdit() {
+    this.editingId = null;
+  }
+
+  private getTastingId(): number {
+    return this.tasting?.id ?? Number(this.route.snapshot.paramMap.get('id'));
   }
 }

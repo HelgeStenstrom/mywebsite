@@ -25,8 +25,9 @@ describe('TastingComponent', () => {
   };
 
   const tastingServiceMock = {
-    getTasting: jest.fn().mockReturnValue(of(mockTasting)),
+    getTasting: jest.fn().mockImplementation(() => of({...mockTasting, wines: [...mockTasting.wines!]})),
     deleteWineFromTasting: jest.fn().mockReturnValue(of(void 0)),
+    patchWineInTasting:  jest.fn().mockReturnValue(of(void 0)),
   };
 
   const memberServiceMock = {
@@ -46,7 +47,21 @@ describe('TastingComponent', () => {
   };
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    jest.resetAllMocks();
+    jest.resetAllMocks();
+    tastingServiceMock.getTasting.mockReturnValue(of(mockTasting));
+    tastingServiceMock.deleteWineFromTasting.mockReturnValue(of(void 0));
+    tastingServiceMock.patchWineInTasting.mockReturnValue(of(void 0));
+    memberServiceMock.getMembers.mockReturnValue(of([]));
+    wineServiceMock.getWine.mockImplementation((id: number) => of({
+      id,
+      name: id === 10 ? 'Château Margaux' : 'Testvin',
+      country: { id: 1, name: 'Frankrike' },
+      wineType: { id: 1, name: 'Rött' },
+      vintageYear: 2020,
+      isNonVintage: false,
+      isUsed: false,
+    }));
 
     await TestBed.configureTestingModule({
       declarations: [TastingComponent],
@@ -63,6 +78,7 @@ describe('TastingComponent', () => {
     fixture = TestBed.createComponent(TastingComponent);
     component = fixture.componentInstance;
     component.tasting = mockTasting;
+
     fixture.detectChanges();
   });
 
@@ -103,6 +119,35 @@ describe('TastingComponent', () => {
     expect(tastingServiceMock.deleteWineFromTasting).toHaveBeenCalledWith(1, firstWine?.id);
 
     expect(tastingServiceMock.deleteWineFromTasting).toHaveBeenCalledWith(1, firstWine?.id);
+  });
+
+  test('clicking a cell starts editing that row', () => {
+    const spans = fixture.nativeElement.querySelectorAll('[data-test="position-value"]');
+    spans[0].click();
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('[data-test="position-input"]');
+    expect(input).toBeTruthy();
+  });
+
+
+
+  test('saving edited values calls patchWineInTasting with correct values', () => {
+    const spans = fixture.nativeElement.querySelectorAll('[data-test="position-value"]');
+    spans[0].click();
+    fixture.detectChanges();
+
+    component.editValues.position = 5;
+    fixture.detectChanges();
+
+    const saveButton = fixture.nativeElement.querySelector('[data-test="save-tasting-wine-button"]');
+    saveButton.click();
+
+    expect(tastingServiceMock.patchWineInTasting).toHaveBeenCalledWith(1, 1, {
+      position: 5,
+      purchasePrice: null,
+      averageScore: null,
+    });
   });
 
 });
