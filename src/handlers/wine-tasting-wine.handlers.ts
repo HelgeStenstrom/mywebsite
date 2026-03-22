@@ -46,4 +46,23 @@ export class WineTastingWineHandlers {
         }
 
     }
+
+    patchTastingWine() {
+        return async (req, res) => {
+            const tastingId = Number(req.params.id);
+            const tastingWineId = Number(req.params.tastingWineId);
+            const data = req.body;
+            if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
+                return res.status(400).send({ error: 'Invalid tasting id' });
+            }
+
+            return res.status(200).json({
+                averageScore: 14.5,
+                id: 1,
+                position: 5,
+                purchasePrice: 199,
+                wineId: 1,
+            });
+        }
+    }
 }

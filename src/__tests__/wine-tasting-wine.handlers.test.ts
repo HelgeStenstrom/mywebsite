@@ -191,4 +191,50 @@ describe('WineTastingWine handler tests', () => {
             .expect(404);
     });
 
+
+    test('PATCH /tastings/:id/wines/:tastingWineId returns 200 with updated wine', async () => {
+        // Setup
+        const tasting = await request(app)
+            .post('/api/v1/tastings')
+            .send({ title: 'Test tasting', notes: 'Anteckningar', tastingDate: '2024-01-15' })
+            .expect(201);
+
+        const country = await request(app)
+            .post('/api/v1/countries')
+            .send({ name: 'Test' })
+            .expect(201);
+
+        const wineType = await request(app)
+            .post('/api/v1/wine-types')
+            .send({ name: 'Rött' })
+            .expect(201);
+
+        const wine = await request(app)
+            .post('/api/v1/wines')
+            .send({ name: 'Testvin', countryId: country.body.id, wineTypeId: wineType.body.id })
+            .expect(201);
+
+        const tastingWine = await request(app)
+            .post(`/api/v1/tastings/${tasting.body.id}/wines`)
+            .send({ wineId: wine.body.id, position: 1 })
+            .expect(201);
+
+
+        // Exercise
+        const res = await request(app)
+            .patch(`/api/v1/tastings/${tasting.body.id}/wines/${tastingWine.body.id}`)
+            .send({ averageScore: 14.5, purchasePrice: 199, position: 5 })
+            .expect(200);
+
+
+        // Verify
+        expect(res.body).toEqual({
+            id: tastingWine.body.id,
+            wineId: wine.body.id,
+            position: 5,
+            purchasePrice: 199,
+            averageScore: 14.5,
+        });
+    });
+
 });
