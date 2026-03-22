@@ -80,3 +80,9 @@ interface WineTastingWineAttributes {
 
 export interface WineTastingWineInstance
     extends Model<WineTastingWineAttributes>, WineTastingWineAttributes {}
+
+export type WineTastingWineUpdateDto = {
+    position?: number;
+    purchasePrice?: number | null;
+    averageScore?: number | null;
+}

@@ -1,5 +1,10 @@
 import {ModelStatic, Sequelize} from "sequelize";
-import {WineTastingInstance, WineTastingWineCreateDto, WineTastingWineInstance} from "../types/wine-tasting";
+import {
+    WineTastingInstance,
+    WineTastingWineCreateDto,
+    WineTastingWineInstance,
+    WineTastingWineUpdateDto
+} from "../types/wine-tasting";
 import {WineTastingWineRepository} from "../orm/repositories/wine-tasting-wine.repository";
 import {defineTasting} from "../orm/models/tasting.model";
 import {defineWineTastingWine} from "../orm/models/wine-tasting-wine.model";
@@ -91,6 +96,35 @@ describe('WineTastingWineRepository', () => {
         const result = await repository.delete(42, 9999);
 
         expect(result).toBe('not_found');
+    });
+
+    test('update modifies and returns the updated tasting wine', async () => {
+        const tasting = await tastingDefinition.create({
+            title: 'Testprovning',
+            notes: '',
+            tastingDate: new Date('2024-01-01'),
+        });
+
+        const wine = await wineDefinition.create({
+            name: 'Testvin',
+            countryId: 1,
+            wineTypeId: 1,
+            isNonVintage: false,
+        });
+
+        const created = await repository.create(tasting.id, { wineId: wine.id, position: 1 });
+
+        const toUpdate: WineTastingWineUpdateDto = { position: 3, averageScore: 14.5, purchasePrice: 199 };
+
+        const updated = await repository.update(created.id, toUpdate);
+
+        expect(updated).toEqual({
+            id: created.id,
+            wineId: wine.id,
+            position: 3,
+            purchasePrice: 199,
+            averageScore: 14.5,
+        });
     });
 
 });

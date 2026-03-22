@@ -1,4 +1,9 @@
-import {WineTastingWineCreateDto, WineTastingWineDto, WineTastingWineInstance} from "../../types/wine-tasting";
+import {
+    WineTastingWineCreateDto,
+    WineTastingWineDto,
+    WineTastingWineInstance,
+    WineTastingWineUpdateDto
+} from "../../types/wine-tasting";
 import {ModelStatic} from "sequelize";
 
 export class WineTastingWineRepository {
@@ -56,5 +61,18 @@ export class WineTastingWineRepository {
             return 'not_found';
         }
         return 'deleted'
+    }
+
+    async update(id: number, toUpdate: WineTastingWineUpdateDto) {
+        const {position, purchasePrice, averageScore} = toUpdate;
+        await this.WineTastingWine.update(
+            {position, purchasePrice, averageScore},
+            {where: {id}});
+
+        const updated = await this.WineTastingWine.findByPk(id);
+        if (!updated) {
+            throw new Error('WineTastingWine not found');
+        }
+        return this.toDto(updated);
     }
 }
