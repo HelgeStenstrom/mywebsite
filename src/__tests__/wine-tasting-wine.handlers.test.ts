@@ -2,6 +2,30 @@ import express from "express";
 import {createTestApp} from "../testUtils";
 import request from "supertest";
 
+async function createTasting(app: express.Express, title = 'Provning') {
+    return await request(app)
+        .post('/api/v1/tastings')
+        .send({title: title, notes: 'noter', tastingDate: '2024-01-15'})
+        .expect(201);
+}
+
+
+async function createCountry(app: express.Express, name = 'CountryName') {
+    return await request(app)
+        .post('/api/v1/countries')
+        .send({name: name})
+        .expect(201);
+}
+
+function createWineType(app: express.Express, name='Rött') {
+    return request(app)
+        .post('/api/v1/wine-types')
+        .send({
+            name: name,
+        })
+        .expect(201);
+}
+
 describe('WineTastingWine handler tests', () => {
 
     let app: express.Express;
@@ -12,28 +36,11 @@ describe('WineTastingWine handler tests', () => {
 
     test('POST /tastings/:id/wines returns 201 with created wine', async () => {
 
-        const tasting = await request(app)
-            .post('/api/v1/tastings')
-            .send({
-                title: 'Test tasting' ,
-                notes: 'Några anteckningar',
-                tastingDate: '2024-01-15',
-                })
-            .expect(201);
+        const tasting = await createTasting(app);
 
-        const country = await request(app)
-            .post('/api/v1/countries')
-            .send({
-                name: 'Test' ,
-            })
-            .expect(201);
+        const country = await createCountry(app);
 
-        const wineType = await request(app)
-            .post('/api/v1/wine-types')
-            .send({
-                name: 'rött' ,
-            })
-            .expect(201);
+        const wineType = await createWineType(app, 'rött');
 
         const wine = await request(app)
             .post('/api/v1/wines')
@@ -64,24 +71,11 @@ describe('WineTastingWine handler tests', () => {
     })
 
     test('GET /tastings/:id/wines returns list of wines with price and score', async () => {
-        const tasting = await request(app)
-            .post('/api/v1/tastings')
-            .send({
-                title: 'Test provning',
-                notes: 'Några anteckningar',
-                tastingDate: '2024-01-15',
-            })
-            .expect(201);
+        const tasting = await createTasting(app);
 
-        const country = await request(app)
-            .post('/api/v1/countries')
-            .send({name: 'Frankrike'})
-            .expect(201);
+        const country = await createCountry(app, 'Frankrike');
 
-        const wineType = await request(app)
-            .post('/api/v1/wine-types')
-            .send({name: 'Rött'})
-            .expect(201);
+        const wineType = await createWineType(app);
 
         const wine = await request(app)
             .post('/api/v1/wines')
@@ -122,20 +116,11 @@ describe('WineTastingWine handler tests', () => {
     });
 
     test('DELETE /tastings/:id/wines/:tastingWineId returns 204', async () => {
-        const tasting = await request(app)
-            .post('/api/v1/tastings')
-            .send({ title: 'Test tasting', notes: 'Anteckningar', tastingDate: '2024-01-15' })
-            .expect(201);
+        const tasting = await createTasting(app);
 
-        const country = await request(app)
-            .post('/api/v1/countries')
-            .send({ name: 'Test' })
-            .expect(201);
+        const country = await createCountry(app, 'Test');
 
-        const wineType = await request(app)
-            .post('/api/v1/wine-types')
-            .send({ name: 'Rött' })
-            .expect(201);
+        const wineType = await createWineType(app);
 
         const wine = await request(app)
             .post('/api/v1/wines')
@@ -153,28 +138,16 @@ describe('WineTastingWine handler tests', () => {
     });
 
     test('DELETE /tastings/:id/wines/:tastingWineId returns 404 when wine belongs to different tasting', async () => {
-        const tasting1 = await request(app)
-            .post('/api/v1/tastings')
-            .send({ title: 'Provning 1', notes: '', tastingDate: '2024-01-15' })
-            .expect(201);
+        const tasting1 = await createTasting(app, 'Provning 1');
 
         console.log('status:', tasting1.status);
         console.log('body:', tasting1.body);
 
-        const tasting2 = await request(app)
-            .post('/api/v1/tastings')
-            .send({ title: 'Provning 2', notes: '', tastingDate: '2024-01-16' })
-            .expect(201);
+        const tasting2 = await createTasting(app, 'Provning 2');
 
-        const country = await request(app)
-            .post('/api/v1/countries')
-            .send({ name: 'Test' })
-            .expect(201);
+        const country = await createCountry(app, 'Test');
 
-        const wineType = await request(app)
-            .post('/api/v1/wine-types')
-            .send({ name: 'Rött' })
-            .expect(201);
+        const wineType = await createWineType(app);
 
         const wine = await request(app)
             .post('/api/v1/wines')
@@ -194,20 +167,11 @@ describe('WineTastingWine handler tests', () => {
 
     test('PATCH /tastings/:id/wines/:tastingWineId returns 200 with updated wine', async () => {
         // Setup
-        const tasting = await request(app)
-            .post('/api/v1/tastings')
-            .send({ title: 'Test tasting', notes: 'Anteckningar', tastingDate: '2024-01-15' })
-            .expect(201);
+        const tasting = await createTasting(app);
 
-        const country = await request(app)
-            .post('/api/v1/countries')
-            .send({ name: 'Test' })
-            .expect(201);
+        const country = await createCountry(app, 'Test');
 
-        const wineType = await request(app)
-            .post('/api/v1/wine-types')
-            .send({ name: 'Rött' })
-            .expect(201);
+        const wineType = await createWineType(app);
 
         const wine = await request(app)
             .post('/api/v1/wines')
@@ -238,25 +202,13 @@ describe('WineTastingWine handler tests', () => {
     });
 
     test('PATCH /tastings/:id/wines/:tastingWineId returns 404 when wine belongs to different tasting', async () => {
-        const tasting1 = await request(app)
-            .post('/api/v1/tastings')
-            .send({ title: 'Provning 1', notes: 'noter', tastingDate: '2024-01-15' })
-            .expect(201);
+        const tasting1 = await createTasting(app, 'Provning 1');
 
-        const tasting2 = await request(app)
-            .post('/api/v1/tastings')
-            .send({ title: 'Provning 2', notes: 'noter', tastingDate: '2024-01-16' })
-            .expect(201);
+        const tasting2 = await createTasting(app, 'Provning 2');
 
-        const country = await request(app)
-            .post('/api/v1/countries')
-            .send({ name: 'Test' })
-            .expect(201);
+        const country = await createCountry(app, 'Test');
 
-        const wineType = await request(app)
-            .post('/api/v1/wine-types')
-            .send({ name: 'Rött' })
-            .expect(201);
+        const wineType = await createWineType(app);
 
         const wine = await request(app)
             .post('/api/v1/wines')
@@ -276,10 +228,7 @@ describe('WineTastingWine handler tests', () => {
     });
 
     test('PATCH /tastings/:id/wines/:tastingWineId returns 404 when tastingWineId does not exist', async () => {
-        const tasting = await request(app)
-            .post('/api/v1/tastings')
-            .send({ title: 'Provning', notes: 'noter', tastingDate: '2024-01-15' })
-            .expect(201);
+        const tasting = await createTasting(app);
 
         await request(app)
             .patch(`/api/v1/tastings/${tasting.body.id}/wines/9999`)
