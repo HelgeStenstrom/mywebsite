@@ -45,4 +45,12 @@ export class WineTastingWineRepository {
         }
 
     }
+
+    async delete(id: number) {
+        const number = await this.WineTastingWine.destroy({where: {id: id}});
+        if (number === 0) {
+            return 'not_found';
+        }
+        return 'deleted'
+    }
 }
