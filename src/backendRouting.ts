@@ -35,22 +35,22 @@ export function setupEndpoints(router: Express, orm: Orm) {
     const wineTastingHostHandlers = new WineTastingHostHandlers(orm);
     const wineGrapeHandlers = new WineGrapeHandlers(orm);
 
+    router.delete('/api/v1/countries/:id', countryHandlers.deleteCountryById());
     router.get('/api/v1/countries', countryHandlers.getCountries());
     router.post('/api/v1/countries', countryHandlers.postCountries());
-    router.delete('/api/v1/countries/:id', countryHandlers.deleteCountryById());
-
-    router.get('/api/v1/grapes', grapeHandlers.getAll());
-    router.post('/api/v1/grapes', grapeHandlers.create());
 
     router.delete('/api/v1/grapes/:id', grapeHandlers.deleteGrapeById());
     router.get('/api/v1/grapes/:id', grapeHandlers.getGrapeById());
     router.patch('/api/v1/grapes/:id', grapeHandlers.patchGrape());
 
-    router.get('/api/v1/members', memberHandlers.getMembers());
-    router.post('/api/v1/members', memberHandlers.postMember());
+    router.get('/api/v1/grapes', grapeHandlers.getAll());
+    router.post('/api/v1/grapes', grapeHandlers.create());
+
     router.delete('/api/v1/members/:id', memberHandlers.deleteMemberById());
     router.patch('/api/v1/members/:id', memberHandlers.patchMemberById());
     router.get('/api/v1/members/:id', memberHandlers.getMemberById());
+    router.get('/api/v1/members', memberHandlers.getMembers());
+    router.post('/api/v1/members', memberHandlers.postMember());
 
     router.delete('/api/v1/tastings/:id/wines/:tastingWineId', wineTastingWineHandlers.deleteTastingWine());
     router.post('/api/v1/tastings/:id/wines', wineTastingWineHandlers.postTastingWine());
@@ -67,9 +67,14 @@ export function setupEndpoints(router: Express, orm: Orm) {
     router.get('/api/v1/tastings/', tastingHandlers.getTastings());
     router.post('/api/v1/tastings/', tastingHandlers.postTasting());
 
+    router.get('/api/v1/wines/:id/grapes', wineGrapeHandlers.getWineGrapes());
+    router.post('/api/v1/wines/:id/grapes', wineGrapeHandlers.postWineGrape());
+    router.delete('/api/v1/wines/:id/grapes/:wineGrapeId', wineGrapeHandlers.deleteWineGrapeById());
+
     router.delete('/api/v1/wines/:id', wineHandlers.deleteWineById());
     router.get('/api/v1/wines/:id', wineHandlers.getWineById());
     router.patch('/api/v1/wines/:id', wineHandlers.patchWineById());
+
 
     router.get('/api/v1/wines', wineHandlers.getWines());
 
@@ -79,11 +84,8 @@ export function setupEndpoints(router: Express, orm: Orm) {
     router.get('/api/v1/wine-types', wineTypeHandlers.getWineTypes());
     router.delete('/api/v1/wine-types/:id', wineTypeHandlers.deleteWineTypeById());
 
-    router.get('/api/v1/wines/:id/grapes', wineGrapeHandlers.getWineGrapes());
-    router.post('/api/v1/wines/:id/grapes', wineGrapeHandlers.postWineGrape());
-    router.delete('/api/v1/wines/:id/grapes/:wineGrapeId', wineGrapeHandlers.deleteWineGrapeById());
 
-    app.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
+    router.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
         console.error('Unhandled error:', err);
         res.status(503).json({ error: 'Service temporarily unavailable' });
     })
