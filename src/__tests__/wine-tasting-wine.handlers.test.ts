@@ -223,7 +223,7 @@ describe('WineTastingWine handler tests', () => {
         // Exercise
         const res = await request(app)
             .patch(`/api/v1/tastings/${tasting.body.id}/wines/${tastingWine.body.id}`)
-            .send({ averageScore: 14.5, purchasePrice: 199, position: 5 })
+            .send({ averageScore: 14.5, purchasePrice: 199, position: 3 })
             .expect(200);
 
 
@@ -231,7 +231,7 @@ describe('WineTastingWine handler tests', () => {
         expect(res.body).toEqual({
             id: tastingWine.body.id,
             wineId: wine.body.id,
-            position: 5,
+            position: 3,
             purchasePrice: 199,
             averageScore: 14.5,
         });

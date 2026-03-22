@@ -56,13 +56,13 @@ export class WineTastingWineHandlers {
                 return res.status(400).send({ error: 'Invalid tasting id' });
             }
 
-            return res.status(200).json({
-                averageScore: 14.5,
-                id: 1,
-                position: 5,
-                purchasePrice: 199,
-                wineId: 1,
-            });
+            const updated = await this.orm.tastingWines.update(tastingWineId, data);
+            if (!updated) {
+                res.status(404).json({ status: 404, message: 'Wine tasting wine not found' });
+                return;
+            }
+            res.status(200).json(updated);
+
         }
     }
 }
