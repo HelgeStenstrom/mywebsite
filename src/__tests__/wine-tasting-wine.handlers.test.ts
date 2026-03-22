@@ -237,4 +237,54 @@ describe('WineTastingWine handler tests', () => {
         });
     });
 
+    test('PATCH /tastings/:id/wines/:tastingWineId returns 404 when wine belongs to different tasting', async () => {
+        const tasting1 = await request(app)
+            .post('/api/v1/tastings')
+            .send({ title: 'Provning 1', notes: 'noter', tastingDate: '2024-01-15' })
+            .expect(201);
+
+        const tasting2 = await request(app)
+            .post('/api/v1/tastings')
+            .send({ title: 'Provning 2', notes: 'noter', tastingDate: '2024-01-16' })
+            .expect(201);
+
+        const country = await request(app)
+            .post('/api/v1/countries')
+            .send({ name: 'Test' })
+            .expect(201);
+
+        const wineType = await request(app)
+            .post('/api/v1/wine-types')
+            .send({ name: 'Rött' })
+            .expect(201);
+
+        const wine = await request(app)
+            .post('/api/v1/wines')
+            .send({ name: 'Testvin', countryId: country.body.id, wineTypeId: wineType.body.id })
+            .expect(201);
+
+        const tastingWine = await request(app)
+            .post(`/api/v1/tastings/${tasting1.body.id}/wines`)
+            .send({ wineId: wine.body.id, position: 1 })
+            .expect(201);
+
+        // Try to patch wine from different tasting
+        await request(app)
+            .patch(`/api/v1/tastings/${tasting2.body.id}/wines/${tastingWine.body.id}`)
+            .send({ averageScore: 14.5 })
+            .expect(404);
+    });
+
+    test('PATCH /tastings/:id/wines/:tastingWineId returns 404 when tastingWineId does not exist', async () => {
+        const tasting = await request(app)
+            .post('/api/v1/tastings')
+            .send({ title: 'Provning', notes: 'noter', tastingDate: '2024-01-15' })
+            .expect(201);
+
+        await request(app)
+            .patch(`/api/v1/tastings/${tasting.body.id}/wines/9999`)
+            .send({ averageScore: 14.5 })
+            .expect(404);
+    });
+
 });

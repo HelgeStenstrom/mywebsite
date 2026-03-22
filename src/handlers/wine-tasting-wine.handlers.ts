@@ -56,6 +56,11 @@ export class WineTastingWineHandlers {
                 return res.status(400).send({ error: 'Invalid tasting id' });
             }
 
+            const winesOfTasting = await this.orm.tastingWines.findByTastingId(tastingId);
+            if (!winesOfTasting.some(w => w.id === tastingWineId)) {
+                return res.status(404).json({ error: 'Wine tasting wine not found' });
+            }
+
             const updated = await this.orm.tastingWines.update(tastingWineId, data);
             if (!updated) {
                 res.status(404).json({ status: 404, message: 'Wine tasting wine not found' });
