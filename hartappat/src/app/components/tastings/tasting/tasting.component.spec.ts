@@ -47,21 +47,7 @@ describe('TastingComponent', () => {
   };
 
   beforeEach(async () => {
-    jest.resetAllMocks();
-    jest.resetAllMocks();
-    tastingServiceMock.getTasting.mockReturnValue(of(mockTasting));
-    tastingServiceMock.deleteWineFromTasting.mockReturnValue(of(void 0));
-    tastingServiceMock.patchWineInTasting.mockReturnValue(of(void 0));
-    memberServiceMock.getMembers.mockReturnValue(of([]));
-    wineServiceMock.getWine.mockImplementation((id: number) => of({
-      id,
-      name: id === 10 ? 'Château Margaux' : 'Testvin',
-      country: { id: 1, name: 'Frankrike' },
-      wineType: { id: 1, name: 'Rött' },
-      vintageYear: 2020,
-      isNonVintage: false,
-      isUsed: false,
-    }));
+    resetMocks(tastingServiceMock, mockTasting, memberServiceMock, wineServiceMock);
 
     await TestBed.configureTestingModule({
       declarations: [TastingComponent],
@@ -151,3 +137,26 @@ describe('TastingComponent', () => {
   });
 
 });
+
+function resetMocks(tastingServiceMock: {
+  getTasting: jest.Mock<any, any, any>;
+  deleteWineFromTasting: jest.Mock<any, any, any>;
+  patchWineInTasting: jest.Mock<any, any, any>
+}, mockTasting: WineTasting, memberServiceMock: { getMembers: jest.Mock<any, any, any> }, wineServiceMock: {
+  getWine: jest.Mock<any, any, any>
+}) {
+  jest.resetAllMocks();
+  tastingServiceMock.getTasting.mockReturnValue(of(mockTasting));
+  tastingServiceMock.deleteWineFromTasting.mockReturnValue(of(void 0));
+  tastingServiceMock.patchWineInTasting.mockReturnValue(of(void 0));
+  memberServiceMock.getMembers.mockReturnValue(of([]));
+  wineServiceMock.getWine.mockImplementation((id: number) => of({
+    id,
+    name: id === 10 ? 'Château Margaux' : 'Testvin',
+    country: {id: 1, name: 'Frankrike'},
+    wineType: {id: 1, name: 'Rött'},
+    vintageYear: 2020,
+    isNonVintage: false,
+    isUsed: false,
+  }));
+}
