@@ -515,6 +515,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a wine in a tasting
+      description: Updates properties of a wine in a tasting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WineTastingWineUpdate'
+      responses:
+        '200':
+          description: Wine updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WineTastingWine'
+        '404':
+          description: Wine not found in tasting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
 
   /wine-types:
@@ -722,6 +744,19 @@ components:
       properties:
         wineId:
           type: integer
+        position:
+          type: integer
+        purchasePrice:
+          type: integer
+          nullable: true
+        averageScore:
+          type: number
+          format: float
+          nullable: true
+
+    WineTastingWineUpdate:
+      type: object
+      properties:
         position:
           type: integer
         purchasePrice:
