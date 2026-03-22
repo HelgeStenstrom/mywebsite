@@ -487,6 +487,36 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /tastings/{id}/wines/{tastingWineId}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the tasting
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: tastingWineId
+        in: path
+        description: ID of the wine (in a tasting)
+        required: true
+        schema:
+          type: integer
+          format: int64
+    delete:
+      summary: Delete a wine from a tasting
+      description: Deletes a wine from an existing tasting
+      responses:
+        204:
+          description: Wine deleted successfully from tasting
+        404:
+          description: Wine not found in tasting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
   /wine-types:
     post:
       summary: Create a new wine type
