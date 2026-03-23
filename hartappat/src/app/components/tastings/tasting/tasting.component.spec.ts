@@ -107,12 +107,33 @@ describe('TastingComponent', () => {
     expect(tastingServiceMock.deleteWineFromTasting).toHaveBeenCalledWith(1, firstWine?.id);
   });
 
-  test('clicking a cell starts editing that row', () => {
+  test('clicking a position cell starts editing that row', () => {
     const spans = fixture.nativeElement.querySelectorAll('[data-test="position-value"]');
     spans[0].click();
     fixture.detectChanges();
 
     const input = fixture.nativeElement.querySelector('[data-test="position-input"]');
+    expect(input).toBeTruthy();
+  });
+
+
+  test('clicking a price cell starts editing that row', () => {
+    const spans = fixture.nativeElement.querySelectorAll('[data-test="price-value"]');
+    spans[0].click();
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('[data-test="price-input"]');
+    expect(input).toBeTruthy();
+  });
+
+
+
+  test('clicking a score cell starts editing that row', () => {
+    const spans = fixture.nativeElement.querySelectorAll('[data-test="score-value"]');
+    spans[0].click();
+    fixture.detectChanges();
+
+    const input = fixture.nativeElement.querySelector('[data-test="score-input"]');
     expect(input).toBeTruthy();
   });
 

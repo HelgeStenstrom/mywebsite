@@ -13,7 +13,7 @@
     </li>
   </ul>
 
-  <p><strong>Viner:</strong></p>
+  <h2>Viner:</h2>
   <table class="bordered">
     <tr>
       <th>Position</th>
@@ -32,8 +32,14 @@
       <td data-test="wine-name">{{ wineMap.get(w.wineId)?.name }}</td>
       <td data-test="wine-country">{{ wineMap.get(w.wineId)?.country?.name }}</td>
       <td data-test="wine-type">{{ wineMap.get(w.wineId)?.wineType?.name }}</td>
-      <td>{{ w.purchasePrice }}</td>
-      <td>{{ w.averageScore }}</td>
+      <td>
+        <span *ngIf="!isEditing(w.id)"  (click)="startEdit(w)" data-test="price-value"> {{ w.purchasePrice }}</span>
+        <input *ngIf="isEditing(w.id)"  [(ngModel)]="editValues.purchasePrice" type="number"  data-test="price-input">
+      </td>
+      <td>
+        <span *ngIf="!isEditing(w.id)"  (click)="startEdit(w)" data-test="score-value">{{ w.averageScore }}</span>
+        <input *ngIf="isEditing(w.id)" [(ngModel)]="editValues.averageScore" type="number"  data-test="score-input">
+      </td>
       <td>
         <button mat-icon-button
                 color="warn"
