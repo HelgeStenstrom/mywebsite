@@ -61,7 +61,7 @@ export class Orm {
         connectWineAndWineTastingWine(wine, wineTastingWine);
         connectWineAndWineGrape(wine, wineGrape);
 
-        this.grapes = new GrapeRepository(grape);
+        this.grapes = new GrapeRepository(grape, wineGrape);
         this.tastings = new TastingRepository(tasting, tastingHost, member, wineTastingWine);
         this.countries = new CountryRepository(country, wine);
         this.members = new MemberRepository(member);

@@ -62,8 +62,8 @@ describe('Table endpoints', () => {
             expect(getResponse.status).toBe(200);
 
             expect(getResponse.body).toEqual([
-                {id: 1, name: "foo", color: "grön"},
-                {id: 2, name: "bar", color: "blå"},
+                {id: 1, name: "foo", color: "grön", isUsed: false},
+                {id: 2, name: "bar", color: "blå", isUsed: false},
             ]);
 
         })
@@ -74,7 +74,7 @@ describe('Table endpoints', () => {
             await request(app).post('/api/v1/grapes').send({name: "bar", color: "blå"});
 
             const getResponse = await request(app).get('/api/v1/grapes/2');
-            expect(getResponse.body).toEqual({id: 2, name: "bar", color: "blå"});
+            expect(getResponse.body).toEqual({id: 2, name: "bar", color: "blå", isUsed: false});
             expect(getResponse.status).toBe(200);
         })
 
@@ -101,6 +101,7 @@ describe('Table endpoints', () => {
                 id,
                 name: 'after',
                 color: 'blå',
+                isUsed: false,
             });
 
         })
@@ -112,19 +113,20 @@ describe('Table endpoints', () => {
             // Verify name and color
             const before = await request(app).get('/api/v1/grapes/1');
             expect(before.status).toBe(200);
-            expect(before.body).toEqual({id: 1, color: "grön", name: "before"});
+            expect(before.body).toEqual({id: 1, color: "grön", name: "before", isUsed: false});
 
             // Now patch it
             await request(app).patch('/api/v1/grapes/1').send({
                 id: 1,
                 name: "after",
                 color: "blå",
+                isUsed: false,
             });
 
             // Verify name and color
             const after = await request(app).get('/api/v1/grapes/1');
             expect(after.status).toBe(200);
-            expect(after.body).toEqual({id: 1, color: "blå", name: "after"});
+            expect(after.body).toEqual({id: 1, color: "blå", name: "after", isUsed: false});
 
         });
 

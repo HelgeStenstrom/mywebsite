@@ -4,6 +4,7 @@ export type GrapeDto = {
     id: number;
     name: string;
     color: GrapeColor;
+    isUsed: boolean;
 };
 
 export type GrapeCreateDto = {
@@ -15,6 +16,7 @@ export interface GrapeAttributes {
     id: number;
     name: string;
     color: string;
+    isUsed: boolean;
 }
 
 export interface GrapeInstance extends Model<GrapeAttributes>, GrapeAttributes {}

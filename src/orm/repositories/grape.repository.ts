@@ -1,12 +1,17 @@
 import {ModelStatic} from "sequelize";
 import {GrapeColor, GrapeCreateDto, GrapeDto, GrapeInstance} from "../../types/grape";
+import {WineGrapeInstance} from "../../types/wine";
 
 export class GrapeRepository {
-    constructor(private readonly Grape: ModelStatic<GrapeInstance>) {}
+    constructor(
+        private readonly Grape: ModelStatic<GrapeInstance>,
+        private readonly WineGrape: ModelStatic<WineGrapeInstance>
+    ) {
+    }
 
     async findAll(): Promise<GrapeDto[]> {
         const grapes = await this.Grape.findAll();
-        return grapes.map(g => (this.toGrapeDto(g)));
+        return Promise.all(grapes.map(g => this.toGrapeDto(g)));
     }
 
     async create(grape: GrapeCreateDto): Promise<GrapeDto> {
@@ -16,7 +21,7 @@ export class GrapeRepository {
 
 
     async update(id: number, grape: GrapeCreateDto): Promise<GrapeDto | null> {
-        const { id: _ignored, ...safeData } = grape as any;
+        const {id: _ignored, ...safeData} = grape as any;
         await this.Grape.update(safeData, {where: {id}});
 
         const updated = await this.Grape.findByPk(id);
@@ -30,7 +35,7 @@ export class GrapeRepository {
         return this.Grape.destroy({where: {id: id}})
     }
 
-    async findById(id: number): Promise<GrapeDto | null>  {
+    async findById(id: number): Promise<GrapeDto | null> {
         const grape = await this.Grape.findByPk(id);
         if (!grape) {
             return null;
@@ -40,12 +45,14 @@ export class GrapeRepository {
     }
 
 
+    private async toGrapeDto(grape: GrapeInstance): Promise<GrapeDto> {
+        const count = await this.WineGrape.count({where: {grapeId: grape.id}});
 
-    private toGrapeDto(grape: GrapeInstance): GrapeDto {
         return {
             id: grape.id,
             name: grape.name,
-            color: grape.color as GrapeColor
+            color: grape.color as GrapeColor,
+            isUsed: count > 0,
         };
     }
 
