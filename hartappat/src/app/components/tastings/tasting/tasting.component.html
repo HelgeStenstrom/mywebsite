@@ -26,35 +26,42 @@
 
     <tr *ngFor="let w of tasting.wines">
       <td>
-        <span  *ngIf="!isEditing(w.id)" (click)="startEdit(w)" data-test="position-value">{{ w.position }}</span>
+        <span  *ngIf="!isEditing(w.id)" >{{ w.position }}</span>
         <input *ngIf="isEditing(w.id)" [(ngModel)]="editValues.position" type="number" data-test="position-input">
       </td>
       <td data-test="wine-name">{{ wineMap.get(w.wineId)?.name }}</td>
       <td data-test="wine-country">{{ wineMap.get(w.wineId)?.country?.name }}</td>
       <td data-test="wine-type">{{ wineMap.get(w.wineId)?.wineType?.name }}</td>
       <td>
-        <span *ngIf="!isEditing(w.id)"  (click)="startEdit(w)" data-test="price-value"> {{ w.purchasePrice }}</span>
+        <span *ngIf="!isEditing(w.id)"  > {{ w.purchasePrice }}</span>
         <input *ngIf="isEditing(w.id)"  [(ngModel)]="editValues.purchasePrice" type="number"  data-test="price-input">
       </td>
       <td>
-        <span *ngIf="!isEditing(w.id)"  (click)="startEdit(w)" data-test="score-value">{{ w.averageScore }}</span>
+        <span *ngIf="!isEditing(w.id)"  >{{ w.averageScore }}</span>
         <input *ngIf="isEditing(w.id)" [(ngModel)]="editValues.averageScore" type="number"  data-test="score-input">
       </td>
-      <td>
-        <button mat-icon-button
-                color="warn"
-                (click)="deleteWine(w.id)"
-                data-test="delete-tasting-wine-button"
-        >
-          <mat-icon>delete</mat-icon>
-        </button>
-      </td>
 
-      <td *ngIf="isEditing(w.id)">
+      <button
+        mat-icon-button
+        color="primary"
+        (click)="startEdit(w)"
+        data-test="edit-tasting-wine-button"
+      >
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button
+              color="warn"
+              (click)="deleteWine(w.id)"
+              data-test="delete-tasting-wine-button"
+      >
+        <mat-icon>delete</mat-icon>
+      </button>
+
+      <span *ngIf="isEditing(w.id)">
         <button (click)="saveEdit(w.id)" data-test="save-tasting-wine-button">Spara</button>
         <button (click)="cancelEdit()">Avbryt</button>
-      </td>
-      <td *ngIf="!isEditing(w.id)"></td>
+      </span>
+      <span *ngIf="!isEditing(w.id)"></span>
 
     </tr>
 
