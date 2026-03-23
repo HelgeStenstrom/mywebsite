@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {WikipediaService} from "../../services/wikipedia.service";
 
 @Component({
-  selector: 'app-wikipedia',
-  templateUrl: './wikipedia.component.html',
-  styleUrls: ['./wikipedia.component.css']
+    selector: 'app-wikipedia',
+    templateUrl: './wikipedia.component.html',
+    styleUrls: ['./wikipedia.component.css'],
+    standalone: false
 })
 export class WikipediaComponent implements OnInit {
   private service: WikipediaService;

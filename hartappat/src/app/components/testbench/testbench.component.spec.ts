@@ -9,7 +9,8 @@ describe('TestbenchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TestbenchComponent, MockFiledropComponent, MockAltDruvorComponent]
+      declarations: [ TestbenchComponent],
+      imports: [MockFiledropComponent, MockAltDruvorComponent],
     })
     .compileComponents();
 

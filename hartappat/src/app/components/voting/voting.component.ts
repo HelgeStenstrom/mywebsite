@@ -1,9 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 
 @Component({
-  selector: 'app-voting',
-  templateUrl: './voting.component.html',
-  styleUrls: ['./voting.component.css']
+    selector: 'app-voting',
+    templateUrl: './voting.component.html',
+    styleUrls: ['./voting.component.css'],
+    standalone: false
 })
 export class VotingComponent implements OnInit{
 

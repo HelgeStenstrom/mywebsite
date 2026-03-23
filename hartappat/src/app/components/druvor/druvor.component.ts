@@ -6,9 +6,10 @@ import {Grape} from "../../models/common.model";
 import {GrapeService} from "../../services/backend/grape.service";
 
 @Component({
-  selector: 'app-druvor',
-  templateUrl: './druvor.component.html',
-  styleUrls: ['./druvor.component.css']
+    selector: 'app-druvor',
+    templateUrl: './druvor.component.html',
+    styleUrls: ['./druvor.component.css'],
+    standalone: false
 })
 export class DruvorComponent implements OnInit {
   grapes$: Observable<Grape[]> = of([]);

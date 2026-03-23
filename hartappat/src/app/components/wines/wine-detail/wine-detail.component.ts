@@ -4,9 +4,10 @@ import {WineService} from "../../../services/backend/wine.service";
 import {WineApi} from "../../../models/wine.model";
 
 @Component({
-  selector: 'app-wine-detail',
-  templateUrl: './wine-detail.component.html',
-  styleUrls: ['./wine-detail.component.css']
+    selector: 'app-wine-detail',
+    templateUrl: './wine-detail.component.html',
+    styleUrls: ['./wine-detail.component.css'],
+    standalone: false
 })
 export class WineDetailComponent implements OnInit {
   wineId!: number;

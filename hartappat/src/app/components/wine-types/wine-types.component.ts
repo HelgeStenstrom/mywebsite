@@ -3,9 +3,10 @@ import {WineTypeService} from "../../services/backend/wine-type.service";
 import {WineTypeApi} from "../../models/common.model";
 
 @Component({
-  selector: 'app-wine-types',
-  templateUrl: './wine-types.component.html',
-  styleUrls: ['./wine-types.component.css']
+    selector: 'app-wine-types',
+    templateUrl: './wine-types.component.html',
+    styleUrls: ['./wine-types.component.css'],
+    standalone: false
 })
 export class WineTypesComponent implements OnInit {
 

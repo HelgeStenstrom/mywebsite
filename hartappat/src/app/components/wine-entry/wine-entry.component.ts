@@ -6,9 +6,10 @@ import {WineCreate} from "../../models/wine.model";
 import {WineService} from "../../services/backend/wine.service";
 
 @Component({
-  selector: 'app-wine-entry',
-  templateUrl: './wine-entry.component.html',
-  styleUrls: ['./wine-entry.component.css']
+    selector: 'app-wine-entry',
+    templateUrl: './wine-entry.component.html',
+    styleUrls: ['./wine-entry.component.css'],
+    standalone: false
 })
 export class WineEntryComponent implements OnInit {
   @Input() wineId?: number;

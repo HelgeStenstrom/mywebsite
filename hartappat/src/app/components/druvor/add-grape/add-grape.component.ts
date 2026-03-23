@@ -6,9 +6,10 @@ import {Grape, GrapeCreate} from "../../../models/common.model";
 import {GrapeService} from "../../../services/backend/grape.service";
 
 @Component({
-  selector: 'app-add-grape',
-  templateUrl: './add-grape.component.html',
-  styleUrls: ['./add-grape.component.css']
+    selector: 'app-add-grape',
+    templateUrl: './add-grape.component.html',
+    styleUrls: ['./add-grape.component.css'],
+    standalone: false
 })
 export class AddGrapeComponent implements OnInit {
 

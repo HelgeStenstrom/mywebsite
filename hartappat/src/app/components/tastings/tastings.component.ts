@@ -5,9 +5,10 @@ import {WineTastingSummary} from "../../models/tasting.model";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-tastings',
-  templateUrl: './tastings.component.html',
-  styleUrls: ['./tastings.component.css']
+    selector: 'app-tastings',
+    templateUrl: './tastings.component.html',
+    styleUrls: ['./tastings.component.css'],
+    standalone: false
 })
 export class TastingsComponent implements OnInit {
 

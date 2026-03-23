@@ -6,9 +6,10 @@ import {Observable, of} from "rxjs";
 import {Grape} from "../../models/common.model";
 
 @Component({
-  selector: 'app-wine-grapes',
-  templateUrl: './wine-grapes.component.html',
-  styleUrls: ['./wine-grapes.component.css']
+    selector: 'app-wine-grapes',
+    templateUrl: './wine-grapes.component.html',
+    styleUrls: ['./wine-grapes.component.css'],
+    standalone: false
 })
 export class WineGrapesComponent implements OnInit {
   @Input() wineId!: number;

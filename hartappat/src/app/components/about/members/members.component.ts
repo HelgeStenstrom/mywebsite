@@ -4,9 +4,10 @@ import {MemberService} from "../../../services/backend/member.service";
 import {Member} from "../../../models/common.model";
 
 @Component({
-  selector: 'app-members',
-  templateUrl: './members.component.html',
-  styleUrls: ['./members.component.css']
+    selector: 'app-members',
+    templateUrl: './members.component.html',
+    styleUrls: ['./members.component.css'],
+    standalone: false
 })
 export class MembersComponent implements OnInit {
 

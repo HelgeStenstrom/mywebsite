@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProductDetail, VinmonopoletService} from "../../services/vinmonopolet.service";
 
 @Component({
-  selector: 'app-vinmonopolet',
-  templateUrl: './vinmonopolet.component.html',
-  styleUrls: ['./vinmonopolet.component.css']
+    selector: 'app-vinmonopolet',
+    templateUrl: './vinmonopolet.component.html',
+    styleUrls: ['./vinmonopolet.component.css'],
+    standalone: false
 })
 export class VinmonopoletComponent implements OnInit {
   private service: VinmonopoletService;

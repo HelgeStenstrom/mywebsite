@@ -6,9 +6,10 @@ import {WineView} from "../../models/wine.model";
 import {Router} from "@angular/router";
 
 @Component({
-  selector: 'app-wines',
-  templateUrl: './wines.component.html',
-  styleUrls: ['./wines.component.css']
+    selector: 'app-wines',
+    templateUrl: './wines.component.html',
+    styleUrls: ['./wines.component.css'],
+    standalone: false
 })
 
 class WinesComponent implements OnInit {

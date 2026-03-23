@@ -3,9 +3,10 @@ import {CountryApi} from "../../models/common.model";
 import {CountryService} from "../../services/backend/country.service";
 
 @Component({
-  selector: 'app-countries',
-  templateUrl: './countries.component.html',
-  styleUrls: ['./countries.component.css']
+    selector: 'app-countries',
+    templateUrl: './countries.component.html',
+    styleUrls: ['./countries.component.css'],
+    standalone: false
 })
 export class CountriesComponent implements OnInit {
 

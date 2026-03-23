@@ -6,9 +6,10 @@ import {TastingService} from '../../../../services/backend/tasting.service';
 import {WineTastingWineCreate} from '../../../../models/tasting.model';
 
 @Component({
-  selector: 'app-add-wine-to-tasting',
-  templateUrl: './add-wine-to-tasting.component.html',
-  styleUrls: ['./add-wine-to-tasting.component.css']
+    selector: 'app-add-wine-to-tasting',
+    templateUrl: './add-wine-to-tasting.component.html',
+    styleUrls: ['./add-wine-to-tasting.component.css'],
+    standalone: false
 })
 export class AddWineToTastingComponent implements OnInit {
 

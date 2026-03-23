@@ -4,9 +4,10 @@ import {Router} from '@angular/router';
 import {TastingService} from "../../../services/backend/tasting.service";
 
 @Component({
-  selector: 'app-create-tasting',
-  templateUrl: './create-tasting.component.html',
-  styleUrls: ['./create-tasting.component.css']
+    selector: 'app-create-tasting',
+    templateUrl: './create-tasting.component.html',
+    styleUrls: ['./create-tasting.component.css'],
+    standalone: false
 })
 export class CreateTastingComponent implements OnInit {
 

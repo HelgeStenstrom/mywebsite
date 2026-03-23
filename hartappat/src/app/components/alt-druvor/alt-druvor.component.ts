@@ -4,9 +4,10 @@ import {Grape} from "../../models/common.model";
 import {GrapeService} from "../../services/backend/grape.service";
 
 @Component({
-  selector: 'app-alt-druvor',
-  templateUrl: './alt-druvor.component.html',
-  styleUrls: ['./alt-druvor.component.css']
+    selector: 'app-alt-druvor',
+    templateUrl: './alt-druvor.component.html',
+    styleUrls: ['./alt-druvor.component.css'],
+    standalone: false
 })
 export class AltDruvorComponent implements OnInit {
   grapes: Observable<(Grape)[]>;

@@ -10,14 +10,13 @@ describe('HomeComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [HomeComponent,
+      ],
+      imports: [
         MockAboutComponent,
-        MockAppWinesComponent,
-        MockDruvorComponent,
-        MockVinmonopoletComponent,
-        MockVinprovningComponent,
-        MockWikipediaComponent]
+        MockAppWinesComponent, MockDruvorComponent, MockVinmonopoletComponent, MockVinprovningComponent, MockWikipediaComponent],
+
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;

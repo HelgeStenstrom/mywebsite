@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
-import {interval, of, timestamp} from "rxjs";
+import {Component} from '@angular/core';
+import {interval} from "rxjs";
 import {map} from "rxjs/operators";
 
 @Component({
-  selector: 'app-navbar',
-  templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+    selector: 'app-navbar',
+    templateUrl: './navbar.component.html',
+    styleUrls: ['./navbar.component.css'],
+    standalone: false
 })
 export class NavbarComponent  {
 

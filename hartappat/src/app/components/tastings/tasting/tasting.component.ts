@@ -8,9 +8,10 @@ import {WineApi, WineView} from "../../../models/wine.model";
 import {WineService} from "../../../services/backend/wine.service";
 
 @Component({
-  selector: 'app-tasting',
-  templateUrl: './tasting.component.html',
-  styleUrls: ['./tasting.component.css']
+    selector: 'app-tasting',
+    templateUrl: './tasting.component.html',
+    styleUrls: ['./tasting.component.css'],
+    standalone: false
 })
 export class TastingComponent implements OnInit {
 
