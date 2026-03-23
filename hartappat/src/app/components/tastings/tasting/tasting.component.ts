@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {WineTasting, WineTastingWine} from "../../../models/tasting.model";
-import {Observable} from "rxjs";
+import {Observable, of} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {TastingService} from "../../../services/backend/tasting.service";
 import {MemberService} from "../../../services/backend/member.service";
@@ -37,11 +37,7 @@ export class TastingComponent implements OnInit {
     this.fullTasting$ = this.service.getTasting(id);
 
     this.fullTasting$.subscribe(tasting => {
-      tasting.wines?.forEach(w => {
-        this.wineService.getWine(w.wineId).subscribe(wine => {
-          this.wineMap.set(w.wineId, wine);
-        });
-      });
+      this.updateWineMap(tasting);
     });
 
     this.memberService.getMembers().subscribe(members => {
@@ -51,6 +47,15 @@ export class TastingComponent implements OnInit {
     this.wineService.getWines().subscribe(wines => {
       this.allWines = wines;
     })
+  }
+
+  private updateWineMap(tasting: WineTasting) {
+    this.wineMap.clear();
+    tasting.wines?.forEach(w => {
+      this.wineService.getWine(w.wineId).subscribe(wine => {
+        this.wineMap.set(w.wineId, wine);
+      });
+    });
   }
 
   onWineAdded(): void {
@@ -78,7 +83,10 @@ export class TastingComponent implements OnInit {
   saveEdit(id: number): void {
     this.service.patchWineInTasting(this.getTastingId(), id, this.editValues).subscribe(() => {
       this.editingId = null;
-      this.fullTasting$ = this.service.getTasting(this.getTastingId());
+      this.service.getTasting(this.getTastingId()).subscribe(tasting => {
+        this.fullTasting$ = of(tasting);
+        this.updateWineMap(tasting);
+      })
     });
   }
 

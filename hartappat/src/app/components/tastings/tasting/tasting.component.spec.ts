@@ -8,15 +8,35 @@ import {TastingService} from "../../../services/backend/tasting.service";
 import {MemberService} from "../../../services/backend/member.service";
 import {WineService} from "../../../services/backend/wine.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
-import {WineView} from "../../../models/wine.model";
+import {WineApi, WineView} from "../../../models/wine.model";
 
 describe('TastingComponent', () => {
   let component: TastingComponent;
   let fixture: ComponentFixture<TastingComponent>;
 
+  const mockWine10 = {
+    id: 10,
+    name: 'Château Margaux',
+    country: { id: 1, name: 'Frankrike' },
+    wineType: { id: 1, name: 'Rött' },
+    vintageYear: 2020,
+    isNonVintage: false,
+    isUsed: false,
+  };
+
+  const mockWine11 = {
+    id: 11,
+    name: 'Testvin',
+    country: { id: 1, name: 'Frankrike' },
+    wineType: { id: 1, name: 'Rött' },
+    vintageYear: 2020,
+    isNonVintage: false,
+    isUsed: false,
+  };
+
   const mockAllWines: WineView[] = [
-    { id: 10, name: 'Château Margaux', country: 'Frankrike', wineType: 'Rött', isUsed: true },
-    { id: 11, name: 'Testvin', country: 'Sverige', wineType: 'Rött', isUsed: true },
+   toWineView(mockWine10),
+    toWineView(mockWine11),
     { id: 12, name: 'Riesling Auslese', country: 'Tyskland', wineType: 'Vitt', isUsed: false },
   ];
 
@@ -70,6 +90,14 @@ describe('TastingComponent', () => {
       isUsed: false,
     }));
     wineServiceMock.getWines.mockReturnValue(of(mockAllWines));
+  }
+
+  function toWineView(wine: WineApi): WineView {
+    return {
+      ...wine,
+      country: wine.country.name,
+      wineType: wine.wineType.name,
+    };
   }
 
   beforeEach(async () => {
