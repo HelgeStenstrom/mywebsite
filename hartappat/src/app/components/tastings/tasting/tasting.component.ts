@@ -4,7 +4,7 @@ import {Observable} from "rxjs";
 import {ActivatedRoute} from "@angular/router";
 import {TastingService} from "../../../services/backend/tasting.service";
 import {MemberService} from "../../../services/backend/member.service";
-import {WineApi} from "../../../models/wine.model";
+import {WineApi, WineView} from "../../../models/wine.model";
 import {WineService} from "../../../services/backend/wine.service";
 
 @Component({
@@ -20,6 +20,9 @@ export class TastingComponent implements OnInit {
   wineMap: Map<number, WineApi> = new Map();
   editingId: number | null = null;
   editValues: Partial<WineTastingWine> = {};
+  wineSearchTerm = '';
+  allWines: WineView[] = [];
+  filteredWines: WineView[] = [];
 
   constructor(
     private readonly service: TastingService,
@@ -44,6 +47,10 @@ export class TastingComponent implements OnInit {
     this.memberService.getMembers().subscribe(members => {
       members.forEach(m => this.memberNames.set(m.id, m.given));
     });
+
+    this.wineService.getWines().subscribe(wines => {
+      this.allWines = wines;
+    })
   }
 
   onWineAdded(): void {
@@ -81,5 +88,14 @@ export class TastingComponent implements OnInit {
 
   private getTastingId(): number {
     return this.tasting?.id ?? Number(this.route.snapshot.paramMap.get('id'));
+  }
+
+  updateWineFilter() {
+    const filtered = this.allWines.filter(
+      w => w.name
+        .toLowerCase()
+        .includes(this.wineSearchTerm.toLowerCase()));
+
+    this.filteredWines = filtered;
   }
 }

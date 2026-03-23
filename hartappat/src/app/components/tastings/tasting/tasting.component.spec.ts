@@ -8,10 +8,17 @@ import {TastingService} from "../../../services/backend/tasting.service";
 import {MemberService} from "../../../services/backend/member.service";
 import {WineService} from "../../../services/backend/wine.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {WineView} from "../../../models/wine.model";
 
 describe('TastingComponent', () => {
   let component: TastingComponent;
   let fixture: ComponentFixture<TastingComponent>;
+
+  const mockAllWines: WineView[] = [
+    { id: 10, name: 'Château Margaux', country: 'Frankrike', wineType: 'Rött', isUsed: true },
+    { id: 11, name: 'Testvin', country: 'Sverige', wineType: 'Rött', isUsed: true },
+    { id: 12, name: 'Riesling Auslese', country: 'Tyskland', wineType: 'Vitt', isUsed: false },
+  ];
 
   const mockTasting: WineTasting = {
     id: 1,
@@ -44,10 +51,29 @@ describe('TastingComponent', () => {
       isNonVintage: false,
       isUsed: false,
     })),
+    getWines: jest.fn().mockReturnValue(of([])),
   };
 
+  function resetMocks() {
+    jest.resetAllMocks();
+    tastingServiceMock.getTasting.mockReturnValue(of(mockTasting));
+    tastingServiceMock.deleteWineFromTasting.mockReturnValue(of(void 0));
+    tastingServiceMock.patchWineInTasting.mockReturnValue(of(void 0));
+    memberServiceMock.getMembers.mockReturnValue(of([]));
+    wineServiceMock.getWine.mockImplementation((id: number) => of({
+      id,
+      name: id === 10 ? 'Château Margaux' : 'Testvin',
+      country: { id: 1, name: 'Frankrike' },
+      wineType: { id: 1, name: 'Rött' },
+      vintageYear: 2020,
+      isNonVintage: false,
+      isUsed: false,
+    }));
+    wineServiceMock.getWines.mockReturnValue(of(mockAllWines));
+  }
+
   beforeEach(async () => {
-    resetMocks(tastingServiceMock, mockTasting, memberServiceMock, wineServiceMock);
+    resetMocks();
 
     await TestBed.configureTestingModule({
       declarations: [TastingComponent],
@@ -157,27 +183,14 @@ describe('TastingComponent', () => {
     });
   });
 
+  test('filters wines based on search term', () => {
+    component.wineSearchTerm = 'Ries';
+    component.updateWineFilter();
+
+    expect(component.filteredWines).toEqual([
+      { id: 12, name: 'Riesling Auslese', country: 'Tyskland', wineType: 'Vitt', isUsed: false },
+    ]);
+  });
+
 });
 
-function resetMocks(tastingServiceMock: {
-  getTasting: jest.Mock<any, any, any>;
-  deleteWineFromTasting: jest.Mock<any, any, any>;
-  patchWineInTasting: jest.Mock<any, any, any>
-}, mockTasting: WineTasting, memberServiceMock: { getMembers: jest.Mock<any, any, any> }, wineServiceMock: {
-  getWine: jest.Mock<any, any, any>
-}) {
-  jest.resetAllMocks();
-  tastingServiceMock.getTasting.mockReturnValue(of(mockTasting));
-  tastingServiceMock.deleteWineFromTasting.mockReturnValue(of(void 0));
-  tastingServiceMock.patchWineInTasting.mockReturnValue(of(void 0));
-  memberServiceMock.getMembers.mockReturnValue(of([]));
-  wineServiceMock.getWine.mockImplementation((id: number) => of({
-    id,
-    name: id === 10 ? 'Château Margaux' : 'Testvin',
-    country: {id: 1, name: 'Frankrike'},
-    wineType: {id: 1, name: 'Rött'},
-    vintageYear: 2020,
-    isNonVintage: false,
-    isUsed: false,
-  }));
-}
