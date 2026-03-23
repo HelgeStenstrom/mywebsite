@@ -16,22 +16,6 @@ describe('Table endpoints', () => {
         app = await createTestApp();
     });
 
-    describe('Members', () => {
-
-        test('Members: POST followed by GET returns the same data', async () => {
-            const putResponse = await request(app).post('/api/v1/members').send({given: "a", surname: "A"});
-            expect(putResponse.status).toBe(201);
-            await request(app).post('/api/v1/members').send({given: "b", surname: "B"});
-
-            const getResponse = await request(app).get('/api/v1/members');
-            expect(getResponse.status).toBe(200);
-            expect(getResponse.body).toEqual([
-                {id: 1, given: "a", surname: "A"},
-                {id: 2, given: "b", surname: "B"},
-            ]);
-        })
-    })
-
     describe('WineTypes', () => {
         test('WineTypes: POST followed by GET returns the same data', async () => {
             const putResponse = await request(app).post('/api/v1/wine-types').send({name: "blått"});

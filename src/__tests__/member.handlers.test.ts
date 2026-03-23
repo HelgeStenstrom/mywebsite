@@ -1,6 +1,7 @@
 import express from "express";
 import {createTestApp} from "../testUtils";
 import request from "supertest";
+import {test} from "@jest/globals";
 
 describe('Member handlers', () => {
 
@@ -30,6 +31,23 @@ describe('Member handlers', () => {
             })
             .expect(201);
     }
+
+    /**
+     * TODO: This test may be redundant. Check the other tests.
+     */
+    test('Members: POST followed by GET returns the same data', async () => {
+        const putResponse = await request(app).post('/api/v1/members').send({given: "a", surname: "A"});
+        expect(putResponse.status).toBe(201);
+        await request(app).post('/api/v1/members').send({given: "b", surname: "B"});
+
+        const getResponse = await request(app).get('/api/v1/members');
+        expect(getResponse.status).toBe(200);
+        expect(getResponse.body).toEqual([
+            {id: 1, given: "a", surname: "A"},
+            {id: 2, given: "b", surname: "B"},
+        ]);
+    })
+
 
     test('POST /members returns 201', async () => {
         await postAMember();
