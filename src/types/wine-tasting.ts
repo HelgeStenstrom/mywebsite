@@ -83,6 +83,7 @@ export interface WineTastingWineInstance
 
 export type WineTastingWineUpdateDto = {
     position?: number;
+    wineId?: number;
     purchasePrice?: number | null;
     averageScore?: number | null;
 }

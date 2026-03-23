@@ -105,22 +105,29 @@ describe('WineTastingWineRepository', () => {
             tastingDate: new Date('2024-01-01'),
         });
 
-        const wine = await wineDefinition.create({
+        const wine1 = await wineDefinition.create({
             name: 'Testvin',
             countryId: 1,
             wineTypeId: 1,
             isNonVintage: false,
         });
 
-        const created = await repository.create(tasting.id, { wineId: wine.id, position: 1 });
+        const wine2 = await wineDefinition.create({
+            name: 'Testvin 2',
+            countryId: 1,
+            wineTypeId: 1,
+            isNonVintage: false,
+        });
 
-        const toUpdate: WineTastingWineUpdateDto = { position: 3, averageScore: 14.5, purchasePrice: 199 };
+        const created = await repository.create(tasting.id, { wineId: wine1.id, position: 1 });
+
+        const toUpdate: WineTastingWineUpdateDto = {wineId: wine2.id,  position: 3, averageScore: 14.5, purchasePrice: 199 };
 
         const updated = await repository.update(created.id, toUpdate);
 
         expect(updated).toEqual({
             id: created.id,
-            wineId: wine.id,
+            wineId: wine2.id,
             position: 3,
             purchasePrice: 199,
             averageScore: 14.5,

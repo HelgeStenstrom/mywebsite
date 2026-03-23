@@ -64,9 +64,9 @@ export class WineTastingWineRepository {
     }
 
     async update(id: number, toUpdate: WineTastingWineUpdateDto) {
-        const {position, purchasePrice, averageScore} = toUpdate;
+        const {wineId, position, purchasePrice, averageScore} = toUpdate;
         await this.WineTastingWine.update(
-            {position, purchasePrice, averageScore},
+            {wineId, position, purchasePrice, averageScore},
             {where: {id}});
 
         const updated = await this.WineTastingWine.findByPk(id);
