@@ -259,8 +259,6 @@ describe('Table endpoints', () => {
                 })
                 .expect(201);
 
-            console.log(res1.body);
-
             const res = await request(app)
                 .get('/api/v1/wines')
                 .expect(200);
