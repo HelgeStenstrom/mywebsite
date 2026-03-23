@@ -13,18 +13,22 @@
     <td>
       <select  [(ngModel)]="countryId"  data-test="country-input">
         <option [ngValue]="undefined">Välj land</option>
-        <option *ngFor="let c of countries" [ngValue]="c.id">
-          {{ c.name }}
-        </option>
+        @for (c of countries; track c) {
+          <option [ngValue]="c.id">
+            {{ c.name }}
+          </option>
+        }
       </select>
     </td>
 
     <td>
       <select [(ngModel)]="wineTypeId" data-test="type-input">
         <option [ngValue]="undefined">Välj typ</option>
-        <option *ngFor="let t of wineTypes" [ngValue]="t.id">
-          {{ t.name }}
-        </option>
+        @for (t of wineTypes; track t) {
+          <option [ngValue]="t.id">
+            {{ t.name }}
+          </option>
+        }
       </select>
     </td>
 
@@ -33,9 +37,9 @@
     <td><input type="checkbox" [(ngModel)]="isNonVintage" ></td>
 
     <td><input type="number"
-               [(ngModel)]="volume"
-               placeholder="(valfritt, cl)"
-               data-test="volume-input">
+      [(ngModel)]="volume"
+      placeholder="(valfritt, cl)"
+      data-test="volume-input">
     </td>
 
     <td><input type="number" [(ngModel)]="systemNumber" data-test="systembolaget-input"></td>

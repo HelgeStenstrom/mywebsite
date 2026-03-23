@@ -70,14 +70,16 @@
     <td>Frankrike</td>
     <td>Italien</td>
   </tr>
-  <tr *ngFor="let voter of voters" class="voter">
-    <td>Fake name</td>
-    <td>
-      <input value="14">
-    </td>
-    <td><input value="15"></td>
-    <td><input value="16"></td>
-  </tr>
+  @for (voter of voters; track voter) {
+    <tr class="voter">
+      <td>Fake name</td>
+      <td>
+        <input value="14">
+      </td>
+      <td><input value="15"></td>
+      <td><input value="16"></td>
+    </tr>
+  }
 
   <tr>
     <td>Medelpoäng</td>

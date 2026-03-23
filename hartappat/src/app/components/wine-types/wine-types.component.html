@@ -8,28 +8,32 @@
 
 <table>
   <thead>
-  <tr>
-    <th>Namn</th>
-    <th>Åtgärd</th>
-  </tr>
+    <tr>
+      <th>Namn</th>
+      <th>Åtgärd</th>
+    </tr>
   </thead>
 
   <tbody>
-  <tr *ngFor="let wineType of wineTypes">
-    <td>{{ wineType.name }}</td>
-    <td>
-      <button
-        (click)="deleteWineType(wineType.id)"
-        [disabled]="wineType.isUsed"
-      >
-        Ta bort
-      </button>
-    </td>
-  </tr>
+    @for (wineType of wineTypes; track wineType) {
+      <tr>
+        <td>{{ wineType.name }}</td>
+        <td>
+          <button
+            (click)="deleteWineType(wineType.id)"
+            [disabled]="wineType.isUsed"
+            >
+            Ta bort
+          </button>
+        </td>
+      </tr>
+    }
   </tbody>
 
 </table>
 
-<p *ngIf="wineTypes.length === 0">
-  Inga vintyper hittades.
-</p>
+@if (wineTypes.length === 0) {
+  <p>
+    Inga vintyper hittades.
+  </p>
+}

@@ -15,34 +15,39 @@
   <th>Volym</th>
   <th>Datum</th>
   <th>Systembolaget</th>
-  <tr *ngFor="let w of winesAsync$|async">
-    <td>{{w.id}}</td>
-    <td>{{w.name}}</td>
-    <td>{{w.country}}</td>
-    <td>{{w.wineType}}</td>
-    <td>{{w.vintage}}</td>
-    <td>{{w.volume}}</td>
-    <td>{{w.createdAt| date:'yyyy-MM-dd'}}</td>
-    <td *ngIf="w.systembolaget">
-      <a
-      href="https://www.systembolaget.se/sortiment/?q={{w.systembolaget}}"
-      target="_blank"
-      rel="noopener noreferrer">
-        {{w.systembolaget}}
-      </a>
-    </td>
-    <td *ngIf="!w.systembolaget"></td>
-
-    <button mat-icon-button color="primary" (click)="edit(w)">
-      <mat-icon>edit</mat-icon>
-    </button>
-    <button mat-icon-button
-            color="warn"
-            (click)="delete(w)"
-            [disabled]="w.isUsed"
-    >
-      <mat-icon>delete</mat-icon>
-    </button>
-  </tr>
+  @for (w of winesAsync$|async; track w) {
+    <tr>
+      <td>{{w.id}}</td>
+      <td>{{w.name}}</td>
+      <td>{{w.country}}</td>
+      <td>{{w.wineType}}</td>
+      <td>{{w.vintage}}</td>
+      <td>{{w.volume}}</td>
+      <td>{{w.createdAt| date:'yyyy-MM-dd'}}</td>
+      @if (w.systembolaget) {
+        <td>
+          <a
+            href="https://www.systembolaget.se/sortiment/?q={{w.systembolaget}}"
+            target="_blank"
+            rel="noopener noreferrer">
+            {{w.systembolaget}}
+          </a>
+        </td>
+      }
+      @if (!w.systembolaget) {
+        <td></td>
+      }
+      <button mat-icon-button color="primary" (click)="edit(w)">
+        <mat-icon>edit</mat-icon>
+      </button>
+      <button mat-icon-button
+        color="warn"
+        (click)="delete(w)"
+        [disabled]="w.isUsed"
+        >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </tr>
+  }
 </table>
 

@@ -13,26 +13,30 @@
     <th>Namn</th>
     <th>Noter</th>
   </tr>
-  <tr *ngFor="let t of tastings$ | async">
-    <td><button mat-button (click)="openTasting(t.id)">Öppna</button></td>
-    <td>{{t.id}}</td>
-    <td>{{t.tastingDate| date:'yyyy-MM-dd'}}</td>
-    <td><a (click)="openTasting(t.id)" style="cursor:pointer">{{t.title}}</a></td>
-    <td>{{t.notes}}</td>
-  </tr>
+  @for (t of tastings$ | async; track t) {
+    <tr>
+      <td><button mat-button (click)="openTasting(t.id)">Öppna</button></td>
+      <td>{{t.id}}</td>
+      <td>{{t.tastingDate| date:'yyyy-MM-dd'}}</td>
+      <td><a (click)="openTasting(t.id)" style="cursor:pointer">{{t.title}}</a></td>
+      <td>{{t.notes}}</td>
+    </tr>
+  }
 </table>
 
 <h2>Våra vinprovningar</h2>
 
 <div data-test="tasting-list">
-  <div  *ngFor="let t of tastings$ | async">
-  <!--  TODO: Flytta titel och noter till sub-komponenten.
-         Parametrisera den med t: Tasting -->
-    <h3>{{t.title}}</h3>
-    <div>{{t.notes}}</div>
-    <app-tasting
-      [tasting]="t"
-      data-test="tasting"
-    ></app-tasting>
-  </div>
+  @for (t of tastings$ | async; track t) {
+    <div >
+      <!--  TODO: Flytta titel och noter till sub-komponenten.
+      Parametrisera den med t: Tasting -->
+      <h3>{{t.title}}</h3>
+      <div>{{t.notes}}</div>
+      <app-tasting
+        [tasting]="t"
+        data-test="tasting"
+      ></app-tasting>
+    </div>
+  }
 </div>

@@ -4,14 +4,18 @@
 
 <app-wine-entry [wineId]="wineId" (wineSaved)="onWineSaved()"></app-wine-entry>
 
-<table *ngIf="wine">
-  <tr><th>Namn</th><td>{{ wine.name }}</td></tr>
-  <tr><th>Land</th><td>{{ wine.country.name }}</td></tr>
-  <tr><th>Typ</th><td>{{ wine.wineType.name }}</td></tr>
-  <tr><th>Årgång</th><td>{{ wine.vintageYear ?? (wine.isNonVintage ? 'NV' : '?') }}</td></tr>
-  <tr><th>Volym</th><td>{{ wine.volume }}</td></tr>
-  <tr><th>Tillagt den</th><td>{{ wine.createdAt | date:'yyyy-MM-dd' }}</td></tr>
-  <tr *ngIf="wine.systembolaget"><th>Systembolaget</th><td>{{ wine.systembolaget }}</td></tr>
-</table>
+@if (wine) {
+  <table>
+    <tr><th>Namn</th><td>{{ wine.name }}</td></tr>
+    <tr><th>Land</th><td>{{ wine.country.name }}</td></tr>
+    <tr><th>Typ</th><td>{{ wine.wineType.name }}</td></tr>
+    <tr><th>Årgång</th><td>{{ wine.vintageYear ?? (wine.isNonVintage ? 'NV' : '?') }}</td></tr>
+    <tr><th>Volym</th><td>{{ wine.volume }}</td></tr>
+    <tr><th>Tillagt den</th><td>{{ wine.createdAt | date:'yyyy-MM-dd' }}</td></tr>
+    @if (wine.systembolaget) {
+      <tr><th>Systembolaget</th><td>{{ wine.systembolaget }}</td></tr>
+    }
+  </table>
+}
 
 <app-wine-grapes [wineId]="wineId"></app-wine-grapes>

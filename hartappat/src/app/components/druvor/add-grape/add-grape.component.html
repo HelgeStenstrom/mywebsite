@@ -12,21 +12,22 @@
     formControlName="color"
     required>
     <mat-label id="color-label">Druvans färg</mat-label>
-    <mat-radio-button
-      class="example-radio-button"
-      *ngFor="let color of ['blå', 'grön']"
-      [value]="color">
-      {{color}}
-    </mat-radio-button>
+    @for (color of ['blå', 'grön']; track color) {
+      <mat-radio-button
+        class="example-radio-button"
+        [value]="color">
+        {{color}}
+      </mat-radio-button>
+    }
   </mat-radio-group>
   <div>Druvan heter {{grapeForm.value.name}} och färgen är {{grapeForm.value.color}}.</div>
 
   <button mat-raised-button
-          type="submit"
-          color="primary"
-          [disabled]="!grapeForm.valid"
-          (click)="addGrape()"
-  >Lägg till
+    type="submit"
+    color="primary"
+    [disabled]="!grapeForm.valid"
+    (click)="addGrape()"
+    >Lägg till
   </button>
 </form>
 

@@ -8,28 +8,32 @@
 
 <table>
   <thead>
-  <tr>
-    <th>Namn</th>
-    <th>Åtgärd</th>
-  </tr>
+    <tr>
+      <th>Namn</th>
+      <th>Åtgärd</th>
+    </tr>
   </thead>
 
   <tbody>
-  <tr *ngFor="let country of countries">
-    <td>{{ country.name }}</td>
-    <td>
-      <button
-        (click)="deleteCountry(country.id)"
-        [disabled]="country.isUsed"
-      >
-        Ta bort
-      </button>
-    </td>
-  </tr>
+    @for (country of countries; track country) {
+      <tr>
+        <td>{{ country.name }}</td>
+        <td>
+          <button
+            (click)="deleteCountry(country.id)"
+            [disabled]="country.isUsed"
+            >
+            Ta bort
+          </button>
+        </td>
+      </tr>
+    }
   </tbody>
 
 </table>
 
-<p *ngIf="countries.length === 0">
-  Inga länder hittades.
-</p>
+@if (countries.length === 0) {
+  <p>
+    Inga länder hittades.
+  </p>
+}

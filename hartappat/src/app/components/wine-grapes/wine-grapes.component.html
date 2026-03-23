@@ -6,27 +6,30 @@
     <th>Färg</th>
     <th>Procent</th>
   </tr>
-  <tr *ngFor="let wineGrape of wineGrapes$ | async"
-     data-test="wine-grape-item">
-    <td>{{ getGrapeName(wineGrape.grapeId) }}</td>
-    <td>{{ getGrapeColor(wineGrape.grapeId) }}</td>
-    <td>{{wineGrape.percentage}}</td>
-    <button mat-icon-button
-            color="warn"
-            (click)="deleteGrape(wineGrape.id)"
-            data-test="delete-grape-button"
-    >
-      <mat-icon>delete</mat-icon>
-    </button>
-
-  </tr>
+  @for (wineGrape of wineGrapes$ | async; track wineGrape) {
+    <tr
+      data-test="wine-grape-item">
+      <td>{{ getGrapeName(wineGrape.grapeId) }}</td>
+      <td>{{ getGrapeColor(wineGrape.grapeId) }}</td>
+      <td>{{wineGrape.percentage}}</td>
+      <button mat-icon-button
+        color="warn"
+        (click)="deleteGrape(wineGrape.id)"
+        data-test="delete-grape-button"
+        >
+        <mat-icon>delete</mat-icon>
+      </button>
+    </tr>
+  }
 </table>
 
 <select [(ngModel)]="selectedGrapeId" data-test="grape-select">
   <option [ngValue]="undefined">Välj druva</option>
-  <option *ngFor="let grape of filteredGrapes" [ngValue]="grape.id">
-    {{ grape.name }}
-  </option>
+  @for (grape of filteredGrapes; track grape) {
+    <option [ngValue]="grape.id">
+      {{ grape.name }}
+    </option>
+  }
 </select>
 
 <input type="text" [(ngModel)]="searchTerm" (input)="updateFilter()" placeholder="Sök druva">

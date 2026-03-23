@@ -6,7 +6,9 @@
 <table class="mat-table">
 
   <th>Produkt</th>
-  <tr *ngFor="let p of products">
-    <td>{{p.basic.productShortName}}</td>
-  </tr>
+  @for (p of products; track p) {
+    <tr>
+      <td>{{p.basic.productShortName}}</td>
+    </tr>
+  }
 </table>
