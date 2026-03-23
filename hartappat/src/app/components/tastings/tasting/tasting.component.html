@@ -29,7 +29,22 @@
         <span  *ngIf="!isEditing(w.id)" >{{ w.position }}</span>
         <input *ngIf="isEditing(w.id)" [(ngModel)]="editValues.position" type="number" data-test="position-input">
       </td>
-      <td data-test="wine-name">{{ wineMap.get(w.wineId)?.name }}</td>
+
+
+      <td *ngIf="!isEditing(w.id)" data-test="wine-name">{{ wineMap.get(w.wineId)?.name }}</td>
+      <td *ngIf="isEditing(w.id)">
+        <input type="text"
+               [(ngModel)]="wineSearchTerm"
+               (input)="updateWineFilter()"
+               data-test="wine-search-input"
+               placeholder="Sök vin">
+        <div *ngFor="let wine of filteredWines"
+             (click)="selectWine(wine)"
+             data-test="wine-option">
+          {{ wine.name }}
+        </div>
+      </td>
+
       <td data-test="wine-country">{{ wineMap.get(w.wineId)?.country?.name }}</td>
       <td data-test="wine-type">{{ wineMap.get(w.wineId)?.wineType?.name }}</td>
       <td>

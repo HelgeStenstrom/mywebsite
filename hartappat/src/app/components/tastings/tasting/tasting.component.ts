@@ -98,4 +98,10 @@ export class TastingComponent implements OnInit {
 
     this.filteredWines = filtered;
   }
+
+  protected selectWine(wine: WineView) {
+    this.editValues.wineId = wine.id;
+    this.wineSearchTerm = wine.name;
+    this.filteredWines = [];
+  }
 }

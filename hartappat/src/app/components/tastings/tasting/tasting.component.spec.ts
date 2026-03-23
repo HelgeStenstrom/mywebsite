@@ -160,15 +160,6 @@ describe('TastingComponent', () => {
     ]);
   });
 
-  test.skip('shows wine search input when editing', () => {
-    const spans = fixture.nativeElement.querySelectorAll('[data-test="position-value"]');
-    spans[0].click();
-    fixture.detectChanges();
-
-    const searchInput = fixture.nativeElement.querySelector('[data-test="wine-search-input"]');
-    expect(searchInput).toBeTruthy();
-  });
-
   test('clicking edit button starts editing that row', () => {
     const buttons = fixture.nativeElement.querySelectorAll('[data-test="edit-tasting-wine-button"]');
     buttons[0].click();
@@ -177,6 +168,31 @@ describe('TastingComponent', () => {
     expect(fixture.nativeElement.querySelector('[data-test="position-input"]')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('[data-test="price-input"]')).toBeTruthy();
     expect(fixture.nativeElement.querySelector('[data-test="score-input"]')).toBeTruthy();
+  });
+
+  test('shows wine search input when editing', () => {
+    const buttons = fixture.nativeElement.querySelectorAll('[data-test="edit-tasting-wine-button"]');
+    buttons[0].click();
+    fixture.detectChanges();
+
+    const searchInput = fixture.nativeElement.querySelector('[data-test="wine-search-input"]');
+    expect(searchInput).toBeTruthy();
+  });
+
+  test('clicking a wine in the search results sets wineId in editValues', () => {
+    const buttons = fixture.nativeElement.querySelectorAll('[data-test="edit-tasting-wine-button"]');
+    buttons[0].click();
+    fixture.detectChanges();
+
+    component.wineSearchTerm = 'Ries';
+    component.updateWineFilter();
+    fixture.detectChanges();
+
+    const wineOption = fixture.nativeElement.querySelector('[data-test="wine-option"]');
+    wineOption.click();
+    fixture.detectChanges();
+
+    expect(component.editValues.wineId).toBe(12);
   });
 
 });
