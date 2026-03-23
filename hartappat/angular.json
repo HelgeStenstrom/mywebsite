@@ -93,16 +93,16 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "hartappat:build:production"
+              "buildTarget": "hartappat:build:production"
             },
             "development": {
-              "browserTarget": "hartappat:build:development"
+              "buildTarget": "hartappat:build:development"
             },
             "hemma": {
-              "browserTarget": "hartappat:build:hemma"
+              "buildTarget": "hartappat:build:hemma"
             },
             "rosendahl": {
-              "browserTarget": "hartappat:build:rosendahl"
+              "buildTarget": "hartappat:build:rosendahl"
             }
           },
           "options": {
@@ -113,7 +113,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "hartappat:build"
+            "buildTarget": "hartappat:build"
           }
         },
         "test": {
