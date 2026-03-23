@@ -36,36 +36,17 @@ paths:
               schema:
                 $ref: '#/components/schemas/Country'
   /countries/{id}:
-    get:
-      summary: Get one country by id
-      description: Returns the country of the given id.
-      parameters:
-        - name: id
-          in: path
-          description: ID of the country to get
-          required: true
-          schema:
-            type: integer
-            format: int64
-      responses:
-        200:
-          description: Successful response
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Country'
-
+    parameters:
+      - name: id
+        in: path
+        description: ID of the country
+        required: true
+        schema:
+          type: integer
+          format: int64
     delete:
       summary: Delete one country by id
       description: Delete one country which is not in use (not registered with any wine). Returns remaining countries.
-      parameters:
-        - name: id
-          in: path
-          description: ID of the country to delete
-          required: true
-          schema:
-            type: integer
-            format: int64
       responses:
         204:
           description: Successful deletion of the given country
@@ -205,6 +186,9 @@ paths:
         in: path
         description: ID of the member
         required: true
+        schema:
+          type: integer
+          format: int64
     get:
       summary: Returns a member by id
       description: Returns a member by id, with details
@@ -228,6 +212,28 @@ paths:
         204:
           description: Member deleted successfully
         404:
+          description: Member not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a member by id
+      description: Update properties of a member identified by its id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MemberCreate'
+      responses:
+        '200':
+          description: Member updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Member'
+        '404':
           description: Member not found
           content:
             application/json:
@@ -295,6 +301,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a tasting by id
+      description: Update properties of a tasting identified by its id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WineTastingCreate'
+      responses:
+        '200':
+          description: Tasting updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WineTasting'
+        '404':
+          description: Tasting not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /wines:
     get:
       description: Returns a list of the wines in the database. Currently, the length of the list is unlimited; that may change.
@@ -319,6 +347,10 @@ paths:
       responses:
         201:
           description: Created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wine'
 
   /wines/{id}:
     parameters:
@@ -357,6 +389,28 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
         '204':
           description: Wine deleted successfully
+    patch:
+      summary: Update a wine by id
+      description: Update properties of a wine identified by its id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WineCreate'
+      responses:
+        '200':
+          description: Wine updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Wine'
+        '404':
+          description: Wine not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /wines/{id}/grapes:
     parameters:
@@ -408,7 +462,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
-  /wines/{id}/grapes{wineGrapeId}:
+  /wines/{id}/grapes/{wineGrapeId}:
     parameters:
       - name: id
         in: path
@@ -432,6 +486,56 @@ paths:
           description: Grape deleted successfully from wine
         404:
           description: Grape not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /tastings/{id}/hosts:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the tasting
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      summary: Get all hosts for a tasting
+      description: Returns a list of hosts for a given tasting
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/WineTastingHost'
+        '404':
+          description: Tasting not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Add a host to a tasting
+      description: Adds a host to an existing tasting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WineTastingHost'
+      responses:
+        '201':
+          description: Host added successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WineTastingHost'
+        '404':
+          description: Tasting not found
           content:
             application/json:
               schema:
@@ -567,6 +671,30 @@ paths:
                 items:
                   $ref: '#/components/schemas/WineType'
 
+  /wine-types/{id}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the wine type
+        required: true
+        schema:
+          type: integer
+          format: int64
+    delete:
+      summary: Delete a wine type by id
+      description: Delete a wine type which is not in use. Returns 409 if the wine type is associated with wines.
+      responses:
+        '204':
+          description: Wine type deleted successfully
+        '404':
+          description: Wine type not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        '409':
+          description: Cannot delete the wine type as it is associated with wines.
+
 components:
   schemas:
     Country:
@@ -577,8 +705,8 @@ components:
           type: integer
           example: 42
         name:
-            type: string
-            example: Frankrike
+          type: string
+          example: Frankrike
         isUsed:
           type: boolean
           example: true
@@ -588,12 +716,12 @@ components:
       required: [name]
       properties:
         name:
-            type: string
-            example: Frankrike
+          type: string
+          example: Frankrike
 
     Grape:
       type: object
-      required: [ id, name, color ]
+      required: [ id, name, color, isUsed ]
       properties:
         id:
           type: integer
@@ -604,6 +732,10 @@ components:
           example: Rondo
         color:
           $ref: '#/components/schemas/GrapeColor'
+        isUsed:
+          type: boolean
+          description: True if the grape is used in one or more wines. If true, the grape cannot be deleted.
+          example: false
 
     GrapeCreate:
       type: object
@@ -664,31 +796,14 @@ components:
 
 
     WineTasting:
-      type: object
-      required: [ id, title, notes, tastingDate]
-      properties:
-        id:
-          type: integer
-          example: 1
-        title:
-          type: string
-          example: 'Röda viner från Danmark'
-        notes:
-          type: string
-          example: 'Vi provade viner som vi drack i somras.'
-        tastingDate:
-          type: string
-          format: date
-          description: The date the tasting was taking place. In ISO notation.
-          example: 2023-01-06
-        wineTastingHosts:
-          type: array
-          items:
-            $ref: '#/components/schemas/WineTastingHost'
-        wines:
-          type: array
-          items:
-            $ref: '#/components/schemas/WineTastingWine'
+      allOf:
+        - $ref: '#/components/schemas/WineTastingSummary'
+        - type: object
+          properties:
+            wines:
+              type: array
+              items:
+                $ref: '#/components/schemas/WineTastingWine'
 
 
     WineTastingCreate:
