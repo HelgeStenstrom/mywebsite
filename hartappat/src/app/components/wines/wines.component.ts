@@ -49,15 +49,6 @@ class WinesComponent implements OnInit {
     );
   }
 
-  addWineToList() {
-    const wine = this._wineComponent.getWine();
-    const observable = this.wineService.addWine(wine);
-    this.winesAsync$ = observable
-      .pipe(
-        switchMap(() => this.wineService.getWines())
-      )
-  }
-
   onWineSaved(): void {
     this.winesAsync$ = this.wineService.getWines();
   }}

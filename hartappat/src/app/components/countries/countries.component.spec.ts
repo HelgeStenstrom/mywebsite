@@ -8,14 +8,8 @@ describe('CountriesComponent', () => {
   let component: CountriesComponent;
   let fixture: ComponentFixture<CountriesComponent>;
 
-  const backendServiceMock = {
-    getCountries: () => of([]),
-  };
-
   const countryServiceMock = {
     getCountries: () => of([]),
-    addCountry: () => of({ id: 1, name: 'Sverige', isUsed: false }),
-    deleteCountry: () => of(void 0),
   }
 
   beforeEach(() => {

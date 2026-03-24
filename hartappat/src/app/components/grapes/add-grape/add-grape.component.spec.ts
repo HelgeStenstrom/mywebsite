@@ -60,13 +60,6 @@ describe('AddGrapeComponent test with mock', () => {
       = componentInstance.grapeForm;
     const actual: boolean = grapeForm.valid;
     expect(actual).toBeTruthy();
-
-    const hasColorControl: boolean = grapeForm.contains('color');
-    const nameControl = grapeForm.controls.name;
-    const validName = nameControl.valid;
-    const name = nameControl.value;
-    const validator = nameControl.validator;
-
   });
 
 

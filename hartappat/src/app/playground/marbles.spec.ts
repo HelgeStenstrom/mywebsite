@@ -1,5 +1,5 @@
 import {TestScheduler} from "rxjs/testing";
-import {map, share, take} from "rxjs/operators";
+import {map, take} from "rxjs/operators";
 
 describe('First a pipe-cleaner!', () => {
 
@@ -39,7 +39,7 @@ describe('Marble test with RxJs testing utils', () => {
       const sourceValues = {a: 1, b: 7, c: 3, d: 4};
       const source$ = cold('a-b--c--d-|', sourceValues);
 
-      let expectedValues = {a: 1, b: 7};
+      let expectedValues: { a: number; b: number };
       expectedValues = sourceValues;
       const expected$ = cold('a-b--c--(d|)', expectedValues);
 

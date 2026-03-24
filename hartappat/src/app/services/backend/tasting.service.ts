@@ -68,13 +68,6 @@ export class TastingService {
 
   }
 
-  getTastingWines(tastingId: number): Observable<WineTastingWine[]> {
-    const url = `${this.apiBase}/tastings/${tastingId}/wines`;
-
-    return this.http.get<WineTastingWine[]>(url).pipe(catchError(handleError));
-  }
-
-
   deleteTasting(id: number) {
     const url: string = this.apiBase + `/tastings/${id}`;
     return this.http.delete<void>(url);

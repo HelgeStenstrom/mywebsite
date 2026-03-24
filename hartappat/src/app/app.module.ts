@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {MatMenuModule} from "@angular/material/menu";
-import {provideAnimations} from '@angular/platform-browser/animations';
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {RouterModule} from "@angular/router";
@@ -39,6 +38,7 @@ import {
 } from './components/tastings/tasting/add-wine-to-tasting/add-wine-to-tasting.component';
 import {WineGrapesComponent} from './components/wine-grapes/wine-grapes.component';
 import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.component';
+import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 
 @NgModule({
   declarations: [
@@ -102,7 +102,7 @@ import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.co
     {provide: MAT_DIALOG_DATA, useValue: {}},
     {provide: HTTP_INTERCEPTORS, useClass: ExtraHeaderInterceptor, multi: true},
     provideHttpClient(withInterceptorsFromDi()),
-    provideAnimations(),
+    provideAnimationsAsync(),
   ]
 })
 export class AppModule { }
