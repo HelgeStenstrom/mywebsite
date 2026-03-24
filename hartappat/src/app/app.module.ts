@@ -8,8 +8,8 @@ import {RouterModule} from "@angular/router";
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
 
 import {AppComponent} from './app.component';
-import {DruvorComponent} from './components/druvor/druvor.component';
-import {AddGrapeComponent} from './components/druvor/add-grape/add-grape.component';
+import {GrapesComponent} from './components/grapes/grapes.component';
+import {AddGrapeComponent} from './components/grapes/add-grape/add-grape.component';
 import {HomeComponent} from './components/home/home.component';
 import {NotFoundComponent} from './components/not-found/not-found.component';
 import {NavbarComponent} from './components/navbar/navbar.component';
@@ -43,7 +43,7 @@ import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.co
 
 @NgModule({ declarations: [
         AppComponent,
-        DruvorComponent,
+        GrapesComponent,
         AddGrapeComponent,
         HomeComponent,
         NotFoundComponent,
@@ -76,7 +76,7 @@ import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.co
         RouterModule.forRoot([
             { path: '', component: HomeComponent },
             { path: 'druvor/:add-grape', component: AddGrapeComponent },
-            { path: 'druvor', component: DruvorComponent },
+            { path: 'druvor', component: GrapesComponent },
             { path: 'viner', component: WinesComponent },
             { path: 'resor', component: TravelsComponent },
             { path: 'about', component: AboutComponent },

@@ -1,6 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {DruvorComponent} from './druvor.component';
+import {GrapesComponent} from './grapes.component';
 import {Observable, of} from "rxjs";
 import {DebugElement, NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
@@ -9,8 +9,8 @@ import {Grape} from "../../models/common.model";
 import {GrapeService} from "../../services/backend/grape.service";
 
 describe('DruvorComponent', () => {
-  let druvorComponent: DruvorComponent;
-  let fixture: ComponentFixture<DruvorComponent>;
+  let druvorComponent: GrapesComponent;
+  let fixture: ComponentFixture<GrapesComponent>;
 
   const cs: Grape = {id: 1, name:'Cabernet Sauvignon', color:'blå'};
   const riesling: Grape = {id: 2, name:'Riesling', color:'grön'};
@@ -29,7 +29,7 @@ describe('DruvorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DruvorComponent ],
+      declarations: [ GrapesComponent ],
       providers: [
         {provide: GrapeService, useValue: grapeServiceStub},
         {provide: MatDialog, useValue: {}}
@@ -38,7 +38,7 @@ describe('DruvorComponent', () => {
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DruvorComponent);
+    fixture = TestBed.createComponent(GrapesComponent);
     druvorComponent = fixture.componentInstance;
     fixture.detectChanges();
   });

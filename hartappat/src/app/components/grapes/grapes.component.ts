@@ -6,12 +6,12 @@ import {Grape} from "../../models/common.model";
 import {GrapeService} from "../../services/backend/grape.service";
 
 @Component({
-    selector: 'app-druvor',
-    templateUrl: './druvor.component.html',
-    styleUrls: ['./druvor.component.css'],
+    selector: 'app-grapes',
+    templateUrl: './grapes.component.html',
+    styleUrls: ['./grapes.component.css'],
     standalone: false
 })
-export class DruvorComponent implements OnInit {
+export class GrapesComponent implements OnInit {
   grapes$: Observable<Grape[]> = of([]);
 
   constructor(private readonly dialog: MatDialog, private readonly service: GrapeService) {}
