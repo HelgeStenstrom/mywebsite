@@ -1,7 +1,8 @@
 import {MemberService} from "./member.service";
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {HttpTestingController, provideHttpClientTesting} from "@angular/common/http/testing";
 import {Member, MemberCreate} from "../../models/common.model";
 import {TestBed} from "@angular/core/testing";
+import {provideHttpClient} from "@angular/common/http";
 
 describe('MemberService', () => {
 
@@ -14,8 +15,7 @@ describe('MemberService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [MemberService],
+      providers: [MemberService,provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(MemberService);
     httpTestingController = TestBed.inject(HttpTestingController);

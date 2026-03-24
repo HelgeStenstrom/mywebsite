@@ -1,7 +1,8 @@
 import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
 import {WineTypeService} from './wine-type.service';
 import {WineTypeApi} from '../../models/common.model';
+import {provideHttpClient} from "@angular/common/http";
 
 describe('WineTypeService', () => {
 
@@ -13,8 +14,7 @@ describe('WineTypeService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [WineTypeService],
+      providers: [WineTypeService,provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(WineTypeService);
     httpTestingController = TestBed.inject(HttpTestingController);

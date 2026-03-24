@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import WinesComponent from './wines.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {provideHttpClientTesting} from "@angular/common/http/testing";
 import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {FormsModule} from "@angular/forms";
 import {By} from "@angular/platform-browser";
@@ -9,6 +9,7 @@ import {CountryService} from "../../services/backend/country.service";
 import {of} from "rxjs";
 import {WineTypeService} from "../../services/backend/wine-type.service";
 import {WineService} from "../../services/backend/wine.service";
+import {provideHttpClient} from "@angular/common/http";
 
 describe('WinesComponent', () => {
   let component: WinesComponent;
@@ -34,9 +35,9 @@ describe('WinesComponent', () => {
     }
 
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, FormsModule],
+      imports: [FormsModule],
       declarations: [ WinesComponent, WineEntryComponent ],
-      providers: [
+      providers: [provideHttpClient(), provideHttpClientTesting(),
         {provide: CountryService, useValue: countryServiceMock},
         {provide: WineTypeService, useValue: wineTypeServiceMock},
         {provide: WineService, useValue: wineServiceMock},

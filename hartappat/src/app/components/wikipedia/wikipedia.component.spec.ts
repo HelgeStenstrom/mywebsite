@@ -1,7 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {WikipediaComponent} from './wikipedia.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {provideHttpClientTesting} from "@angular/common/http/testing";
+import {provideHttpClient} from "@angular/common/http";
 
 describe('WikipediaComponent', () => {
   let component: WikipediaComponent;
@@ -9,8 +10,8 @@ describe('WikipediaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [ WikipediaComponent ]
+      declarations: [ WikipediaComponent ],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     })
     .compileComponents();
 

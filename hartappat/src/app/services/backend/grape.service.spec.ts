@@ -1,7 +1,8 @@
-import {HttpClientTestingModule, HttpTestingController} from "@angular/common/http/testing";
+import {HttpTestingController, provideHttpClientTesting} from "@angular/common/http/testing";
 import {GrapeService} from "./grape.service";
 import {TestBed} from "@angular/core/testing";
 import {Grape, GrapeCreate} from "../../models/common.model";
+import {provideHttpClient} from "@angular/common/http";
 
 describe('GrapeService', () => {
 
@@ -14,8 +15,7 @@ describe('GrapeService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [GrapeService],
+      providers: [GrapeService,provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(GrapeService);
     httpTestingController = TestBed.inject(HttpTestingController);

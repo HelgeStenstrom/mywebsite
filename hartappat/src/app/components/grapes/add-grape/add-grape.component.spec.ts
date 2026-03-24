@@ -5,11 +5,12 @@ import {Observable, of} from "rxjs";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
 import {FormControl, FormGroup} from "@angular/forms";
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {provideHttpClientTesting} from "@angular/common/http/testing";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Grape} from "../../../models/common.model";
 import {GrapeService} from "../../../services/backend/grape.service";
 import {WineService} from "../../../services/backend/wine.service";
+import {provideHttpClient} from "@angular/common/http";
 
 // Informative: https://testing-angular.com/testing-components-with-children/
 
@@ -27,9 +28,8 @@ describe('AddGrapeComponent test with mock', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
       declarations: [AddGrapeComponent],
-      providers: [
+      providers: [provideHttpClient(), provideHttpClientTesting(),
         {provide: GrapeService, useValue: grapeServiceStub},
         {provide: MAT_DIALOG_DATA, useValue: {}},
         {provide: MatDialogRef, useValue: {}}],

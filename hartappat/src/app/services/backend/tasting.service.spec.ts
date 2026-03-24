@@ -1,5 +1,5 @@
 import {TestBed} from '@angular/core/testing';
-import {HttpClientTestingModule, HttpTestingController} from '@angular/common/http/testing';
+import {HttpTestingController, provideHttpClientTesting} from '@angular/common/http/testing';
 import {TastingService} from './tasting.service';
 import {
   WineTastingApi,
@@ -8,6 +8,7 @@ import {
   WineTastingWineCreate,
   WineTastingWineUpdate
 } from '../../models/tasting.model';
+import {provideHttpClient} from "@angular/common/http";
 
 describe('TastingService', () => {
 
@@ -37,8 +38,7 @@ describe('TastingService', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      providers: [TastingService],
+      providers: [TastingService,provideHttpClient(), provideHttpClientTesting()],
     });
     service = TestBed.inject(TastingService);
     httpTestingController = TestBed.inject(HttpTestingController);

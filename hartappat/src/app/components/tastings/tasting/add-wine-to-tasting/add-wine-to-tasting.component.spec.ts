@@ -1,9 +1,10 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {AddWineToTastingComponent} from './add-wine-to-tasting.component';
-import {HttpClientTestingModule} from '@angular/common/http/testing';
+import {provideHttpClientTesting} from '@angular/common/http/testing';
 import {ReactiveFormsModule} from "@angular/forms";
 import {NO_ERRORS_SCHEMA} from '@angular/core';
+import {provideHttpClient} from "@angular/common/http";
 
 describe('AddWineToTastingComponent', () => {
   let component: AddWineToTastingComponent;
@@ -12,11 +13,9 @@ describe('AddWineToTastingComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AddWineToTastingComponent],
-      imports: [
-        HttpClientTestingModule,
-        ReactiveFormsModule,
-      ],
+      imports: [ReactiveFormsModule,],
       schemas: [NO_ERRORS_SCHEMA],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     });
     fixture = TestBed.createComponent(AddWineToTastingComponent);
     component = fixture.componentInstance;

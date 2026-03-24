@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TastingsComponent} from './tastings.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {provideHttpClientTesting} from "@angular/common/http/testing";
 import {TastingComponent} from "./tasting/tasting.component";
 import {Observable, of} from "rxjs";
 import {CreateTastingComponent} from "./create-tasting/create-tasting.component";
@@ -9,6 +9,7 @@ import {RouterTestingModule} from "@angular/router/testing";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {TastingService} from "../../services/backend/tasting.service";
 import {WineTasting} from "../../models/tasting.model";
+import {provideHttpClient} from "@angular/common/http";
 
 describe('TastingsComponent', () => {
   let component: TastingsComponent;
@@ -31,9 +32,9 @@ describe('TastingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule, RouterTestingModule],
+      imports: [RouterTestingModule],
       declarations: [ TastingsComponent, TastingComponent, CreateTastingComponent ],
-      providers: [{provide: TastingService, useValue: tastingServiceStub}],
+      providers: [{provide: TastingService, useValue: tastingServiceStub},provideHttpClient(), provideHttpClientTesting()],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

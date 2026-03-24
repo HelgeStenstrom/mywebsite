@@ -1,7 +1,8 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {VinmonopoletComponent} from './vinmonopolet.component';
-import {HttpClientTestingModule} from "@angular/common/http/testing";
+import {provideHttpClientTesting} from "@angular/common/http/testing";
+import {provideHttpClient} from "@angular/common/http";
 
 describe('VinmonopoletComponent', () => {
   let component: VinmonopoletComponent;
@@ -9,8 +10,8 @@ describe('VinmonopoletComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HttpClientTestingModule],
-      declarations: [ VinmonopoletComponent ]
+      declarations: [ VinmonopoletComponent ],
+      providers: [provideHttpClient(), provideHttpClientTesting()],
     })
     .compileComponents();
 
