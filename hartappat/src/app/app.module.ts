@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {BrowserModule} from '@angular/platform-browser';
 import {MatMenuModule} from "@angular/material/menu";
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {provideAnimations} from '@angular/platform-browser/animations';
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {RouterModule} from "@angular/router";
@@ -40,64 +40,69 @@ import {
 import {WineGrapesComponent} from './components/wine-grapes/wine-grapes.component';
 import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.component';
 
-@NgModule({ declarations: [
-        AppComponent,
-        GrapesComponent,
-        AddGrapeComponent,
-        HomeComponent,
-        NotFoundComponent,
-        NavbarComponent,
-        AboutComponent,
-        WinesComponent,
-        TravelsComponent,
-        VinmonopoletComponent,
-        WikipediaComponent,
-        DndDirective,
-        TestbenchComponent,
-        TastingsComponent,
-        TastingComponent,
-        MembersComponent,
-        VotingComponent,
-        WineEntryComponent,
-        CountriesComponent,
-        WineTypesComponent,
-        CreateTastingComponent,
-        AddWineToTastingComponent,
-        WineGrapesComponent,
-        WineDetailComponent
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        BrowserAnimationsModule,
-        MatMenuModule,
-        MatIconModule,
-        MatButtonModule,
-        RouterModule.forRoot([
-            { path: '', component: HomeComponent },
-            { path: 'druvor/:add-grape', component: AddGrapeComponent },
-            { path: 'druvor', component: GrapesComponent },
-            { path: 'viner', component: WinesComponent },
-            { path: 'resor', component: TravelsComponent },
-            { path: 'about', component: AboutComponent },
-            { path: 'voting', component: VotingComponent },
-            { path: 'tastings/new', component: CreateTastingComponent },
-            { path: 'tastings/:id', component: TastingComponent },
-            { path: 'wines/:id', component: WineDetailComponent },
-            { path: 'tastings', component: TastingsComponent },
-            { path: 'countries', component: CountriesComponent },
-            { path: 'wine-types', component: WineTypesComponent },
-            { path: 'tests', component: TestbenchComponent },
-            { path: '**', component: NotFoundComponent },
-        ]),
-        ReactiveFormsModule,
-        MatSelectModule,
-        MatRadioModule,
-        FormsModule,
-        MatInputModule,
-        MatDialogModule], providers: [
-        { provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: { hasBackdrop: false } },
-        { provide: MatDialogRef, useValue: {} },
-        { provide: MAT_DIALOG_DATA, useValue: {} },
-        { provide: HTTP_INTERCEPTORS, useClass: ExtraHeaderInterceptor, multi: true },
-        provideHttpClient(withInterceptorsFromDi())
-    ] })
+@NgModule({
+  declarations: [
+    AppComponent,
+    GrapesComponent,
+    AddGrapeComponent,
+    HomeComponent,
+    NotFoundComponent,
+    NavbarComponent,
+    AboutComponent,
+    WinesComponent,
+    TravelsComponent,
+    VinmonopoletComponent,
+    WikipediaComponent,
+    DndDirective,
+    TestbenchComponent,
+    TastingsComponent,
+    TastingComponent,
+    MembersComponent,
+    VotingComponent,
+    WineEntryComponent,
+    CountriesComponent,
+    WineTypesComponent,
+    CreateTastingComponent,
+    AddWineToTastingComponent,
+    WineGrapesComponent,
+    WineDetailComponent
+  ],
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
+    MatMenuModule,
+    MatIconModule,
+    MatButtonModule,
+    RouterModule.forRoot([
+      {path: '', component: HomeComponent},
+      {path: 'druvor/:add-grape', component: AddGrapeComponent},
+      {path: 'druvor', component: GrapesComponent},
+      {path: 'viner', component: WinesComponent},
+      {path: 'resor', component: TravelsComponent},
+      {path: 'about', component: AboutComponent},
+      {path: 'voting', component: VotingComponent},
+      {path: 'tastings/new', component: CreateTastingComponent},
+      {path: 'tastings/:id', component: TastingComponent},
+      {path: 'wines/:id', component: WineDetailComponent},
+      {path: 'tastings', component: TastingsComponent},
+      {path: 'countries', component: CountriesComponent},
+      {path: 'wine-types', component: WineTypesComponent},
+      {path: 'tests', component: TestbenchComponent},
+      {path: '**', component: NotFoundComponent},
+    ]),
+    ReactiveFormsModule,
+    MatSelectModule,
+    MatRadioModule,
+    FormsModule,
+    MatInputModule,
+    MatDialogModule],
+  providers: [
+    {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
+    {provide: MatDialogRef, useValue: {}},
+    {provide: MAT_DIALOG_DATA, useValue: {}},
+    {provide: HTTP_INTERCEPTORS, useClass: ExtraHeaderInterceptor, multi: true},
+    provideHttpClient(withInterceptorsFromDi()),
+    provideAnimations(),
+  ]
+})
 export class AppModule { }

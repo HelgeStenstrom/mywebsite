@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TastingComponent} from './tasting.component';
-import {RouterTestingModule} from "@angular/router/testing";
 import {WineTasting} from "../../../models/tasting.model";
 import {of} from "rxjs";
 import {TastingService} from "../../../services/backend/tasting.service";
@@ -9,6 +8,7 @@ import {MemberService} from "../../../services/backend/member.service";
 import {WineService} from "../../../services/backend/wine.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {WineApi, WineView} from "../../../models/wine.model";
+import {provideRouter} from "@angular/router";
 
 describe('TastingComponent', () => {
   let component: TastingComponent;
@@ -105,8 +105,8 @@ describe('TastingComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [TastingComponent],
-      imports: [ RouterTestingModule],
       providers: [
+        provideRouter([]),
         { provide: TastingService, useValue: tastingServiceMock },
         { provide: MemberService, useValue: memberServiceMock },
         { provide: WineService, useValue: wineServiceMock },

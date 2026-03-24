@@ -5,11 +5,11 @@ import {provideHttpClientTesting} from "@angular/common/http/testing";
 import {TastingComponent} from "./tasting/tasting.component";
 import {Observable, of} from "rxjs";
 import {CreateTastingComponent} from "./create-tasting/create-tasting.component";
-import {RouterTestingModule} from "@angular/router/testing";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {TastingService} from "../../services/backend/tasting.service";
 import {WineTasting} from "../../models/tasting.model";
 import {provideHttpClient} from "@angular/common/http";
+import {provideRouter} from "@angular/router";
 
 describe('TastingsComponent', () => {
   let component: TastingsComponent;
@@ -32,9 +32,10 @@ describe('TastingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule],
       declarations: [ TastingsComponent, TastingComponent, CreateTastingComponent ],
-      providers: [{provide: TastingService, useValue: tastingServiceStub},provideHttpClient(), provideHttpClientTesting()],
+      providers: [
+        provideRouter([]),
+        {provide: TastingService, useValue: tastingServiceStub},provideHttpClient(), provideHttpClientTesting()],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();

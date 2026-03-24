@@ -1,7 +1,6 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {WineDetailComponent} from './wine-detail.component';
-import {RouterTestingModule} from "@angular/router/testing";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {ActivatedRoute, convertToParamMap} from "@angular/router";
 import {WineService} from "../../../services/backend/wine.service";
@@ -14,7 +13,6 @@ describe('WineDetailComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [WineDetailComponent],
-      imports: [RouterTestingModule.withRoutes([])],
       providers: [
         {
           provide: ActivatedRoute,
@@ -24,7 +22,6 @@ describe('WineDetailComponent', () => {
             },
           },
         },
-
         {
           provide: WineService,
           useValue: {
