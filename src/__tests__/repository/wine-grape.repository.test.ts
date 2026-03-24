@@ -1,9 +1,9 @@
 import {ModelStatic, Sequelize} from "sequelize";
-import {WineGrapeCreateDto, WineGrapeInstance, WineInstance} from "../types/wine";
-import {WineGrapeRepository} from "../orm/repositories/wine-grape.repository";
-import {defineWine} from "../orm/models/wine.model";
-import {defineWineGrape} from "../orm/models/wine-grape.model";
-import {connectWineAndWineGrape} from "../orm";
+import {WineGrapeCreateDto, WineGrapeInstance, WineInstance} from "../../types/wine";
+import {WineGrapeRepository} from "../../orm/repositories/wine-grape.repository";
+import {defineWine} from "../../orm/models/wine.model";
+import {defineWineGrape} from "../../orm/models/wine-grape.model";
+import {connectWineAndWineGrape} from "../../orm";
 
 describe('WineGrapeRepository', () => {
 

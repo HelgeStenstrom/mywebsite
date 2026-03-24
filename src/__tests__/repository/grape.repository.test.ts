@@ -1,9 +1,9 @@
 import {ModelStatic, Sequelize} from "sequelize";
-import {GrapeRepository} from "../orm/repositories/grape.repository";
-import {defineGrape} from "../orm/models/grape.model";
+import {GrapeRepository} from "../../orm/repositories/grape.repository";
+import {defineGrape} from "../../orm/models/grape.model";
 import {afterEach} from "@jest/globals";
-import {WineGrapeInstance} from "../types/wine";
-import {defineWineGrape} from "../orm/models/wine-grape.model";
+import {WineGrapeInstance} from "../../types/wine";
+import {defineWineGrape} from "../../orm/models/wine-grape.model";
 
 describe('GrapeRepository', () => {
     let sequelize: Sequelize;

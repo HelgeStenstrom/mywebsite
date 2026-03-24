@@ -4,13 +4,13 @@ import {
     WineTastingWineCreateDto,
     WineTastingWineInstance,
     WineTastingWineUpdateDto
-} from "../types/wine-tasting";
-import {WineTastingWineRepository} from "../orm/repositories/wine-tasting-wine.repository";
-import {defineTasting} from "../orm/models/tasting.model";
-import {defineWineTastingWine} from "../orm/models/wine-tasting-wine.model";
-import {connectTastingAndTastingWine} from "../orm";
-import {WineInstance} from "../types/wine";
-import {defineWine} from "../orm/models/wine.model";
+} from "../../types/wine-tasting";
+import {WineTastingWineRepository} from "../../orm/repositories/wine-tasting-wine.repository";
+import {defineTasting} from "../../orm/models/tasting.model";
+import {defineWineTastingWine} from "../../orm/models/wine-tasting-wine.model";
+import {connectTastingAndTastingWine} from "../../orm";
+import {WineInstance} from "../../types/wine";
+import {defineWine} from "../../orm/models/wine.model";
 
 describe('WineTastingWineRepository', () => {
 

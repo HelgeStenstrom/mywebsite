@@ -1,12 +1,12 @@
 import {ModelStatic, Sequelize} from 'sequelize';
-import {defineTasting} from '../orm/models/tasting.model';
-import {TastingRepository} from '../orm/repositories/tasting.repository';
-import {defineWineTastingHost} from "../orm/models/wine-tasting-host.model";
-import {defineMember} from "../orm/models/member.model";
-import {connectTastingAndTastingHost} from "../orm";
-import {WineTastingHostInstance, WineTastingInstance, WineTastingWineInstance} from "../types/wine-tasting";
-import {MemberInstance} from "../types/member";
-import {defineWineTastingWine} from "../orm/models/wine-tasting-wine.model";
+import {defineTasting} from '../../orm/models/tasting.model';
+import {TastingRepository} from '../../orm/repositories/tasting.repository';
+import {defineWineTastingHost} from "../../orm/models/wine-tasting-host.model";
+import {defineMember} from "../../orm/models/member.model";
+import {connectTastingAndTastingHost} from "../../orm";
+import {WineTastingHostInstance, WineTastingInstance, WineTastingWineInstance} from "../../types/wine-tasting";
+import {MemberInstance} from "../../types/member";
+import {defineWineTastingWine} from "../../orm/models/wine-tasting-wine.model";
 
 describe('TastingRepository', () => {
     let sequelize: Sequelize;

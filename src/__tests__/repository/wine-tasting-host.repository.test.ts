@@ -1,11 +1,11 @@
 import {ModelStatic, Sequelize} from "sequelize";
-import {WineTastingHostInstance, WineTastingInstance} from "../types/wine-tasting";
-import {defineTasting} from "../orm/models/tasting.model";
-import {defineWineTastingHost} from "../orm/models/wine-tasting-host.model";
-import {connectTastingAndTastingHost} from "../orm";
-import {WineTastingHostRepository} from "../orm/repositories/wine-tasting-host.repository";
-import {MemberInstance} from "../types/member";
-import {defineMember} from "../orm/models/member.model";
+import {WineTastingHostInstance, WineTastingInstance} from "../../types/wine-tasting";
+import {defineTasting} from "../../orm/models/tasting.model";
+import {defineWineTastingHost} from "../../orm/models/wine-tasting-host.model";
+import {connectTastingAndTastingHost} from "../../orm";
+import {WineTastingHostRepository} from "../../orm/repositories/wine-tasting-host.repository";
+import {MemberInstance} from "../../types/member";
+import {defineMember} from "../../orm/models/member.model";
 
 describe('WineTastingHostRepository', () => {
 

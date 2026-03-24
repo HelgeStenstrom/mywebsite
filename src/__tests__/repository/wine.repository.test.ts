@@ -1,21 +1,21 @@
 import {ModelStatic, Sequelize} from "sequelize";
-import {WineCreateDto, WineDto, WineGrapeInstance, WineInstance} from "../types/wine";
-import {WineRepository} from "../orm/repositories/wine.repository";
-import {CountryInstance} from "../types/country";
-import {WineTypeInstance} from "../types/wine-type";
-import {defineWine} from "../orm/models/wine.model";
-import {defineCountry} from "../orm/models/country.model";
-import {defineWineType} from "../orm/models/wine-type.model";
+import {WineCreateDto, WineDto, WineGrapeInstance, WineInstance} from "../../types/wine";
+import {WineRepository} from "../../orm/repositories/wine.repository";
+import {CountryInstance} from "../../types/country";
+import {WineTypeInstance} from "../../types/wine-type";
+import {defineWine} from "../../orm/models/wine.model";
+import {defineCountry} from "../../orm/models/country.model";
+import {defineWineType} from "../../orm/models/wine-type.model";
 import {
     connectWineAndCountry,
     connectWineAndWineGrape,
     connectWineAndWineTastingWine,
     connectWineAndWineType
-} from "../orm";
-import {defineTasting} from "../orm/models/tasting.model";
-import {defineWineTastingWine} from "../orm/models/wine-tasting-wine.model";
-import {WineTastingInstance, WineTastingWineInstance} from "../types/wine-tasting";
-import {defineWineGrape} from "../orm/models/wine-grape.model";
+} from "../../orm";
+import {defineTasting} from "../../orm/models/tasting.model";
+import {defineWineTastingWine} from "../../orm/models/wine-tasting-wine.model";
+import {WineTastingInstance, WineTastingWineInstance} from "../../types/wine-tasting";
+import {defineWineGrape} from "../../orm/models/wine-grape.model";
 
 describe('WineRepository', () => {
     let sequelize: Sequelize;

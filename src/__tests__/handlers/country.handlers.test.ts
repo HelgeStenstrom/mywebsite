@@ -1,8 +1,8 @@
 import express from "express";
-import {createTestApp} from "../testUtils";
+import {createTestApp} from "../../testUtils";
 import {test} from "@jest/globals";
 import request from "supertest";
-import {CountryDto} from "../types/country";
+import {CountryDto} from "../../types/country";
 
 describe('CountryHandlers', () => {
 

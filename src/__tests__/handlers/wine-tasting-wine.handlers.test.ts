@@ -1,5 +1,5 @@
 import express from "express";
-import {createTestApp} from "../testUtils";
+import {createTestApp} from "../../testUtils";
 import request from "supertest";
 
 async function createTasting(app: express.Express, title = 'Provning') {

@@ -1,4 +1,4 @@
-import {createTestApp} from "../testUtils";
+import {createTestApp} from "../../testUtils";
 import express from "express";
 import request from "supertest";
 
