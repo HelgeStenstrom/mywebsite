@@ -3,7 +3,7 @@ import express from "express";
 import {test} from "@jest/globals";
 import request from "supertest";
 
-describe('grape.handlers', () => {
+describe('GrapeHandlers', () => {
 
     let app: express.Express;
 
@@ -87,6 +87,28 @@ describe('grape.handlers', () => {
         expect(after.status).toBe(200);
         expect(after.body).toEqual({id: 1, color: "blå", name: "after", isUsed: false});
 
+    });
+
+    test('isUsed is true when grape is used in a wine', async () => {
+        await request(app).post('/api/v1/countries').send({ name: "Sweden" });
+        await request(app).post('/api/v1/wine-types').send({ name: "rött" });
+        await request(app).post('/api/v1/grapes').send({ name: "Rondo", color: "blå" });
+        await request(app).post('/api/v1/wines').send({ name: "foo", countryId: 1, wineTypeId: 1 });
+        await request(app).post('/api/v1/wines/1/grapes').send({ grapeId: 1 });
+
+        const response = await request(app).get('/api/v1/grapes');
+        expect(response.body).toEqual([{ id: 1, name: "Rondo", color: "blå", isUsed: true }]);
+    });
+
+    test('DELETE /grapes/:id returns 409 when grape is in use', async () => {
+        await request(app).post('/api/v1/countries').send({ name: "Sweden" });
+        await request(app).post('/api/v1/wine-types').send({ name: "rött" });
+        await request(app).post('/api/v1/grapes').send({ name: "Rondo", color: "blå" });
+        await request(app).post('/api/v1/wines').send({ name: "foo", countryId: 1, wineTypeId: 1 });
+        await request(app).post('/api/v1/wines/1/grapes').send({ grapeId: 1 });
+
+        const response = await request(app).delete('/api/v1/grapes/1');
+        expect(response.status).toBe(409);
     });
 
 });

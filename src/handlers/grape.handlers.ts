@@ -85,16 +85,18 @@ export class GrapeHandlers {
      */
     deleteGrapeById() {
         return async (req, res) => {
-            const id = req.params.id;
+            const id = Number(req.params.id);
 
-            this.orm.grapes.delete(id)
-                .then((gnum) => {
-                    if (gnum)
-                        return res.status(204).json("Grape successfully deleted");
-                    else
-                        return res.status(404).json({ error: 'Grape not found' });
-                })
-                .catch(e => console.error(e));
+            const grape = await this.orm.grapes.findById(id);
+            if (!grape) {
+                return res.status(404).json({ error: 'Grape not found' });
+            }
+            if (grape.isUsed) {
+                return res.status(409).json({ status: 409, message: 'Grape is in use' });
+            }
+
+            await this.orm.grapes.delete(id);
+            return res.status(204).end();
         };
     }
 
