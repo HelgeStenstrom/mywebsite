@@ -27,7 +27,6 @@ import {DndDirective} from './dnd.directive';
 import {TestbenchComponent} from './components/testbench/testbench.component';
 import {TastingsComponent} from './components/tastings/tastings.component';
 import {TastingComponent} from './components/tastings/tasting/tasting.component';
-import {AltDruvorComponent} from './components/alt-druvor/alt-druvor.component';
 import {MembersComponent} from './components/about/members/members.component';
 import {VotingComponent} from './components/voting/voting.component';
 import {WineEntryComponent} from './components/wine-entry/wine-entry.component';
@@ -57,7 +56,6 @@ import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.co
         TestbenchComponent,
         TastingsComponent,
         TastingComponent,
-        AltDruvorComponent,
         MembersComponent,
         VotingComponent,
         WineEntryComponent,
