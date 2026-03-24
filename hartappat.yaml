@@ -29,7 +29,7 @@ paths:
             schema:
               $ref: '#/components/schemas/CountryCreate'
       responses:
-        201:
+        '201':
           description: Successful response.
           content:
             application/json:
@@ -48,9 +48,9 @@ paths:
       summary: Delete one country by id
       description: Delete one country which is not in use (not registered with any wine). Returns remaining countries.
       responses:
-        204:
+        '204':
           description: Successful deletion of the given country
-        409:
+        '409':
           description: Cannot delete the country as it is associated with wines.
 
   /grapes:
@@ -199,7 +199,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-        200:
+        '200':
           description: Successful GET operation
           content:
             application/json:
@@ -209,9 +209,9 @@ paths:
       summary: Delete a member by id
       description: Delete a member by id
       responses:
-        204:
+        '204':
           description: Member deleted successfully
-        404:
+        '404':
           description: Member not found
           content:
             application/json:
@@ -264,7 +264,7 @@ paths:
             schema:
               $ref: '#/components/schemas/WineTastingCreate'
       responses:
-        201:
+        '201':
           description: Tasting created successfully
           content:
             application/json:
@@ -283,7 +283,7 @@ paths:
     get:
       description: Returns information about one wine tasting
       responses:
-        200:
+        '200':
           description: Successful response.
           content:
             application/json:
@@ -293,9 +293,9 @@ paths:
       summary: Delete a wine tasting by id
       description: Removes a wine tasting from the database
       responses:
-        204:
+        '204':
           description: Tasting deleted successfully
-        404:
+        '404':
           description: Tasting not found
           content:
             application/json:
@@ -345,7 +345,7 @@ paths:
             schema:
               $ref: '#/components/schemas/WineCreate'
       responses:
-        201:
+        '201':
           description: Created
           content:
             application/json:
@@ -482,9 +482,9 @@ paths:
       summary: Delete a grape from a wine
       description: Deletes a grape from an existing wine
       responses:
-        204:
+        '204':
           description: Grape deleted successfully from wine
-        404:
+        '404':
           description: Grape not found
           content:
             application/json:
@@ -567,7 +567,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref:  '#/components/schemas/ErrorResponse'
+                  $ref: '#/components/schemas/ErrorResponse'
     post:
       summary: Add a wine to a tasting
       description: Adds a wine to an existing tasting
@@ -611,9 +611,9 @@ paths:
       summary: Delete a wine from a tasting
       description: Deletes a wine from an existing tasting
       responses:
-        204:
+        '204':
           description: Wine deleted successfully from tasting
-        404:
+        '404':
           description: Wine not found in tasting
           content:
             application/json:
@@ -642,6 +642,102 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /tastings/{id}/scores:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the tasting
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+      summary: Get all scores for a tasting
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Score'
+        '404':
+          description: Tasting not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    post:
+      summary: Add a score to a tasting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScoreCreate'
+      responses:
+        '201':
+          description: Score created successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Score'
+        '404':
+          description: Tasting not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /tastings/{id}/scores/{scoreId}:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the tasting
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: scoreId
+        in: path
+        description: ID of the score
+        required: true
+        schema:
+          type: integer
+          format: int64
+    delete:
+      summary: Delete a score from a tasting
+      responses:
+        '204':
+          description: Score deleted successfully from tasting
+        '404':
+          description: Score not found in tasting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      summary: Update a score in a tasting
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ScoreUpdate'
+      responses:
+        '200':
+          description: Score updated successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Score'
+        '404':
+          description: Score not found in tasting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /wine-types:
     post:
@@ -699,7 +795,7 @@ components:
   schemas:
     Country:
       type: object
-      required: [id, name, isUsed]
+      required: [ id, name, isUsed ]
       properties:
         id:
           type: integer
@@ -713,7 +809,7 @@ components:
 
     CountryCreate:
       type: object
-      required: [name]
+      required: [ name ]
       properties:
         name:
           type: string
@@ -749,7 +845,7 @@ components:
 
     Member:
       type: object
-      required: [id, given, surname]
+      required: [ id, given, surname ]
       properties:
         id:
           type: integer
@@ -762,7 +858,7 @@ components:
 
     MemberCreate:
       type: object
-      required: [given, surname]
+      required: [ given, surname ]
       properties:
         given:
           type: string
@@ -773,7 +869,7 @@ components:
 
     WineTastingSummary:
       type: object
-      required: [ id, title, notes, tastingDate]
+      required: [ id, title, notes, tastingDate ]
       properties:
         id:
           type: integer
@@ -823,7 +919,7 @@ components:
 
     WineTastingHost:
       type: object
-      required: []
+      required: [ ]
       description: The host of the wine tasting. One of 'memberId' or 'name' must be set.
       properties:
         memberId:
@@ -837,7 +933,7 @@ components:
 
     WineTastingWine:
       type: object
-      required: [id, wineId, position]
+      required: [ id, wineId, position ]
       properties:
         id:
           type: integer
@@ -855,7 +951,7 @@ components:
 
     WineTastingWineCreate:
       type: object
-      required: [wineId, position]
+      required: [ wineId, position ]
       properties:
         wineId:
           type: integer
@@ -959,7 +1055,7 @@ components:
 
     WineType:
       type: object
-      required: [id, name, isUsed]
+      required: [ id, name, isUsed ]
       properties:
         id:
           type: integer
@@ -973,7 +1069,7 @@ components:
 
     WineTypeCreate:
       type: object
-      required: [name]
+      required: [ name ]
       properties:
         name:
           type: string
@@ -982,7 +1078,7 @@ components:
 
     WineGrape:
       type: object
-      required: [id, grapeId]
+      required: [ id, grapeId ]
       properties:
         id:
           type: integer
@@ -996,7 +1092,7 @@ components:
 
     WineGrapeCreate:
       type: object
-      required: [grapeId]
+      required: [ grapeId ]
       properties:
         grapeId:
           type: integer
@@ -1010,9 +1106,39 @@ components:
       type: string
       enum: [ blå, grön, annan, okänd ]
 
+    ScoreCreate:
+      type: object
+      required: [ memberId, position, score ]
+      properties:
+        memberId:
+          type: integer
+        position:
+          type: integer
+        score:
+          type: number
+          format: float
+
+    ScoreUpdate:
+      type: object
+      properties:
+        score:
+          type: number
+          format: float
+
+    Score:
+      allOf:
+        - $ref: '#/components/schemas/ScoreCreate'
+        - type: object
+          required: [ id, tastingId ]
+          properties:
+            id:
+              type: integer
+            tastingId:
+              type: integer
+
     ErrorResponse:
       type: object
-      required: [status, message]
+      required: [ status, message ]
       properties:
         status:
           type: integer
