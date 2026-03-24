@@ -12,11 +12,13 @@ export type GrapeCreateDto = {
     color: GrapeColor;
 }
 
+/**
+ * Used for Sequelize, these are the columns in the grapes table
+ */
 export interface GrapeAttributes {
     id: number;
     name: string;
     color: string;
-    isUsed: boolean;
 }
 
 export interface GrapeInstance extends Model<GrapeAttributes>, GrapeAttributes {}
