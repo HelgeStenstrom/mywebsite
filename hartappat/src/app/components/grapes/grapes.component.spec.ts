@@ -12,8 +12,8 @@ describe('DruvorComponent', () => {
   let druvorComponent: GrapesComponent;
   let fixture: ComponentFixture<GrapesComponent>;
 
-  const cs: Grape = {id: 1, name:'Cabernet Sauvignon', color:'blå'};
-  const riesling: Grape = {id: 2, name:'Riesling', color:'grön'};
+  const cs: Grape = {id: 1, name:'Cabernet Sauvignon', color:'blå', isUsed: false};
+  const riesling: Grape = {id: 2, name:'Riesling', color:'grön', isUsed: false};
 
   const grapeServiceStub: Partial<GrapeService> = {
     getGrapes(): Observable<Grape[]> {
@@ -23,7 +23,7 @@ describe('DruvorComponent', () => {
 
     deleteGrape(id: number): Observable<Grape> {
       // console.log('deleteGrape() within backendServiceStup was called');
-      return of({id: 1, name:'Name', color:'color'});
+      return of({id: 1, name:'Name', color:'color', isUsed: false});
     }
   };
 

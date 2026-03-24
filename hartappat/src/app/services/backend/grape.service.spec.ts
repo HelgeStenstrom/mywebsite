@@ -9,7 +9,7 @@ describe('GrapeService', () => {
   let httpTestingController: HttpTestingController;
   let url: string;
 
-  const aGrape: Grape = {id: 1, name: 'Grape', color: 'grön'};
+  const aGrape: Grape = {id: 1, name: 'Grape', color: 'grön', isUsed: false};
   const aGrapeCreate :GrapeCreate = {color: "blå", name: 'Grape'};
 
   beforeEach(() => {

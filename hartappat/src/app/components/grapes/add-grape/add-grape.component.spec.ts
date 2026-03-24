@@ -17,10 +17,10 @@ describe('AddGrapeComponent test with mock', () => {
   let component: AddGrapeComponent;
   let fixture: ComponentFixture<AddGrapeComponent>;
 
-  const cs: Grape = {id: 0, name: 'Cabernet Sauvignon', color: 'blå'};
+  const cs: Grape = {id: 0, name: 'Cabernet Sauvignon', color: 'blå', isUsed: false};
   const grapeServiceStub: Partial<GrapeService> = {
     getGrapes(): Observable<Grape[]> {
-      const r: Grape = {id: 0, name: 'Riesling', color: 'grön'};
+      const r: Grape = {id: 0, name: 'Riesling', color: 'grön', isUsed: false};
       return of([r, cs]);
     }
   };

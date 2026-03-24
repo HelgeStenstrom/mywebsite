@@ -20,8 +20,8 @@ describe('WineGrapesComponent', () => {
   ];
 
   const mockGrapes: Grape[] = [
-    { id: 3, name: 'Cabernet Sauvignon', color: 'blå' },
-    { id: 5, name: 'Merlot', color: 'blå' },
+    { id: 3, name: 'Cabernet Sauvignon', color: 'blå' , isUsed: false},
+    { id: 5, name: 'Merlot', color: 'blå', isUsed: false },
   ];
 
   beforeEach(() => {
@@ -71,7 +71,7 @@ describe('WineGrapesComponent', () => {
     component.updateFilter();
 
     expect(component.filteredGrapes).toEqual([
-      { id: 5, name: 'Merlot', color: 'blå' },
+      { id: 5, name: 'Merlot', color: 'blå', isUsed: false },
     ]);
   });
 
