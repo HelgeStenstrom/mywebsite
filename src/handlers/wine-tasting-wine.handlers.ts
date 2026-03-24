@@ -7,7 +7,7 @@ export class WineTastingWineHandlers {
 
     getTastingWines() {
         return async (req, res) => {
-            const tastingId = parseInt(req.params.id);
+            const tastingId = Number(req.params.id);
 
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
                 return res.status(400).json({ error: 'Invalid tasting id' });
@@ -21,7 +21,7 @@ export class WineTastingWineHandlers {
 
     postTastingWine() {
         return async (req, res) => {
-            const tastingId = parseInt(req.params.id);
+            const tastingId = Number(req.params.id);
 
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
                 return res.status(400).json({ error: 'Invalid tasting id' });
@@ -35,8 +35,8 @@ export class WineTastingWineHandlers {
     deleteTastingWine() {
 
         return async (req, res) => {
-            const tastingId = parseInt(req.params.id);
-            const tastingWineId = parseInt(req.params.tastingWineId);
+            const tastingId = Number(req.params.id);
+            const tastingWineId = Number(req.params.tastingWineId);
 
             const deleted = await this.orm.tastingWines.delete(tastingId, tastingWineId);
             if (deleted === "deleted") {

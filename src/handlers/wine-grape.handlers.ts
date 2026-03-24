@@ -7,7 +7,7 @@ export class WineGrapeHandlers {
 
     getWineGrapes() {
         return async (req, res) => {
-            const wineId = parseInt(req.params.id);
+            const wineId = Number(req.params.id);
             if (!wineId || isNaN(wineId) || wineId <= 0) {
                 return res.status(400).json({error: 'Invalid wine id'});
             }
@@ -18,7 +18,7 @@ export class WineGrapeHandlers {
 
     postWineGrape() {
         return async (req, res) => {
-            const wineId = parseInt(req.params.id);
+            const wineId = Number(req.params.id);
             if (!wineId || isNaN(wineId) || wineId <= 0) {
                 return res.status(400).json({error: 'Invalid wine id'});
             }

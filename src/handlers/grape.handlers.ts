@@ -42,7 +42,7 @@ export class GrapeHandlers {
 
         return async (req, res) => {
 
-            const id = parseInt(req.params.id);
+            const id = Number(req.params.id);
             const data: GrapeCreateDto = req.body;
 
             if (!id || isNaN(id) || id <= 0) {
