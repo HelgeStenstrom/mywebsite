@@ -14,6 +14,7 @@ export type Grape = {
   id: number;
   name: string;
   color: string;
+  isUsed: boolean;
 };
 
 export type GrapeCreate = {

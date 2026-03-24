@@ -7,13 +7,18 @@
   <th>Färg</th>
   @for (grape of grapes$ | async; track grape) {
     <tr>
-      <td>{{grape.id}}</td>
-      <td>{{grape.name}}</td>
-      <td>{{grape.color}}</td>
+      <td>{{ grape.id }}</td>
+      <td>{{ grape.name }}</td>
+      <td>{{ grape.color }}</td>
       <button mat-icon-button color="primary" (click)="editGrape(grape)">
         <mat-icon>edit</mat-icon>
       </button>
-      <button mat-icon-button color="warn" (click)="deleteGrape(grape)">
+      <button
+        mat-icon-button
+        color="warn"
+        (click)="deleteGrape(grape)"
+        [disabled]="grape.isUsed"
+      >
         <mat-icon>delete</mat-icon>
       </button>
     </tr>
@@ -22,4 +27,4 @@
 
 <hr>
 
-  <app-add-grape  (grapeAdded)="onGrapeAdded($event)"></app-add-grape>
+<app-add-grape (grapeAdded)="onGrapeAdded($event)"></app-add-grape>
