@@ -24,6 +24,6 @@ export class TastingsComponent implements OnInit {
   }
 
   openTasting(id: number): void {
-    this.router.navigate(['/tastings', id]);
+    void this.router.navigate(['/tastings', id]);
   }
 }

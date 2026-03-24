@@ -30,7 +30,7 @@ export class CreateTastingComponent implements OnInit {
   createTasting(): void {
     if (this.tastingForm.valid) {
       this.service.createTasting(this.tastingForm.value).subscribe(tasting => {
-        this.router.navigate(['/tastings', tasting.id]);
+       void this.router.navigate(['/tastings', tasting.id]);
       });
     }
   }

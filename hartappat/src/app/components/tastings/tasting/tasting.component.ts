@@ -100,12 +100,10 @@ export class TastingComponent implements OnInit {
   }
 
   updateWineFilter() {
-    const filtered = this.allWines.filter(
+    this.filteredWines = this.allWines.filter(
       w => w.name
         .toLowerCase()
         .includes(this.wineSearchTerm.toLowerCase()));
-
-    this.filteredWines = filtered;
   }
 
   protected selectWine(wine: WineView) {

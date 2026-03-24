@@ -36,12 +36,10 @@ export class WineGrapesComponent implements OnInit {
 
 
   updateFilter() {
-    const filtered = this.allGrapes.filter(
+    this.filteredGrapes = this.allGrapes.filter(
       grape => grape.name
         .toLowerCase()
         .includes(this.searchTerm.toLowerCase()));
-
-    this.filteredGrapes = filtered;
   }
 
 

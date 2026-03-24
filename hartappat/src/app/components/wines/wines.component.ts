@@ -37,7 +37,7 @@ class WinesComponent implements OnInit {
   }
 
   edit(w: WineView) {
-    this.router.navigate(['/wines', w.id]);
+    void this.router.navigate(['/wines', w.id]);
   }
 
   delete(w: WineView) {
