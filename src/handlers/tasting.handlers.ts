@@ -1,6 +1,7 @@
 import {WineTastingCreateDto} from "../types/wine-tasting";
 import {BadRequestError} from "../errors/bad-request-error";
 import {Orm} from "../orm";
+import {errorResponse} from "./handlerUtils";
 
 export class TastingHandlers {
 
@@ -17,7 +18,7 @@ export class TastingHandlers {
                 const tasting = await this.orm.tastings.findById(Number(req.params.id));
 
                 if (!tasting) {
-                    return res.status(404).json({ error: 'Tasting not found' });
+                    return errorResponse(res, 404, 'Tasting not found');
                 }
 
                 return res.status(200).json(tasting);
@@ -62,11 +63,12 @@ export class TastingHandlers {
                 res.status(201).json(tasting);
             } catch (e) {
                 if (e instanceof BadRequestError) {
-                    return res.status(400).json({ error: e.message });
+                    return errorResponse(res, 400, e.message);
                 }
 
                 if (e.name === 'SequelizeValidationError') {
                     res.status(400).json({
+                        // TODO: Align this with the other error handling
                         error: 'Validation failed',
                         details: e.errors.map(err => ({
                             field: err.path,
@@ -76,7 +78,7 @@ export class TastingHandlers {
                     return;
                 }
                 console.error(e);
-                res.status(500).json({error: 'Internal Server Error'});
+                errorResponse(res, 500, 'Internal Server Error');
             }
         }
     }
@@ -86,7 +88,7 @@ export class TastingHandlers {
             const id = Number(req.params.id);
 
             if (!id || isNaN(id) || id <= 0) {
-                return res.status(400).send({ error: 'Invalid tasting id' });
+                return errorResponse(res, 400, 'Invalid tasting id');
             }
 
 

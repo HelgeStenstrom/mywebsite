@@ -1,5 +1,6 @@
 import {Orm} from "../orm";
 import {WineTastingWineCreateDto} from "../types/wine-tasting";
+import {errorResponse} from "./handlerUtils";
 
 export class WineTastingWineHandlers {
 
@@ -10,7 +11,7 @@ export class WineTastingWineHandlers {
             const tastingId = Number(req.params.id);
 
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
-                return res.status(400).json({ error: 'Invalid tasting id' });
+                return errorResponse(res, 400, 'Invalid tasting id');
             }
 
             const wines = await this.orm.tastingWines.findByTastingId(tastingId);
@@ -24,7 +25,7 @@ export class WineTastingWineHandlers {
             const tastingId = Number(req.params.id);
 
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
-                return res.status(400).json({ error: 'Invalid tasting id' });
+                return errorResponse(res, 400, 'Invalid tasting id');
             }
 
             const data: WineTastingWineCreateDto = req.body;
@@ -42,7 +43,7 @@ export class WineTastingWineHandlers {
             if (deleted === "deleted") {
                 res.status(204).send();
             }
-            return res.status(404).json({error: 'Wine tasting wine not found'});
+            return errorResponse(res, 404, 'Wine tasting wine not found');
         }
 
     }
@@ -53,12 +54,12 @@ export class WineTastingWineHandlers {
             const tastingWineId = Number(req.params.tastingWineId);
             const data = req.body;
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
-                return res.status(400).send({ error: 'Invalid tasting id' });
+                return errorResponse(res, 400, 'Invalid tasting id');
             }
 
             const winesOfTasting = await this.orm.tastingWines.findByTastingId(tastingId);
             if (!winesOfTasting.some(w => w.id === tastingWineId)) {
-                return res.status(404).json({ error: 'Wine tasting wine not found' });
+                return errorResponse(res, 404, 'Wine tasting wine not found');
             }
 
             const updated = await this.orm.tastingWines.update(tastingWineId, data);

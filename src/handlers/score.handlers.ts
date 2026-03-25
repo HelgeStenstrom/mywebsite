@@ -1,5 +1,6 @@
 import {Orm} from "../orm";
 import {ScoreCreateDto} from "../types/score";
+import {errorResponse} from "./handlerUtils";
 
 export class ScoreHandlers {
 
@@ -10,7 +11,7 @@ export class ScoreHandlers {
         return async (req, res) => {
             const tastingId = Number(req.params.id);
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
-                return res.status(400).json({error: 'Invalid tasting id'});
+                return errorResponse(res, 400, 'Invalid tasting id');
             }
             const data: ScoreCreateDto = req.body;
             const created = await this.orm.scores.create(tastingId, data);
@@ -22,7 +23,7 @@ export class ScoreHandlers {
         return async (req, res) => {
             const tastingId = Number(req.params.id);
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
-                return res.status(400).json({error: 'Invalid tasting id'});
+                return errorResponse(res, 400, 'Invalid tasting id');
             }
 
             const scores = await this.orm.scores.findAllByTastingId(tastingId);
@@ -36,10 +37,10 @@ export class ScoreHandlers {
             const tastingId = Number(req.params.id);
             const scoreId = Number(req.params.scoreId);
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
-                return res.status(400).json({error: 'Invalid tasting id'});
+                return errorResponse(res, 400, 'Invalid tasting id');
             }
             if (!scoreId || isNaN(scoreId) || scoreId <= 0) {
-                return res.status(400).json({error: 'Invalid score id'});
+                return errorResponse(res, 400, 'Invalid score id');
             }
 
             const deleted = await this.orm.scores.delete(scoreId);
@@ -47,7 +48,7 @@ export class ScoreHandlers {
             if (deleted === "deleted") {
                 res.status(204).send();
             } else {
-                res.status(404).json({error: 'Score not found'});
+                errorResponse(res, 404, 'Score not found');
             }
 
         }
@@ -59,16 +60,16 @@ export class ScoreHandlers {
             const tastingId = Number(req.params.id);
             const scoreId = Number(req.params.scoreId);
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
-                return res.status(404).json({error: 'Invalid tasting id'});
+                return errorResponse(res, 400, 'Invalid tasting id');
             }
             if (!scoreId || isNaN(scoreId) || scoreId <= 0) {
-                return res.status(404).json({error: 'Invalid score id'});
+                return errorResponse(res, 400, 'Invalid score id');
             }
             const score = req.body;
 
             const updated = await this.orm.scores.update(scoreId, score);
             if (!updated) {
-                res.status(404).json({error: 'Score not found'});
+                errorResponse(res, 404, 'Score not found');
                 return;
             }
 

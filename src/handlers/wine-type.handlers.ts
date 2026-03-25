@@ -1,4 +1,5 @@
 import {Orm} from "../orm";
+import {errorResponse} from "./handlerUtils";
 
 export class WineTypeHandlers {
 
@@ -14,11 +15,11 @@ export class WineTypeHandlers {
                 case 'deleted':
                     return res.status(204).json("WineType successfully deleted");
                 case 'not_found':
-                    return res.status(404).json({error: 'WineType not found'});
+                    return errorResponse(res, 404, 'WineType not found');
                 case 'in_use':
-                    return res.status(409).json({error: 'WineType is in use'});
+                    return errorResponse(res, 409, 'WineType is in use');
                 default:
-                    return res.status(503).json({error: 'Unknown error'});
+                    return errorResponse(res, 503, 'Unknown error');
             }
 
         };

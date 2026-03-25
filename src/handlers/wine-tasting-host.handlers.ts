@@ -1,5 +1,6 @@
 import {Orm} from "../orm";
 import {WineTastingHostCreateDto, WineTastingHostDto} from "../types/wine-tasting";
+import {errorResponse} from "./handlerUtils";
 
 export class WineTastingHostHandlers {
 
@@ -13,7 +14,7 @@ export class WineTastingHostHandlers {
             const hostId = Number(req.body.hostId);
 
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
-                return res.status(400).json({error: 'Invalid tasting id'});
+                return errorResponse(res, 400, 'Invalid tasting id');
             }
 
             const data: WineTastingHostCreateDto = req.body;
@@ -27,7 +28,7 @@ export class WineTastingHostHandlers {
             const tastingId = Number(req.params.id);
 
             if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
-                return res.status(400).json({error: 'Invalid tasting id'});
+                return errorResponse(res, 400, 'Invalid tasting id');
             }
 
             const hosts = await this.orm.wineTastingHosts.findByTastingId(tastingId);

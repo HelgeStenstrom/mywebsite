@@ -1,5 +1,6 @@
 import {Orm} from "../orm";
 import {MemberInstance} from "../types/member";
+import {errorResponse} from "./handlerUtils";
 
 export class MemberHandlers {
 
@@ -45,11 +46,9 @@ export class MemberHandlers {
                 case 'deleted':
                     return res.status(204).send();
                 case 'not_found':
-                    return res.status(404).json({error: 'Member not found'});
-                // case 'in_use':
-                //     return res.status(409).json({error: 'Member is in use'});
+                    return errorResponse(res, 404, 'Member not found');
                 default:
-                    return res.status(503).json({error: 'Unknown error'});
+                    return errorResponse(res, 503, 'Unknown error');
             }
 
         }
@@ -60,7 +59,7 @@ export class MemberHandlers {
             const id = Number(req.params.id);
             const data = req.body;
             if (!id || isNaN(id) || id <= 0) {
-                return res.status(400).send({ error: 'Invalid member id' });
+                return errorResponse(res, 400, 'Invalid member id');
             }
 
             const updated = await this.orm.members.update(id, data);

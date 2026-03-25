@@ -1,5 +1,6 @@
 import {Orm} from "../orm";
 import {WineGrapeCreateDto} from "../types/wine";
+import {errorResponse} from "./handlerUtils";
 
 export class WineGrapeHandlers {
 
@@ -9,7 +10,7 @@ export class WineGrapeHandlers {
         return async (req, res) => {
             const wineId = Number(req.params.id);
             if (!wineId || isNaN(wineId) || wineId <= 0) {
-                return res.status(400).json({error: 'Invalid wine id'});
+                return errorResponse(res, 400, 'Invalid wine id');
             }
             const grapes = await this.orm.wineGrapes.findByWineId(wineId);
             res.status(200).json(grapes);
@@ -20,7 +21,7 @@ export class WineGrapeHandlers {
         return async (req, res) => {
             const wineId = Number(req.params.id);
             if (!wineId || isNaN(wineId) || wineId <= 0) {
-                return res.status(400).json({error: 'Invalid wine id'});
+                return errorResponse(res, 400, 'Invalid wine id');
             }
             const data: WineGrapeCreateDto = req.body;
             const created = await this.orm.wineGrapes.create(wineId, data);
@@ -38,17 +39,17 @@ export class WineGrapeHandlers {
 
             const wineGrapeDtos = await this.orm.wines.findById(wineId);
             if (!wineGrapeDtos) {
-                return res.status(404).json({error: 'Wine not found'});
+                return errorResponse(res, 404, 'Wine not found');
             }
             const wineGrapeIds = wineGrapeDtos.grapes.map(g => g.id);
 
             if (!wineGrapeIds.includes(Number(wineGrapeId))) {
-                return res.status(404).json({error: 'Wine grape not found'});
+                return errorResponse(res, 404, 'Wine grape not found');
             }
 
             const deleted = await this.orm.wineGrapes.delete(wineGrapeId);
             if (!deleted) {
-                return res.status(404).json({error: 'Wine grape not found'});
+                return errorResponse(res, 404, 'Wine grape not found');
             }
             res.status(204).send();
         };

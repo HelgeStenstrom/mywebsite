@@ -1,5 +1,6 @@
 import {Orm} from "../orm";
 import {GrapeCreateDto} from "../types/grape";
+import {errorResponse} from "./handlerUtils";
 
 export class GrapeHandlers {
 
@@ -19,6 +20,7 @@ export class GrapeHandlers {
                 res.status(201).json(grape);
             } catch (e) {
                 if (e.name === 'SequelizeValidationError') {
+                    // TODO: Align this with the other error handling
                     res.status(400).json({
                         error: 'Validation failed',
                         details: e.errors.map(err => ({
@@ -29,7 +31,7 @@ export class GrapeHandlers {
                     return;
                 }
                 console.error(e);
-                res.status(500).json({ error: 'Internal Server Error' });
+                errorResponse(res, 500, 'Internal Server Error');
 
             }
         };
@@ -46,7 +48,7 @@ export class GrapeHandlers {
             const data: GrapeCreateDto = req.body;
 
             if (!id || isNaN(id) || id <= 0) {
-                return res.status(400).send({ error: 'Invalid grape id' });
+                return errorResponse(res, 400, 'Invalid grape id');
             }
 
             const updated = await this.orm.grapes.update(id, data);
@@ -69,7 +71,7 @@ export class GrapeHandlers {
                 const grape = await this.orm.grapes.findById(id);
 
                 if (!grape) {
-                    return res.status(404).json({ error: 'Grape not found' });
+                    return errorResponse(res, 404, 'Grape not found');
                 }
 
                 return res.status(200).json(grape);
@@ -89,7 +91,7 @@ export class GrapeHandlers {
 
             const grape = await this.orm.grapes.findById(id);
             if (!grape) {
-                return res.status(404).json({ error: 'Grape not found' });
+                return errorResponse(res, 404, 'Grape not found');
             }
             if (grape.isUsed) {
                 return res.status(409).json({ status: 409, message: 'Grape is in use' });

@@ -1,5 +1,6 @@
 import {Orm} from "../orm";
 import {WineCreateDto} from "../types/wine";
+import {errorResponse} from "./handlerUtils";
 
 export class WineHandlers {
 
@@ -32,7 +33,7 @@ export class WineHandlers {
 
             const wine: WineCreateDto = req.body;
             if (wine.isNonVintage && wine.vintageYear) {
-                return res.status(400).json({ error: 'vintageYear must be null when isNonVintage is true' });
+                return errorResponse(res, 400, 'vintageYear must be null when isNonVintage is true');
             }
 
             this.orm.wines.create(wine)
@@ -55,7 +56,7 @@ export class WineHandlers {
                     if (gnum)
                         return res.status(204).json("Wine successfully deleted");
                     else
-                        return res.status(404).json({error: 'Wine not found'});
+                        return errorResponse(res, 404, 'Wine not found');
                 })
                 .catch(e => console.error(e));
         };
@@ -81,7 +82,7 @@ export class WineHandlers {
             const id = Number(req.params.id);
             const data = req.body;
             if (!id || isNaN(id) || id <= 0) {
-                return res.status(400).send({ error: 'Invalid wine id' });
+                return errorResponse(res, 400, 'Invalid wine id');
             }
 
             const updated = await this.orm.wines.update(id, data);

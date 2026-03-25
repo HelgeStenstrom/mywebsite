@@ -1,4 +1,5 @@
 import {Orm} from "../orm";
+import {errorResponse} from "./handlerUtils";
 
 export class CountryHandlers {
 
@@ -56,13 +57,12 @@ export class CountryHandlers {
                 case 'deleted':
                     return res.status(204).send();
                 case 'not_found':
-                    return res.status(404).json({error: 'Country not found'});
+                    return errorResponse(res, 404, 'Country not found');
                 case 'in_use':
-                    return res.status(409).json({error: 'Country is in use'});
+                    return errorResponse(res, 409, 'Country is in use');
                 default:
-                    return res.status(503).json({error: 'Unknown error'});
+                    return errorResponse(res, 503, 'Unknown error');
             }
-
         };
     }
 
