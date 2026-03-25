@@ -18,3 +18,29 @@
 }
 
 
+<h3>Poäng</h3>
+<table>
+  <thead>
+  <tr>
+    <th>Medlem</th>
+    @for (position of positions; track position) {
+      <th>{{ position }}</th>
+    }
+  </tr>
+  </thead>
+  <tbody>
+    @for (member of selectedMembers; track member.id) {
+      <tr>
+        <td>{{ member.given }} {{ member.surname }}</td>
+        @for (position of positions; track position) {
+          <td>
+            <input type="number"
+                   min="0" max="20"
+                   [value]="getScore(member.id, position)"
+                   (change)="setScore(member.id, position, $event.target['value'])">
+          </td>
+        }
+      </tr>
+    }
+  </tbody>
+</table>

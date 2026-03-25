@@ -16,6 +16,7 @@ export class ScoresComponent implements OnInit {
   members: Member[] = [];
   selectedMemberIds: Set<number> = new Set();
   numberOfPositions: number = 6;
+  scores: Record<number, Record<number, number | null>> = {};
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -41,4 +42,25 @@ export class ScoresComponent implements OnInit {
       this.selectedMemberIds.add(memberId);
     }
   }
+
+
+  get positions(): number[] {
+    return Array.from({ length: this.numberOfPositions }, (_, i) => i + 1);
+  }
+
+  get selectedMembers(): Member[] {
+    return this.members.filter(m => this.selectedMemberIds.has(m.id));
+  }
+
+  getScore(memberId: number, position: number): number | null {
+    return this.scores[memberId]?.[position] ?? null;
+  }
+
+  setScore(memberId: number, position: number, value: string): void {
+    if (!this.scores[memberId]) {
+      this.scores[memberId] = {};
+    }
+    this.scores[memberId][position] = value ? Number(value) : null;
+  }
+
 }
