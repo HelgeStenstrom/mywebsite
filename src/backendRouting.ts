@@ -94,7 +94,6 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
 
     router.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-        console.error('Unhandled error:', err);
         res.status(503).json({ error: 'Service temporarily unavailable' });
     })
 }

@@ -12,6 +12,8 @@ describe('Endpoint handler tests', () => {
         orm = new Orm("myDatabase", "myUserName", "mySecret",
             {
                 dialect: "sqlite",
+                storage: ':memory:',
+                logging: false
             });
         await orm.createTables();
     });

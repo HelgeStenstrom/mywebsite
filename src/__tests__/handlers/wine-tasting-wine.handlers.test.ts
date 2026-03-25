@@ -140,9 +140,6 @@ describe('WineTastingWine handler tests', () => {
     test('DELETE /tastings/:id/wines/:tastingWineId returns 404 when wine belongs to different tasting', async () => {
         const tasting1 = await createTasting(app, 'Provning 1');
 
-        console.log('status:', tasting1.status);
-        console.log('body:', tasting1.body);
-
         const tasting2 = await createTasting(app, 'Provning 2');
 
         const country = await createCountry(app, 'Test');

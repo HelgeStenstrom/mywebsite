@@ -20,7 +20,7 @@ describe('backend tests', () => {
 
 
 describe('setupEndpoints', () => {
-    const sequelizeDbOptions : Options = {dialect: "sqlite", storage: ":memory:"};
+    const sequelizeDbOptions : Options = {dialect: "sqlite", storage: ":memory:", logging:false};
 
     test('minimal test', async () => {
         const orm = new Orm('test', 'test', 'test', sequelizeDbOptions);

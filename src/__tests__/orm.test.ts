@@ -19,6 +19,7 @@ describe('Database tests', () => {
         orm = new Orm("myDatabase", "myUserName", "mySecret",
             {
                 dialect: "sqlite",
+                logging:false,
             });
     });
 
@@ -306,7 +307,6 @@ describe('Database tests', () => {
             `);
 
             const [rows] = await sequelize.query(`SELECT * FROM wines`);
-            console.log(rows);
 
             const wines = await wineRepo.findAll();
             expect(wines.length).toBe(1);
