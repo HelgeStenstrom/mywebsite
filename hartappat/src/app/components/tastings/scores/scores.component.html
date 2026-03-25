@@ -2,8 +2,11 @@
 
 <h2>Omröstning för provning {{ tastingId }}</h2>
 
-<h3>Välj deltagare</h3>
 
+<h3>Antal viner</h3>
+<input type="number" min="1" max="20" [(ngModel)]="numberOfPositions">
+
+<h3>Välj deltagare</h3>
 
 @for (member of members; track member.id) {
   <label style="display: block">
@@ -13,3 +16,5 @@
     {{ member.given }} {{ member.surname }}
   </label>
 }
+
+

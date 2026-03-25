@@ -2,10 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {MemberService} from "../../../services/backend/member.service";
 import {Member} from "../../../models/common.model";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-scores',
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './scores.component.html',
   styleUrl: './scores.component.css',
 })
@@ -14,6 +15,7 @@ export class ScoresComponent implements OnInit {
   tastingId: number = 0;
   members: Member[] = [];
   selectedMemberIds: Set<number> = new Set();
+  numberOfPositions: number = 6;
 
   constructor(
     private readonly route: ActivatedRoute,
