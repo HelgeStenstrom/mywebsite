@@ -1,1 +1,15 @@
-<p>scores works!</p>
+<p>ScoresComponent</p>
+
+<h2>Omröstning för provning {{ tastingId }}</h2>
+
+<h3>Välj deltagare</h3>
+
+
+@for (member of members; track member.id) {
+  <label style="display: block">
+    <input type="checkbox"
+           [checked]="isSelected(member.id)"
+           (change)="toggleMember(member.id)">
+    {{ member.given }} {{ member.surname }}
+  </label>
+}
