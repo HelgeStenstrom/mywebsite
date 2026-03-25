@@ -38,7 +38,7 @@ constructor(
         return 'deleted';
     }
 
-    async update(scoreId: number, score: { score: number }) {
+    async update(scoreId: number, score: { score: number }): Promise<ScoreDto | null> {
         const {id: _ignored, ...safeData} = score as any;
         await this.Score.update(safeData, {where: {id: scoreId}});
         const updated = await this.Score.findByPk(scoreId);

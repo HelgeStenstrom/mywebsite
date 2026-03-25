@@ -23,6 +23,9 @@ import {defineWineTastingWine} from "./orm/models/wine-tasting-wine.model";
 import {WineTastingHostRepository} from "./orm/repositories/wine-tasting-host.repository";
 import {defineWineGrape} from "./orm/models/wine-grape.model";
 import {WineGrapeRepository} from "./orm/repositories/wine-grape.repository";
+import {ScoreRepository} from "./orm/repositories/score.repository";
+import {ScoreInstance} from "./types/score";
+import {defineScore} from "./orm/models/score.model";
 
 export class Orm {
 
@@ -37,6 +40,7 @@ export class Orm {
     readonly tastingWines: WineTastingWineRepository;
     readonly wineTastingHosts: WineTastingHostRepository;
     readonly wineGrapes: WineGrapeRepository;
+    readonly scores: ScoreRepository;
 
 
 
@@ -53,6 +57,7 @@ export class Orm {
         const wine: ModelStatic<WineInstance> = defineWine(this.sequelize);
         const wineTastingWine: ModelStatic<WineTastingWineInstance> = defineWineTastingWine(this.sequelize);
         const wineGrape: ModelStatic<WineGrapeInstance> = defineWineGrape(this.sequelize);
+        const score: ModelStatic<ScoreInstance> = defineScore(this.sequelize);
 
         connectWineAndCountry(wine, country);
         connectWineAndWineType(wine, wineType);
@@ -70,6 +75,7 @@ export class Orm {
         this.tastingWines = new WineTastingWineRepository(wineTastingWine)
         this.wineTastingHosts = new WineTastingHostRepository(tastingHost);
         this.wineGrapes = new WineGrapeRepository(wineGrape);
+        this.scores = new ScoreRepository(score);
     }
 
 
