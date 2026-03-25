@@ -39,6 +39,7 @@ import {
 import {WineGrapesComponent} from './components/wine-grapes/wine-grapes.component';
 import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.component';
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
+import {ScoresComponent} from "./components/tastings/scores/scores.component";
 
 @NgModule({
   declarations: [
@@ -95,7 +96,9 @@ import {provideAnimationsAsync} from "@angular/platform-browser/animations/async
     MatRadioModule,
     FormsModule,
     MatInputModule,
-    MatDialogModule],
+    MatDialogModule,
+    ScoresComponent
+  ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: MatDialogRef, useValue: {}},
