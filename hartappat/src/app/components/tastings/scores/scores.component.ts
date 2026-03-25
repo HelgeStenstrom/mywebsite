@@ -15,6 +15,7 @@ export class ScoresComponent implements OnInit {
   tastingId: number = 0;
   members: Member[] = [];
   selectedMemberIds: Set<number> = new Set();
+  participants: Member[] = [];
   numberOfPositions: number = 6;
   scores: Record<number, Record<number, number | null>> = {};
 
@@ -32,14 +33,17 @@ export class ScoresComponent implements OnInit {
   }
 
   isSelected(memberId: number) {
-    return this.selectedMemberIds.has(memberId);
+    return this.participants.some(m => m.id === memberId);
   }
 
-  toggleMember(memberId:number) {
-    if (this.selectedMemberIds.has(memberId)) {
-      this.selectedMemberIds.delete(memberId);
+  toggleMember(memberId: number): void {
+    if (this.isSelected(memberId)) {
+      this.participants = this.participants.filter(m => m.id !== memberId);
     } else {
-      this.selectedMemberIds.add(memberId);
+      const member = this.members.find(m => m.id === memberId);
+      if (member) {
+        this.participants.push(member);
+      }
     }
   }
 
@@ -56,11 +60,27 @@ export class ScoresComponent implements OnInit {
     return this.scores[memberId]?.[position] ?? null;
   }
 
-  setScore(memberId: number, position: number, value: string): void {
+  setScore(memberId: number, position: number, event: Event): void {
+    const value = (event.target as HTMLInputElement).value;
     if (!this.scores[memberId]) {
       this.scores[memberId] = {};
     }
     this.scores[memberId][position] = value ? Number(value) : null;
   }
 
+  moveUp(index: number): void {
+    if (index > 0) {
+      [this.participants[index - 1], this.participants[index]] =
+        [this.participants[index], this.participants[index - 1]];
+    }
+  }
+
+  moveDown(index: number): void {
+    if (index < this.participants.length - 1) {
+      [this.participants[index], this.participants[index + 1]] =
+        [this.participants[index + 1], this.participants[index]];
+    }
+  }
+
+  protected readonly HTMLInputElement = HTMLInputElement;
 }

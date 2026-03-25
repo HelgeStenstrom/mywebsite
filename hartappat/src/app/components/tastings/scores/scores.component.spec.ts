@@ -72,4 +72,58 @@ describe('ScoresComponent', () => {
     expect(component.isSelected(2)).toBe(false);
   });
 
+
+  test('moveUp moves a participant up one step', () => {
+    component.participants = [
+      { id: 1, given: 'Anna', surname: 'Andersson' },
+      { id: 2, given: 'Erik', surname: 'Eriksson' },
+      { id: 3, given: 'Lisa', surname: 'Larsson' },
+    ];
+
+    component.moveUp(1);
+
+    expect(component.participants[0].id).toBe(2);
+    expect(component.participants[1].id).toBe(1);
+    expect(component.participants[2].id).toBe(3);
+  });
+
+  test('moveUp does nothing when already at top', () => {
+    component.participants = [
+      { id: 1, given: 'Anna', surname: 'Andersson' },
+      { id: 2, given: 'Erik', surname: 'Eriksson' },
+    ];
+
+    component.moveUp(0);
+
+    expect(component.participants[0].id).toBe(1);
+    expect(component.participants[1].id).toBe(2);
+  });
+
+  test('moveDown moves a participant down one step', () => {
+    component.participants = [
+      { id: 1, given: 'Anna', surname: 'Andersson' },
+      { id: 2, given: 'Erik', surname: 'Eriksson' },
+      { id: 3, given: 'Lisa', surname: 'Larsson' },
+    ];
+
+    component.moveDown(1);
+
+    expect(component.participants[0].id).toBe(1);
+    expect(component.participants[1].id).toBe(3);
+    expect(component.participants[2].id).toBe(2);
+  });
+
+  test('moveDown does nothing when already at bottom', () => {
+    component.participants = [
+      { id: 1, given: 'Anna', surname: 'Andersson' },
+      { id: 2, given: 'Erik', surname: 'Eriksson' },
+    ];
+
+    component.moveDown(1);
+
+    expect(component.participants[0].id).toBe(1);
+    expect(component.participants[1].id).toBe(2);
+  });
+
+
 });
