@@ -84,6 +84,7 @@ import {ScoresComponent} from "./components/tastings/scores/scores.component";
       {path: 'voting', component: VotingComponent},
       {path: 'tastings/new', component: CreateTastingComponent},
       {path: 'tastings/:id', component: TastingComponent},
+      {path: 'tastings/:id/scores', component: ScoresComponent},
       {path: 'wines/:id', component: WineDetailComponent},
       {path: 'tastings', component: TastingsComponent},
       {path: 'countries', component: CountriesComponent},
