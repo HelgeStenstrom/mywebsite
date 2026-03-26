@@ -28,28 +28,20 @@
     }
   </tr>
   </thead>
-  <tbody>
+  <tbody cdkDropList (cdkDropListDropped)="drop($event)">
     @for (member of participants; track member.id; let i = $index) {
-      <tr>
-        <td>
-          <button (click)="moveUp(i)" [disabled]="i === 0">▲</button>
-          <button (click)="moveDown(i)" [disabled]="i === participants.length - 1">▼</button>
-          {{ member.given }} {{ member.surname }}
-        </td>
+      <tr cdkDrag>
+        <td cdkDragHandle style="cursor: grab">⠿</td>
+        <td>{{ member.given }} {{ member.surname }}</td>
         @for (position of positions; track position) {
           <td>
-            <input
-              type="number"
-              min="0" max="20"
-              [tabindex]="position * participants.length + i + 1"
-              [value]="getScore(member.id, position)"
-              (change)="setScore(member.id, position, $event)"
-              (input)="clampScore($event)"
-              (ngModelChange)="onConfigChanged()"
-            >
+            <input type="number" min="1" max="20"
+                   [tabindex]="position * participants.length + i + 1"
+                   [value]="getScore(member.id, position)"
+                   (change)="setScore(member.id, position, $event)"
+                   (input)="clampScore($event)">
           </td>
         }
       </tr>
     }
-  </tbody>
-</table>
+  </tbody></table>

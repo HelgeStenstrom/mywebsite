@@ -5,10 +5,11 @@ import {Member} from "../../../models/common.model";
 import {FormsModule} from "@angular/forms";
 import {ScoresConfigService} from "../../../services/scores-config.service";
 import {ScoresConfig} from "../../../models/score.model";
+import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-scores',
-  imports: [FormsModule],
+  imports: [FormsModule, DragDropModule],
   templateUrl: './scores.component.html',
   styleUrl: './scores.component.css',
 })
@@ -77,23 +78,10 @@ export class ScoresComponent implements OnInit {
     this.scores[memberId][position] = value ? Number(value) : null;
   }
 
-  moveUp(index: number): void {
-    if (index > 0) {
-      [this.participants[index - 1], this.participants[index]] =
-        [this.participants[index], this.participants[index - 1]];
-    }
+  drop(event: CdkDragDrop<Member[]>): void {
+    moveItemInArray(this.participants, event.previousIndex, event.currentIndex);
     this.onConfigChanged();
   }
-
-  moveDown(index: number): void {
-    if (index < this.participants.length - 1) {
-      [this.participants[index], this.participants[index + 1]] =
-        [this.participants[index + 1], this.participants[index]];
-    }
-    this.onConfigChanged();
-  }
-
-  protected readonly HTMLInputElement = HTMLInputElement;
 
   protected clampScore(event: Event): void {
     const input = event.target as HTMLInputElement;
