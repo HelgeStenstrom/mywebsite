@@ -72,7 +72,7 @@ export class Orm {
         this.members = new MemberRepository(member);
         this.wineTypes = new WineTypeRepository(wineType, wine);
         this.wines = new WineRepository(wine, country, wineType, wineTastingWine, wineGrape);
-        this.tastingWines = new WineTastingWineRepository(wineTastingWine)
+        this.tastingWines = new WineTastingWineRepository(wineTastingWine, score)
         this.wineTastingHosts = new WineTastingHostRepository(tastingHost);
         this.wineGrapes = new WineGrapeRepository(wineGrape);
         this.scores = new ScoreRepository(score);

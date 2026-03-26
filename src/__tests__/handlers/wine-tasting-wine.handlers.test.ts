@@ -67,6 +67,7 @@ describe('WineTastingWine handler tests', () => {
             position: 1,
             purchasePrice: 129,
             averageScore: null,
+            scoreStdDev: null,
         });
     })
 
@@ -106,6 +107,7 @@ describe('WineTastingWine handler tests', () => {
             position: 1,
             purchasePrice: 129,
             averageScore: 13.1,
+            scoreStdDev: null,
         }]);
     });
 
@@ -195,6 +197,7 @@ describe('WineTastingWine handler tests', () => {
             position: 3,
             purchasePrice: 199,
             averageScore: 14.5,
+            scoreStdDev: null,
         });
     });
 
