@@ -6,10 +6,11 @@ import {FormsModule} from "@angular/forms";
 import {ScoresConfigService} from "../../../services/scores-config.service";
 import {ScoresConfig} from "../../../models/score.model";
 import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-scores',
-  imports: [FormsModule, DragDropModule],
+  imports: [FormsModule, DragDropModule, MatIconModule],
   templateUrl: './scores.component.html',
   styleUrl: './scores.component.css',
 })

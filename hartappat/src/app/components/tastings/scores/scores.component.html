@@ -22,7 +22,8 @@
 <table>
   <thead>
   <tr>
-    <th>Medlem</th>
+    <th></th>
+    <th>Deltagare</th>
     @for (position of positions; track position) {
       <th>{{ position }}</th>
     }
@@ -31,7 +32,9 @@
   <tbody cdkDropList (cdkDropListDropped)="drop($event)">
     @for (member of participants; track member.id; let i = $index) {
       <tr cdkDrag>
-        <td cdkDragHandle style="cursor: grab">⠿</td>
+        <td cdkDragHandle style="cursor: grab">
+          <mat-icon>drag_indicator</mat-icon>
+        </td>
         <td>{{ member.given }} {{ member.surname }}</td>
         @for (position of positions; track position) {
           <td>
