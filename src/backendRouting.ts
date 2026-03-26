@@ -37,6 +37,11 @@ export function setupEndpoints(router: Express, orm: Orm) {
     const wineGrapeHandlers = new WineGrapeHandlers(orm);
     const scoreHandlers = new ScoreHandlers(orm);
 
+    router.use((req, res, next) => {
+        console.log(`${req.method} ${req.path}`);
+        next();
+    });
+
     router.delete('/api/v1/countries/:id', countryHandlers.deleteCountryById());
     router.get('/api/v1/countries', countryHandlers.getCountries());
     router.post('/api/v1/countries', countryHandlers.postCountries());

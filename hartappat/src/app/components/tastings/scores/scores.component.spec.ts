@@ -6,6 +6,7 @@ import {ActivatedRoute, convertToParamMap} from "@angular/router";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {ScoresConfigService} from "../../../services/scores-config.service";
 import {ScoreService} from "../../../services/backend/score.service";
+import {TastingService} from "../../../services/backend/tasting.service";
 
 describe('ScoresComponent', () => {
   let component: ScoresComponent;
@@ -27,6 +28,10 @@ describe('ScoresComponent', () => {
     postScore: jest.fn().mockReturnValue(of({})),
   };
 
+  const tastingServiceMock = {
+    getTasting: jest.fn().mockReturnValue(of({ id: 5, title: 'Testprovning', notes: '', tastingDate: '2024-01-15', hosts: [], wines: [] })),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ScoresComponent],
@@ -42,6 +47,7 @@ describe('ScoresComponent', () => {
         {provide: MemberService, useValue: memberServiceMock},
         {provide: ScoresConfigService, useValue: scoresConfigServiceMock},
         {provide: ScoreService, useValue: scoreServiceMock},
+        { provide: TastingService, useValue: tastingServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
