@@ -4,6 +4,7 @@ import {ScoresComponent} from './scores.component';
 import {MemberService} from "../../../services/backend/member.service";
 import {ActivatedRoute, convertToParamMap} from "@angular/router";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {ScoresConfigService} from "../../../services/scores-config.service";
 
 describe('ScoresComponent', () => {
   let component: ScoresComponent;
@@ -14,6 +15,11 @@ describe('ScoresComponent', () => {
       { id: 1, given: 'Anna', surname: 'Andersson' },
       { id: 2, given: 'Erik', surname: 'Eriksson' },
     ]))
+  };
+
+  const scoresConfigServiceMock = {
+    saveConfig: jest.fn(),
+    loadConfig: jest.fn().mockReturnValue(null),
   };
 
   beforeEach(async () => {
@@ -29,6 +35,7 @@ describe('ScoresComponent', () => {
           },
         },
         { provide: MemberService, useValue: memberServiceMock },
+        { provide: ScoresConfigService, useValue: scoresConfigServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
@@ -125,5 +132,53 @@ describe('ScoresComponent', () => {
     expect(component.participants[1].id).toBe(2);
   });
 
+  describe('ScoreConfig', () => {
+
+    beforeEach(async () => {
+      scoresConfigServiceMock.saveConfig.mockClear();
+      scoresConfigServiceMock.loadConfig.mockClear();
+      scoresConfigServiceMock.loadConfig.mockReturnValue(null);
+
+      fixture = TestBed.createComponent(ScoresComponent);
+      component = fixture.componentInstance;
+      await fixture.whenStable();
+      fixture.detectChanges();
+    });
+
+    test('loads config on init when config exists', async () => {
+      scoresConfigServiceMock.loadConfig.mockReturnValue({
+        numberOfPositions: 4,
+        participantIds: [2, 1],
+      });
+
+      const localFixture = TestBed.createComponent(ScoresComponent);
+      const localComponent = localFixture.componentInstance;
+      await localFixture.whenStable();
+      localFixture.detectChanges();
+
+      expect(localComponent.numberOfPositions).toBe(4);
+      expect(localComponent.participants.map(m => m.id)).toEqual([2, 1]);
+    });
+
+    test('saves config when numberOfPositions changes', () => {
+      component.numberOfPositions = 8;
+      component.onConfigChanged();
+
+      expect(scoresConfigServiceMock.saveConfig).toHaveBeenCalledWith(5, {
+        numberOfPositions: 8,
+        participantIds: [],
+      });
+    });
+
+    test('saves config when participants change', () => {
+      component.toggleMember(1);
+      component.onConfigChanged();
+
+      expect(scoresConfigServiceMock.saveConfig).toHaveBeenCalledWith(5, {
+        numberOfPositions: 6,
+        participantIds: [1],
+      });
+    });
+  })
 
 });

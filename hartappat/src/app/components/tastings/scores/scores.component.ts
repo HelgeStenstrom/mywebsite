@@ -3,6 +3,8 @@ import {ActivatedRoute} from "@angular/router";
 import {MemberService} from "../../../services/backend/member.service";
 import {Member} from "../../../models/common.model";
 import {FormsModule} from "@angular/forms";
+import {ScoresConfigService} from "../../../services/scores-config.service";
+import {ScoresConfig} from "../../../models/score.model";
 
 @Component({
   selector: 'app-scores',
@@ -14,7 +16,6 @@ export class ScoresComponent implements OnInit {
 
   tastingId: number = 0;
   members: Member[] = [];
-  selectedMemberIds: Set<number> = new Set();
   participants: Member[] = [];
   numberOfPositions: number = 6;
   scores: Record<number, Record<number, number | null>> = {};
@@ -22,6 +23,7 @@ export class ScoresComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly memberService: MemberService,
+    private readonly scoresConfigService: ScoresConfigService
     ) {
   }
 
@@ -29,6 +31,16 @@ export class ScoresComponent implements OnInit {
     this.tastingId = Number(this.route.snapshot.paramMap.get('id'));
     this.memberService.getMembers().subscribe(members => {
       this.members = members;
+
+      const config = this.scoresConfigService.loadConfig(this.tastingId);
+      if (config) {
+        this.numberOfPositions = config.numberOfPositions;
+        this.participants = this.members.filter(m =>
+          config.participantIds.includes(m.id)
+        ).sort((a, b) =>
+          config.participantIds.indexOf(a.id) - config.participantIds.indexOf(b.id)
+        );
+      }
     });
   }
 
@@ -45,6 +57,7 @@ export class ScoresComponent implements OnInit {
         this.participants.push(member);
       }
     }
+    this.onConfigChanged();
   }
 
 
@@ -69,6 +82,7 @@ export class ScoresComponent implements OnInit {
       [this.participants[index - 1], this.participants[index]] =
         [this.participants[index], this.participants[index - 1]];
     }
+    this.onConfigChanged();
   }
 
   moveDown(index: number): void {
@@ -76,6 +90,7 @@ export class ScoresComponent implements OnInit {
       [this.participants[index], this.participants[index + 1]] =
         [this.participants[index + 1], this.participants[index]];
     }
+    this.onConfigChanged();
   }
 
   protected readonly HTMLInputElement = HTMLInputElement;
@@ -88,4 +103,13 @@ export class ScoresComponent implements OnInit {
     } else if (input.value && value < 1) {
       input.value = '1';
     }
-  }}
+  }
+
+  onConfigChanged() {
+    const config: ScoresConfig = {
+      numberOfPositions: this.numberOfPositions,
+      participantIds: this.participants.map(p => p.id)
+    }
+    this.scoresConfigService.saveConfig(this.tastingId, config);
+  }
+}

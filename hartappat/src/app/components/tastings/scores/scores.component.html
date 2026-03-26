@@ -45,6 +45,7 @@
               [value]="getScore(member.id, position)"
               (change)="setScore(member.id, position, $event)"
               (input)="clampScore($event)"
+              (ngModelChange)="onConfigChanged()"
             >
           </td>
         }
