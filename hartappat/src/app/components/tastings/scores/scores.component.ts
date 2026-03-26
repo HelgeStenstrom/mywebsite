@@ -10,6 +10,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {ScoreService} from "../../../services/backend/score.service";
 import {average, standardDeviation} from "../../../utils/statistics";
 import {DecimalPipe} from "@angular/common";
+import {TastingService} from "../../../services/backend/tasting.service";
 
 @Component({
   selector: 'app-scores',
@@ -24,17 +25,26 @@ export class ScoresComponent implements OnInit {
   participants: Member[] = [];
   numberOfPositions: number = 6;
   scores: Record<number, Record<number, number | null>> = {};
+  tastingTitle: string = '';
+
+  tastingDate: string = '';
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly memberService: MemberService,
     private readonly scoresConfigService: ScoresConfigService,
     private readonly scoreService: ScoreService,
+    private readonly tastingService: TastingService,
     ) {
   }
 
   ngOnInit(): void {
     this.tastingId = Number(this.route.snapshot.paramMap.get('id'));
+    this.tastingService.getTasting(this.tastingId).subscribe(tasting => {
+      this.tastingTitle = tasting.title;
+      this.tastingDate = tasting.tastingDate;
+    });
+
     this.memberService.getMembers().subscribe(members => {
       this.members = members;
 
