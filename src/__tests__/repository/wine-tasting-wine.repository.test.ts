@@ -11,6 +11,8 @@ import {defineWineTastingWine} from "../../orm/models/wine-tasting-wine.model";
 import {connectTastingAndTastingWine} from "../../orm";
 import {WineInstance} from "../../types/wine";
 import {defineWine} from "../../orm/models/wine.model";
+import {defineScore} from "../../orm/models/score.model";
+import {ScoreInstance} from "../../types/score";
 
 describe('WineTastingWineRepository', () => {
 
@@ -18,6 +20,8 @@ describe('WineTastingWineRepository', () => {
     let tastingDefinition: ModelStatic<WineTastingInstance>;
     let wineDefinition: ModelStatic<WineInstance>;
     let wineTastingWineDefinition: ModelStatic<WineTastingWineInstance>;
+    let scoreDefinition: ModelStatic<ScoreInstance>;
+
     let repository: WineTastingWineRepository;
 
     beforeEach(async () => {
@@ -26,11 +30,12 @@ describe('WineTastingWineRepository', () => {
         tastingDefinition = defineTasting(sequelize);
         wineDefinition = defineWine(sequelize);
         wineTastingWineDefinition = defineWineTastingWine(sequelize);
+        scoreDefinition = defineScore(sequelize);
         connectTastingAndTastingWine(tastingDefinition, wineTastingWineDefinition);
 
         await sequelize.sync({ force: true });
 
-        repository = new WineTastingWineRepository(wineTastingWineDefinition);
+        repository = new WineTastingWineRepository(wineTastingWineDefinition, scoreDefinition);
     })
 
     afterEach(async () => {
@@ -61,6 +66,7 @@ describe('WineTastingWineRepository', () => {
             position: 0,
             purchasePrice: 129,
             averageScore: 12.3,
+            scoreStdDev: null,
         })
     })
 
@@ -131,7 +137,81 @@ describe('WineTastingWineRepository', () => {
             position: 3,
             purchasePrice: 199,
             averageScore: 14.5,
+            scoreStdDev: null,
         });
     });
+
+    describe('statistics', () => {
+
+        test('findByTastingId returns averageScore and scoreStdDev calculated from scores', async () => {
+            const tasting = await tastingDefinition.create({
+                title: 'Test tasting',
+                notes: '',
+                tastingDate: new Date('2024-01-01'),
+            });
+
+            await repository.create(tasting.id, { wineId: 1, position: 1 });
+
+            await scoreDefinition.bulkCreate([
+                { tastingId: tasting.id, memberId: 1, position: 1, score: 10 },
+                { tastingId: tasting.id, memberId: 2, position: 1, score: 20 },
+            ]);
+
+            const result = await repository.findByTastingId(tasting.id);
+
+            expect(result[0].averageScore).toBeCloseTo(15);
+            expect(result[0].scoreStdDev).toBeCloseTo(5);
+        });
+
+        test('findByTastingId returns null averageScore and scoreStdDev when no scores exist', async () => {
+            const tasting = await tastingDefinition.create({
+                title: 'Test tasting',
+                notes: '',
+                tastingDate: new Date('2024-01-01'),
+            });
+
+            await repository.create(tasting.id, { wineId: 1, position: 1 });
+
+            const result = await repository.findByTastingId(tasting.id);
+
+            expect(result[0].averageScore).toBeNull();
+            expect(result[0].scoreStdDev).toBeNull();
+        });
+
+        test('findByTastingId falls back to stored averageScore when no scores exist', async () => {
+            const tasting = await tastingDefinition.create({
+                title: 'Test tasting',
+                notes: '',
+                tastingDate: new Date('2024-01-01'),
+            });
+
+            await repository.create(tasting.id, { wineId: 1, position: 1, averageScore: 13.5 });
+
+            const result = await repository.findByTastingId(tasting.id);
+
+            expect(result[0].averageScore).toBeCloseTo(13.5);
+            expect(result[0].scoreStdDev).toBeNull();
+        });
+
+        test('findByTastingId uses scores over stored averageScore when both exist', async () => {
+            const tasting = await tastingDefinition.create({
+                title: 'Test tasting',
+                notes: '',
+                tastingDate: new Date('2024-01-01'),
+            });
+
+            await repository.create(tasting.id, { wineId: 1, position: 1, averageScore: 13.5 });
+
+            await scoreDefinition.bulkCreate([
+                { tastingId: tasting.id, memberId: 1, position: 1, score: 10 },
+                { tastingId: tasting.id, memberId: 2, position: 1, score: 20 },
+            ]);
+
+            const result = await repository.findByTastingId(tasting.id);
+
+            expect(result[0].averageScore).toBeCloseTo(15);
+            expect(result[0].scoreStdDev).toBeCloseTo(5);
+        });
+    })
 
 });

@@ -60,6 +60,7 @@ export type WineTastingWineDto = {
     position: number;
     purchasePrice?: number | null;
     averageScore?: number | null;
+    scoreStdDev?: number | null;
 }
 
 export type WineTastingWineCreateDto = {

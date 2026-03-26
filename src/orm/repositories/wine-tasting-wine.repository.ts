@@ -5,18 +5,20 @@ import {
     WineTastingWineUpdateDto
 } from "../../types/wine-tasting";
 import {ModelStatic} from "sequelize";
+import {ScoreInstance} from "../../types/score";
+import {average, standardDeviation} from "../../utils/statistics";
 
 export class WineTastingWineRepository {
 
     constructor(
         private readonly WineTastingWine: ModelStatic<WineTastingWineInstance>,
-    ) {
-    }
+        private readonly Score: ModelStatic<ScoreInstance>,
+    ) {}
 
     async create(
         wineTastingId: number,
         wine: WineTastingWineCreateDto,
-    ):  Promise<WineTastingWineDto>  {
+    ): Promise<WineTastingWineDto> {
 
         const created = await this.WineTastingWine.create({
             wineTastingId: wineTastingId,
@@ -24,9 +26,9 @@ export class WineTastingWineRepository {
             position: wine.position,
             purchasePrice: wine.purchasePrice ?? null,
             averageScore: wine.averageScore ?? null,
-        })
+        });
 
-        return this.toDto(created);
+        return this.toDto(created, wineTastingId);
     }
 
     async findByTastingId(
@@ -37,20 +39,34 @@ export class WineTastingWineRepository {
             where: {wineTastingId: wineTastingId},
         })
 
-        return wines.map(this.toDto);
+        return Promise.all(wines.map(w => this.toDto(w, wineTastingId)));
     }
 
-    private toDto(created: WineTastingWineInstance): WineTastingWineDto {
+    private async toDto(
+        wine: WineTastingWineInstance,
+        wineTastingId: number,
+    ): Promise<WineTastingWineDto> {
+
+        const scores = await this.Score.findAll({
+            where: {
+                tastingId: wineTastingId,
+                position: wine.position,
+            },
+        });
+
+        const scoreValues = scores.map(s => Number(s.score));
+
+        const hasScores = scoreValues.length > 0;
+
         return {
-            id: created.id,
-            wineId: created.wineId,
-            position: created.position,
-            purchasePrice: created.purchasePrice ?? null,
-            averageScore: created.averageScore ?? null,
-        }
-
+            id: wine.id,
+            wineId: wine.wineId,
+            position: wine.position,
+            purchasePrice: wine.purchasePrice ?? null,
+            averageScore: hasScores ? average(scoreValues) : (wine.averageScore ?? null),
+            scoreStdDev: hasScores ? standardDeviation(scoreValues) : null,
+        };
     }
-
     async delete(wineTastingId: number, tastingWineId: number) {
         const existing = await this.WineTastingWine.findOne({ where: { id: tastingWineId, wineTastingId } });
         if (!existing) {
@@ -73,6 +89,5 @@ export class WineTastingWineRepository {
         if (!updated) {
             throw new Error('WineTastingWine not found');
         }
-        return this.toDto(updated);
-    }
-}
+        return this.toDto(updated, updated.wineTastingId);
+    }}
