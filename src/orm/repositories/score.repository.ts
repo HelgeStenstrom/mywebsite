@@ -47,4 +47,13 @@ constructor(
         }
         return this.toDto(updated);
     }
+
+    async replaceAll(tastingId: number, newScores: ScoreCreateDto[]): Promise<ScoreDto[]> {
+
+        await this.Score.destroy({ where: { tastingId } });
+        const created = await Promise.all(
+            newScores.map(score => this.Score.create({ tastingId, ...score }))
+        );
+        return created.map(this.toDto);
+    }
 }

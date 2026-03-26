@@ -88,5 +88,46 @@ describe('ScoreRepository', () => {
         expect(updated).toBeNull();
     });
 
+    describe('replaceAll', () => {
+        test('replaceAll deletes existing scores and creates new ones', async () => {
+            await scoreRepository.create(1, { memberId: 1, position: 1, score: 15 });
+            await scoreRepository.create(1, { memberId: 2, position: 1, score: 12 });
+
+            const newScores: ScoreCreateDto[] = [
+                { memberId: 1, position: 1, score: 18 },
+                { memberId: 3, position: 2, score: 14 },
+            ];
+
+            const result = await scoreRepository.replaceAll(1, newScores);
+
+            expect(result).toHaveLength(2);
+            expect(result).toEqual(expect.arrayContaining([
+                { id: expect.any(Number), tastingId: 1, memberId: 1, position: 1, score: 18 },
+                { id: expect.any(Number), tastingId: 1, memberId: 3, position: 2, score: 14 },
+            ]));
+        });
+
+        test('replaceAll removes all existing scores when given empty array', async () => {
+            await scoreRepository.create(1, { memberId: 1, position: 1, score: 15 });
+
+            const result = await scoreRepository.replaceAll(1, []);
+
+            expect(result).toHaveLength(0);
+            const remaining = await scoreRepository.findAllByTastingId(1);
+            expect(remaining).toHaveLength(0);
+        });
+
+        test('replaceAll only affects scores for the given tasting', async () => {
+            await scoreRepository.create(1, { memberId: 1, position: 1, score: 15 });
+            await scoreRepository.create(2, { memberId: 1, position: 1, score: 12 });
+
+            await scoreRepository.replaceAll(1, []);
+
+            const remaining = await scoreRepository.findAllByTastingId(2);
+            expect(remaining).toHaveLength(1);
+        });
+
+    })
+
 
 });
