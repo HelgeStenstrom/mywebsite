@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {MemberService} from "../../../services/backend/member.service";
 import {Member} from "../../../models/common.model";
 import {FormsModule} from "@angular/forms";
@@ -14,7 +14,7 @@ import {TastingService} from "../../../services/backend/tasting.service";
 
 @Component({
   selector: 'app-scores',
-  imports: [FormsModule, DragDropModule, MatIconModule, DecimalPipe],
+  imports: [FormsModule, DragDropModule, MatIconModule, DecimalPipe, RouterLink],
   templateUrl: './scores.component.html',
   styleUrl: './scores.component.css',
 })
@@ -35,7 +35,7 @@ export class ScoresComponent implements OnInit {
     private readonly scoresConfigService: ScoresConfigService,
     private readonly scoreService: ScoreService,
     private readonly tastingService: TastingService,
-    ) {
+  ) {
   }
 
   ngOnInit(): void {
@@ -78,7 +78,7 @@ export class ScoresComponent implements OnInit {
 
 
   get positions(): number[] {
-    return Array.from({ length: this.numberOfPositions }, (_, i) => i + 1);
+    return Array.from({length: this.numberOfPositions}, (_, i) => i + 1);
   }
 
   getScore(memberId: number, position: number): number | null {
@@ -131,27 +131,27 @@ export class ScoresComponent implements OnInit {
     }
   }
 
-  averageForPosition(position: number):number | null {
+  averageForPosition(position: number): number | null {
     const scores = this.participants.map(m => this.getScore(m.id, position));
     const filteredScores = scores.filter(score => score !== null);
     return average(filteredScores);
   }
 
   averageForMember(memberId: number) {
-   const scores = this.positions.map(p => this.getScore(memberId, p));
+    const scores = this.positions.map(p => this.getScore(memberId, p));
     const filteredScores = scores.filter(score => score !== null);
     return average(filteredScores);
   }
 
 
-  standardDeviationForPosition(position: number):number | null {
+  standardDeviationForPosition(position: number): number | null {
     const scores = this.participants.map(m => this.getScore(m.id, position));
     const filteredScores = scores.filter(score => score !== null);
     return standardDeviation(filteredScores);
   }
 
   standardDeviationForMember(memberId: number) {
-   const scores = this.positions.map(p => this.getScore(memberId, p));
+    const scores = this.positions.map(p => this.getScore(memberId, p));
     const filteredScores = scores.filter(score => score !== null);
     return standardDeviation(filteredScores);
   }
