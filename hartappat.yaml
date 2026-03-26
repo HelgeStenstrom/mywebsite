@@ -689,6 +689,33 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Replace all scores for a tasting
+      description: Deletes all existing scores for the tasting and creates new ones.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/ScoreCreate'
+      responses:
+        '200':
+          description: Scores replaced successfully
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Score'
+        '404':
+          description: Tasting not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
 
   /tastings/{id}/scores/{scoreId}:
     parameters:
