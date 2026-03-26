@@ -11,3 +11,8 @@ export type ScoreCreateDto = {
   position: number;
   score: number;
 };
+
+export type ScoresConfig = {
+  numberOfPositions: number;
+  participantIds: number[];
+};
