@@ -44,6 +44,7 @@
               [tabindex]="position * participants.length + i + 1"
               [value]="getScore(member.id, position)"
               (change)="setScore(member.id, position, $event)"
+              (input)="clampScore($event)"
             >
           </td>
         }

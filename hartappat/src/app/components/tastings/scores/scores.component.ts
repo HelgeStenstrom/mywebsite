@@ -52,10 +52,6 @@ export class ScoresComponent implements OnInit {
     return Array.from({ length: this.numberOfPositions }, (_, i) => i + 1);
   }
 
-  get selectedMembers(): Member[] {
-    return this.members.filter(m => this.selectedMemberIds.has(m.id));
-  }
-
   getScore(memberId: number, position: number): number | null {
     return this.scores[memberId]?.[position] ?? null;
   }
@@ -83,4 +79,13 @@ export class ScoresComponent implements OnInit {
   }
 
   protected readonly HTMLInputElement = HTMLInputElement;
-}
+
+  protected clampScore(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    const value = Number(input.value);
+    if (input.value && value > 20) {
+      input.value = '20';
+    } else if (input.value && value < 1) {
+      input.value = '1';
+    }
+  }}
