@@ -46,5 +46,8 @@ describe('statistics', () => {
     test('returns correct standard deviation for multiple values', () => {
       expect(standardDeviation([12, 15, 18])).toBeCloseTo(2.4495);
     });
+    test('returns correct standard deviation for multiple values again', () => {
+      expect(standardDeviation([10, 15, 20])).toBeCloseTo(4.08);
+    });
   });
 });

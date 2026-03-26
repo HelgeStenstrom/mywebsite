@@ -23,10 +23,12 @@
   <thead>
   <tr>
     <th></th>
-    <th>Deltagare</th>
+    <th>Medlem</th>
     @for (position of positions; track position) {
       <th>{{ position }}</th>
     }
+    <th>Medel</th>
+    <th>StdDev</th>
   </tr>
   </thead>
   <tbody cdkDropList (cdkDropListDropped)="drop($event)">
@@ -45,8 +47,28 @@
                    (input)="clampScore($event)">
           </td>
         }
+        <td>{{ averageForMember(member.id) | number:'1.1-1' }}</td>
+        <td>{{ standardDeviationForMember(member.id) | number:'1.1-1' }}</td>
       </tr>
     }
-  </tbody></table>
-
+  </tbody>
+  <tfoot>
+  <tr>
+    <td></td>
+    <td><strong>Medel</strong></td>
+    @for (position of positions; track position) {
+      <td>{{ averageForPosition(position) | number:'1.1-1' }}</td>
+    }
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td><strong>StdDev</strong></td>
+    @for (position of positions; track position) {
+      <td>{{ standardDeviationForPosition(position) | number:'1.1-1' }}</td>
+    }
+    <td></td>
+  </tr>
+  </tfoot>
+</table>
 <button (click)="saveScores()">Spara</button>

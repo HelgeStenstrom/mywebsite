@@ -8,11 +8,12 @@ import {ScoresConfig} from "../../../models/score.model";
 import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatIconModule} from "@angular/material/icon";
 import {ScoreService} from "../../../services/backend/score.service";
-import {average} from "../../../utils/statistics";
+import {average, standardDeviation} from "../../../utils/statistics";
+import {DecimalPipe} from "@angular/common";
 
 @Component({
   selector: 'app-scores',
-  imports: [FormsModule, DragDropModule, MatIconModule],
+  imports: [FormsModule, DragDropModule, MatIconModule, DecimalPipe],
   templateUrl: './scores.component.html',
   styleUrl: './scores.component.css',
 })
@@ -123,14 +124,27 @@ export class ScoresComponent implements OnInit {
   averageForPosition(position: number):number | null {
     const scores = this.participants.map(m => this.getScore(m.id, position));
     const filteredScores = scores.filter(score => score !== null);
-
     return average(filteredScores);
   }
 
   averageForMember(memberId: number) {
    const scores = this.positions.map(p => this.getScore(memberId, p));
     const filteredScores = scores.filter(score => score !== null);
-
     return average(filteredScores);
   }
+
+
+  standardDeviationForPosition(position: number):number | null {
+    const scores = this.participants.map(m => this.getScore(m.id, position));
+    const filteredScores = scores.filter(score => score !== null);
+    return standardDeviation(filteredScores);
+  }
+
+  standardDeviationForMember(memberId: number) {
+   const scores = this.positions.map(p => this.getScore(memberId, p));
+    const filteredScores = scores.filter(score => score !== null);
+    return standardDeviation(filteredScores);
+  }
+
+
 }
