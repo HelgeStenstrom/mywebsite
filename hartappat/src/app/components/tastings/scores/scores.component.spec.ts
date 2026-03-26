@@ -5,6 +5,7 @@ import {MemberService} from "../../../services/backend/member.service";
 import {ActivatedRoute, convertToParamMap} from "@angular/router";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {ScoresConfigService} from "../../../services/scores-config.service";
+import {ScoreService} from "../../../services/backend/score.service";
 
 describe('ScoresComponent', () => {
   let component: ScoresComponent;
@@ -22,6 +23,10 @@ describe('ScoresComponent', () => {
     loadConfig: jest.fn().mockReturnValue(null),
   };
 
+  const scoreServiceMock = {
+    postScore: jest.fn().mockReturnValue(of({})),
+  };
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [ScoresComponent],
@@ -36,6 +41,7 @@ describe('ScoresComponent', () => {
         },
         { provide: MemberService, useValue: memberServiceMock },
         { provide: ScoresConfigService, useValue: scoresConfigServiceMock },
+        { provide: ScoreService, useValue: scoreServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
@@ -59,25 +65,28 @@ describe('ScoresComponent', () => {
     expect(component.members.length).toBe(2);
   });
 
-  test('member is not selected by default', () => {
-    expect(component.isSelected(1)).toBe(false);
-  });
+  describe('Toggling members', () => {
+    test('member is not selected by default', () => {
+      expect(component.isSelected(1)).toBe(false);
+    });
 
-  test('toggleMember selects a member', () => {
-    component.toggleMember(1);
-    expect(component.isSelected(1)).toBe(true);
-  });
+    test('toggleMember selects a member', () => {
+      component.toggleMember(1);
+      expect(component.isSelected(1)).toBe(true);
+    });
 
-  test('toggleMember deselects a selected member', () => {
-    component.toggleMember(1);
-    component.toggleMember(1);
-    expect(component.isSelected(1)).toBe(false);
-  });
+    test('toggleMember deselects a selected member', () => {
+      component.toggleMember(1);
+      component.toggleMember(1);
+      expect(component.isSelected(1)).toBe(false);
+    });
 
-  test('toggling one member does not affect another', () => {
-    component.toggleMember(1);
-    expect(component.isSelected(2)).toBe(false);
-  });
+    test('toggling one member does not affect another', () => {
+      component.toggleMember(1);
+      expect(component.isSelected(2)).toBe(false);
+    });
+  })
+
 
   describe('ScoreConfig', () => {
 
@@ -127,5 +136,32 @@ describe('ScoresComponent', () => {
       });
     });
   })
+
+  describe('Posting and recalling', () => {
+
+    beforeEach(async () => {
+      scoreServiceMock.postScore.mockClear();
+    })
+
+    test('saveScores posts a score for each filled cell', () => {
+      component.participants = [
+        {id: 1, given: 'Anna', surname: 'Andersson'},
+        {id: 2, given: 'Erik', surname: 'Eriksson'},
+      ];
+      component.numberOfPositions = 2;
+      component.scores = {
+        1: {1: 15, 2: 12},
+        2: {1: 18, 2: null},
+      };
+
+      component.saveScores();
+
+      expect(scoreServiceMock.postScore).toHaveBeenCalledTimes(3);
+      expect(scoreServiceMock.postScore).toHaveBeenCalledWith(5, {memberId: 1, position: 1, score: 15});
+      expect(scoreServiceMock.postScore).toHaveBeenCalledWith(5, {memberId: 1, position: 2, score: 12});
+      expect(scoreServiceMock.postScore).toHaveBeenCalledWith(5, {memberId: 2, position: 1, score: 18});
+    });
+
+  });
 
 });

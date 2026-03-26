@@ -7,6 +7,7 @@ import {ScoresConfigService} from "../../../services/scores-config.service";
 import {ScoresConfig} from "../../../models/score.model";
 import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatIconModule} from "@angular/material/icon";
+import {ScoreService} from "../../../services/backend/score.service";
 
 @Component({
   selector: 'app-scores',
@@ -25,7 +26,8 @@ export class ScoresComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly memberService: MemberService,
-    private readonly scoresConfigService: ScoresConfigService
+    private readonly scoresConfigService: ScoresConfigService,
+    private readonly scoreService: ScoreService,
     ) {
   }
 
@@ -100,5 +102,20 @@ export class ScoresComponent implements OnInit {
       participantIds: this.participants.map(p => p.id)
     }
     this.scoresConfigService.saveConfig(this.tastingId, config);
+  }
+
+  saveScores(): void {
+    for (const member of this.participants) {
+      for (const position of this.positions) {
+        const score = this.getScore(member.id, position);
+        if (score !== null) {
+          this.scoreService.postScore(this.tastingId, {
+            memberId: member.id,
+            position,
+            score,
+          }).subscribe();
+        }
+      }
+    }
   }
 }
