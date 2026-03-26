@@ -164,4 +164,51 @@ describe('ScoresComponent', () => {
 
   });
 
+  describe('averageForPosition and averageForMember', () => {
+
+    beforeEach(() => {
+      component.participants = [
+        { id: 1, given: 'Anna', surname: 'Andersson' },
+        { id: 2, given: 'Erik', surname: 'Eriksson' },
+        { id: 3, given: 'Lisa', surname: 'Larsson' },
+      ];
+      component.numberOfPositions = 2;
+      component.scores = {
+        1: { 1: 10, 2: 20 },
+        2: { 1: 20, 2: 10 },
+        3: { 1: 15, 2: 15 },
+      };
+    });
+
+    test('averageForPosition returns average of all participants for a position', () => {
+      expect(component.averageForPosition(1)).toBeCloseTo(15);
+      expect(component.averageForPosition(2)).toBeCloseTo(15);
+    });
+
+    test('averageForPosition ignores null values', () => {
+      component.scores[3][1] = null;
+      expect(component.averageForPosition(1)).toBeCloseTo(15);
+    });
+
+    test('averageForPosition returns null when no scores exist for position', () => {
+      component.scores = {};
+      expect(component.averageForPosition(1)).toBeNull();
+    });
+
+    test('averageForMember returns average of all positions for a member', () => {
+      expect(component.averageForMember(1)).toBeCloseTo(15);
+      expect(component.averageForMember(2)).toBeCloseTo(15);
+    });
+
+    test('averageForMember ignores null values', () => {
+      component.scores[1][2] = null;
+      expect(component.averageForMember(1)).toBeCloseTo(10);
+    });
+
+    test('averageForMember returns null when no scores exist for member', () => {
+      component.scores = {};
+      expect(component.averageForMember(1)).toBeNull();
+    });
+  });
+
 });
