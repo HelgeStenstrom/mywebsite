@@ -948,6 +948,19 @@ components:
           type: number
           format: float
           nullable: true
+          description: >
+            Average score for this position.
+            Calculated dynamically from the scores table if scores exist.
+            Falls back to the manually entered average_score from the database.
+            Null if neither exists.
+        scoreStdDev:
+          type: number
+          format: float
+          nullable: true
+          description: >
+            Standard deviation of scores for this position.
+            Calculated dynamically from the scores table if scores exist.
+            Null if no scores exist in the scores table.
 
     WineTastingWineCreate:
       type: object
