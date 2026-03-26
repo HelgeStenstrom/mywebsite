@@ -50,4 +50,26 @@ describe('ScoreService', () => {
     expect(req.request.body).toEqual(newScore);
     req.flush(aScore);
   });
+
+  test('it puts scores', done => {
+    const newScores: ScoreCreateDto[] = [
+      {memberId: 1, position: 1, score: 15},
+      {memberId: 2, position: 1, score: 18},
+    ];
+    const savedScores: ScoreDto[] = [
+      {id: 1, tastingId: 5, memberId: 1, position: 1, score: 15},
+      {id: 2, tastingId: 5, memberId: 2, position: 1, score: 18},
+    ];
+
+    service.putScores(5, newScores).subscribe(result => {
+      expect(result).toEqual(savedScores);
+      done();
+    });
+
+    const req = httpTestingController.expectOne(url);
+    expect(req.request.method).toEqual('PUT');
+    expect(req.request.body).toEqual(newScores);
+    req.flush(savedScores);
+  });
+
 });

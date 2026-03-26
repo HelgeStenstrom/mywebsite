@@ -26,6 +26,7 @@ describe('ScoresComponent', () => {
 
   const scoreServiceMock = {
     postScore: jest.fn().mockReturnValue(of({})),
+    putScores: jest.fn().mockReturnValue(of([])),
   };
 
   const tastingServiceMock = {
@@ -162,10 +163,31 @@ describe('ScoresComponent', () => {
 
       component.saveScores();
 
-      expect(scoreServiceMock.postScore).toHaveBeenCalledTimes(3);
-      expect(scoreServiceMock.postScore).toHaveBeenCalledWith(5, {memberId: 1, position: 1, score: 15});
-      expect(scoreServiceMock.postScore).toHaveBeenCalledWith(5, {memberId: 1, position: 2, score: 12});
-      expect(scoreServiceMock.postScore).toHaveBeenCalledWith(5, {memberId: 2, position: 1, score: 18});
+      expect(scoreServiceMock.putScores).toHaveBeenCalledTimes(1);
+      expect(scoreServiceMock.putScores).toHaveBeenCalledWith(5, [
+        {"memberId": 1, "position": 1, "score": 15},
+        {"memberId": 1, "position": 2, "score": 12},
+        {"memberId": 2, "position": 1, "score": 18}]);
+    });
+
+    test('saveScores puts all filled scores', () => {
+      component.participants = [
+        { id: 1, given: 'Anna', surname: 'Andersson' },
+        { id: 2, given: 'Erik', surname: 'Eriksson' },
+      ];
+      component.numberOfPositions = 2;
+      component.scores = {
+        1: { 1: 15, 2: 12 },
+        2: { 1: 18, 2: null },
+      };
+
+      component.saveScores();
+
+      expect(scoreServiceMock.putScores).toHaveBeenCalledWith(5, [
+        { memberId: 1, position: 1, score: 15 },
+        { memberId: 1, position: 2, score: 12 },
+        { memberId: 2, position: 1, score: 18 },
+      ]);
     });
 
   });

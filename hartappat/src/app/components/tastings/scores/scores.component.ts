@@ -4,7 +4,7 @@ import {MemberService} from "../../../services/backend/member.service";
 import {Member} from "../../../models/common.model";
 import {FormsModule} from "@angular/forms";
 import {ScoresConfigService} from "../../../services/scores-config.service";
-import {ScoresConfig} from "../../../models/score.model";
+import {ScoreCreateDto, ScoresConfig} from "../../../models/score.model";
 import {CdkDragDrop, DragDropModule, moveItemInArray} from '@angular/cdk/drag-drop';
 import {MatIconModule} from "@angular/material/icon";
 import {ScoreService} from "../../../services/backend/score.service";
@@ -117,18 +117,16 @@ export class ScoresComponent implements OnInit {
   }
 
   saveScores(): void {
+    const scores: ScoreCreateDto[] = [];
     for (const member of this.participants) {
       for (const position of this.positions) {
         const score = this.getScore(member.id, position);
         if (score !== null) {
-          this.scoreService.postScore(this.tastingId, {
-            memberId: member.id,
-            position,
-            score,
-          }).subscribe();
+          scores.push({ memberId: member.id, position, score });
         }
       }
     }
+    this.scoreService.putScores(this.tastingId, scores).subscribe();
   }
 
   averageForPosition(position: number): number | null {

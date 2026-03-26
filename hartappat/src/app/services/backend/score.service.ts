@@ -19,4 +19,8 @@ export class ScoreService {
   getScores(tastingId: number): Observable<ScoreDto[]> {
     return this.http.get<ScoreDto[]>(`${this.apiBase}/tastings/${tastingId}/scores`);
   }
+
+  putScores(tastingId: number, score: ScoreCreateDto[]): Observable<ScoreDto> {
+    return this.http.put<ScoreDto>(`${this.apiBase}/tastings/${tastingId}/scores`, score);
+  }
 }
