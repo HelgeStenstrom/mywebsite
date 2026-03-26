@@ -76,4 +76,19 @@ export class ScoreHandlers {
             res.status(200).json(updated);
         }
     }
+
+    putScores() {
+        return async (req, res) => {
+
+            const tastingId = Number(req.params.id);
+            if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
+                return errorResponse(res, 400, 'Invalid tasting id');
+            }
+            const scores: ScoreCreateDto[] = req.body;
+
+            const replaced = await this.orm.scores.replaceAll(tastingId, scores);
+
+            res.status(200).json(replaced);
+        }
+    }
 }

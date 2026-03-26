@@ -130,4 +130,54 @@ describe('Score handler tests', () => {
             .send({score: 18})
             .expect(404);
     });
+
+    describe('PUT /tastings/:id/scores', () => {
+
+        test('PUT /tastings/:id/scores replaces all scores', async () => {
+            const tasting = await createTasting(app);
+
+            // Post some initial scores
+            await request(app)
+                .post(`/api/v1/tastings/${tasting.body.id}/scores`)
+                .send({ memberId: 1, position: 1, score: 15 })
+                .expect(201);
+
+            await request(app)
+                .post(`/api/v1/tastings/${tasting.body.id}/scores`)
+                .send({ memberId: 2, position: 1, score: 12 })
+                .expect(201);
+
+            // Replace with new scores
+            const res = await request(app)
+                .put(`/api/v1/tastings/${tasting.body.id}/scores`)
+                .send([
+                    { memberId: 1, position: 1, score: 18 },
+                    { memberId: 3, position: 2, score: 14 },
+                ])
+                .expect(200);
+
+            expect(res.body).toHaveLength(2);
+            expect(res.body).toEqual(expect.arrayContaining([
+                { id: expect.any(Number), tastingId: tasting.body.id, memberId: 1, position: 1, score: 18 },
+                { id: expect.any(Number), tastingId: tasting.body.id, memberId: 3, position: 2, score: 14 },
+            ]));
+        });
+
+        test('PUT /tastings/:id/scores with empty array removes all scores', async () => {
+            const tasting = await createTasting(app);
+
+            await request(app)
+                .post(`/api/v1/tastings/${tasting.body.id}/scores`)
+                .send({ memberId: 1, position: 1, score: 15 })
+                .expect(201);
+
+            const res = await request(app)
+                .put(`/api/v1/tastings/${tasting.body.id}/scores`)
+                .send([])
+                .expect(200);
+
+            expect(res.body).toHaveLength(0);
+        });
+
+    })
 });

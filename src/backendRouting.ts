@@ -66,6 +66,9 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.post('/api/v1/tastings/:id/scores', scoreHandlers.postScore());
     router.get('/api/v1/tastings/:id/scores', scoreHandlers.getScores())
+    router.put('/api/v1/tastings/:id/scores', scoreHandlers.putScores())
+
+
     router.delete('/api/v1/tastings/:id/scores/:scoreId', scoreHandlers.deleteByScoreId())
     router.patch('/api/v1/tastings/:id/scores/:scoreId', scoreHandlers.patchByScoreId())
 
