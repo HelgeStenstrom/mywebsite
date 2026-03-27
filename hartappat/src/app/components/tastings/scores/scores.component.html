@@ -5,7 +5,7 @@
   Tillbaka
 </button>
 
-<h2>Omröstning för provning "{{ tastingTitle }}"</h2>
+<h2>Omröstning för provning {{tastingId}}: {{ tastingTitle }}</h2>
 <p>Datum: {{tastingDate}}</p>
 
 <h3>Antal viner</h3>
@@ -76,4 +76,4 @@
   </tr>
   </tfoot>
 </table>
-<button (click)="saveScores()">Spara</button>
+<button (click)="saveScores()">{{ hasSaved ? 'Uppdatera' : 'Spara' }}</button>

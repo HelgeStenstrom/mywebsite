@@ -7,6 +7,7 @@ import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {ScoresConfigService} from "../../../services/scores-config.service";
 import {ScoreService} from "../../../services/backend/score.service";
 import {TastingService} from "../../../services/backend/tasting.service";
+import {ScoreDto} from "../../../models/score.model";
 
 describe('ScoresComponent', () => {
   let component: ScoresComponent;
@@ -27,6 +28,7 @@ describe('ScoresComponent', () => {
   const scoreServiceMock = {
     postScore: jest.fn().mockReturnValue(of({})),
     putScores: jest.fn().mockReturnValue(of([])),
+    getScores: jest.fn().mockReturnValue(of([])),
   };
 
   const tastingServiceMock = {
@@ -34,6 +36,11 @@ describe('ScoresComponent', () => {
   };
 
   beforeEach(async () => {
+    scoreServiceMock.postScore.mockClear();
+    scoreServiceMock.putScores.mockClear();
+    scoreServiceMock.getScores.mockClear();
+    scoreServiceMock.getScores.mockReturnValue(of([]));
+
     await TestBed.configureTestingModule({
       imports: [ScoresComponent],
       providers: [
@@ -146,10 +153,6 @@ describe('ScoresComponent', () => {
 
   describe('Posting and recalling', () => {
 
-    beforeEach(async () => {
-      scoreServiceMock.postScore.mockClear();
-    })
-
     test('saveScores posts a score for each filled cell', () => {
       component.participants = [
         {id: 1, given: 'Anna', surname: 'Andersson'},
@@ -188,6 +191,45 @@ describe('ScoresComponent', () => {
         { memberId: 1, position: 2, score: 12 },
         { memberId: 2, position: 1, score: 18 },
       ]);
+    });
+
+    test('loads existing scores on init', async () => {
+      const existingScores: ScoreDto[] = [
+        { id: 1, tastingId: 5, memberId: 1, position: 1, score: 15 },
+        { id: 2, tastingId: 5, memberId: 1, position: 2, score: 12 },
+      ];
+      scoreServiceMock.getScores.mockReturnValue(of(existingScores));
+
+      const localFixture = TestBed.createComponent(ScoresComponent);
+      const localComponent = localFixture.componentInstance;
+      await localFixture.whenStable();
+      localFixture.detectChanges();
+
+      expect(localComponent.getScore(1, 1)).toBe(15);
+      expect(localComponent.getScore(1, 2)).toBe(12);
+    });
+
+    test('hasSaved is true on init when scores exist', async () => {
+      const existingScores: ScoreDto[] = [
+        { id: 1, tastingId: 5, memberId: 1, position: 1, score: 15 },
+      ];
+      scoreServiceMock.getScores.mockReturnValue(of(existingScores));
+
+      const localFixture = TestBed.createComponent(ScoresComponent);
+      const localComponent = localFixture.componentInstance;
+      await localFixture.whenStable();
+      localFixture.detectChanges();
+
+      expect(localComponent.hasSaved).toBe(true);
+    });
+
+    test('hasSaved is false on init when no scores exist', () => {
+      expect(component.hasSaved).toBe(false);
+    });
+
+    test('hasSaved is true after saving', () => {
+      component.saveScores();
+      expect(component.hasSaved).toBe(true);
     });
 
   });

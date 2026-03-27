@@ -26,8 +26,8 @@ export class ScoresComponent implements OnInit {
   numberOfPositions: number = 6;
   scores: Record<number, Record<number, number | null>> = {};
   tastingTitle: string = '';
-
   tastingDate: string = '';
+  hasSaved: boolean = false;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -56,6 +56,18 @@ export class ScoresComponent implements OnInit {
         ).sort((a, b) =>
           config.participantIds.indexOf(a.id) - config.participantIds.indexOf(b.id)
         );
+      }
+    });
+
+    this.scoreService.getScores(this.tastingId).subscribe(scores => {
+      if (scores.length > 0) {
+        scores.forEach(s => {
+          this.scores[s.memberId] ??= {};
+          this.scores[s.memberId][s.position] = s.score;
+        });
+        this.hasSaved = true;
+      } else {
+        this.hasSaved = false;
       }
     });
   }
@@ -126,9 +138,10 @@ export class ScoresComponent implements OnInit {
         }
       }
     }
-    this.scoreService.putScores(this.tastingId, scores).subscribe();
+    this.scoreService.putScores(this.tastingId, scores).subscribe(() => {
+      this.hasSaved = true;
+    });
   }
-
   averageForPosition(position: number): number | null {
     const scores = this.participants.map(m => this.getScore(m.id, position));
     const filteredScores = scores.filter(score => score !== null);
