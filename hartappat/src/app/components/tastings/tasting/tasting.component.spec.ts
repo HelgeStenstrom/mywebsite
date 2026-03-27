@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TastingComponent} from './tasting.component';
-import {WineTasting} from "../../../models/tasting.model";
+import {WineTasting, WineTastingWine} from "../../../models/tasting.model";
 import {of} from "rxjs";
 import {TastingService} from "../../../services/backend/tasting.service";
 import {MemberService} from "../../../services/backend/member.service";
@@ -9,6 +9,7 @@ import {WineService} from "../../../services/backend/wine.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {WineApi, WineView} from "../../../models/wine.model";
 import {provideRouter} from "@angular/router";
+import {CdkDragDrop} from "@angular/cdk/drag-drop";
 
 describe('TastingComponent', () => {
   let component: TastingComponent;
@@ -55,6 +56,7 @@ describe('TastingComponent', () => {
     getTasting: jest.fn().mockImplementation(() => of({...mockTasting, wines: [...mockTasting.wines!]})),
     deleteWineFromTasting: jest.fn().mockReturnValue(of(void 0)),
     patchWineInTasting:  jest.fn().mockReturnValue(of(void 0)),
+    putWinePositions: jest.fn().mockReturnValue(of(void 0)),
   };
 
   const memberServiceMock = {
@@ -90,6 +92,7 @@ describe('TastingComponent', () => {
       isUsed: false,
     }));
     wineServiceMock.getWines.mockReturnValue(of(mockAllWines));
+    tastingServiceMock.putWinePositions.mockReturnValue(of(void 0));
   }
 
   function toWineView(wine: WineApi): WineView {
@@ -221,6 +224,26 @@ describe('TastingComponent', () => {
     fixture.detectChanges();
 
     expect(component.editValues.wineId).toBe(12);
+  });
+
+  test('sortedWines returns wines sorted by position', () => {
+    const wines = component.sortedWines();
+    expect(wines[0].position).toBe(1);
+    expect(wines[1].position).toBe(2);
+  });
+
+  test('onDrop calls putWinePositions with reordered positions', () => {
+    const event = {
+      previousIndex: 0,
+      currentIndex: 1,
+    } as CdkDragDrop<WineTastingWine[]>;
+
+    component.onDrop(event);
+
+    expect(tastingServiceMock.putWinePositions).toHaveBeenCalledWith(1, [
+      { id: 2, position: 1 },
+      { id: 1, position: 2 },
+    ]);
   });
 
 });

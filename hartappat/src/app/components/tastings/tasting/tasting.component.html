@@ -29,79 +29,83 @@
         <th>Pris</th>
         <th>Medelbetyg</th>
       </tr>
-      @for (w of tasting.wines; track w) {
-        <tr>
-          <td>
-            @if (!isEditing(w.id)) {
-              <span  >{{ w.position }}</span>
-            }
-            @if (isEditing(w.id)) {
-              <input [(ngModel)]="editValues.position" type="number" data-test="position-input">
-            }
-          </td>
-          @if (!isEditing(w.id)) {
-            <td data-test="wine-name">{{ wineMap.get(w.wineId)?.name }}</td>
-          }
-          @if (isEditing(w.id)) {
+      <tbody cdkDropList (cdkDropListDropped)="onDrop($event)">
+        @for (w of sortedWines(); track w.id) {
+          <tr cdkDrag>
+            <td cdkDragHandle style="cursor: grab">
+              <mat-icon>drag_indicator</mat-icon>
+            </td>
             <td>
-              <input type="text"
-                [(ngModel)]="wineSearchTerm"
-                (input)="updateWineFilter()"
-                data-test="wine-search-input"
-                placeholder="Sök vin">
-              @for (wine of filteredWines; track wine) {
-                <div
-                  (click)="selectWine(wine)"
-                  data-test="wine-option">
-                  {{ wine.name }}
-                </div>
+              @if (!isEditing(w.id)) {
+                <span>{{ w.position }}</span>
+              }
+              @if (isEditing(w.id)) {
+                <input [(ngModel)]="editValues.position" type="number" data-test="position-input">
               }
             </td>
-          }
-          <td data-test="wine-country">{{ wineMap.get(w.wineId)?.country?.name }}</td>
-          <td data-test="wine-type">{{ wineMap.get(w.wineId)?.wineType?.name }}</td>
-          <td>
             @if (!isEditing(w.id)) {
-              <span  > {{ w.purchasePrice }}</span>
+              <td data-test="wine-name">{{ wineMap.get(w.wineId)?.name }}</td>
             }
             @if (isEditing(w.id)) {
-              <input  [(ngModel)]="editValues.purchasePrice" type="number"  data-test="price-input">
+              <td>
+                <input type="text"
+                       [(ngModel)]="wineSearchTerm"
+                       (input)="updateWineFilter()"
+                       data-test="wine-search-input"
+                       placeholder="Sök vin">
+                @for (wine of filteredWines; track wine) {
+                  <div
+                    (click)="selectWine(wine)"
+                    data-test="wine-option">
+                    {{ wine.name }}
+                  </div>
+                }
+              </td>
             }
-          </td>
-          <td>
-            @if (!isEditing(w.id)) {
-              <span  >{{ w.averageScore }}</span>
-            }
+            <td data-test="wine-country">{{ wineMap.get(w.wineId)?.country?.name }}</td>
+            <td data-test="wine-type">{{ wineMap.get(w.wineId)?.wineType?.name }}</td>
+            <td>
+              @if (!isEditing(w.id)) {
+                <span> {{ w.purchasePrice }}</span>
+              }
+              @if (isEditing(w.id)) {
+                <input [(ngModel)]="editValues.purchasePrice" type="number" data-test="price-input">
+              }
+            </td>
+            <td>
+              @if (!isEditing(w.id)) {
+                <span>{{ w.averageScore }}</span>
+              }
+              @if (isEditing(w.id)) {
+                <input [(ngModel)]="editValues.averageScore" type="number" data-test="score-input">
+              }
+            </td>
+            <button
+              mat-icon-button
+              color="primary"
+              (click)="startEdit(w)"
+              data-test="edit-tasting-wine-button"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button
+                    color="warn"
+                    (click)="deleteWine(w.id)"
+                    data-test="delete-tasting-wine-button"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
             @if (isEditing(w.id)) {
-              <input [(ngModel)]="editValues.averageScore" type="number"  data-test="score-input">
-            }
-          </td>
-          <button
-            mat-icon-button
-            color="primary"
-            (click)="startEdit(w)"
-            data-test="edit-tasting-wine-button"
-            >
-            <mat-icon>edit</mat-icon>
-          </button>
-          <button mat-icon-button
-            color="warn"
-            (click)="deleteWine(w.id)"
-            data-test="delete-tasting-wine-button"
-            >
-            <mat-icon>delete</mat-icon>
-          </button>
-          @if (isEditing(w.id)) {
-            <span>
+              <span>
               <button (click)="saveEdit(w.id)" data-test="save-tasting-wine-button">Spara</button>
               <button (click)="cancelEdit()">Avbryt</button>
             </span>
-          }
-          @if (!isEditing(w.id)) {
-            <span></span>
-          }
-        </tr>
-      }
+            }
+            @if (!isEditing(w.id)) {
+              <span></span>
+            }
+          </tr>
+        }</tbody>
     </table>
     <app-add-wine-to-tasting
       [tastingId]="tasting.id"

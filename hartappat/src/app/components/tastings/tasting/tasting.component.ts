@@ -6,6 +6,7 @@ import {TastingService} from "../../../services/backend/tasting.service";
 import {MemberService} from "../../../services/backend/member.service";
 import {WineApi, WineView} from "../../../models/wine.model";
 import {WineService} from "../../../services/backend/wine.service";
+import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
 
 @Component({
     selector: 'app-tasting',
@@ -24,6 +25,7 @@ export class TastingComponent implements OnInit {
   wineSearchTerm = '';
   allWines: WineView[] = [];
   filteredWines: WineView[] = [];
+  currentWines: WineTastingWine[] = [];
 
   constructor(
     private readonly service: TastingService,
@@ -38,6 +40,7 @@ export class TastingComponent implements OnInit {
     this.fullTasting$ = this.service.getTasting(id);
 
     this.fullTasting$.subscribe(tasting => {
+      this.currentWines = tasting.wines ?? [];
       this.updateWineMap(tasting);
     });
 
@@ -84,10 +87,7 @@ export class TastingComponent implements OnInit {
   saveEdit(id: number): void {
     this.service.patchWineInTasting(this.getTastingId(), id, this.editValues).subscribe(() => {
       this.editingId = null;
-      this.service.getTasting(this.getTastingId()).subscribe(tasting => {
-        this.fullTasting$ = of(tasting);
-        this.updateWineMap(tasting);
-      })
+      this.reloadTasting();
     });
   }
 
@@ -111,4 +111,35 @@ export class TastingComponent implements OnInit {
     this.wineSearchTerm = wine.name;
     this.filteredWines = [];
   }
+
+
+  sortedWines(): WineTastingWine[] {
+    return [...this.currentWines].sort((a, b) => {
+      if (a.position === null) return 1;
+      if (b.position === null) return -1;
+      return a.position - b.position;
+    });
+  }
+
+  onDrop(event: CdkDragDrop<WineTastingWine[]>): void {
+    const wines = this.sortedWines();
+    moveItemInArray(wines, event.previousIndex, event.currentIndex);
+    const positions = wines
+      .filter(w => w.position !== null)
+      .map((w, i) => ({ id: w.id, position: i + 1 }));
+    this.service.putWinePositions(this.getTastingId(), positions).subscribe(() => {
+      this.reloadTasting();
+    });
+  }
+
+  private reloadTasting(): void {
+    const id = this.getTastingId();
+    this.service.getTasting(id).subscribe(tasting => {
+      this.fullTasting$ = of(tasting);
+      this.currentWines = tasting.wines ?? [];
+      this.updateWineMap(tasting);
+    });
+  }
+
+
 }

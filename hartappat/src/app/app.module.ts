@@ -40,6 +40,7 @@ import {WineGrapesComponent} from './components/wine-grapes/wine-grapes.componen
 import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.component';
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {ScoresComponent} from "./components/tastings/scores/scores.component";
+import {DragDropModule} from "@angular/cdk/drag-drop";
 
 @NgModule({
   declarations: [
@@ -98,7 +99,8 @@ import {ScoresComponent} from "./components/tastings/scores/scores.component";
     FormsModule,
     MatInputModule,
     MatDialogModule,
-    ScoresComponent
+    ScoresComponent,
+    DragDropModule,
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
