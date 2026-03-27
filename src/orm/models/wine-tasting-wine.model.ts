@@ -16,7 +16,7 @@ export function defineWineTastingWine(sequelize: Sequelize): ModelStatic<WineTas
             },
             position: {
                 type: DataTypes.INTEGER,
-                allowNull: false,
+                allowNull: true,
             },
             purchasePrice: {
                 type: DataTypes.INTEGER,
