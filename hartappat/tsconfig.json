@@ -19,7 +19,8 @@
     "target": "ES2022",
     "module": "es2020",
     "useDefineForClassFields": false,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "isolatedModules": true,
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
