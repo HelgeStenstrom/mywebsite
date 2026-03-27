@@ -11,6 +11,12 @@
 <h3>Antal viner</h3>
 <input type="number" min="1" max="20" [(ngModel)]="numberOfPositions">
 
+@if (wineCount !== numberOfPositions) {
+  <p data-test="wine-count-warning" style="background-color: #fff3cd; padding: 8px; border-radius: 4px;">
+    <mat-icon style="vertical-align: middle; color: #f57c00;">warning</mat-icon>
+    Provningen har {{ wineCount }} viner med position, men omröstningen har {{ numberOfPositions }} positioner.
+  </p>
+}
 <h3>Välj deltagare</h3>
 
 @for (member of members; track member.id) {

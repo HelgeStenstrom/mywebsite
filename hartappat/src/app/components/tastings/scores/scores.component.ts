@@ -11,10 +11,11 @@ import {ScoreService} from "../../../services/backend/score.service";
 import {average, standardDeviation} from "../../../utils/statistics";
 import {DecimalPipe} from "@angular/common";
 import {TastingService} from "../../../services/backend/tasting.service";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-scores',
-  imports: [FormsModule, DragDropModule, MatIconModule, DecimalPipe, RouterLink],
+  imports: [FormsModule, DragDropModule, MatIconModule, DecimalPipe, RouterLink, MatButton],
   templateUrl: './scores.component.html',
   styleUrl: './scores.component.css',
 })
@@ -28,6 +29,7 @@ export class ScoresComponent implements OnInit {
   tastingTitle: string = '';
   tastingDate: string = '';
   hasSaved: boolean = false;
+  protected wineCount: number = 0;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -43,6 +45,7 @@ export class ScoresComponent implements OnInit {
     this.tastingService.getTasting(this.tastingId).subscribe(tasting => {
       this.tastingTitle = tasting.title;
       this.tastingDate = tasting.tastingDate;
+      this.wineCount = (tasting.wines ?? []).filter(w => w.position !== null).length;
     });
 
     this.memberService.getMembers().subscribe(members => {

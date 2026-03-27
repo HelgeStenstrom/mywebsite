@@ -316,4 +316,44 @@ describe('ScoresComponent', () => {
 
 
   });
+
+  describe('Warning for number of wines', () => {
+    test('shows warning when number of wines with position differs from number of score positions', () => {
+      tastingServiceMock.getTasting.mockReturnValue(of({
+        id: 5, title: 'Testprovning', notes: '', tastingDate: '2024-01-15', hosts: [],
+        wines: [
+          {id: 1, wineId: 10, position: 1},
+          {id: 2, wineId: 11, position: 2},
+          {id: 3, wineId: 12, position: 3},
+        ]
+      }));
+      component.numberOfPositions = 2;
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      const warning = fixture.nativeElement.querySelector('[data-test="wine-count-warning"]');
+      expect(warning).toBeTruthy();
+    });
+
+    test('does not show warning when number of wines with position matches number of score positions', () => {
+      tastingServiceMock.getTasting.mockReturnValue(of({
+        id: 5, title: 'Testprovning', notes: '', tastingDate: '2024-01-15', hosts: [],
+        wines: [
+          {id: 1, wineId: 10, position: 1},
+          {id: 2, wineId: 11, position: 2},
+        ]
+      }));
+      component.numberOfPositions = 2;
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      const warning = fixture.nativeElement.querySelector('[data-test="wine-count-warning"]');
+      expect(warning).toBeFalsy();
+    });
+
+
+  })
+
+
+
 });
