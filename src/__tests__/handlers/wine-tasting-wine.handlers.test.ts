@@ -236,4 +236,45 @@ describe('WineTastingWine handler tests', () => {
             .expect(404);
     });
 
+    test('PUT /tastings/:id/wines/positions returns 204 and updates positions', async () => {
+        const tasting = await createTasting(app);
+        const country = await createCountry(app);
+        const wineType = await createWineType(app);
+
+        const wine1 = await request(app)
+            .post('/api/v1/wines')
+            .send({ name: 'Vin 1', countryId: country.body.id, wineTypeId: wineType.body.id })
+            .expect(201);
+
+        const wine2 = await request(app)
+            .post('/api/v1/wines')
+            .send({ name: 'Vin 2', countryId: country.body.id, wineTypeId: wineType.body.id })
+            .expect(201);
+
+        const tw1 = await request(app)
+            .post(`/api/v1/tastings/${tasting.body.id}/wines`)
+            .send({ wineId: wine1.body.id, position: 1 })
+            .expect(201);
+
+        const tw2 = await request(app)
+            .post(`/api/v1/tastings/${tasting.body.id}/wines`)
+            .send({ wineId: wine2.body.id, position: 2 })
+            .expect(201);
+
+        await request(app)
+            .put(`/api/v1/tastings/${tasting.body.id}/wines/positions`)
+            .send([
+                { id: tw1.body.id, position: 2 },
+                { id: tw2.body.id, position: 1 },
+            ])
+            .expect(204);
+
+        const res = await request(app)
+            .get(`/api/v1/tastings/${tasting.body.id}/wines`)
+            .expect(200);
+
+        const pos = new Map(res.body.map(w => [w.id, w.position]));
+        expect(pos.get(tw1.body.id)).toBe(2);
+        expect(pos.get(tw2.body.id)).toBe(1);
+    });
 });

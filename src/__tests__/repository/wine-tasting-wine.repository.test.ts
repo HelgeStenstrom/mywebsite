@@ -141,6 +141,31 @@ describe('WineTastingWineRepository', () => {
         });
     });
 
+    test('updatePositions updates position for each tasting wine', async () => {
+        const tasting = await tastingDefinition.create({
+            title: 'Testprovning',
+            notes: '',
+            tastingDate: new Date('2024-01-01'),
+        });
+
+        const wine1 = await wineDefinition.create({ name: 'Vin 1', countryId: 1, wineTypeId: 1, isNonVintage: false });
+        const wine2 = await wineDefinition.create({ name: 'Vin 2', countryId: 1, wineTypeId: 1, isNonVintage: false });
+
+        const created1 = await repository.create(tasting.id, { wineId: wine1.id, position: 1 });
+        const created2 = await repository.create(tasting.id, { wineId: wine2.id, position: 2 });
+
+        await repository.updatePositions(tasting.id, [
+            { id: created1.id, position: 2 },
+            { id: created2.id, position: 1 },
+        ]);
+
+        const result = await repository.findByTastingId(tasting.id);
+        const pos = new Map(result.map(w => [w.id, w.position]));
+
+        expect(pos.get(created1.id)).toBe(2);
+        expect(pos.get(created2.id)).toBe(1);
+    });
+
     describe('statistics', () => {
 
         test('findByTastingId returns averageScore and scoreStdDev calculated from scores', async () => {

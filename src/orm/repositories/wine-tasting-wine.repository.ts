@@ -90,4 +90,17 @@ export class WineTastingWineRepository {
             throw new Error('WineTastingWine not found');
         }
         return this.toDto(updated, updated.wineTastingId);
+    }
+
+    async updatePositions(tastingId: number, positions: { id: number, position: number }[]): Promise<void> {
+        await this.WineTastingWine.sequelize.transaction(async (t) => {
+            await Promise.all(
+                positions.map(({ id, position }) =>
+                    this.WineTastingWine.update(
+                        { position },
+                        { where: { id, wineTastingId: tastingId }, transaction: t }
+                    )
+                )
+            );
+        });
     }}

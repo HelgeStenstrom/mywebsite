@@ -642,6 +642,37 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /tastings/{id}/wines/positions:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the tasting
+        required: true
+        schema:
+          type: integer
+          format: int64
+    put:
+      summary: Update positions for all wines in a tasting
+      description: Updates the position of each wine in the tasting. Provide an array of tastingWineId and position pairs.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/WineTastingWinePositionUpdate'
+      responses:
+        '204':
+          description: Positions updated successfully
+        '400':
+          description: Invalid tasting id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+
   /tastings/{id}/scores:
     parameters:
       - name: id
@@ -968,6 +999,7 @@ components:
           type: integer
         position:
           type: integer
+          nullable: true
         purchasePrice:
           type: integer
           nullable: true
@@ -997,6 +1029,7 @@ components:
           type: integer
         position:
           type: integer
+          nullable: true
         purchasePrice:
           type: integer
           nullable: true
@@ -1175,6 +1208,17 @@ components:
               type: integer
             tastingId:
               type: integer
+
+    WineTastingWinePositionUpdate:
+      type: object
+      required: [ id, position ]
+      properties:
+        id:
+          type: integer
+          description: ID of the wine_tasting_wines row (tastingWineId)
+        position:
+          type: integer
+          nullable: true
 
     ErrorResponse:
       type: object

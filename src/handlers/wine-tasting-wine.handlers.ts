@@ -10,7 +10,7 @@ export class WineTastingWineHandlers {
         return async (req, res) => {
             const tastingId = Number(req.params.id);
 
-            if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
+            if (!tastingId || Number.isNaN(tastingId) || tastingId <= 0) {
                 return errorResponse(res, 400, 'Invalid tasting id');
             }
 
@@ -24,7 +24,7 @@ export class WineTastingWineHandlers {
         return async (req, res) => {
             const tastingId = Number(req.params.id);
 
-            if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
+            if (!tastingId || Number.isNaN(tastingId) || tastingId <= 0) {
                 return errorResponse(res, 400, 'Invalid tasting id');
             }
 
@@ -53,7 +53,7 @@ export class WineTastingWineHandlers {
             const tastingId = Number(req.params.id);
             const tastingWineId = Number(req.params.tastingWineId);
             const data = req.body;
-            if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
+            if (!tastingId || Number.isNaN(tastingId) || tastingId <= 0) {
                 return errorResponse(res, 400, 'Invalid tasting id');
             }
 
@@ -71,4 +71,15 @@ export class WineTastingWineHandlers {
 
         }
     }
-}
+
+    putWinePositions() {
+        return async (req, res) => {
+            const tastingId = Number(req.params.id);
+            if (!tastingId || Number.isNaN(tastingId) || tastingId <= 0) {
+                return errorResponse(res, 400, 'Invalid tasting id');
+            }
+            const positions: { id: number, position: number }[] = req.body;
+            await this.orm.tastingWines.updatePositions(tastingId, positions);
+            res.status(204).send();
+        };
+    }}
