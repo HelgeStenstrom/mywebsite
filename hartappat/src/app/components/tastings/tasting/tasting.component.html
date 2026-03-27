@@ -22,6 +22,8 @@
     <h2>Viner:</h2>
     <table class="bordered">
       <tr>
+        <th></th>
+        <th>exkl.</th>
         <th>Position</th>
         <th>Vin</th>
         <th>Land</th>
@@ -34,6 +36,11 @@
           <tr cdkDrag>
             <td cdkDragHandle style="cursor: grab">
               <mat-icon>drag_indicator</mat-icon>
+            </td>
+            <td>
+              <input type="checkbox"
+                     [checked]="w.position === null"
+                     (change)="toggleExclude(w)">
             </td>
             <td>
               @if (!isEditing(w.id)) {

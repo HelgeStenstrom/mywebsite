@@ -142,4 +142,31 @@ export class TastingComponent implements OnInit {
   }
 
 
-}
+  toggleExclude(wine: WineTastingWine): void {
+    const isExcluded = wine.position === null;
+    let positions: { id: number, position: number | null }[];
+
+    if (isExcluded) {
+      const maxPosition = Math.max(0, ...this.currentWines
+        .filter(w => w.position !== null)
+        .map(w => w.position as number));
+      positions = this.currentWines.map(w =>
+        w.id === wine.id
+          ? { id: w.id, position: maxPosition + 1 }
+          : { id: w.id, position: w.position }
+      );
+    } else {
+      const remaining = this.currentWines
+        .filter(w => w.id !== wine.id)
+        .filter(w => w.position !== null)
+        .sort((a, b) => (a.position as number) - (b.position as number));
+      positions = [
+        ...remaining.map((w, i) => ({ id: w.id, position: i + 1 })),
+        { id: wine.id, position: null },
+      ];
+    }
+
+    this.service.putWinePositions(this.getTastingId(), positions).subscribe(() => {
+      this.reloadTasting();
+    });
+  }}

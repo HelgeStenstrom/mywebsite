@@ -40,7 +40,7 @@ export type WineTastingHost = {
 export type WineTastingWine = {
   id: number;
   wineId: number;
-  position: number;
+  position: number | null;
   purchasePrice?: number | null;
   averageScore?: number | null;
   scoreStdDev?: number | null;
@@ -48,14 +48,14 @@ export type WineTastingWine = {
 
 export type WineTastingWineCreate = {
   wineId: number;
-  position: number;
+  position: number | null;
   purchasePrice?: number | null;
   averageScore?: number | null;
 };
 
 export type WineTastingWineUpdate = {
   wineId?: number;
-  position?: number ;
+  position?: number  | null;
   purchasePrice?: number | null;
   averageScore?: number | null;
 };

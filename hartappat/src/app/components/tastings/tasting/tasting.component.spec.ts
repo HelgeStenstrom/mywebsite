@@ -246,5 +246,32 @@ describe('TastingComponent', () => {
     ]);
   });
 
+  describe('Exclusion', ()=> {
+
+    test('toggleExclude excludes a wine by setting position to null and reordering remaining', () => {
+      component.toggleExclude(mockTasting.wines![0]);
+
+      expect(tastingServiceMock.putWinePositions).toHaveBeenCalledWith(1, [
+        { id: 2, position: 1 },
+        { id: 1, position: null },
+      ]);
+    });
+
+    test('toggleExclude includes an excluded wine by placing it last', () => {
+      component.currentWines = [
+        { id: 1, wineId: 10, position: null, purchasePrice: null, averageScore: null },
+        { id: 2, wineId: 11, position: 1, purchasePrice: null, averageScore: null },
+      ];
+
+      component.toggleExclude(component.currentWines[0]);
+
+      expect(tastingServiceMock.putWinePositions).toHaveBeenCalledWith(1, [
+        { id: 1, position: 2 },
+        { id: 2, position: 1 },
+      ]);
+    });
+
+  })
+
 });
 

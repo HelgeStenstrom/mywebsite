@@ -83,7 +83,7 @@ export class TastingService {
     return this.http.patch<void>(url, update);
   }
 
-  putWinePositions(tastingId: number, positions: { id: number, position: number }[]): Observable<void> {
+  putWinePositions(tastingId: number, positions: { id: number, position: number|null }[]): Observable<void> {
     const url = `${this.apiBase}/tastings/${tastingId}/wines/positions`;
     return this.http.put<void>(url, positions).pipe(catchError(handleError));
   }

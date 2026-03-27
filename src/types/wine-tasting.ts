@@ -57,7 +57,7 @@ export interface WineTastingInstance extends Model<WineTastingAttributes>, WineT
 export type WineTastingWineDto = {
     id:number;
     wineId: number;
-    position: number;
+    position: number | null;
     purchasePrice?: number | null;
     averageScore?: number | null;
     scoreStdDev?: number | null;
@@ -65,7 +65,7 @@ export type WineTastingWineDto = {
 
 export type WineTastingWineCreateDto = {
     wineId: number;
-    position: number;
+    position: number | null;
     purchasePrice?: number | null;
     averageScore?: number | null;
 }
@@ -74,7 +74,7 @@ interface WineTastingWineAttributes {
     id: number;
     wineTastingId: number;
     wineId: number;
-    position: number;
+    position: number | null;
     purchasePrice?: number | null;
     averageScore?: number | null;
 }
