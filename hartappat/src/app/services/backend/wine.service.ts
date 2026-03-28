@@ -66,6 +66,7 @@ export class WineService {
         ? 'NV'
         : maybeVintage,
       isUsed: wine.isUsed,
+      lastTastingId: wine.lastTastingId ?? undefined,
       lastTasted: wine.lastTasted ?? undefined,
     };
   }

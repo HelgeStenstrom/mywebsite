@@ -25,7 +25,13 @@
       <td>{{w.vintage}}</td>
       <td>{{w.volume}}</td>
       <td>{{w.createdAt| date:'yyyy-MM-dd'}}</td>
-      <td>{{w.lastTasted | date:'yyyy-MM-dd'}}</td>
+      <td>
+        @if (w.lastTasted) {
+          <a routerLink="/tastings/{{ w.lastTastingId }}">
+            {{ w.lastTasted | date:'yyyy-MM-dd' }}
+          </a>
+        }
+      </td>
       @if (w.systembolaget) {
         <td>
           <a

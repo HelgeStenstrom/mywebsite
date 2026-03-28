@@ -9,6 +9,7 @@ export type WineView = {
   createdAt?: string;
   vintage?: string;
   isUsed: boolean;
+  lastTastingId?: number;
   lastTasted?: string;
 };
 
@@ -39,6 +40,7 @@ export type WineApi = {
   vintageYear: number | null;
   isNonVintage: boolean;
   isUsed: boolean;
+  lastTastingId: number | null;
   lastTasted?: string | null;
 };
 
