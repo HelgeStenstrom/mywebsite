@@ -14,6 +14,7 @@
   <th>Årgång</th>
   <th>Volym</th>
   <th>Datum</th>
+  <th>Senast provat</th>
   <th>Systembolaget</th>
   @for (w of winesAsync$|async; track w) {
     <tr>
@@ -24,6 +25,7 @@
       <td>{{w.vintage}}</td>
       <td>{{w.volume}}</td>
       <td>{{w.createdAt| date:'yyyy-MM-dd'}}</td>
+      <td>{{w.lastTasted | date:'yyyy-MM-dd'}}</td>
       @if (w.systembolaget) {
         <td>
           <a
