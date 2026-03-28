@@ -15,10 +15,11 @@ import {MatButton} from "@angular/material/button";
 import {WineTastingWine} from "../../../models/tasting.model";
 import {WineService} from "../../../services/backend/wine.service";
 import {WineApi} from "../../../models/wine.model";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @Component({
   selector: 'app-scores',
-  imports: [FormsModule, DragDropModule, MatIconModule, DecimalPipe, RouterLink, MatButton],
+  imports: [FormsModule, DragDropModule, MatIconModule, DecimalPipe, RouterLink, MatButton, MatSlideToggleModule],
   templateUrl: './scores.component.html',
   styleUrl: './scores.component.css',
 })
@@ -200,4 +201,8 @@ export class ScoresComponent implements OnInit {
     const tastingWine = this.tastingWines.find(w => w.position === position);
     if (!tastingWine) return undefined;
     return this.wineMap.get(tastingWine.wineId);
+  }
+
+  tastingWineAtPosition(position: number): WineTastingWine | undefined {
+    return this.tastingWines.find(w => w.position === position);
   }}

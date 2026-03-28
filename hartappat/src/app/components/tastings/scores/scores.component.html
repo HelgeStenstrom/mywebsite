@@ -31,7 +31,12 @@
 
 <h3>Poäng</h3>
 
-
+<mat-slide-toggle
+  [disabled]="wineCount !== numberOfPositions"
+  [checked]="revealed"
+  (change)="toggleRevealed()">
+  Avslöja viner
+</mat-slide-toggle>
 
 <table>
   <thead>
@@ -39,7 +44,15 @@
     <th></th>
     <th>Medlem</th>
     @for (position of positions; track position) {
-      <th>{{ position }}</th>
+      <th>
+        @if (revealed) {
+          <div>{{ wineAtPosition(position)?.name }}</div>
+          <div>{{ wineAtPosition(position)?.country?.name }}</div>
+
+          <div>{{ tastingWineAtPosition(position)?.purchasePrice }} kr</div>
+        }
+        Glas #{{ position }}
+      </th>
     }
     <th>Medel</th>
     <th>StdDev</th>
