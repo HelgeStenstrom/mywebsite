@@ -31,31 +31,38 @@ export class WineTastingWineRepository {
         return this.toDto(created, wineTastingId);
     }
 
-    async findByTastingId(
-        wineTastingId: number,
-    ): Promise<WineTastingWineDto[]> {
-
+    async findByTastingId(wineTastingId: number): Promise<WineTastingWineDto[]> {
         const wines = await this.WineTastingWine.findAll({
-            where: {wineTastingId: wineTastingId},
-        })
+            where: { wineTastingId },
+        });
 
-        return Promise.all(wines.map(w => this.toDto(w, wineTastingId)));
+        const scores = await this.Score.findAll({
+            where: { tastingId: wineTastingId },
+        });
+
+        const winePositionCount = wines.filter(w => w.position !== null).length;
+        const scorePositionCount = new Set(scores.map(s => s.position)).size;
+        const positionsMatch = winePositionCount === scorePositionCount;
+
+        return Promise.all(wines.map(w => this.toDto(w, wineTastingId, positionsMatch ? scores : [])));
     }
+
 
     private async toDto(
         wine: WineTastingWineInstance,
         wineTastingId: number,
+        scores?: ScoreInstance[]
     ): Promise<WineTastingWineDto> {
 
-        const scores = await this.Score.findAll({
-            where: {
-                tastingId: wineTastingId,
-                position: wine.position,
-            },
+        const resolvedScores = scores ?? await this.Score.findAll({
+            where: { tastingId: wineTastingId, position: wine.position },
         });
 
-        const scoreValues = scores.map(s => Number(s.score));
+        const relevantScores = scores !== undefined
+            ? resolvedScores.filter(s => s.position === wine.position)
+            : resolvedScores;
 
+        const scoreValues = relevantScores.map(s => Number(s.score));
         const hasScores = scoreValues.length > 0;
 
         return {
@@ -66,8 +73,9 @@ export class WineTastingWineRepository {
             averageScore: hasScores ? average(scoreValues) : (wine.averageScore ?? null),
             scoreStdDev: hasScores ? standardDeviation(scoreValues) : null,
         };
-    }
-    async delete(wineTastingId: number, tastingWineId: number) {
+
+
+    }    async delete(wineTastingId: number, tastingWineId: number) {
         const existing = await this.WineTastingWine.findOne({ where: { id: tastingWineId, wineTastingId } });
         if (!existing) {
             return 'not_found';

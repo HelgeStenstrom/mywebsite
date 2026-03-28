@@ -237,6 +237,31 @@ describe('WineTastingWineRepository', () => {
             expect(result[0].averageScore).toBeCloseTo(15);
             expect(result[0].scoreStdDev).toBeCloseTo(5);
         });
+
+        test('findByTastingId uses stored averageScore when wine count does not match score position count', async () => {
+            const tasting = await tastingDefinition.create({
+                title: 'Test tasting',
+                notes: '',
+                tastingDate: new Date('2024-01-01'),
+            });
+
+            await repository.create(tasting.id, { wineId: 1, position: 1, averageScore: 13.5 });
+
+            await scoreDefinition.bulkCreate([
+                { tastingId: tasting.id, memberId: 1, position: 1, score: 10 },
+                { tastingId: tasting.id, memberId: 2, position: 1, score: 20 },
+                { tastingId: tasting.id, memberId: 1, position: 2, score: 15 },
+                { tastingId: tasting.id, memberId: 2, position: 2, score: 15 },
+                { tastingId: tasting.id, memberId: 1, position: 3, score: 12 },
+                { tastingId: tasting.id, memberId: 2, position: 3, score: 12 },
+            ]);
+
+            const result = await repository.findByTastingId(tasting.id);
+
+            expect(result[0].averageScore).toBeCloseTo(13.5);
+            expect(result[0].scoreStdDev).toBeNull();
+        });
+
     })
 
 });
