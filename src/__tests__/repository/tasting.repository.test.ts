@@ -3,37 +3,41 @@ import {defineTasting} from '../../orm/models/tasting.model';
 import {TastingRepository} from '../../orm/repositories/tasting.repository';
 import {defineWineTastingHost} from "../../orm/models/wine-tasting-host.model";
 import {defineMember} from "../../orm/models/member.model";
-import {connectTastingAndTastingHost} from "../../orm";
+import {connectTastingAndTastingHost, connectTastingAndTastingWine} from "../../orm";
 import {WineTastingHostInstance, WineTastingInstance, WineTastingWineInstance} from "../../types/wine-tasting";
 import {MemberInstance} from "../../types/member";
 import {defineWineTastingWine} from "../../orm/models/wine-tasting-wine.model";
+import {ScoreInstance} from "../../types/score";
+import {defineScore} from "../../orm/models/score.model";
 
 describe('TastingRepository', () => {
     let sequelize: Sequelize;
     let tastingRepository: TastingRepository;
-    let wineTastingDefinition:  ModelStatic<WineTastingInstance>;
-    let wineTastingHostDefinition:  ModelStatic<WineTastingHostInstance>;
-    let wineTastingWineDefinition:  ModelStatic<WineTastingWineInstance>;
-    let memberDefinition:  ModelStatic<MemberInstance>;
+    let wineTastingDefinition: ModelStatic<WineTastingInstance>;
+    let wineTastingHostDefinition: ModelStatic<WineTastingHostInstance>;
+    let wineTastingWineDefinition: ModelStatic<WineTastingWineInstance>;
+    let memberDefinition: ModelStatic<MemberInstance>;
+    let scoreDefinition: ModelStatic<ScoreInstance>;
 
     beforeEach(async () => {
-        sequelize = new Sequelize('test', 'test', 'test', {dialect: "sqlite" ,  logging: false });
+        sequelize = new Sequelize('test', 'test', 'test', {dialect: "sqlite", logging: false});
 
         wineTastingDefinition = defineTasting(sequelize);
         wineTastingHostDefinition = defineWineTastingHost(sequelize);
         memberDefinition = defineMember(sequelize);
         wineTastingWineDefinition = defineWineTastingWine(sequelize);
+        scoreDefinition = defineScore(sequelize);
 
         connectTastingAndTastingHost(wineTastingDefinition, memberDefinition, wineTastingHostDefinition,);
+        connectTastingAndTastingWine(wineTastingDefinition, wineTastingWineDefinition);
 
-
-        await sequelize.sync({ force: true });
+        await sequelize.sync({force: true});
 
         tastingRepository = new TastingRepository(
             wineTastingDefinition,
             wineTastingHostDefinition,
             memberDefinition,
-            wineTastingWineDefinition);
+            wineTastingWineDefinition, scoreDefinition);
 
     });
 
@@ -95,7 +99,7 @@ describe('TastingRepository', () => {
             title: 'Test tasting',
             notes: 'Some notes',
             tastingDate: '2023-07-20',
-            hosts: [{ memberId: member.id }],
+            hosts: [{memberId: member.id}],
         });
     });
 
@@ -125,5 +129,30 @@ describe('TastingRepository', () => {
         expect(result).toHaveLength(1);
         expect(result[0].hosts).toHaveLength(1);
         expect(result[0].hosts[0].memberId).toEqual(member.id);
+    })
+
+    describe('Scores', () => {
+        test('findById returns wines with dynamically calculated averageScore', async () => {
+            const tasting = await wineTastingDefinition.create({
+                title: 'Testprovning',
+                notes: '',
+                tastingDate: new Date('2024-01-01'),
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 1,
+                position: 1,
+            });
+
+            await scoreDefinition.bulkCreate([
+                { tastingId: tasting.id, memberId: 1, position: 1, score: 10 },
+                { tastingId: tasting.id, memberId: 2, position: 1, score: 20 },
+            ]);
+
+            const result = await tastingRepository.findById(tasting.id);
+
+            expect(result?.wines?.[0].averageScore).toBeCloseTo(15);
+        });
     })
 });

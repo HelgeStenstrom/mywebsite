@@ -9,14 +9,22 @@ import {
 import {ModelStatic} from "sequelize";
 import {BadRequestError} from "../../errors/bad-request-error";
 import {MemberInstance} from "../../types/member";
+import {ScoreInstance} from "../../types/score";
+import {WineTastingWineRepository} from "./wine-tasting-wine.repository";
 
 export class TastingRepository {
+
+    private readonly tastingWines: WineTastingWineRepository;
+
     constructor(
         private readonly Tasting: ModelStatic<WineTastingInstance>,
         private readonly TastingHost: ModelStatic<WineTastingHostInstance>,
         private readonly Member: ModelStatic<MemberInstance>,
         private readonly WineTastingWine: ModelStatic<WineTastingWineInstance>,
-        ) {}
+        private readonly Score: ModelStatic<ScoreInstance>,
+        ) {
+        this.tastingWines = new WineTastingWineRepository(this.WineTastingWine, this.Score);
+    }
 
     async create(t: WineTastingCreateDto): Promise<WineTastingDto> {
         if (!t.title || t.notes === undefined || t.notes === null || !t.tastingDate) {
@@ -97,10 +105,6 @@ export class TastingRepository {
                         as: 'wineTastingHosts',
                         include: [{model: this.Member, as: 'member'}]
                     },
-                    {
-                        model: this.WineTastingWine,
-                        as: 'wineTastingWines',
-                    }
                 ]
             }
         );
@@ -109,9 +113,18 @@ export class TastingRepository {
             return null;
         }
 
-        return this.toTastingDto(tasting);
-    }
+        const wines = await this.tastingWines.findByTastingId(id);
 
+        return {
+            id: tasting.id,
+            title: tasting.title,
+            notes: tasting.notes,
+            tastingDate: tasting.tastingDate,
+            hosts: (tasting.wineTastingHosts ?? [])
+                .map(h => ({ memberId: h.memberId })),
+            wines,
+        };
+    }
 
     async deleteTastingById(id: number): Promise<boolean> {
         await this.WineTastingWine.destroy({ where: { wineTastingId: id } });
