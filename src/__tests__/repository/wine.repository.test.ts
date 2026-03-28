@@ -91,7 +91,8 @@ describe('WineRepository', () => {
                     },
                     volume: 0,
                     isUsed: false,
-                    lastTasted: null
+                    lastTasted: null,
+                    lastTastingId: null,
                 };
                 expect(created).toEqual(expected)
             });
@@ -209,6 +210,7 @@ describe('WineRepository', () => {
                     systembolaget: null,
                     vintageYear: null,
                     volume: null,
+                    lastTastingId: null,
                     lastTasted: null,
                 });
 
@@ -271,6 +273,37 @@ describe('WineRepository', () => {
                 const result = await wineRepository.findAll();
 
                 expect(result[0].lastTasted).toBe('2024-06-01');
+            });
+
+            test('findAll includes lastTastingId from most recent tasting', async () => {
+                const country = await countryDefinition.create({ name: 'Frankrike' });
+                const wineType = await wineTypeDefinition.create({ name: 'Rött' });
+
+                const wine = await wineRepository.create({
+                    name: 'Testvin',
+                    countryId: country.id,
+                    wineTypeId: wineType.id,
+                    isNonVintage: false,
+                });
+
+                const tasting1 = await tastingDefinition.create({
+                    title: 'Provning 1',
+                    notes: '',
+                    tastingDate: new Date('2022-01-01'),
+                });
+
+                const tasting2 = await tastingDefinition.create({
+                    title: 'Provning 2',
+                    notes: '',
+                    tastingDate: new Date('2024-06-01'),
+                });
+
+                await wineTastingWineDefinition.create({ wineTastingId: tasting1.id, wineId: wine.id, position: 1 });
+                await wineTastingWineDefinition.create({ wineTastingId: tasting2.id, wineId: wine.id, position: 1 });
+
+                const result = await wineRepository.findAll();
+
+                expect(result[0].lastTastingId).toBe(tasting2.id);
             });
 
         })

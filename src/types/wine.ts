@@ -13,8 +13,9 @@ export type WineDto = {
     isNonVintage: boolean;
     systembolaget: number | null;
     volume: number | null;
-    createdAt: Date; // TODO: bör det kunna vara null?
+    createdAt: Date;
     isUsed: boolean;
+    lastTastingId: number | null;
     lastTasted?: string | null;
 };
 
@@ -31,7 +32,7 @@ export type WineCreateDto = {
 interface WineAssociations {
     winetypeModel?: WineTypeDto;
     countryModel?: CountryDto;
-    wineTastingWines?: { id: number; wineTasting?: { tastingDate: string } }[];
+    wineTastingWines?: { id: number; wineTastingId: number; wineTasting?: { tastingDate: string } }[];
     wineGrapes?: WineGrapeDto[];
 }
 
@@ -47,17 +48,13 @@ interface WineAttributes {
     isNonVintage: boolean;
     systembolaget: number | null;
     volume: number | null;
-    createdAt?: Date; // TODO: bör det kunna vara null?
+    createdAt?: Date;
 }
 
 /**
  * Used for Sequelize
  */
 export interface WineInstance extends Model<WineAttributes>, WineAttributes, WineAssociations {}
-
-export interface WineWithTasting extends WineInstance {
-    wineTastingWines?: { id: number }[];
-}
 
 
 export type WineGrapeDto = {

@@ -94,7 +94,7 @@ export class WineRepository {
                     {
                         model: this.WineTastingWine,
                         as: 'wineTastingWines',
-                        attributes: ['id'],
+                        attributes: ['id', 'wineTastingId'],
                         required: false,
                         include: [{
                             model: this.Tasting,
@@ -128,12 +128,20 @@ export class WineRepository {
             wineType: w.winetypeModel ?? { id: 0, name: '', isUsed: false },
             country: w.countryModel ?? { id: 0, name: '', isUsed: false },
             isUsed: (w.wineTastingWines?.length ?? 0) > 0,
+
+            lastTastingId: w.wineTastingWines && w.wineTastingWines.length > 0
+                ? w.wineTastingWines
+                .filter(wtw => wtw.wineTasting?.tastingDate)
+                .sort((a, b) => a.wineTasting!.tastingDate > b.wineTasting!.tastingDate ? -1 : 1)[0]
+                ?.wineTastingId ?? null
+                : null,
+
             lastTasted: w.wineTastingWines && w.wineTastingWines.length > 0
                 ? w.wineTastingWines
                 .map(wtw => wtw.wineTasting?.tastingDate)
                 .filter(Boolean)
                 .sort((a, b) => a > b ? -1 : 1)[0] ?? null
-                : null,
+                : null
         };
     }
 
