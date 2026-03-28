@@ -12,6 +12,9 @@ import {average, standardDeviation} from "../../../utils/statistics";
 import {DecimalPipe} from "@angular/common";
 import {TastingService} from "../../../services/backend/tasting.service";
 import {MatButton} from "@angular/material/button";
+import {WineTastingWine} from "../../../models/tasting.model";
+import {WineService} from "../../../services/backend/wine.service";
+import {WineApi} from "../../../models/wine.model";
 
 @Component({
   selector: 'app-scores',
@@ -30,6 +33,9 @@ export class ScoresComponent implements OnInit {
   tastingDate: string = '';
   hasSaved: boolean = false;
   protected wineCount: number = 0;
+  revealed: boolean = false;
+  tastingWines: WineTastingWine[] = [];
+  wineMap: Map<number, WineApi> = new Map();
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -37,6 +43,7 @@ export class ScoresComponent implements OnInit {
     private readonly scoresConfigService: ScoresConfigService,
     private readonly scoreService: ScoreService,
     private readonly tastingService: TastingService,
+    private readonly wineService: WineService,
   ) {
   }
 
@@ -46,6 +53,12 @@ export class ScoresComponent implements OnInit {
       this.tastingTitle = tasting.title;
       this.tastingDate = tasting.tastingDate;
       this.wineCount = (tasting.wines ?? []).filter(w => w.position !== null).length;
+      this.tastingWines = (tasting.wines ?? []).filter(w => w.position !== null);
+      this.tastingWines.forEach(w => {
+        this.wineService.getWine(w.wineId).subscribe(wine => {
+          this.wineMap.set(w.wineId, wine);
+        });
+      });
     });
 
     this.memberService.getMembers().subscribe(members => {
@@ -53,6 +66,7 @@ export class ScoresComponent implements OnInit {
 
       const config = this.scoresConfigService.loadConfig(this.tastingId);
       if (config) {
+        this.revealed = config?.revealed ?? false;
         this.numberOfPositions = config.numberOfPositions;
         this.participants = this.members.filter(m =>
           config.participantIds.includes(m.id)
@@ -126,7 +140,8 @@ export class ScoresComponent implements OnInit {
   onConfigChanged() {
     const config: ScoresConfig = {
       numberOfPositions: this.numberOfPositions,
-      participantIds: this.participants.map(p => p.id)
+      participantIds: this.participants.map(p => p.id),
+      revealed: this.revealed,
     }
     this.scoresConfigService.saveConfig(this.tastingId, config);
   }
@@ -137,7 +152,7 @@ export class ScoresComponent implements OnInit {
       for (const position of this.positions) {
         const score = this.getScore(member.id, position);
         if (score !== null) {
-          scores.push({ memberId: member.id, position, score });
+          scores.push({memberId: member.id, position, score});
         }
       }
     }
@@ -145,6 +160,7 @@ export class ScoresComponent implements OnInit {
       this.hasSaved = true;
     });
   }
+
   averageForPosition(position: number): number | null {
     const scores = this.participants.map(m => this.getScore(m.id, position));
     const filteredScores = scores.filter(score => score !== null);
@@ -171,4 +187,17 @@ export class ScoresComponent implements OnInit {
   }
 
 
-}
+  toggleRevealed() {
+    this.revealed = !this.revealed;
+    this.scoresConfigService.saveConfig(this.tastingId, {
+      numberOfPositions: this.numberOfPositions,
+      participantIds: this.participants.map(p => p.id),
+      revealed: this.revealed,
+    });
+  }
+
+  wineAtPosition(position: number): WineApi | undefined {
+    const tastingWine = this.tastingWines.find(w => w.position === position);
+    if (!tastingWine) return undefined;
+    return this.wineMap.get(tastingWine.wineId);
+  }}

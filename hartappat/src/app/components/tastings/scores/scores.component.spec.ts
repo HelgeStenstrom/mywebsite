@@ -8,6 +8,7 @@ import {ScoresConfigService} from "../../../services/scores-config.service";
 import {ScoreService} from "../../../services/backend/score.service";
 import {TastingService} from "../../../services/backend/tasting.service";
 import {ScoreDto} from "../../../models/score.model";
+import {WineService} from "../../../services/backend/wine.service";
 
 describe('ScoresComponent', () => {
   let component: ScoresComponent;
@@ -32,7 +33,14 @@ describe('ScoresComponent', () => {
   };
 
   const tastingServiceMock = {
-    getTasting: jest.fn().mockReturnValue(of({ id: 5, title: 'Testprovning', notes: '', tastingDate: '2024-01-15', hosts: [], wines: [] })),
+    getTasting: jest.fn().mockReturnValue(of({
+      id: 5,
+      title: 'Testprovning',
+      notes: '',
+      tastingDate: '2024-01-15',
+      hosts: [],
+      wines: []
+    })),
   };
 
   beforeEach(async () => {
@@ -40,6 +48,16 @@ describe('ScoresComponent', () => {
     scoreServiceMock.putScores.mockClear();
     scoreServiceMock.getScores.mockClear();
     scoreServiceMock.getScores.mockReturnValue(of([]));
+    const wineServiceMock = {
+      getWine: jest.fn().mockReturnValue(of({
+        id: 10,
+        name: 'Château Margaux',
+        country: {id: 1, name: 'Frankrike'},
+        wineType: {id: 1, name: 'Rött'},
+        isNonVintage: false,
+        isUsed: false,
+      })),
+    };
 
     await TestBed.configureTestingModule({
       imports: [ScoresComponent],
@@ -55,7 +73,8 @@ describe('ScoresComponent', () => {
         {provide: MemberService, useValue: memberServiceMock},
         {provide: ScoresConfigService, useValue: scoresConfigServiceMock},
         {provide: ScoreService, useValue: scoreServiceMock},
-        { provide: TastingService, useValue: tastingServiceMock },
+        {provide: TastingService, useValue: tastingServiceMock},
+        { provide: WineService, useValue: wineServiceMock },
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
@@ -137,6 +156,7 @@ describe('ScoresComponent', () => {
       expect(scoresConfigServiceMock.saveConfig).toHaveBeenCalledWith(5, {
         numberOfPositions: 8,
         participantIds: [],
+        revealed: false,
       });
     });
 
@@ -147,6 +167,7 @@ describe('ScoresComponent', () => {
       expect(scoresConfigServiceMock.saveConfig).toHaveBeenCalledWith(5, {
         numberOfPositions: 6,
         participantIds: [1],
+        revealed: false,
       });
     });
   })
@@ -175,28 +196,28 @@ describe('ScoresComponent', () => {
 
     test('saveScores puts all filled scores', () => {
       component.participants = [
-        { id: 1, given: 'Anna', surname: 'Andersson' },
-        { id: 2, given: 'Erik', surname: 'Eriksson' },
+        {id: 1, given: 'Anna', surname: 'Andersson'},
+        {id: 2, given: 'Erik', surname: 'Eriksson'},
       ];
       component.numberOfPositions = 2;
       component.scores = {
-        1: { 1: 15, 2: 12 },
-        2: { 1: 18, 2: null },
+        1: {1: 15, 2: 12},
+        2: {1: 18, 2: null},
       };
 
       component.saveScores();
 
       expect(scoreServiceMock.putScores).toHaveBeenCalledWith(5, [
-        { memberId: 1, position: 1, score: 15 },
-        { memberId: 1, position: 2, score: 12 },
-        { memberId: 2, position: 1, score: 18 },
+        {memberId: 1, position: 1, score: 15},
+        {memberId: 1, position: 2, score: 12},
+        {memberId: 2, position: 1, score: 18},
       ]);
     });
 
     test('loads existing scores on init', async () => {
       const existingScores: ScoreDto[] = [
-        { id: 1, tastingId: 5, memberId: 1, position: 1, score: 15 },
-        { id: 2, tastingId: 5, memberId: 1, position: 2, score: 12 },
+        {id: 1, tastingId: 5, memberId: 1, position: 1, score: 15},
+        {id: 2, tastingId: 5, memberId: 1, position: 2, score: 12},
       ];
       scoreServiceMock.getScores.mockReturnValue(of(existingScores));
 
@@ -211,7 +232,7 @@ describe('ScoresComponent', () => {
 
     test('hasSaved is true on init when scores exist', async () => {
       const existingScores: ScoreDto[] = [
-        { id: 1, tastingId: 5, memberId: 1, position: 1, score: 15 },
+        {id: 1, tastingId: 5, memberId: 1, position: 1, score: 15},
       ];
       scoreServiceMock.getScores.mockReturnValue(of(existingScores));
 
@@ -354,6 +375,51 @@ describe('ScoresComponent', () => {
 
   })
 
+  describe('Reveal wines', ()=> {
 
+    test('revealed is false by default when no config exists', () => {
+      expect(component.revealed).toBe(false);
+    });
+
+    test('revealed is loaded from config', () => {
+      scoresConfigServiceMock.loadConfig.mockReturnValue({
+        numberOfPositions: 2,
+        participantIds: [1, 2],
+        revealed: true,
+      });
+      component.ngOnInit();
+
+      expect(component.revealed).toBe(true);
+    });
+
+    test('toggleRevealed saves revealed state to config', () => {
+      component.revealed = false;
+      component.numberOfPositions = 2;
+      component.participants = [];
+
+      component.toggleRevealed();
+
+      expect(scoresConfigServiceMock.saveConfig).toHaveBeenCalledWith(
+        expect.any(Number),
+        expect.objectContaining({ revealed: true })
+      );
+    });
+
+    test('wineAtPosition returns wine info for given position', () => {
+      tastingServiceMock.getTasting.mockReturnValue(of({
+        id: 5, title: 'Testprovning', notes: '', tastingDate: '2024-01-15', hosts: [],
+        wines: [
+          { id: 1, wineId: 10, position: 1 },
+          { id: 2, wineId: 11, position: 2 },
+        ]
+      }));
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      const wine = component.wineAtPosition(1);
+      expect(wine?.name).toBe('Château Margaux');
+    });
+
+  })
 
 });

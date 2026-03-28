@@ -15,4 +15,5 @@ export type ScoreCreateDto = {
 export type ScoresConfig = {
   numberOfPositions: number;
   participantIds: number[];
+  revealed: boolean;
 };
