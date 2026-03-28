@@ -15,6 +15,7 @@ export type WineDto = {
     volume: number | null;
     createdAt: Date; // TODO: bör det kunna vara null?
     isUsed: boolean;
+    lastTasted?: string | null;
 };
 
 export type WineCreateDto = {
@@ -30,7 +31,7 @@ export type WineCreateDto = {
 interface WineAssociations {
     winetypeModel?: WineTypeDto;
     countryModel?: CountryDto;
-    wineTastingWines?: { id: number }[];
+    wineTastingWines?: { id: number; wineTasting?: { tastingDate: string } }[];
     wineGrapes?: WineGrapeDto[];
 }
 

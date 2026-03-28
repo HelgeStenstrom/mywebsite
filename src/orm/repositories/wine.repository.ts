@@ -2,7 +2,7 @@ import {ModelStatic} from "sequelize";
 import {WineCreateDto, WineDto, WineGrapeInstance, WineInstance} from "../../types/wine";
 import {CountryInstance} from "../../types/country";
 import {WineTypeInstance} from "../../types/wine-type";
-import {WineTastingWineInstance} from "../../types/wine-tasting";
+import {WineTastingInstance, WineTastingWineInstance} from "../../types/wine-tasting";
 
 export class WineRepository {
 
@@ -12,9 +12,8 @@ export class WineRepository {
         private readonly WineType: ModelStatic<WineTypeInstance>,
         private readonly WineTastingWine: ModelStatic<WineTastingWineInstance>,
         private readonly WineGrape: ModelStatic<WineGrapeInstance>,
+        private readonly Tasting: ModelStatic<WineTastingInstance>,
     ) {}
-
-    // TODO: Find if code duplication in the includes structures can be removed
 
     async create(param: WineCreateDto): Promise<WineDto> {
         const created = await this.Wine.create({
@@ -96,7 +95,13 @@ export class WineRepository {
                         model: this.WineTastingWine,
                         as: 'wineTastingWines',
                         attributes: ['id'],
-                        required: false
+                        required: false,
+                        include: [{
+                            model: this.Tasting,
+                            as: 'wineTasting',
+                            attributes: ['tastingDate'],
+                            required: false,
+                        }]
                     }
                 ]
             }
@@ -123,6 +128,12 @@ export class WineRepository {
             wineType: w.winetypeModel ?? { id: 0, name: '', isUsed: false },
             country: w.countryModel ?? { id: 0, name: '', isUsed: false },
             isUsed: (w.wineTastingWines?.length ?? 0) > 0,
+            lastTasted: w.wineTastingWines && w.wineTastingWines.length > 0
+                ? w.wineTastingWines
+                .map(wtw => wtw.wineTasting?.tastingDate)
+                .filter(Boolean)
+                .sort((a, b) => a > b ? -1 : 1)[0] ?? null
+                : null,
         };
     }
 
