@@ -1,6 +1,13 @@
 <p>TastingComponent</p>
 
+
 @if (fullTasting$ | async; as tasting ) {
+  <button mat-button routerLink="/tastings/{{ tasting.id }}/edit">
+    <mat-icon>edit</mat-icon>
+    Redigera provning
+  </button>
+
+
   <div>
     <p><strong>ID:</strong> {{ tasting.id }}</p>
     <p><strong>Datum:</strong> {{ tasting.tastingDate| date:'yyyy-MM-dd' }}</p>

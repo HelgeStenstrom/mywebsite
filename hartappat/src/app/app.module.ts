@@ -41,6 +41,7 @@ import {WineDetailComponent} from './components/wines/wine-detail/wine-detail.co
 import {provideAnimationsAsync} from "@angular/platform-browser/animations/async";
 import {ScoresComponent} from "./components/tastings/scores/scores.component";
 import {DragDropModule} from "@angular/cdk/drag-drop";
+import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tasting.component";
 
 @NgModule({
   declarations: [
@@ -86,6 +87,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
       {path: 'tastings/new', component: CreateTastingComponent},
       {path: 'tastings/:id', component: TastingComponent},
       {path: 'tastings/:id/scores', component: ScoresComponent},
+      {path: 'tastings/:id/edit', component: EditTastingComponent},
       {path: 'wines/:id', component: WineDetailComponent},
       {path: 'tastings', component: TastingsComponent},
       {path: 'countries', component: CountriesComponent},
@@ -111,4 +113,5 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
     provideAnimationsAsync(),
   ]
 })
-export class AppModule { }
+export class AppModule {
+}
