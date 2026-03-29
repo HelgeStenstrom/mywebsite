@@ -93,4 +93,9 @@ export class TastingService {
     return this.http.patch<WineTasting>(url, data).pipe(catchError(handleError));
   }
 
+  putHosts(tastingId: number, memberIds: number[]): Observable<void> {
+    const url = `${this.apiBase}/tastings/${tastingId}/hosts`;
+    return this.http.put<void>(url, memberIds.map(id => ({ memberId: id }))).pipe(catchError(handleError));
+  }
+
 }

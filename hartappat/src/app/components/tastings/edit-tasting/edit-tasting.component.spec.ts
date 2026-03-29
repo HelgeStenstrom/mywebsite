@@ -5,6 +5,19 @@ import {of} from "rxjs";
 import {ActivatedRoute, convertToParamMap, provideRouter} from "@angular/router";
 import {TastingService} from "../../../services/backend/tasting.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {MemberService} from "../../../services/backend/member.service";
+
+function resetAllMocks(tastingServiceMock) {
+  tastingServiceMock.getTasting.mockReturnValue(of({
+    id: 1,
+    title: 'Testprovning',
+    notes: 'Några noter',
+    tastingDate: '2024-01-01',
+    hosts: [],
+    wines: [],
+  }));
+  tastingServiceMock.putHosts.mockReturnValue(of(void 0));
+}
 
 describe('EditTastingComponent', () => {
   let component: EditTastingComponent;
@@ -20,15 +33,26 @@ describe('EditTastingComponent', () => {
       wines: [],
     })),
     patchTasting: jest.fn().mockReturnValue(of(void 0)),
+    putHosts: jest.fn().mockReturnValue(of(void 0)),
+  };
+
+  const memberServiceMock = {
+    getMembers: jest.fn().mockReturnValue(of([
+      { id: 1, given: 'Anna', surname: 'Andersson' },
+      { id: 2, given: 'Bert', surname: 'Bertsson' },
+    ])),
   };
 
   beforeEach(async () => {
+    resetAllMocks(tastingServiceMock);
+
     await TestBed.configureTestingModule({
       imports: [EditTastingComponent],
       providers: [
         provideRouter([]),
-        { provide: TastingService, useValue: tastingServiceMock },
-        { provide: ActivatedRoute, useValue: { snapshot: { paramMap: convertToParamMap({ id: '1' }) } } },
+        {provide: TastingService, useValue: tastingServiceMock},
+        {provide: ActivatedRoute, useValue: {snapshot: {paramMap: convertToParamMap({id: '1'})}}},
+        {provide: MemberService, useValue: memberServiceMock},
       ],
       schemas: [NO_ERRORS_SCHEMA],
     })
@@ -114,5 +138,79 @@ describe('EditTastingComponent', () => {
 
   })
 
+  describe('Hosts', () => {
+
+    test('displays members as checkboxes', () => {
+      fixture.detectChanges();
+      const checkboxes = fixture.nativeElement.querySelectorAll('[data-test="host-checkbox"]');
+      expect(checkboxes.length).toBe(2);
+    });
+
+    test('existing hosts are checked', () => {
+      tastingServiceMock.getTasting.mockReturnValue(of({
+        id: 1,
+        title: 'Testprovning',
+        notes: 'Några noter',
+        tastingDate: '2024-01-01',
+        hosts: [{ memberId: 1 }],
+        wines: [],
+      }));
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      const checkboxes = fixture.nativeElement.querySelectorAll('[data-test="host-checkbox"]');
+      expect(checkboxes[0].checked).toBe(true);
+      expect(checkboxes[1].checked).toBe(false);
+    });
+
+    test('old clicking a checkbox toggles host selection', () => {
+      component.selectedHostIds = new Set();
+      fixture.detectChanges();
+      const checkboxes = fixture.nativeElement.querySelectorAll('[data-test="host-checkbox"]');
+      checkboxes[0].click();
+      fixture.detectChanges();
+
+      expect(component.selectedHostIds.has(1)).toBe(true);
+    });
+
+    test('clicking a checkbox toggles host selection', () => {
+      component.selectedHostIds = new Set();
+      fixture.detectChanges();
+      component.toggleHost(1);
+      expect(component.selectedHostIds.has(1)).toBe(true);
+    });
+
+
+    test('clicking a checked checkbox removes host selection', () => {
+      tastingServiceMock.getTasting.mockReturnValue(of({
+        id: 1,
+        title: 'Testprovning',
+        notes: 'Några noter',
+        tastingDate: '2024-01-01',
+        hosts: [{ memberId: 1 }],
+        wines: [],
+      }));
+      component.ngOnInit();
+      fixture.detectChanges();
+
+      const checkboxes = fixture.nativeElement.querySelectorAll('[data-test="host-checkbox"]');
+      checkboxes[0].click();
+      fixture.detectChanges();
+
+      expect(component.selectedHostIds.has(1)).toBe(false);
+    });
+
+    test('clicking save button calls putHosts with selected host ids', () => {
+      fixture.detectChanges();
+      component.selectedHostIds = new Set([1]);
+
+      const saveButton = fixture.nativeElement.querySelector('[data-test="save-button"]');
+      saveButton.click();
+
+      expect(tastingServiceMock.putHosts).toHaveBeenCalledWith(1, [1]);
+    });
+
+
+  })
 
 });

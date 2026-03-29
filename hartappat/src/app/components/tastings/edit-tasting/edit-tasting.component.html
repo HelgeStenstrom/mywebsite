@@ -7,6 +7,20 @@
 <div><textarea data-test="notes-textarea"  [(ngModel)]="notes"></textarea></div>
 
 <div>
+  <label>Värdar</label>
+  @for (member of members; track member.id) {
+    <div>
+      <input type="checkbox"
+             data-test="host-checkbox"
+             [checked]="selectedHostIds.has(member.id)"
+             (change)="toggleHost(member.id)"
+      >
+      {{ member.given }} {{ member.surname }}
+    </div>
+  }
+</div>
+
+<div>
   <button data-test="save-button"
           (click)="save()"
   >Spara</button>
