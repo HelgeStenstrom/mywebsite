@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {TastingService} from "../../../services/backend/tasting.service";
 import {FormsModule} from "@angular/forms";
 import {Member} from "../../../models/common.model";
@@ -22,6 +22,7 @@ export class EditTastingComponent implements OnInit {
     private readonly route: ActivatedRoute,
     private readonly tastingService: TastingService,
     private readonly memberService: MemberService,
+    private readonly router: Router,
   ) {
   }
 
@@ -55,7 +56,11 @@ export class EditTastingComponent implements OnInit {
       notes: this.notes,
       tastingDate: this.tastingDate,
     }).subscribe();
-    this.tastingService.putHosts(id, Array.from(this.selectedHostIds)).subscribe();
+
+    this.tastingService.putHosts(id, Array.from(this.selectedHostIds)).subscribe(() => {
+      this.router.navigate(['/tastings', id]);
+    });
+
   }
 
   toggleHost(memberId: number): void {
