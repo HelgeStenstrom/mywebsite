@@ -1,7 +1,13 @@
 <p>EditTastingComponent works!</p>
 
-<input data-test="title-input">
-<input data-test="tasting-date-input">
+<div>Titel: <input data-test="title-input"  [(ngModel)]="title"></div>
 
-<textarea data-test="notes-textarea"></textarea>
+<div><input data-test="tasting-date-input" type="date" [(ngModel)]="tastingDate"></div>
 
+<div><textarea data-test="notes-textarea"  [(ngModel)]="notes"></textarea></div>
+
+<div>
+  <button data-test="save-button"
+          (click)="save()"
+  >Spara</button>
+</div>

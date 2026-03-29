@@ -88,4 +88,9 @@ export class TastingService {
     return this.http.put<void>(url, positions).pipe(catchError(handleError));
   }
 
+  patchTasting(id: number, data: Partial<WineTastingCreate>): Observable<WineTasting> {
+    const url = `${this.apiBase}/tastings/${id}`;
+    return this.http.patch<WineTasting>(url, data).pipe(catchError(handleError));
+  }
+
 }
