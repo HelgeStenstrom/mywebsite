@@ -40,7 +40,7 @@ export type WineApi = {
   vintageYear: number | null;
   isNonVintage: boolean;
   isUsed: boolean;
-  lastTastingId: number | null;
+  lastTastingId?: number | null;
   lastTasted?: string | null;
 };
 

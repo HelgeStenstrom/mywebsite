@@ -100,6 +100,8 @@ describe('TastingComponent', () => {
       ...wine,
       country: wine.country.name,
       wineType: wine.wineType.name,
+      lastTasted: wine.lastTasted ?? undefined,
+      lastTastingId: wine.lastTastingId ?? undefined,
     };
   }
 
