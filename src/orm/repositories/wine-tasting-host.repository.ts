@@ -25,6 +25,13 @@ export class WineTastingHostRepository {
         return hosts.map(this.toDto);
     }
 
+    async replaceAll(wineTastingId: number, hosts: WineTastingHostCreateDto[]): Promise<void> {
+        await this.WineTastingHost.destroy({ where: { wineTastingId } });
+        await Promise.all(
+            hosts.map(host => this.WineTastingHost.create({ wineTastingId, memberId: host.memberId }))
+        );
+    }
+
     private toDto(host: WineTastingHostInstance): WineTastingHostDto {
         return {
             memberId: host.memberId,

@@ -36,4 +36,16 @@ export class WineTastingHostHandlers {
         }
     }
 
+    putTastingHosts() {
+        return async (req, res) => {
+            const tastingId = Number(req.params.id);
+            if (!tastingId || isNaN(tastingId) || tastingId <= 0) {
+                return errorResponse(res, 400, 'Invalid tasting id');
+            }
+            const hosts: WineTastingHostCreateDto[] = req.body;
+            await this.orm.wineTastingHosts.replaceAll(tastingId, hosts);
+            res.status(204).send();
+        };
+    }
+
 }

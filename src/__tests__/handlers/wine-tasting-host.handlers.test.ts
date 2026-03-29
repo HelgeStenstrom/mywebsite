@@ -75,4 +75,37 @@ describe('WineTastingHostHandlers', () => {
 
     })
 
+    test('PUT /tastings/:id/hosts replaces all hosts', async () => {
+        const tasting = await request(app)
+            .post('/api/v1/tastings')
+            .send({ title: 'Test tasting', notes: '', tastingDate: '2024-01-15' })
+            .expect(201);
+
+        const member1 = await request(app)
+            .post('/api/v1/members')
+            .send({ given: 'Test', surname: 'Testsson' })
+            .expect(201);
+
+        const member2 = await request(app)
+            .post('/api/v1/members')
+            .send({ given: 'Anna', surname: 'Andersson' })
+            .expect(201);
+
+        await request(app)
+            .post(`/api/v1/tastings/${tasting.body.id}/hosts`)
+            .send({ memberId: member1.body.id })
+            .expect(201);
+
+        await request(app)
+            .put(`/api/v1/tastings/${tasting.body.id}/hosts`)
+            .send([{ memberId: member2.body.id }])
+            .expect(204);
+
+        const res = await request(app)
+            .get(`/api/v1/tastings/${tasting.body.id}/hosts`)
+            .expect(200);
+
+        expect(res.body).toEqual([{ memberId: member2.body.id }]);
+    });
+
 })

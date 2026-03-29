@@ -77,6 +77,7 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.post('/api/v1/tastings/:id/hosts', wineTastingHostHandlers.postTastingHost());
     router.get('/api/v1/tastings/:id/hosts', wineTastingHostHandlers.getTastingHosts());
+    router.put('/api/v1/tastings/:id/hosts', wineTastingHostHandlers.putTastingHosts());
 
 
     router.get('/api/v1/tastings/:id', tastingHandlers.getTasting());

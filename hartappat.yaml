@@ -540,6 +540,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+    put:
+      summary: Replace all hosts for a tasting
+      description: Deletes all existing hosts for the tasting and creates new ones.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/WineTastingHost'
+      responses:
+        '204':
+          description: Hosts replaced successfully
+        '400':
+          description: Invalid tasting id
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /tastings/{id}/wines:
     parameters:
