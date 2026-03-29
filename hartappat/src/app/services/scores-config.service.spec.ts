@@ -26,6 +26,7 @@ describe('ScoresConfigService', () => {
     const config: ScoresConfig = {
       numberOfPositions: 6,
       participantIds: [1, 3, 2],
+      revealed: true,
     };
 
     service.saveConfig(5, config);
@@ -34,8 +35,10 @@ describe('ScoresConfigService', () => {
   });
 
   test('configs for different tastings are independent', () => {
-    const config1: ScoresConfig = {numberOfPositions: 6, participantIds: [1, 2]};
-    const config2: ScoresConfig = {numberOfPositions: 4, participantIds: [3, 4]};
+    const config1: ScoresConfig = {numberOfPositions: 6, participantIds: [1, 2],
+      revealed: true,};
+    const config2: ScoresConfig = {numberOfPositions: 4, participantIds: [3, 4],
+      revealed: true,};
 
     service.saveConfig(1, config1);
     service.saveConfig(2, config2);
@@ -45,8 +48,10 @@ describe('ScoresConfigService', () => {
   });
 
   test('saving overwrites previous config for same tasting', () => {
-    const config1: ScoresConfig = {numberOfPositions: 6, participantIds: [1, 2]};
-    const config2: ScoresConfig = {numberOfPositions: 4, participantIds: [3]};
+    const config1: ScoresConfig = {numberOfPositions: 6, participantIds: [1, 2],
+      revealed: true,};
+    const config2: ScoresConfig = {numberOfPositions: 4, participantIds: [3],
+      revealed: true,};
 
     service.saveConfig(5, config1);
     service.saveConfig(5, config2);
