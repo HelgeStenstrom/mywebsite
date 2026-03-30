@@ -1,6 +1,5 @@
 import {Component, OnInit, ViewChild} from '@angular/core';
 import {WineEntryComponent} from "../wine-entry/wine-entry.component";
-import {Observable, of, switchMap} from "rxjs";
 import {WineService} from "../../services/backend/wine.service";
 import {WineView} from "../../models/wine.model";
 import {Router} from "@angular/router";
@@ -16,8 +15,7 @@ class WinesComponent implements OnInit {
 
   wines : WineView[] = [];
   @ViewChild(WineEntryComponent)
-  private _wineComponent!: WineEntryComponent;
-  winesAsync$: Observable<WineView[]> = of([]);
+  private readonly _wineComponent!: WineEntryComponent;
   sortColumn: keyof WineView | '' = '';
   sortAscending: boolean = true;
 
@@ -43,8 +41,6 @@ class WinesComponent implements OnInit {
       this.wines = w;
     });
 
-    this.winesAsync$ = this.wineService.getWines();
-
   }
 
   edit(w: WineView) {
@@ -52,18 +48,18 @@ class WinesComponent implements OnInit {
   }
 
   delete(w: WineView) {
-
-    const deletedWine$ = this.wineService.deleteWine(w);
-
-    this.winesAsync$ = deletedWine$.pipe(
-      switchMap(() => this.wineService.getWines())
-    );
+    this.wineService.deleteWine(w).subscribe(() => {
+      this.wineService.getWines().subscribe(wines => {
+        this.wines = wines;
+      });
+    });
   }
 
   onWineSaved(): void {
-    this.winesAsync$ = this.wineService.getWines();
+    this.wineService.getWines().subscribe(wines => {
+      this.wines = wines;
+    });
   }
-
   sortBy(column: keyof WineView): void {
     if (this.sortColumn === column) {
       if (this.sortAscending) {
