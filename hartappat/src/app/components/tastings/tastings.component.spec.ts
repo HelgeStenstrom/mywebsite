@@ -32,8 +32,7 @@ describe('TastingsComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TastingsComponent,  ],
-      imports: [CreateTastingComponent,TastingComponent,],
+      imports: [CreateTastingComponent,TastingComponent,TastingsComponent],
       providers: [
         provideRouter([]),
         {provide: TastingService, useValue: tastingServiceStub},provideHttpClient(), provideHttpClientTesting()],

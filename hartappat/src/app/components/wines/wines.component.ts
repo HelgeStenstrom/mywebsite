@@ -3,43 +3,46 @@ import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {WineService} from "../../services/backend/wine.service";
 import {WineView} from "../../models/wine.model";
 import {Router} from "@angular/router";
+import {DatePipe} from "@angular/common";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
-    selector: 'app-wines',
-    templateUrl: './wines.component.html',
-    styleUrls: ['./wines.component.css'],
-    standalone: false
+  selector: 'app-wines',
+  templateUrl: './wines.component.html',
+  styleUrls: ['./wines.component.css'],
+  imports: [DatePipe, MatIconModule,WineEntryComponent],
 })
 
 class WinesComponent implements OnInit {
 
-  wines : WineView[] = [];
+  wines: WineView[] = [];
   @ViewChild(WineEntryComponent)
   private readonly _wineComponent!: WineEntryComponent;
   sortColumn: keyof WineView | '' = '';
   sortAscending: boolean = true;
 
   columns: { key: keyof WineView; label: string }[] = [
-    { key: 'id', label: 'ID' },
-    { key: 'name', label: 'Namn' },
-    { key: 'country', label: 'Land' },
-    { key: 'wineType', label: 'Typ' },
-    { key: 'vintage', label: 'Årgång' },
-    { key: 'volume', label: 'Volym' },
-    { key: 'createdAt', label: 'Datum' },
-    { key: 'lastTasted', label: 'Senast provat' },
-    { key: 'systembolaget', label: 'Systembolaget' },
+    {key: 'id', label: 'ID'},
+    {key: 'name', label: 'Namn'},
+    {key: 'country', label: 'Land'},
+    {key: 'wineType', label: 'Typ'},
+    {key: 'vintage', label: 'Årgång'},
+    {key: 'volume', label: 'Volym'},
+    {key: 'createdAt', label: 'Datum'},
+    {key: 'lastTasted', label: 'Senast provat'},
+    {key: 'systembolaget', label: 'Systembolaget'},
   ];
 
   constructor(private readonly wineService: WineService,
-              private readonly router: Router,) {}
+              private readonly router: Router,) {
+  }
 
   ngOnInit(): void {
 
     this.wineService.getWines()
       .subscribe((w: WineView[]) => {
-      this.wines = w;
-    });
+        this.wines = w;
+      });
 
   }
 
@@ -60,6 +63,7 @@ class WinesComponent implements OnInit {
       this.wines = wines;
     });
   }
+
   sortBy(column: keyof WineView): void {
     if (this.sortColumn === column) {
       if (this.sortAscending) {
@@ -87,7 +91,6 @@ class WinesComponent implements OnInit {
 
 
 }
-
 
 
 export default WinesComponent

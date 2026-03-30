@@ -45,9 +45,7 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
 @NgModule({
   declarations: [
     AppComponent,
-    WinesComponent,
     DndDirective,
-    TastingsComponent,
   ],
   bootstrap: [AppComponent],
   imports: [
@@ -100,6 +98,8 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
     WineTypesComponent,
     WineDetailComponent,
     WineGrapesComponent,
+    TastingsComponent,
+    WinesComponent,
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
