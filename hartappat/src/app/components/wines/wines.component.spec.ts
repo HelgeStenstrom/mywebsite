@@ -112,9 +112,7 @@ describe('WinesComponent', () => {
       nameHeader.click();
       fixture.detectChanges();
 
-      const icon = fixture.nativeElement.querySelector('[data-test="sort-icon-name"]');
-      expect(icon).toBeTruthy();
-      expect(icon.textContent.trim()).toBe('arrow_upward');
+      expect(nameHeader.textContent).toContain('arrow_upward');
     });
 
     test('shows descending icon on active sort column when sorted descending', () => {
@@ -124,9 +122,7 @@ describe('WinesComponent', () => {
       nameHeader.click();
       fixture.detectChanges();
 
-      const icon = fixture.nativeElement.querySelector('[data-test="sort-icon-name"]');
-      expect(icon).toBeTruthy();
-      expect(icon.textContent.trim()).toBe('arrow_downward');
+      expect(nameHeader.textContent).toContain('arrow_downward');
     });
 
 

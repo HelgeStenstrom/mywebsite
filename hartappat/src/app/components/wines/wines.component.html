@@ -7,22 +7,17 @@
 
 <table class="mat-table">
   <caption>Viner i databasen</caption>
-  <th>ID</th>
-  <th data-test="header-name"
-      (click)="sortBy('name')"
-      [class.active-sort]="sortColumn === 'name'"
-  >Namn
-    @if (sortColumn === 'name') {
-      <mat-icon data-test="sort-icon-name">{{ sortAscending ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
-    }
-  </th>
-  <th data-test="header-country" (click)="sortBy('country')">Land</th>
-  <th>Typ</th>
-  <th>Årgång</th>
-  <th>Volym</th>
-  <th>Datum</th>
-  <th>Senast provat</th>
-  <th>Systembolaget</th>
+  @for (col of columns; track col.key) {
+    <th [attr.data-test]="'header-' + col.key"
+        (click)="sortBy(col.key)"
+        [class.active-sort]="sortColumn === col.key">
+      {{ col.label }}
+      @if (sortColumn === col.key) {
+        <mat-icon>{{ sortAscending ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+      }
+    </th>
+  }
+
   @for (w of sortedWines(); track w) {
     <tr>
       <td>{{ w.id }}</td>

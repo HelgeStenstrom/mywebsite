@@ -21,6 +21,18 @@ class WinesComponent implements OnInit {
   sortColumn: keyof WineView | '' = '';
   sortAscending: boolean = true;
 
+  columns: { key: keyof WineView; label: string }[] = [
+    { key: 'id', label: 'ID' },
+    { key: 'name', label: 'Namn' },
+    { key: 'country', label: 'Land' },
+    { key: 'wineType', label: 'Typ' },
+    { key: 'vintage', label: 'Årgång' },
+    { key: 'volume', label: 'Volym' },
+    { key: 'createdAt', label: 'Datum' },
+    { key: 'lastTasted', label: 'Senast provat' },
+    { key: 'systembolaget', label: 'Systembolaget' },
+  ];
+
   constructor(private readonly wineService: WineService,
               private readonly router: Router,) {}
 
