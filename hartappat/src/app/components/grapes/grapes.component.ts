@@ -5,10 +5,10 @@ import {Grape} from "../../models/common.model";
 import {GrapeService} from "../../services/backend/grape.service";
 
 @Component({
-    selector: 'app-grapes',
-    templateUrl: './grapes.component.html',
-    styleUrls: ['./grapes.component.css'],
-    standalone: false
+  selector: 'app-grapes',
+  templateUrl: './grapes.component.html',
+  styleUrls: ['./grapes.component.css'],
+  standalone: false
 })
 export class GrapesComponent implements OnInit {
   grapes: Grape[] = [];
@@ -16,20 +16,23 @@ export class GrapesComponent implements OnInit {
   sortAscending: boolean = true;
 
   columns: { key: keyof Grape; label: string }[] = [
-    { key: 'id', label: 'ID' },
-    { key: 'name', label: 'Namn' },
-    { key: 'color', label: 'Färg' },
+    {key: 'id', label: 'ID'},
+    {key: 'name', label: 'Namn'},
+    {key: 'color', label: 'Färg'},
   ];
 
-  constructor(private readonly dialog: MatDialog, private readonly service: GrapeService) {}
-
-  ngOnInit(): void {
-    this.service.getGrapes().subscribe(grapes => {
-      this.grapes = grapes;
-    });
+  constructor(private readonly dialog: MatDialog, private readonly service: GrapeService) {
   }
 
-  onGrapeAdded(grape: Grape) {
+  ngOnInit(): void {
+    this.loadGrapes();
+  }
+
+  onGrapeAdded() {
+    this.ngOnInit();
+  }
+
+  private loadGrapes() {
     this.service.getGrapes().subscribe(grapes => {
       this.grapes = grapes;
     });
@@ -37,18 +40,14 @@ export class GrapesComponent implements OnInit {
 
   deleteGrape(grape: Grape) {
     this.service.deleteGrape(grape.id).subscribe(() => {
-      this.service.getGrapes().subscribe(grapes => {
-        this.grapes = grapes;
-      });
+      this.loadGrapes();
     });
   }
 
   editGrape(grape: Grape) {
     const dialogRef = this.dialog.open(AddGrapeComponent, {data: grape});
     dialogRef.afterClosed().subscribe(() => {
-      this.service.getGrapes().subscribe(grapes => {
-        this.grapes = grapes;
-      });
+      this.loadGrapes();
     });
   }
 
