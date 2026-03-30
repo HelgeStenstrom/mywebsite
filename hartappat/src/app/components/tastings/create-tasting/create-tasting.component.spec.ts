@@ -11,7 +11,7 @@ describe('CreateTastingComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CreateTastingComponent],
+      imports: [CreateTastingComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });

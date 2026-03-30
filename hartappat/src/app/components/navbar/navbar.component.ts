@@ -1,14 +1,16 @@
 import {Component} from '@angular/core';
 import {interval} from "rxjs";
 import {map} from "rxjs/operators";
+import {AsyncPipe} from "@angular/common";
+import {RouterModule} from "@angular/router";
 
 @Component({
-    selector: 'app-navbar',
-    templateUrl: './navbar.component.html',
-    styleUrls: ['./navbar.component.css'],
-    standalone: false
+  selector: 'app-navbar',
+  templateUrl: './navbar.component.html',
+  styleUrls: ['./navbar.component.css'],
+  imports: [AsyncPipe, RouterModule],
 })
-export class NavbarComponent  {
+export class NavbarComponent {
 
   // This class had both a constructor() and an ngOnInit(). Now removed.
 

@@ -12,8 +12,7 @@ describe('AddWineToTastingComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AddWineToTastingComponent],
-      imports: [ReactiveFormsModule,],
+      imports: [ReactiveFormsModule,AddWineToTastingComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [provideHttpClient(), provideHttpClientTesting()],
     });

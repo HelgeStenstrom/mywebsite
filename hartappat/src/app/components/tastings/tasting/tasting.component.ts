@@ -1,18 +1,22 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {WineTasting, WineTastingWine} from "../../../models/tasting.model";
 import {Observable, of} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterModule} from "@angular/router";
 import {TastingService} from "../../../services/backend/tasting.service";
 import {MemberService} from "../../../services/backend/member.service";
 import {WineApi, WineView} from "../../../models/wine.model";
 import {WineService} from "../../../services/backend/wine.service";
 import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import {AsyncPipe, DatePipe} from "@angular/common";
+import {MatIconModule} from "@angular/material/icon";
+import {AddWineToTastingComponent} from "./add-wine-to-tasting/add-wine-to-tasting.component";
+import {FormsModule} from "@angular/forms";
 
 @Component({
-    selector: 'app-tasting',
-    templateUrl: './tasting.component.html',
-    styleUrls: ['./tasting.component.css'],
-    standalone: false
+  selector: 'app-tasting',
+  templateUrl: './tasting.component.html',
+  styleUrls: ['./tasting.component.css'],
+  imports: [AsyncPipe, MatIconModule, FormsModule, DatePipe, RouterModule, AddWineToTastingComponent]
 })
 export class TastingComponent implements OnInit {
 
@@ -77,7 +81,7 @@ export class TastingComponent implements OnInit {
 
   startEdit(w: WineTastingWine): void {
     this.editingId = w.id;
-    this.editValues = { position: w.position, purchasePrice: w.purchasePrice, averageScore: w.averageScore };
+    this.editValues = {position: w.position, purchasePrice: w.purchasePrice, averageScore: w.averageScore};
   }
 
   isEditing(id: number): boolean {
@@ -126,7 +130,7 @@ export class TastingComponent implements OnInit {
     moveItemInArray(wines, event.previousIndex, event.currentIndex);
     const positions = wines
       .filter(w => w.position !== null)
-      .map((w, i) => ({ id: w.id, position: i + 1 }));
+      .map((w, i) => ({id: w.id, position: i + 1}));
     this.service.putWinePositions(this.getTastingId(), positions).subscribe(() => {
       this.reloadTasting();
     });
@@ -152,8 +156,8 @@ export class TastingComponent implements OnInit {
         .map(w => w.position as number));
       positions = this.currentWines.map(w =>
         w.id === wine.id
-          ? { id: w.id, position: maxPosition + 1 }
-          : { id: w.id, position: w.position }
+          ? {id: w.id, position: maxPosition + 1}
+          : {id: w.id, position: w.position}
       );
     } else {
       const remaining = this.currentWines
@@ -161,12 +165,13 @@ export class TastingComponent implements OnInit {
         .filter(w => w.position !== null)
         .sort((a, b) => (a.position as number) - (b.position as number));
       positions = [
-        ...remaining.map((w, i) => ({ id: w.id, position: i + 1 })),
-        { id: wine.id, position: null },
+        ...remaining.map((w, i) => ({id: w.id, position: i + 1})),
+        {id: wine.id, position: null},
       ];
     }
 
     this.service.putWinePositions(this.getTastingId(), positions).subscribe(() => {
       this.reloadTasting();
     });
-  }}
+  }
+}

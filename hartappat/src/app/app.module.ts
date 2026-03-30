@@ -45,18 +45,14 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
 @NgModule({
   declarations: [
     AppComponent,
-    NavbarComponent,
     WinesComponent,
     TravelsComponent,
     WikipediaComponent,
     DndDirective,
     TestbenchComponent,
     TastingsComponent,
-    TastingComponent,
     WineEntryComponent,
     WineTypesComponent,
-    CreateTastingComponent,
-    AddWineToTastingComponent,
     WineGrapesComponent,
     WineDetailComponent
   ],
@@ -100,6 +96,10 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
     CountriesComponent,
     AddGrapeComponent,
     GrapesComponent,
+    NavbarComponent,
+    CreateTastingComponent,
+    AddWineToTastingComponent,
+    TastingComponent,
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},

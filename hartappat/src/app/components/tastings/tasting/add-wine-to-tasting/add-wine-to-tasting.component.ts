@@ -1,15 +1,17 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {WineService} from '../../../../services/backend/wine.service';
 import {WineView} from '../../../../models/wine.model';
 import {TastingService} from '../../../../services/backend/tasting.service';
 import {WineTastingWineCreate} from '../../../../models/tasting.model';
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 @Component({
-    selector: 'app-add-wine-to-tasting',
-    templateUrl: './add-wine-to-tasting.component.html',
-    styleUrls: ['./add-wine-to-tasting.component.css'],
-    standalone: false
+  selector: 'app-add-wine-to-tasting',
+  templateUrl: './add-wine-to-tasting.component.html',
+  styleUrls: ['./add-wine-to-tasting.component.css'],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
 })
 export class AddWineToTastingComponent implements OnInit {
 
@@ -24,7 +26,8 @@ export class AddWineToTastingComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly wineService: WineService,
     private readonly tastingService: TastingService,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.form = this.fb.group({

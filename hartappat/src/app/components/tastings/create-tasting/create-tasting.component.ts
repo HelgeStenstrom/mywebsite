@@ -1,13 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Router} from '@angular/router';
 import {TastingService} from "../../../services/backend/tasting.service";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 @Component({
-    selector: 'app-create-tasting',
-    templateUrl: './create-tasting.component.html',
-    styleUrls: ['./create-tasting.component.css'],
-    standalone: false
+  selector: 'app-create-tasting',
+  templateUrl: './create-tasting.component.html',
+  styleUrls: ['./create-tasting.component.css'],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
 })
 export class CreateTastingComponent implements OnInit {
 
@@ -17,7 +19,8 @@ export class CreateTastingComponent implements OnInit {
     private readonly fb: FormBuilder,
     private readonly service: TastingService,
     private readonly router: Router,
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
     this.tastingForm = this.fb.group({
@@ -30,7 +33,7 @@ export class CreateTastingComponent implements OnInit {
   createTasting(): void {
     if (this.tastingForm.valid) {
       this.service.createTasting(this.tastingForm.value).subscribe(tasting => {
-       void this.router.navigate(['/tastings', tasting.id]);
+        void this.router.navigate(['/tastings', tasting.id]);
       });
     }
   }

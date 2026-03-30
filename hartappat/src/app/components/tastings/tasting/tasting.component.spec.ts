@@ -109,7 +109,7 @@ describe('TastingComponent', () => {
     resetMocks();
 
     await TestBed.configureTestingModule({
-      declarations: [TastingComponent],
+      imports: [TastingComponent],
       providers: [
         provideRouter([]),
         { provide: TastingService, useValue: tastingServiceMock },
