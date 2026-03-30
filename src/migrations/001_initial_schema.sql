@@ -1,93 +1,94 @@
-CREATE TABLE countries
+CREATE TABLE IF NOT EXISTS countries
 (
-    id   INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT NOT NULL
+    id   INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(40) NOT NULL
 );
 
-CREATE TABLE grapes
+CREATE TABLE IF NOT EXISTS wine_types
 (
-    id    INTEGER PRIMARY KEY AUTOINCREMENT,
-    name  TEXT UNIQUE,
-    color TEXT
+    id   INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(20) NULL
 );
 
-CREATE TABLE members
+CREATE TABLE IF NOT EXISTS grapes
 (
-    id        INTEGER PRIMARY KEY AUTOINCREMENT,
-    given     TEXT,
-    surname   TEXT,
-    is_active INTEGER NOT NULL DEFAULT 1
+    id    INT AUTO_INCREMENT PRIMARY KEY,
+    name  TEXT NULL,
+    color ENUM ('blå', 'grön') NULL,
+    CONSTRAINT grapes_pk UNIQUE (name) USING HASH
 );
 
-CREATE TABLE wine_types
+CREATE TABLE IF NOT EXISTS members
 (
-    id   INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT
+    id        INT AUTO_INCREMENT PRIMARY KEY,
+    given     TEXT NULL,
+    surname   TEXT NULL,
+    is_active TINYINT(1) NOT NULL DEFAULT 1
 );
 
-CREATE TABLE wine_tastings
+CREATE TABLE IF NOT EXISTS wine_tastings
 (
-    id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    title        TEXT,
-    notes        TEXT,
-    tasting_date TEXT NOT NULL,
+    id           INT AUTO_INCREMENT PRIMARY KEY,
+    title        VARCHAR(128)                         NULL,
+    notes        LONGTEXT                             NULL,
+    tasting_date DATE                                 NOT NULL,
     created_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    updated_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
 
-CREATE TABLE wines
+CREATE TABLE IF NOT EXISTS wines
 (
-    id             INTEGER PRIMARY KEY AUTOINCREMENT,
-    country_id     INTEGER NOT NULL,
-    name           TEXT    NOT NULL,
-    wine_type_id   INTEGER,
-    systembolaget  INTEGER,
-    volume         INTEGER,
-    created_at     DATETIME DEFAULT CURRENT_TIMESTAMP,
-    vintage_year   INTEGER,
-    is_non_vintage INTEGER  NOT NULL DEFAULT 0
+    id             INT AUTO_INCREMENT PRIMARY KEY,
+    country_id     INT                                  NOT NULL,
+    name           VARCHAR(256)                         NOT NULL,
+    wine_type_id   INT                                  NULL,
+    systembolaget  INT                                  NULL,
+    volume         INT                                  NULL,
+    created_at     DATETIME DEFAULT CURRENT_TIMESTAMP   NULL,
+    vintage_year   INT                                  NULL,
+    is_non_vintage TINYINT(1) NOT NULL DEFAULT 0
 );
 
-CREATE TABLE wine_grapes
+CREATE TABLE IF NOT EXISTS wine_grapes
 (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    wine_id    INTEGER NOT NULL,
-    grape_id   INTEGER NOT NULL,
-    percentage REAL,
-    FOREIGN KEY (wine_id) REFERENCES wines (id),
-    FOREIGN KEY (grape_id) REFERENCES grapes (id)
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    wine_id    INT           NOT NULL,
+    grape_id   INT           NOT NULL,
+    percentage DECIMAL(5, 2) NULL,
+    CONSTRAINT wine_grapes_ibfk_1 FOREIGN KEY (wine_id) REFERENCES wines (id),
+    CONSTRAINT wine_grapes_ibfk_2 FOREIGN KEY (grape_id) REFERENCES grapes (id)
 );
 
-CREATE INDEX wine_grapes_grape_id ON wine_grapes (grape_id);
-CREATE INDEX wine_grapes_wine_id ON wine_grapes (wine_id);
+CREATE INDEX grape_id ON wine_grapes (grape_id);
+CREATE INDEX wine_id ON wine_grapes (wine_id);
 
-CREATE TABLE wine_tasting_hosts
+CREATE TABLE IF NOT EXISTS wine_tasting_hosts
 (
-    wine_tasting_id INTEGER NOT NULL,
-    member_id       INTEGER NOT NULL,
+    wine_tasting_id INT NOT NULL,
+    member_id       INT NOT NULL,
     PRIMARY KEY (wine_tasting_id, member_id)
 );
 
-CREATE TABLE wine_tasting_wines
+CREATE TABLE IF NOT EXISTS wine_tasting_wines
 (
-    id              INTEGER PRIMARY KEY AUTOINCREMENT,
-    wine_tasting_id INTEGER NOT NULL,
-    wine_id         INTEGER NOT NULL,
-    position        INTEGER,
-    purchase_price  INTEGER,
-    average_score   REAL,
-    FOREIGN KEY (wine_tasting_id) REFERENCES wine_tastings (id),
-    FOREIGN KEY (wine_id) REFERENCES wines (id)
+    id              INT AUTO_INCREMENT PRIMARY KEY,
+    wine_tasting_id INT           NOT NULL,
+    wine_id         INT           NOT NULL,
+    position        INT           NULL,
+    purchase_price  INT           NULL,
+    average_score   DECIMAL(4, 2) NULL,
+    CONSTRAINT wine_tasting_wines_ibfk_1 FOREIGN KEY (wine_tasting_id) REFERENCES wine_tastings (id),
+    CONSTRAINT wine_tasting_wines_ibfk_2 FOREIGN KEY (wine_id) REFERENCES wines (id)
 );
 
 CREATE INDEX wine_tasting_wines_wine_id ON wine_tasting_wines (wine_id);
 CREATE INDEX wine_tasting_wines_wine_tasting_id ON wine_tasting_wines (wine_tasting_id);
 
-CREATE TABLE scores
+CREATE TABLE IF NOT EXISTS scores
 (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    tasting_id INTEGER NOT NULL,
-    member_id  INTEGER NOT NULL,
-    position   INTEGER NOT NULL,
-    score      REAL    NOT NULL
+    id         INT AUTO_INCREMENT PRIMARY KEY,
+    tasting_id INT           NOT NULL,
+    member_id  INT           NOT NULL,
+    position   INT           NOT NULL,
+    score      DECIMAL(4, 1) NOT NULL
 );
