@@ -64,6 +64,46 @@ describe('WineEntryComponent', () => {
     expect(component).toBeTruthy();
   });
 
+
+  it('should get the wine from the WineComponent, when the button is clicked', () => {
+    // Create a spy for the method
+    jest.spyOn(component, 'getWine').mockReturnValue({
+      name: 'Testvin',
+      countryId: 1,
+      wineTypeId: 2,
+      systembolaget: 12345,
+      volume: 75
+    });
+
+    const buttonElement = fixture.debugElement.query(  By.css('[data-test="add-wine-button"]'));
+
+    const querySelector = fixture.nativeElement.querySelector("button");
+    expect(querySelector).toEqual(buttonElement.nativeElement);
+    buttonElement.nativeElement.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(component.getWine).toHaveBeenCalled();
+  });
+
+  it('should add a wine to the list, when the button is clicked', () => {
+    // Create a spy for the method
+    jest.spyOn(component, 'getWine').mockReturnValue({
+      name: 'Testvin',
+      countryId: 1,
+      wineTypeId: 2,
+      systembolaget: 42,
+      volume: 0
+    });
+
+    const buttonElement = fixture.debugElement.query(  By.css('[data-test="add-wine-button"]'));
+    buttonElement.nativeElement.dispatchEvent(new Event('click'));
+    fixture.detectChanges();
+
+    expect(wineServiceMock.addWine).toHaveBeenCalled()
+  });
+
+
+
   it('should have a Name input', () => {
     const debugElement = fixture.debugElement.query(
       By.css('[data-test="name-input"]'));
