@@ -4,6 +4,7 @@ import {AboutComponent} from './about.component';
 import {MembersComponent} from "./members/members.component";
 import {provideHttpClient} from "@angular/common/http";
 import {provideHttpClientTesting} from "@angular/common/http/testing";
+import {NO_ERRORS_SCHEMA} from "@angular/core";
 
 describe('AboutComponent', () => {
   let component: AboutComponent;
@@ -11,8 +12,10 @@ describe('AboutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AboutComponent, MembersComponent],
+      declarations: [],
+      imports: [AboutComponent,MembersComponent],
       providers: [provideHttpClient(), provideHttpClientTesting()],
+      schemas: [NO_ERRORS_SCHEMA],
     })
       .compileComponents();
 

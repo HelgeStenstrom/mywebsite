@@ -3,6 +3,7 @@ import {CountriesComponent} from './countries.component';
 import {of} from 'rxjs';
 import {FormsModule} from '@angular/forms';
 import {CountryService} from "../../services/backend/country.service";
+import {NO_ERRORS_SCHEMA} from "@angular/core";
 
 describe('CountriesComponent', () => {
   let component: CountriesComponent;
@@ -17,6 +18,7 @@ describe('CountriesComponent', () => {
       declarations: [CountriesComponent],
       imports: [FormsModule],
       providers: [{provide: CountryService, useValue: countryServiceMock}],
+      schemas: [NO_ERRORS_SCHEMA],
     });
     fixture = TestBed.createComponent(CountriesComponent);
     component = fixture.componentInstance;

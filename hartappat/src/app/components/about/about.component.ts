@@ -1,13 +1,10 @@
 import {Component} from '@angular/core';
+import {MembersComponent} from "./members/members.component";
 
 @Component({
     selector: 'app-about',
     templateUrl: './about.component.html',
     styleUrls: ['./about.component.css'],
-    standalone: false
+  imports: [MembersComponent],
 })
-export class AboutComponent  {
-
-  // Denna klass hade tidigare både en constructor och en ngOnInit.
-
-}
+export class AboutComponent  {}

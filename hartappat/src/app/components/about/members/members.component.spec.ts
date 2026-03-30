@@ -18,7 +18,7 @@ describe('MembersComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MembersComponent ],
+      imports: [ MembersComponent ],
       providers: [
         {provide: MemberService, useValue: memberServiceStub}],
     })
