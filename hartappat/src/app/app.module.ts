@@ -27,7 +27,6 @@ import {TestbenchComponent} from './components/testbench/testbench.component';
 import {TastingsComponent} from './components/tastings/tastings.component';
 import {TastingComponent} from './components/tastings/tasting/tasting.component';
 import {MembersComponent} from './components/about/members/members.component';
-import {VotingComponent} from './components/voting/voting.component';
 import {WineEntryComponent} from './components/wine-entry/wine-entry.component';
 import {ExtraHeaderInterceptor} from "./services/interceptors/extra-header-interceptor";
 import {CountriesComponent} from './components/countries/countries.component';
@@ -61,7 +60,6 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
     TastingsComponent,
     TastingComponent,
     MembersComponent,
-    VotingComponent,
     WineEntryComponent,
     CountriesComponent,
     WineTypesComponent,
@@ -78,12 +76,11 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
     MatButtonModule,
     RouterModule.forRoot([
       {path: '', component: HomeComponent},
-      {path: 'druvor/:add-grape', component: AddGrapeComponent},
-      {path: 'druvor', component: GrapesComponent},
+      {path: 'grapes/:add-grape', component: AddGrapeComponent},
+      {path: 'grapes', component: GrapesComponent},
       {path: 'viner', component: WinesComponent},
       {path: 'resor', component: TravelsComponent},
       {path: 'about', component: AboutComponent},
-      {path: 'voting', component: VotingComponent},
       {path: 'tastings/new', component: CreateTastingComponent},
       {path: 'tastings/:id', component: TastingComponent},
       {path: 'tastings/:id/scores', component: ScoresComponent},
