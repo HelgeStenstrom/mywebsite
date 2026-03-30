@@ -10,3 +10,7 @@ td {
   margin: 2px;
   border: 4px solid white;
 }
+
+.active-sort {
+  text-decoration: underline;
+}

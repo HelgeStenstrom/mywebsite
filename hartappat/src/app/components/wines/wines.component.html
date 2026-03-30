@@ -1,30 +1,37 @@
 <h2>Viner vi känner till (WinesComponent)</h2>
 
 <h2>Lägg till ett vin</h2>
-<app-wine-entry  (wineSaved)="onWineSaved()"></app-wine-entry>
+<app-wine-entry (wineSaved)="onWineSaved()"></app-wine-entry>
 
 <h2>Viner som finns i databasen</h2>
 
 <table class="mat-table">
   <caption>Viner i databasen</caption>
   <th>ID</th>
-  <th>Namn</th>
-  <th>Land</th>
+  <th data-test="header-name"
+      (click)="sortBy('name')"
+      [class.active-sort]="sortColumn === 'name'"
+  >Namn
+    @if (sortColumn === 'name') {
+      <mat-icon data-test="sort-icon-name">{{ sortAscending ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+    }
+  </th>
+  <th data-test="header-country" (click)="sortBy('country')">Land</th>
   <th>Typ</th>
   <th>Årgång</th>
   <th>Volym</th>
   <th>Datum</th>
   <th>Senast provat</th>
   <th>Systembolaget</th>
-  @for (w of winesAsync$|async; track w) {
+  @for (w of sortedWines(); track w) {
     <tr>
-      <td>{{w.id}}</td>
-      <td>{{w.name}}</td>
-      <td>{{w.country}}</td>
-      <td>{{w.wineType}}</td>
-      <td>{{w.vintage}}</td>
-      <td>{{w.volume}}</td>
-      <td>{{w.createdAt| date:'yyyy-MM-dd'}}</td>
+      <td>{{ w.id }}</td>
+      <td data-test="wine-name">{{ w.name }}</td>
+      <td data-test="wine-country">{{ w.country }}</td>
+      <td>{{ w.wineType }}</td>
+      <td>{{ w.vintage }}</td>
+      <td>{{ w.volume }}</td>
+      <td>{{ w.createdAt| date:'yyyy-MM-dd' }}</td>
       <td>
         @if (w.lastTasted) {
           <a routerLink="/tastings/{{ w.lastTastingId }}">
@@ -38,7 +45,7 @@
             href="https://www.systembolaget.se/sortiment/?q={{w.systembolaget}}"
             target="_blank"
             rel="noopener noreferrer">
-            {{w.systembolaget}}
+            {{ w.systembolaget }}
           </a>
         </td>
       }
@@ -49,10 +56,10 @@
         <mat-icon>edit</mat-icon>
       </button>
       <button mat-icon-button
-        color="warn"
-        (click)="delete(w)"
-        [disabled]="w.isUsed"
-        >
+              color="warn"
+              (click)="delete(w)"
+              [disabled]="w.isUsed"
+      >
         <mat-icon>delete</mat-icon>
       </button>
     </tr>

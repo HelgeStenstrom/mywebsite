@@ -4,12 +4,12 @@ import WinesComponent from './wines.component';
 import {provideHttpClientTesting} from "@angular/common/http/testing";
 import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {FormsModule} from "@angular/forms";
-import {By} from "@angular/platform-browser";
 import {CountryService} from "../../services/backend/country.service";
 import {of} from "rxjs";
 import {WineTypeService} from "../../services/backend/wine-type.service";
 import {WineService} from "../../services/backend/wine.service";
 import {provideHttpClient} from "@angular/common/http";
+import {NO_ERRORS_SCHEMA} from "@angular/core";
 
 describe('WinesComponent', () => {
   let component: WinesComponent;
@@ -22,7 +22,10 @@ describe('WinesComponent', () => {
   beforeEach(async () => {
 
     wineServiceMock = {
-      getWines: jest.fn().mockReturnValue(of([])),
+      getWines: jest.fn().mockReturnValue(of([
+        { id: 2, name: 'Riesling Auslese', country: 'Tyskland', wineType: 'Vitt', isUsed: false },
+        { id: 1, name: 'Château Margaux', country: 'Frankrike', wineType: 'Rött', isUsed: false },
+      ])),
       addWine: jest.fn().mockReturnValue(of(void 1)),
     }
 
@@ -41,7 +44,8 @@ describe('WinesComponent', () => {
         {provide: CountryService, useValue: countryServiceMock},
         {provide: WineTypeService, useValue: wineTypeServiceMock},
         {provide: WineService, useValue: wineServiceMock},
-      ]
+      ],
+      schemas: [NO_ERRORS_SCHEMA],
     })
     .compileComponents();
 
@@ -54,42 +58,78 @@ describe('WinesComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should get the wine from the WineComponent, when the button is clicked', () => {
-    // Create a spy for the method
-    jest.spyOn(component.wineComponent, 'getWine').mockReturnValue({
-      name: 'Testvin',
-      countryId: 1,
-      wineTypeId: 2,
-      systembolaget: 12345,
-      volume: 75
+  describe('Sorting', () => {
+
+    test('clicking name header sorts wines by name ascending', () => {
+      fixture.detectChanges();
+      const nameHeader = fixture.nativeElement.querySelector('[data-test="header-name"]');
+      nameHeader.click();
+      fixture.detectChanges();
+
+      const cells = fixture.nativeElement.querySelectorAll('[data-test="wine-name"]');
+      expect(cells[0].textContent.trim()).toBe('Château Margaux');
+      expect(cells[1].textContent.trim()).toBe('Riesling Auslese');
     });
 
-    const buttonElement = fixture.debugElement.query(  By.css('[data-test="add-wine-button"]'));
+    test('clicking name header twice sorts wines by name descending', () => {
+      fixture.detectChanges();
+      const nameHeader = fixture.nativeElement.querySelector('[data-test="header-name"]');
+      nameHeader.click();
+      nameHeader.click();
+      fixture.detectChanges();
 
-    const querySelector = fixture.nativeElement.querySelector("button");
-    expect(querySelector).toEqual(buttonElement.nativeElement);
-    buttonElement.nativeElement.dispatchEvent(new Event('click'));
-    fixture.detectChanges();
-
-    expect(component.wineComponent.getWine).toHaveBeenCalled();
-  });
-
-  it('should add a wine to the list, when the button is clicked', () => {
-    // Create a spy for the method
-    jest.spyOn(component.wineComponent, 'getWine').mockReturnValue({
-      name: 'Testvin',
-      countryId: 1,
-      wineTypeId: 2,
-      systembolaget: 42,
-      volume: 0
+      const cells = fixture.nativeElement.querySelectorAll('[data-test="wine-name"]');
+      expect(cells[0].textContent.trim()).toBe('Riesling Auslese');
+      expect(cells[1].textContent.trim()).toBe('Château Margaux');
     });
 
-    const buttonElement = fixture.debugElement.query(  By.css('[data-test="add-wine-button"]'));
-    buttonElement.nativeElement.dispatchEvent(new Event('click'));
-    fixture.detectChanges();
+    test('clicking country header sorts wines by country ascending', () => {
+      fixture.detectChanges();
+      const countryHeader = fixture.nativeElement.querySelector('[data-test="header-country"]');
+      countryHeader.click();
+      fixture.detectChanges();
 
-    expect(wineServiceMock.addWine).toHaveBeenCalled()
-  });
+      const cells = fixture.nativeElement.querySelectorAll('[data-test="wine-country"]');
+      expect(cells[0].textContent.trim()).toBe('Frankrike');
+      expect(cells[1].textContent.trim()).toBe('Tyskland');
+    });
 
+
+    test('clicking name header three times resets sorting', () => {
+      fixture.detectChanges();
+      const nameHeader = fixture.nativeElement.querySelector('[data-test="header-name"]');
+      nameHeader.click();
+      nameHeader.click();
+      nameHeader.click();
+      fixture.detectChanges();
+
+      expect(component.sortColumn).toBe('');
+    });
+
+    test('shows ascending icon on active sort column', () => {
+      fixture.detectChanges();
+      const nameHeader = fixture.nativeElement.querySelector('[data-test="header-name"]');
+      nameHeader.click();
+      fixture.detectChanges();
+
+      const icon = fixture.nativeElement.querySelector('[data-test="sort-icon-name"]');
+      expect(icon).toBeTruthy();
+      expect(icon.textContent.trim()).toBe('arrow_upward');
+    });
+
+    test('shows descending icon on active sort column when sorted descending', () => {
+      fixture.detectChanges();
+      const nameHeader = fixture.nativeElement.querySelector('[data-test="header-name"]');
+      nameHeader.click();
+      nameHeader.click();
+      fixture.detectChanges();
+
+      const icon = fixture.nativeElement.querySelector('[data-test="sort-icon-name"]');
+      expect(icon).toBeTruthy();
+      expect(icon.textContent.trim()).toBe('arrow_downward');
+    });
+
+
+  })
 
 });

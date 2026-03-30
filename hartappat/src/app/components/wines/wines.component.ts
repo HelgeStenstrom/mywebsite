@@ -18,6 +18,9 @@ class WinesComponent implements OnInit {
   @ViewChild(WineEntryComponent)
   private _wineComponent!: WineEntryComponent;
   winesAsync$: Observable<WineView[]> = of([]);
+  sortColumn: keyof WineView | '' = '';
+  sortAscending: boolean = true;
+
   constructor(private readonly wineService: WineService,
               private readonly router: Router,) {}
 
@@ -30,10 +33,6 @@ class WinesComponent implements OnInit {
 
     this.winesAsync$ = this.wineService.getWines();
 
-  }
-
-  get wineComponent(): WineEntryComponent {
-    return this._wineComponent;
   }
 
   edit(w: WineView) {
@@ -51,6 +50,36 @@ class WinesComponent implements OnInit {
 
   onWineSaved(): void {
     this.winesAsync$ = this.wineService.getWines();
-  }}
+  }
+
+  sortBy(column: keyof WineView): void {
+    if (this.sortColumn === column) {
+      if (this.sortAscending) {
+        this.sortAscending = false;
+      } else {
+        this.sortColumn = '';
+      }
+    } else {
+      this.sortColumn = column;
+      this.sortAscending = true;
+    }
+  }
+
+
+  sortedWines(): WineView[] {
+    if (!this.sortColumn) return this.wines;
+    return [...this.wines].sort((a, b) => {
+      const aVal = this.sortColumn ? (a[this.sortColumn] ?? '') : '';
+      const bVal = this.sortColumn ? (b[this.sortColumn] ?? '') : '';
+      if (aVal < bVal) return this.sortAscending ? -1 : 1;
+      if (aVal > bVal) return this.sortAscending ? 1 : -1;
+      return 0;
+    });
+  }
+
+
+}
+
+
 
 export default WinesComponent
