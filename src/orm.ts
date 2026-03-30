@@ -28,9 +28,10 @@ import {ScoreInstance} from "./types/score";
 import {defineScore} from "./orm/models/score.model";
 import {runMigrations} from "./migrations/migrate";
 import path from "node:path";
+import {defineUser} from "./orm/models/user.model";
+import {UserRepository} from "./orm/repositories/user.repository";
 
 export class Orm {
-
 
     sequelize: Sequelize;
     readonly grapes: GrapeRepository;
@@ -43,8 +44,7 @@ export class Orm {
     readonly wineTastingHosts: WineTastingHostRepository;
     readonly wineGrapes: WineGrapeRepository;
     readonly scores: ScoreRepository;
-
-
+    readonly users: UserRepository;
 
 
     constructor(database: string, dbUserName: string, dbPassword: string, options: Options) {
@@ -60,6 +60,7 @@ export class Orm {
         const wineTastingWine: ModelStatic<WineTastingWineInstance> = defineWineTastingWine(this.sequelize);
         const wineGrape: ModelStatic<WineGrapeInstance> = defineWineGrape(this.sequelize);
         const score: ModelStatic<ScoreInstance> = defineScore(this.sequelize);
+        const user = defineUser(this.sequelize);
 
         connectWineAndCountry(wine, country);
         connectWineAndWineType(wine, wineType);
@@ -78,6 +79,8 @@ export class Orm {
         this.wineTastingHosts = new WineTastingHostRepository(tastingHost);
         this.wineGrapes = new WineGrapeRepository(wineGrape);
         this.scores = new ScoreRepository(score);
+        this.users = new UserRepository(user);
+
     }
 
 
