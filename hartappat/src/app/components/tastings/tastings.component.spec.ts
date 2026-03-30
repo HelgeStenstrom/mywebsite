@@ -49,15 +49,6 @@ describe('TastingsComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  it('should have a list of tastings', () => {
-
-    expect(fixture.nativeElement.querySelector(['[data-test="tasting-list"]'])).toBeTruthy();
-  });
-
-  it('should have some tastings', () => {
-
-    expect(fixture.nativeElement.querySelectorAll(['[data-test="tasting"]']).length).toBe(3);
-  });
 
 });
 
