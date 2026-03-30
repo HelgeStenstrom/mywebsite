@@ -3,12 +3,12 @@
 <table>
   <caption>Druvor i databasen</caption>
   <th>ID</th>
-  <th>Namn</th>
+  <th data-test="header-name" (click)="sortBy('name')">Namn</th>
   <th>Färg</th>
-  @for (grape of grapes$ | async; track grape) {
+  @for (grape of sortedGrapes(); track grape) {
     <tr>
       <td>{{ grape.id }}</td>
-      <td>{{ grape.name }}</td>
+      <td data-test="grape-name">{{ grape.name }}</td>
       <td>{{ grape.color }}</td>
       <button mat-icon-button color="primary" (click)="editGrape(grape)">
         <mat-icon>edit</mat-icon>

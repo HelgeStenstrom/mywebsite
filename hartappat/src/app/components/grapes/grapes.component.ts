@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {MatDialog} from "@angular/material/dialog";
 import {AddGrapeComponent} from "./add-grape/add-grape.component";
-import {Observable, of, switchMap} from "rxjs";
 import {Grape} from "../../models/common.model";
 import {GrapeService} from "../../services/backend/grape.service";
 
@@ -12,31 +11,63 @@ import {GrapeService} from "../../services/backend/grape.service";
     standalone: false
 })
 export class GrapesComponent implements OnInit {
-  grapes$: Observable<Grape[]> = of([]);
+  grapes: Grape[] = [];
+  sortColumn: keyof Grape | '' = '';
+  sortAscending: boolean = true;
 
   constructor(private readonly dialog: MatDialog, private readonly service: GrapeService) {}
 
   ngOnInit(): void {
-    this.grapes$ = this.service.getGrapes();
+    this.service.getGrapes().subscribe(grapes => {
+      this.grapes = grapes;
+    });
   }
 
   onGrapeAdded(grape: Grape) {
-    this.grapes$ = this.service.getGrapes();
+    this.service.getGrapes().subscribe(grapes => {
+      this.grapes = grapes;
+    });
   }
 
   deleteGrape(grape: Grape) {
-    const deletedGrape$ = this.service.deleteGrape(grape.id);
-
-    this.grapes$ = deletedGrape$.pipe(
-      switchMap(() => this.service.getGrapes())
-    );
+    this.service.deleteGrape(grape.id).subscribe(() => {
+      this.service.getGrapes().subscribe(grapes => {
+        this.grapes = grapes;
+      });
+    });
   }
 
   editGrape(grape: Grape) {
-    // https://material.angular.io/components/dialog/overview
     const dialogRef = this.dialog.open(AddGrapeComponent, {data: grape});
-    this.grapes$ = dialogRef.afterClosed().pipe(
-      switchMap(() => this.service.getGrapes())
-    )
+    dialogRef.afterClosed().subscribe(() => {
+      this.service.getGrapes().subscribe(grapes => {
+        this.grapes = grapes;
+      });
+    });
   }
+
+  sortBy(column: keyof Grape): void {
+    if (this.sortColumn === column) {
+      if (this.sortAscending) {
+        this.sortAscending = false;
+      } else {
+        this.sortColumn = '';
+      }
+    } else {
+      this.sortColumn = column;
+      this.sortAscending = true;
+    }
+  }
+
+  sortedGrapes(): Grape[] {
+    if (!this.sortColumn) return this.grapes;
+    return [...this.grapes].sort((a, b) => {
+      const aVal = a[this.sortColumn as keyof Grape] ?? '';
+      const bVal = b[this.sortColumn as keyof Grape] ?? '';
+      if (aVal < bVal) return this.sortAscending ? -1 : 1;
+      if (aVal > bVal) return this.sortAscending ? 1 : -1;
+      return 0;
+    });
+  }
+
 }

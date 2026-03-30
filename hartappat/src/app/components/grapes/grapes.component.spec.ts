@@ -8,8 +8,19 @@ import {MatDialog} from "@angular/material/dialog";
 import {Grape} from "../../models/common.model";
 import {GrapeService} from "../../services/backend/grape.service";
 
+/**
+ * Find a component
+ * TODO: Move this to a helper file
+ */
+export function findComponent<T>(
+  fixture: ComponentFixture<T>,
+  selector: string,
+): DebugElement {
+  return fixture.debugElement.query(By.css(selector));
+}
+
 describe('DruvorComponent', () => {
-  let druvorComponent: GrapesComponent;
+  let component: GrapesComponent;
   let fixture: ComponentFixture<GrapesComponent>;
 
   const cs: Grape = {id: 1, name:'Cabernet Sauvignon', color:'blå', isUsed: false};
@@ -39,17 +50,16 @@ describe('DruvorComponent', () => {
     .compileComponents();
 
     fixture = TestBed.createComponent(GrapesComponent);
-    druvorComponent = fixture.componentInstance;
+    component = fixture.componentInstance;
     fixture.detectChanges();
   });
 
-  it('renders without errors  ', () => {
-    expect(druvorComponent).toBeTruthy();
+  it('should create', () => {
+    expect(component).toBeTruthy();
   });
 
 
-
-
+describe('Druva subcomponent', () => {
 
   // See https://testing-angular.com/testing-components-with-children/#unit-test
   it('should have a Druva subcomponent', () => {
@@ -65,30 +75,24 @@ describe('DruvorComponent', () => {
     expect(druva).toBeTruthy();
   });
 
-  it('should pass', () => {
-    expect(1 + 1).toBe(2);
-  });
+})
 
-  describe('grapes$ async', () => {
 
-    it('should have Cab', done => {
-      druvorComponent.grapes$.subscribe(result => {
-        expect(result).toContain(riesling);
-        done();
-      });
+  describe('Sorting', () => {
+
+    test('clicking name header sorts grapes by name ascending', () => {
+      fixture.detectChanges();
+      const nameHeader = fixture.nativeElement.querySelector('[data-test="header-name"]');
+      nameHeader.click();
+      fixture.detectChanges();
+
+      const cells = fixture.nativeElement.querySelectorAll('[data-test="grape-name"]');
+      expect(cells[0].textContent.trim()).toBe('Cabernet Sauvignon');
+      expect(cells[1].textContent.trim()).toBe('Riesling');
     });
 
-  });
+
+
+  })
 
 });
-
-/**
- * Find a component
- * TODO: Move this to a helper file
- */
-export function findComponent<T>(
-  fixture: ComponentFixture<T>,
-  selector: string,
-): DebugElement {
-  return fixture.debugElement.query(By.css(selector));
-}
