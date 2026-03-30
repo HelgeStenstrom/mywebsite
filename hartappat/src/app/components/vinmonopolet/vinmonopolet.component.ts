@@ -5,10 +5,9 @@ import {ProductDetail, VinmonopoletService} from "../../services/vinmonopolet.se
     selector: 'app-vinmonopolet',
     templateUrl: './vinmonopolet.component.html',
     styleUrls: ['./vinmonopolet.component.css'],
-    standalone: false
 })
 export class VinmonopoletComponent implements OnInit {
-  private service: VinmonopoletService;
+  private readonly service: VinmonopoletService;
   products: ProductDetail[] = [];
 
   constructor(service: VinmonopoletService) {

@@ -1,13 +1,11 @@
 import {Component} from '@angular/core';
+import {VinmonopoletComponent} from "../vinmonopolet/vinmonopolet.component";
+import {AboutComponent} from "../about/about.component";
 
 @Component({
     selector: 'app-home',
     templateUrl: './home.component.html',
     styleUrls: ['./home.component.css'],
-    standalone: false
+  imports: [VinmonopoletComponent, AboutComponent],
 })
-export class HomeComponent {
-
-  // This class had both a constructor() and an ngOnInit(). Now removed.
-
-}
+export class HomeComponent {}

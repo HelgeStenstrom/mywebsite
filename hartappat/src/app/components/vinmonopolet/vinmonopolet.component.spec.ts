@@ -10,7 +10,7 @@ describe('VinmonopoletComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ VinmonopoletComponent ],
+      imports: [ VinmonopoletComponent ],
       providers: [provideHttpClient(), provideHttpClientTesting()],
     })
     .compileComponents();
