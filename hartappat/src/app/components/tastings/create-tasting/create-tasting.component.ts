@@ -4,12 +4,13 @@ import {Router} from '@angular/router';
 import {TastingService} from "../../../services/backend/tasting.service";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-create-tasting',
   templateUrl: './create-tasting.component.html',
   styleUrls: ['./create-tasting.component.css'],
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButton],
 })
 export class CreateTastingComponent implements OnInit {
 

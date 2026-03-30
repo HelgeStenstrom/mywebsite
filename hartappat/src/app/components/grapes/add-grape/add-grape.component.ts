@@ -8,12 +8,13 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatSelectModule} from "@angular/material/select";
 import {MatRadioModule} from "@angular/material/radio";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-add-grape',
   templateUrl: './add-grape.component.html',
   styleUrls: ['./add-grape.component.css'],
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatSelectModule, MatRadioModule],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatSelectModule, MatRadioModule, MatButton],
 })
 export class AddGrapeComponent implements OnInit {
 

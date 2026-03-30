@@ -7,12 +7,13 @@ import {Grape} from "../../models/common.model";
 import {AsyncPipe} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {FormsModule} from "@angular/forms";
+import {MatIconButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-wine-grapes',
   templateUrl: './wine-grapes.component.html',
   styleUrls: ['./wine-grapes.component.css'],
-  imports: [AsyncPipe,MatIconModule, FormsModule,],
+  imports: [AsyncPipe, MatIconModule, FormsModule, MatIconButton,],
 })
 export class WineGrapesComponent implements OnInit {
   @Input() wineId!: number;

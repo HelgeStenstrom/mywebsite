@@ -6,12 +6,13 @@ import {TastingService} from '../../../../services/backend/tasting.service';
 import {WineTastingWineCreate} from '../../../../models/tasting.model';
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {MatButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-add-wine-to-tasting',
   templateUrl: './add-wine-to-tasting.component.html',
   styleUrls: ['./add-wine-to-tasting.component.css'],
-  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatButton],
 })
 export class AddWineToTastingComponent implements OnInit {
 
