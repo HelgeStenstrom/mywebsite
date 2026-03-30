@@ -2,9 +2,18 @@
 
 <table>
   <caption>Druvor i databasen</caption>
-  <th>ID</th>
-  <th data-test="header-name" (click)="sortBy('name')">Namn</th>
-  <th>Färg</th>
+
+  @for (col of columns; track col.key) {
+    <th [attr.data-test]="'header-' + col.key"
+        (click)="sortBy(col.key)"
+        [class.active-sort]="sortColumn === col.key">
+      {{ col.label }}
+      @if (sortColumn === col.key) {
+        <mat-icon>{{ sortAscending ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+      }
+    </th>
+  }
+
   @for (grape of sortedGrapes(); track grape) {
     <tr>
       <td>{{ grape.id }}</td>

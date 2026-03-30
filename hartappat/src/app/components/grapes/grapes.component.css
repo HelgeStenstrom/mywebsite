@@ -5,3 +5,8 @@ td {
   border: 4px solid white;
   vertical-align: baseline;
 }
+
+
+.active-sort {
+  text-decoration: underline;
+}

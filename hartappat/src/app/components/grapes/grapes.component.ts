@@ -15,6 +15,12 @@ export class GrapesComponent implements OnInit {
   sortColumn: keyof Grape | '' = '';
   sortAscending: boolean = true;
 
+  columns: { key: keyof Grape; label: string }[] = [
+    { key: 'id', label: 'ID' },
+    { key: 'name', label: 'Namn' },
+    { key: 'color', label: 'Färg' },
+  ];
+
   constructor(private readonly dialog: MatDialog, private readonly service: GrapeService) {}
 
   ngOnInit(): void {
