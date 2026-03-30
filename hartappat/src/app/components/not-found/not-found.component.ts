@@ -4,10 +4,5 @@ import {Component} from '@angular/core';
     selector: 'app-not-found',
     templateUrl: './not-found.component.html',
     styleUrls: ['./not-found.component.css'],
-    standalone: false
 })
-export class NotFoundComponent  {
-
-  // This class had both a constructor() and an ngOnInit(). Now removed.
-
-}
+export class NotFoundComponent  {}
