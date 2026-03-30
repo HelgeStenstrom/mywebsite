@@ -4,7 +4,7 @@ import {GrapesComponent} from './grapes.component';
 import {Observable, of} from "rxjs";
 import {DebugElement, NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
-import {MatDialog} from "@angular/material/dialog";
+import {MAT_DIALOG_DATA, MatDialog, MatDialogRef} from "@angular/material/dialog";
 import {Grape} from "../../models/common.model";
 import {GrapeService} from "../../services/backend/grape.service";
 
@@ -19,7 +19,7 @@ export function findComponent<T>(
   return fixture.debugElement.query(By.css(selector));
 }
 
-describe('DruvorComponent', () => {
+describe('GrapesComponent', () => {
   let component: GrapesComponent;
   let fixture: ComponentFixture<GrapesComponent>;
 
@@ -40,10 +40,12 @@ describe('DruvorComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ GrapesComponent ],
+      imports: [ GrapesComponent ],
       providers: [
         {provide: GrapeService, useValue: grapeServiceStub},
-        {provide: MatDialog, useValue: {}}
+        {provide: MatDialog, useValue: {}},
+        {provide: MatDialogRef, useValue: {}},
+        {provide: MAT_DIALOG_DATA, useValue: {}},
       ],
       schemas:[NO_ERRORS_SCHEMA]
     })

@@ -1,14 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {MatDialog} from "@angular/material/dialog";
+import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {AddGrapeComponent} from "./add-grape/add-grape.component";
 import {Grape} from "../../models/common.model";
 import {GrapeService} from "../../services/backend/grape.service";
+import {MatIconModule} from "@angular/material/icon";
 
 @Component({
   selector: 'app-grapes',
   templateUrl: './grapes.component.html',
   styleUrls: ['./grapes.component.css'],
-  standalone: false
+  imports: [AddGrapeComponent, MatDialogModule, MatIconModule],
 })
 export class GrapesComponent implements OnInit {
   grapes: Grape[] = [];

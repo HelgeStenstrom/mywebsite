@@ -45,7 +45,6 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
 @NgModule({
   declarations: [
     AppComponent,
-    GrapesComponent,
     NavbarComponent,
     WinesComponent,
     TravelsComponent,
@@ -100,6 +99,7 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
     HomeComponent,
     CountriesComponent,
     AddGrapeComponent,
+    GrapesComponent,
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
