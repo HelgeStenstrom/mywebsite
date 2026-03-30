@@ -2,7 +2,7 @@
 
 <app-create-tasting></app-create-tasting>
 
-<h2>Sammanfattning</h2>
+<h2>Våra provningar</h2>
 
 <table class="bordered">
   <caption>Våra provningar</caption>
@@ -12,6 +12,7 @@
     <th>Datum</th>
     <th>Namn</th>
     <th>Noter</th>
+    <th>Vinnande vin</th>
   </tr>
   @for (t of tastings$ | async; track t) {
     <tr>
@@ -20,23 +21,8 @@
       <td>{{t.tastingDate| date:'yyyy-MM-dd'}}</td>
       <td><a (click)="openTasting(t.id)" style="cursor:pointer">{{t.title}}</a></td>
       <td>{{t.notes}}</td>
+      <td>(placeholder)</td>
     </tr>
   }
 </table>
 
-<h2>Våra vinprovningar</h2>
-
-<div data-test="tasting-list">
-  @for (t of tastings$ | async; track t) {
-    <div >
-      <!--  TODO: Flytta titel och noter till sub-komponenten.
-      Parametrisera den med t: Tasting -->
-      <h3>{{t.title}}</h3>
-      <div>{{t.notes}}</div>
-      <app-tasting
-        [tasting]="t"
-        data-test="tasting"
-      ></app-tasting>
-    </div>
-  }
-</div>
