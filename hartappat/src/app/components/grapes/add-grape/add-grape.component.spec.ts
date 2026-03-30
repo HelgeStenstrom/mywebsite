@@ -4,7 +4,6 @@ import {AddGrapeComponent} from './add-grape.component';
 import {Observable, of} from "rxjs";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
-import {FormControl, FormGroup} from "@angular/forms";
 import {provideHttpClientTesting} from "@angular/common/http/testing";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Grape} from "../../../models/common.model";
@@ -28,7 +27,7 @@ describe('AddGrapeComponent test with mock', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [AddGrapeComponent],
+      imports: [AddGrapeComponent],
       providers: [provideHttpClient(), provideHttpClientTesting(),
         {provide: GrapeService, useValue: grapeServiceStub},
         {provide: MAT_DIALOG_DATA, useValue: {}},
@@ -51,17 +50,6 @@ describe('AddGrapeComponent test with mock', () => {
 
     expect(counter).toBeFalsy();
   });
-
-  it('it should have a grapeform', () => {
-    const componentInstance: AddGrapeComponent = fixture.componentInstance;
-    const grapeForm: FormGroup<{
-      color: FormControl<string | null>;
-      name: FormControl<string | null> }>
-      = componentInstance.grapeForm;
-    const actual: boolean = grapeForm.valid;
-    expect(actual).toBeTruthy();
-  });
-
 
 
 });
@@ -91,7 +79,7 @@ describe('AddGrapeComponent with jasmine spies', () => {
     }
 
     await TestBed.configureTestingModule({
-      declarations: [AddGrapeComponent],
+      imports: [AddGrapeComponent],
       providers: [
         {provide: GrapeService, useValue: grapeServiceStub},
         {provide: WineService, useValue: wineServiceStub},

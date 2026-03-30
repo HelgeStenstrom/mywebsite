@@ -1,19 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {CountryApi} from "../../models/common.model";
 import {CountryService} from "../../services/backend/country.service";
+import {FormsModule} from "@angular/forms";
 
 @Component({
-    selector: 'app-countries',
-    templateUrl: './countries.component.html',
-    styleUrls: ['./countries.component.css'],
-    standalone: false
+  selector: 'app-countries',
+  templateUrl: './countries.component.html',
+  styleUrls: ['./countries.component.css'],
+  imports: [FormsModule],
 })
 export class CountriesComponent implements OnInit {
 
   countries: CountryApi[] = [];
   newCountryName = '';
 
-  constructor(private countryService: CountryService) {}
+  constructor(private readonly countryService: CountryService) {
+  }
 
   ngOnInit(): void {
     this.loadCountries();

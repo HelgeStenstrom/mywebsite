@@ -46,7 +46,6 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
   declarations: [
     AppComponent,
     GrapesComponent,
-    AddGrapeComponent,
     NavbarComponent,
     WinesComponent,
     TravelsComponent,
@@ -56,7 +55,6 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
     TastingsComponent,
     TastingComponent,
     WineEntryComponent,
-    CountriesComponent,
     WineTypesComponent,
     CreateTastingComponent,
     AddWineToTastingComponent,
@@ -100,6 +98,8 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
     MembersComponent,
     VinmonopoletComponent,
     HomeComponent,
+    CountriesComponent,
+    AddGrapeComponent,
   ],
   providers: [
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},

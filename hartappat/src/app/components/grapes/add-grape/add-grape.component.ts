@@ -1,15 +1,19 @@
 import {Component, EventEmitter, Inject, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup} from "@angular/forms";
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Observable} from "rxjs";
 import {Grape, GrapeCreate} from "../../../models/common.model";
 import {GrapeService} from "../../../services/backend/grape.service";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import {MatSelectModule} from "@angular/material/select";
+import {MatRadioModule} from "@angular/material/radio";
 
 @Component({
-    selector: 'app-add-grape',
-    templateUrl: './add-grape.component.html',
-    styleUrls: ['./add-grape.component.css'],
-    standalone: false
+  selector: 'app-add-grape',
+  templateUrl: './add-grape.component.html',
+  styleUrls: ['./add-grape.component.css'],
+  imports: [MatFormFieldModule, MatInputModule, FormsModule, ReactiveFormsModule, MatSelectModule, MatRadioModule],
 })
 export class AddGrapeComponent implements OnInit {
 
@@ -22,7 +26,7 @@ export class AddGrapeComponent implements OnInit {
   });
 
   constructor(
-    private grapeService: GrapeService,
+    private readonly grapeService: GrapeService,
     public dialogRef: MatDialogRef<AddGrapeComponent>,
     @Inject(MAT_DIALOG_DATA) public grapeToEdit: Grape
   ) {
@@ -43,7 +47,7 @@ export class AddGrapeComponent implements OnInit {
 
     const formValue = this.grapeForm.value;
     if (formValue.name && formValue.color) {
-      const g:GrapeCreate = {
+      const g: GrapeCreate = {
         name: formValue.name,
         color: formValue.color
       };

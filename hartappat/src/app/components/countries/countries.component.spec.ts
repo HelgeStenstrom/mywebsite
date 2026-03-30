@@ -15,8 +15,7 @@ describe('CountriesComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [CountriesComponent],
-      imports: [FormsModule],
+      imports: [FormsModule, CountriesComponent],
       providers: [{provide: CountryService, useValue: countryServiceMock}],
       schemas: [NO_ERRORS_SCHEMA],
     });
