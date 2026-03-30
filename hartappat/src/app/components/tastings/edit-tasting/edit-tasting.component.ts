@@ -64,15 +64,11 @@ export class EditTastingComponent implements OnInit {
   }
 
   toggleHost(memberId: number): void {
-    console.log("Before: ", this.selectedHostIds);
     if (this.selectedHostIds.has(memberId)) {
       this.selectedHostIds.delete(memberId);
     } else {
       this.selectedHostIds.add(memberId);
     }
-    console.log("After: ", this.selectedHostIds);
-
-
   }
 
 }
