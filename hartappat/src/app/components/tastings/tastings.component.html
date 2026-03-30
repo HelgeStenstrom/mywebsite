@@ -13,16 +13,34 @@
     <th>Namn</th>
     <th>Noter</th>
     <th>Vinnande vin</th>
+    @if (advanced) {
+      <th>Markera för radering</th>
+    }
   </tr>
   @for (t of tastings$ | async; track t) {
-    <tr>
+    <tr data-test="tasting-row">
       <td><button mat-button (click)="openTasting(t.id)">Öppna</button></td>
       <td>{{t.id}}</td>
       <td>{{t.tastingDate| date:'yyyy-MM-dd'}}</td>
       <td><a (click)="openTasting(t.id)" style="cursor:pointer">{{t.title}}</a></td>
       <td>{{t.notes}}</td>
       <td>(placeholder)</td>
+      @if (advanced) {
+        <td><input type="checkbox"
+                   data-test="delete-checkbox"
+                   [checked]="selectedIds.has(t.id)"
+                   (change)="onDeleteCheckboxChange(t.id, $event)"
+        ></td>
+        <button data-test="confirm-delete-button"
+                [disabled]="!selectedIds.has(t.id)"
+                (click)="confirmDelete(t.id)"
+        >Radera valda</button>
+      }
     </tr>
   }
 </table>
+
+<mat-slide-toggle data-test="advanced-toggle" [(ngModel)]="advanced">Avancerat</mat-slide-toggle>
+
+
 

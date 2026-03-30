@@ -3,39 +3,41 @@ import {ComponentFixture, TestBed} from '@angular/core/testing';
 import {TastingsComponent} from './tastings.component';
 import {provideHttpClientTesting} from "@angular/common/http/testing";
 import {TastingComponent} from "./tasting/tasting.component";
-import {Observable, of} from "rxjs";
+import {of} from "rxjs";
 import {CreateTastingComponent} from "./create-tasting/create-tasting.component";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {TastingService} from "../../services/backend/tasting.service";
-import {WineTasting} from "../../models/tasting.model";
+import {WineTastingSummary} from "../../models/tasting.model";
 import {provideHttpClient} from "@angular/common/http";
 import {provideRouter} from "@angular/router";
+import {By} from "@angular/platform-browser";
 
 describe('TastingsComponent', () => {
   let component: TastingsComponent;
   let fixture: ComponentFixture<TastingsComponent>;
+  let mockTastingService: jest.Mocked<TastingService>;
 
-
-  const tastingServiceStub: Partial<TastingService> = {
-    getTastings(): Observable<WineTasting[]> {
-      return of([
-        {id:1,  title: 'a title', notes: 'some nuts', tastingDate:  '2026-03-05'},
-        {id:2,  title: 'a title', notes: 'some notes', tastingDate: '2026-03-04'},
-        {id:3,  title: 'a title', notes: 'some notes', tastingDate: '2026-03-06'},
-      ]);
-    },
-    getTasting(id: number): Observable<WineTasting> {  // lägg till denna
-      return of({ id, title: 'a title', notes: 'some notes', tastingDate: '2026-03-05' });
-    }
-  }
-
+  const tastings: WineTastingSummary[] = [
+    { id: 1, title: 'Testprovning 1', notes: 'Noter', tastingDate: '2024-01-15' },
+    { id: 2, title: 'Testprovning 2', notes: 'Noter', tastingDate: '2024-02-20' },
+    { id: 3, title: 'Testprovning 3', notes: 'Noter', tastingDate: '2024-03-25' },
+  ];
 
   beforeEach(async () => {
+
+    mockTastingService = {
+      getTastings: jest.fn().mockReturnValue(of(tastings)),
+      deleteTasting: jest.fn(),
+    } as unknown as jest.Mocked<TastingService>;
+
     await TestBed.configureTestingModule({
       imports: [CreateTastingComponent,TastingComponent,TastingsComponent],
       providers: [
+        {provide: TastingService, useValue: mockTastingService},
         provideRouter([]),
-        {provide: TastingService, useValue: tastingServiceStub},provideHttpClient(), provideHttpClientTesting()],
+        provideHttpClient(),
+        provideHttpClientTesting(),
+      ],
       schemas: [NO_ERRORS_SCHEMA]
     })
     .compileComponents();
@@ -49,6 +51,89 @@ describe('TastingsComponent', () => {
     expect(component).toBeTruthy();
   });
 
+  describe('Delete tasting', () => {
+
+    test('checkboxes for deletion are invisible when advanced-toggle is of', () => {
+      const toggle = fixture.debugElement.query(By.css('[data-test="advanced-toggle"]'));
+      const checkboxes = fixture.debugElement.queryAll(By.css('[data-test="delete-checkbox"]'));
+
+      expect(toggle).toBeTruthy();
+      expect(checkboxes.length).toBe(0);
+    });
+
+    test('delete checkboxes are shown when advanced toggle is on', () => {
+      const toggle = fixture.debugElement.query(By.css('[data-test="advanced-toggle"]'));
+      toggle.query(By.css('button')).nativeElement.click();
+      fixture.detectChanges();
+
+      const checkboxes = fixture.debugElement.queryAll(By.css('[data-test="delete-checkbox"]'));
+      expect(checkboxes.length).toBe(3);
+    });
+
+    test('confirm delete buttons are disabled when no checkboxes are checked', () => {
+      const toggle = fixture.debugElement.query(By.css('[data-test="advanced-toggle"]'));
+      toggle.query(By.css('button')).nativeElement.click();
+      fixture.detectChanges();
+
+      const confirmButtons = fixture.debugElement.queryAll(By.css('[data-test="confirm-delete-button"]'));
+      expect(confirmButtons.length).toBe(3);
+      confirmButtons.forEach(btn => expect(btn.nativeElement.disabled).toBe(true));
+    });
+
+    test('checking a delete checkbox adds the tasting id to selected ids', () => {
+      const toggle = fixture.debugElement.query(By.css('[data-test="advanced-toggle"]'));
+      toggle.query(By.css('button')).nativeElement.click();
+      fixture.detectChanges();
+
+      const checkbox = fixture.debugElement.query(By.css('[data-test="delete-checkbox"]'));
+      checkbox.nativeElement.click();
+      fixture.detectChanges();
+
+      const confirmButton = fixture.debugElement.query(By.css('[data-test="confirm-delete-button"]'));
+      expect(confirmButton.nativeElement.disabled).toBe(false);
+    });
+
+    test('clicking confirm delete button calls deleteTasting for the selected tasting', () => {
+      mockTastingService.deleteTasting.mockReturnValue(of(undefined));
+
+      const toggle = fixture.debugElement.query(By.css('[data-test="advanced-toggle"]'));
+      toggle.query(By.css('button')).nativeElement.click();
+      fixture.detectChanges();
+
+      const checkboxes = fixture.debugElement.queryAll(By.css('[data-test="delete-checkbox"]'));
+      checkboxes[0].nativeElement.click();
+      fixture.detectChanges();
+
+      const confirmButtons = fixture.debugElement.queryAll(By.css('[data-test="confirm-delete-button"]'));
+      confirmButtons[0].nativeElement.click();
+      fixture.detectChanges();
+
+      expect(mockTastingService.deleteTasting).toHaveBeenCalledTimes(1);
+      expect(mockTastingService.deleteTasting).toHaveBeenCalledWith(tastings[0].id);
+    });
+
+    test('deleted tasting is removed from the list after confirm delete', () => {
+      mockTastingService.deleteTasting.mockReturnValue(of(undefined));
+
+      const toggle = fixture.debugElement.query(By.css('[data-test="advanced-toggle"]'));
+      toggle.query(By.css('button')).nativeElement.click();
+      fixture.detectChanges();
+
+      const checkboxes = fixture.debugElement.queryAll(By.css('[data-test="delete-checkbox"]'));
+      checkboxes[0].nativeElement.click();
+      fixture.detectChanges();
+
+      const confirmButtons = fixture.debugElement.queryAll(By.css('[data-test="confirm-delete-button"]'));
+      confirmButtons[0].nativeElement.click();
+      fixture.detectChanges();
+
+      const rows = fixture.debugElement.queryAll(By.css('[data-test="tasting-row"]'));
+      expect(rows.length).toBe(2);
+    });
+
+
+
+  });
 
 });
 

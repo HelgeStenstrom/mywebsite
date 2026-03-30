@@ -5,16 +5,29 @@ import {WineTastingSummary} from "../../models/tasting.model";
 import {Router} from "@angular/router";
 import {CreateTastingComponent} from "./create-tasting/create-tasting.component";
 import {AsyncPipe, DatePipe} from "@angular/common";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
+import {FormsModule} from "@angular/forms";
+import {MatButton} from "@angular/material/button";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-tastings',
   templateUrl: './tastings.component.html',
   styleUrls: ['./tastings.component.css'],
-  imports: [CreateTastingComponent, AsyncPipe, DatePipe,],
+  imports: [
+    CreateTastingComponent,
+    AsyncPipe,
+    DatePipe,
+    FormsModule,
+    MatButton,
+    MatSlideToggleModule,
+  ],
 })
 export class TastingsComponent implements OnInit {
 
   tastings$: Observable<WineTastingSummary[]> = of([]);
+  advanced = false;
+  selectedIds = new Set<number>();
 
   constructor(private readonly service: TastingService,
               private readonly router: Router,
@@ -27,5 +40,23 @@ export class TastingsComponent implements OnInit {
 
   openTasting(id: number): void {
     void this.router.navigate(['/tastings', id]);
+  }
+
+  onDeleteCheckboxChange(id: number, event: Event): void {
+    const checked = (event.target as HTMLInputElement).checked;
+    if (checked) {
+      this.selectedIds.add(id);
+    } else {
+      this.selectedIds.delete(id);
+    }
+  }
+
+  confirmDelete(id: number): void {
+    this.service.deleteTasting(id).subscribe(() => {
+      this.tastings$ = this.tastings$.pipe(
+        map(tastings => tastings.filter(t => t.id !== id))
+      );
+      this.selectedIds.delete(id);
+    });
   }
 }
