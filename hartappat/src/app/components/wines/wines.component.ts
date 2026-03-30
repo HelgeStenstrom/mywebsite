@@ -2,15 +2,16 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {WineService} from "../../services/backend/wine.service";
 import {WineView} from "../../models/wine.model";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {DatePipe} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
+import {MatIconButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-wines',
   templateUrl: './wines.component.html',
   styleUrls: ['./wines.component.css'],
-  imports: [DatePipe, MatIconModule,WineEntryComponent],
+  imports: [DatePipe, MatIconModule, WineEntryComponent, MatIconButton, RouterLink],
 })
 
 class WinesComponent implements OnInit {

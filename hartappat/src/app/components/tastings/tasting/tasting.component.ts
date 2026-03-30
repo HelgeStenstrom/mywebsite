@@ -6,17 +6,18 @@ import {TastingService} from "../../../services/backend/tasting.service";
 import {MemberService} from "../../../services/backend/member.service";
 import {WineApi, WineView} from "../../../models/wine.model";
 import {WineService} from "../../../services/backend/wine.service";
-import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
+import {CdkDrag, CdkDragDrop, CdkDragHandle, CdkDropList, moveItemInArray} from "@angular/cdk/drag-drop";
 import {AsyncPipe, DatePipe} from "@angular/common";
 import {MatIconModule} from "@angular/material/icon";
 import {AddWineToTastingComponent} from "./add-wine-to-tasting/add-wine-to-tasting.component";
 import {FormsModule} from "@angular/forms";
+import {MatButton, MatIconButton} from "@angular/material/button";
 
 @Component({
   selector: 'app-tasting',
   templateUrl: './tasting.component.html',
   styleUrls: ['./tasting.component.css'],
-  imports: [AsyncPipe, MatIconModule, FormsModule, DatePipe, RouterModule, AddWineToTastingComponent]
+  imports: [AsyncPipe, MatIconModule, FormsModule, DatePipe, RouterModule, AddWineToTastingComponent, CdkDropList, CdkDrag, CdkDragHandle, MatButton, MatIconButton]
 })
 export class TastingComponent implements OnInit {
 
