@@ -39,7 +39,7 @@ describe('WineGrapesComponent', () => {
 
 
     TestBed.configureTestingModule({
-      declarations: [WineGrapesComponent],
+      imports: [WineGrapesComponent],
       providers: [
         { provide: WineService, useValue: wineServiceMock },
         { provide: GrapeService, useValue: grapeServiceMock },

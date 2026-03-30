@@ -5,6 +5,7 @@ import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {ActivatedRoute, convertToParamMap} from "@angular/router";
 import {WineService} from "../../../services/backend/wine.service";
 import {of} from "rxjs";
+import {WineGrapesComponent} from "../../wine-grapes/wine-grapes.component";
 
 describe('WineDetailComponent', () => {
   let component: WineDetailComponent;
@@ -12,7 +13,7 @@ describe('WineDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WineDetailComponent],
+      imports: [WineDetailComponent, WineGrapesComponent],
       providers: [
         {
           provide: ActivatedRoute,
@@ -34,6 +35,7 @@ describe('WineDetailComponent', () => {
               isNonVintage: false,
               isUsed: false,
             })),
+            getWineGrapes: jest.fn().mockReturnValue(of([])),
           },
         },
       ],

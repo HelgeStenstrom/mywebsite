@@ -38,8 +38,8 @@ describe('WinesComponent', () => {
     }
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule],
-      declarations: [ WinesComponent, WineEntryComponent ],
+      imports: [FormsModule, WineEntryComponent],
+      declarations: [ WinesComponent ],
       providers: [provideHttpClient(), provideHttpClientTesting(),
         {provide: CountryService, useValue: countryServiceMock},
         {provide: WineTypeService, useValue: wineTypeServiceMock},

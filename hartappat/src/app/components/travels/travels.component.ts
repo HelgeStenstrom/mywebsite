@@ -4,9 +4,5 @@ import {Component} from '@angular/core';
     selector: 'app-travels',
     templateUrl: './travels.component.html',
     styleUrls: ['./travels.component.css'],
-    standalone: false
 })
-export class TravelsComponent {
-
-  // Empty constructor and ngOnInit removed.
-}
+export class TravelsComponent {}

@@ -14,8 +14,7 @@ describe('WineTypesComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WineTypesComponent],
-      imports: [FormsModule],
+      imports: [FormsModule, WineTypesComponent],
       providers: [{provide: WineTypeService, useValue: serviceMock}]
     });
     fixture = TestBed.createComponent(WineTypesComponent);

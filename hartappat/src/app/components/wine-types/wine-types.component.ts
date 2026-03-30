@@ -1,19 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {WineTypeService} from "../../services/backend/wine-type.service";
 import {WineTypeApi} from "../../models/common.model";
+import {FormsModule} from "@angular/forms";
 
 @Component({
-    selector: 'app-wine-types',
-    templateUrl: './wine-types.component.html',
-    styleUrls: ['./wine-types.component.css'],
-    standalone: false
+  selector: 'app-wine-types',
+  templateUrl: './wine-types.component.html',
+  styleUrls: ['./wine-types.component.css'],
+  imports: [FormsModule],
 })
 export class WineTypesComponent implements OnInit {
 
   wineTypes: WineTypeApi[] = [];
   newWineType = '';
 
-  constructor(private readonly wineTypeService: WineTypeService,) {}
+  constructor(private readonly wineTypeService: WineTypeService,) {
+  }
 
   ngOnInit(): void {
     this.loadWineTypes();

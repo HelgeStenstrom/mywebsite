@@ -5,10 +5,9 @@ import {WikipediaService} from "../../services/wikipedia.service";
     selector: 'app-wikipedia',
     templateUrl: './wikipedia.component.html',
     styleUrls: ['./wikipedia.component.css'],
-    standalone: false
 })
 export class WikipediaComponent implements OnInit {
-  private service: WikipediaService;
+  private readonly service: WikipediaService;
   mostReadTitle = '';
 
   constructor(service: WikipediaService) {

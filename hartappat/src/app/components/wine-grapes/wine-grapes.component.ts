@@ -4,12 +4,15 @@ import {GrapeService} from "../../services/backend/grape.service";
 import {WineGrape} from "../../models/wine.model";
 import {Observable, of} from "rxjs";
 import {Grape} from "../../models/common.model";
+import {AsyncPipe} from "@angular/common";
+import {MatIconModule} from "@angular/material/icon";
+import {FormsModule} from "@angular/forms";
 
 @Component({
-    selector: 'app-wine-grapes',
-    templateUrl: './wine-grapes.component.html',
-    styleUrls: ['./wine-grapes.component.css'],
-    standalone: false
+  selector: 'app-wine-grapes',
+  templateUrl: './wine-grapes.component.html',
+  styleUrls: ['./wine-grapes.component.css'],
+  imports: [AsyncPipe,MatIconModule, FormsModule,],
 })
 export class WineGrapesComponent implements OnInit {
   @Input() wineId!: number;
@@ -68,6 +71,7 @@ export class WineGrapesComponent implements OnInit {
   getGrapeName(grapeId: number): string {
     return this.allGrapes.find(g => g.id === grapeId)?.name ?? '?';
   }
+
   getGrapeColor(grapeId: number): string {
     return this.allGrapes.find(g => g.id === grapeId)?.color ?? '?';
   }

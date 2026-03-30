@@ -48,8 +48,7 @@ describe('WineEntryComponent', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     TestBed.configureTestingModule({
-      declarations: [WineEntryComponent],
-      imports: [CommonModule, FormsModule],
+      imports: [CommonModule, FormsModule, WineEntryComponent],
       providers: [
         {provide: CountryService, useValue: countryServiceMock},
         {provide: WineTypeService, useValue: wineTypeServiceMock},

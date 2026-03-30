@@ -9,8 +9,7 @@ describe('TestbenchComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ TestbenchComponent],
-      imports: [MockFiledropComponent],
+      imports: [MockFiledropComponent, TestbenchComponent],
     })
     .compileComponents();
 

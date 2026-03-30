@@ -10,7 +10,7 @@ describe('WikipediaComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ WikipediaComponent ],
+      imports: [ WikipediaComponent ],
       providers: [provideHttpClient(), provideHttpClientTesting()],
     })
     .compileComponents();
