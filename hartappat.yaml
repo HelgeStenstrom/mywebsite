@@ -5,6 +5,53 @@ info:
 servers:
   - url: http://localhost:3000/api/v1
 paths:
+  /auth/login:
+    post:
+      summary: Log in
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Login successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthUser'
+        '401':
+          description: Invalid credentials
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+  /auth/logout:
+    post:
+      summary: Log out
+      responses:
+        '204':
+          description: Logout successful
+
+  /auth/me:
+    get:
+      summary: Get current user
+      responses:
+        '200':
+          description: Currently logged in user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AuthUser'
+        '401':
+          description: Not logged in
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /countries:
     get:
       summary: Get a list of known countries.
@@ -1250,3 +1297,28 @@ components:
         message:
           type: string
           example: Wine not found
+
+    LoginRequest:
+      type: object
+      required: [ email, password ]
+      properties:
+        email:
+          type: string
+          format: email
+          example: helge@example.com
+        password:
+          type: string
+          example: secret
+
+    AuthUser:
+      type: object
+      required: [ id, email ]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+          format: email
+        memberId:
+          type: integer
+          nullable: true
