@@ -13,6 +13,7 @@ import {WineTastingWineHandlers} from "./handlers/wine-tasting-wine.handlers";
 import {WineTastingHostHandlers} from "./handlers/wine-tasting-host.handlers";
 import {WineGrapeHandlers} from "./handlers/wine-grape.handlers";
 import {ScoreHandlers} from "./handlers/score.handlers";
+import {AuthHandlers} from "./handlers/auth.handlers";
 
 function getConfiguredApp(): Express {
     const app: Express = express();
@@ -36,11 +37,18 @@ export function setupEndpoints(router: Express, orm: Orm) {
     const wineTastingHostHandlers = new WineTastingHostHandlers(orm);
     const wineGrapeHandlers = new WineGrapeHandlers(orm);
     const scoreHandlers = new ScoreHandlers(orm);
+    const authHandlers = new AuthHandlers(orm);
+
 
     router.use((req, res, next) => {
         console.log(`${req.method} ${req.path}`);
         next();
     });
+
+    router.post('/api/v1/auth/register', authHandlers.register());
+    router.post('/api/v1/auth/login', authHandlers.login());
+    router.post('/api/v1/auth/logout', authHandlers.logout());
+    router.get('/api/v1/auth/me', authHandlers.me());
 
     router.delete('/api/v1/countries/:id', countryHandlers.deleteCountryById());
     router.get('/api/v1/countries', countryHandlers.getCountries());
