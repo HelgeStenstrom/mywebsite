@@ -1,3 +1,5 @@
+//noinspection SqlResolve
+//noinspection SqlNoDataSourceInspection
 import {Sequelize} from 'sequelize';
 import path from 'path';
 import os from 'os';
@@ -37,8 +39,10 @@ describe('runMigrations', () => {
         const [tables] = await db.query("SELECT name FROM sqlite_master WHERE name = 'foo'");
         expect(tables).toHaveLength(1);
         const applied = await db.query<{ version: string }>(
+        // @ts-ignore
             'SELECT version FROM schema_migrations', { type: 'SELECT' }
         );
+        // @ts-ignore
         expect(applied.map(r => r.version)).toEqual(['001_create_foo.sql']);
     });
 
@@ -50,6 +54,7 @@ describe('runMigrations', () => {
         await runMigrations(db, dir);
         await runMigrations(db, dir); // andra körningen ska inte krascha
         const applied = await db.query<{ version: string }>(
+        // @ts-ignore
             'SELECT version FROM schema_migrations', { type: 'SELECT' }
         );
         expect(applied).toHaveLength(1);
@@ -63,8 +68,10 @@ describe('runMigrations', () => {
         });
         await runMigrations(db, dir);
         const applied = await db.query<{ version: string }>(
+        // @ts-ignore
             'SELECT version FROM schema_migrations ORDER BY applied_at', { type: 'SELECT' }
         );
+        // @ts-ignore
         expect(applied.map(r => r.version)).toEqual([
             '001_create_foo.sql',
             '002_add_bar.sql'
@@ -85,6 +92,7 @@ describe('runMigrations', () => {
         await runMigrations(db, dir);
 
         const applied = await db.query<{ version: string }>(
+        // @ts-ignore
             'SELECT version FROM schema_migrations', { type: 'SELECT' }
         );
         expect(applied).toHaveLength(2);
