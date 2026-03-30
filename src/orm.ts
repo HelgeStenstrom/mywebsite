@@ -26,6 +26,8 @@ import {WineGrapeRepository} from "./orm/repositories/wine-grape.repository";
 import {ScoreRepository} from "./orm/repositories/score.repository";
 import {ScoreInstance} from "./types/score";
 import {defineScore} from "./orm/models/score.model";
+import {runMigrations} from "./migrations/migrate";
+import path from "node:path";
 
 export class Orm {
 
@@ -87,6 +89,10 @@ export class Orm {
     createTables() {
         const opts: SyncOptions = {logging: false}; // TODO: Turn off logging, there's too much!
         return this.sequelize.sync(opts);
+    }
+
+    async initialize(): Promise<void> {
+        await runMigrations(this.sequelize, path.join(__dirname, './migrations'));
     }
 
 }

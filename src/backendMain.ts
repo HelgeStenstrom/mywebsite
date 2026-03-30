@@ -12,9 +12,17 @@ const mariaDbOptions : Options = {
     logging: false, // false = no logging by Sequelize.
 };
 
-const orm = new Orm('hartappat', 'appuser', 'appuserpass', mariaDbOptions);
-setupEndpoints(app, orm);
+async function main(){
+    const orm = new Orm('hartappat', 'appuser', 'appuserpass', mariaDbOptions);
+    await orm.initialize();
+    setupEndpoints(app, orm);
 
-app.listen(3000, () => {
-    console.log('app is running @3000, from backendMain.ts');
+    app.listen(3000, () => {
+        console.log('app is running @3000, from backendMain.ts');
+    });
+}
+
+main().catch(err => {
+    console.error(err);
+    process.exit(1);
 });

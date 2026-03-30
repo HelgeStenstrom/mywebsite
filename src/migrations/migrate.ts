@@ -5,7 +5,7 @@ import {QueryTypes, Sequelize} from 'sequelize';
 export async function runMigrations(sequelize: Sequelize, migrationsDir: string): Promise<void> {
     await sequelize.query(`
     CREATE TABLE IF NOT EXISTS schema_migrations (
-      version TEXT PRIMARY KEY,
+      version VARCHAR(255) PRIMARY KEY,
       applied_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
     )
   `);
@@ -24,7 +24,14 @@ export async function runMigrations(sequelize: Sequelize, migrationsDir: string)
         if (appliedVersions.has(file)) continue;
 
         const sql = fs.readFileSync(path.join(migrationsDir, file), 'utf-8');
-        await sequelize.query(sql);
+        const statements = sql
+            .split(';')
+            .map(s => s.trim())
+            .filter(s => s.length > 0);
+
+        for (const statement of statements) {
+            await sequelize.query(statement);
+        }
         await sequelize.query(
             'INSERT INTO schema_migrations (version) VALUES (?)',
             { replacements: [file] }
