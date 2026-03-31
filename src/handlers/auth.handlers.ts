@@ -25,7 +25,7 @@ export class AuthHandlers {
                 JWT_SECRET,
                 {expiresIn: '7d'}
             );
-            res.cookie(COOKIE_NAME, token, {httpOnly: true, sameSite: 'strict'});
+            res.cookie(COOKIE_NAME, token, {httpOnly: true, sameSite: 'lax'});
             return res.status(200).json({id: user.id, email: user.email, memberId: user.memberId});
         };
     }

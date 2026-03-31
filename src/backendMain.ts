@@ -1,6 +1,7 @@
 import {app, setupEndpoints} from './backendRouting';
 import {Options} from "sequelize";
 import {Orm} from "./orm";
+import {devAutoLoginMiddleware} from "./middleware/devAutoLogin";
 
 const mariaDbOptions : Options = {
     dialect: 'mariadb',
@@ -15,6 +16,9 @@ const mariaDbOptions : Options = {
 async function main(){
     const orm = new Orm('hartappat', 'appuser', 'appuserpass', mariaDbOptions);
     await orm.initialize();
+
+    app.use(devAutoLoginMiddleware(1));
+
     setupEndpoints(app, orm);
 
     app.listen(3000, () => {

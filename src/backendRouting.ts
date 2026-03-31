@@ -15,6 +15,7 @@ import {WineGrapeHandlers} from "./handlers/wine-grape.handlers";
 import {ScoreHandlers} from "./handlers/score.handlers";
 import {AuthHandlers} from "./handlers/auth.handlers";
 import cookieParser from "cookie-parser";
+import {requireAuth} from "./middleware/requireAuth";
 
 function getConfiguredApp(): Express {
     const app: Express = express();
@@ -57,7 +58,7 @@ export function setupEndpoints(router: Express, orm: Orm) {
     router.post('/api/v1/auth/logout', authHandlers.logout());
     router.get('/api/v1/auth/me', authHandlers.me());
 
-   // router.use(requireAuth);
+   router.use(requireAuth);
 
     router.delete('/api/v1/countries/:id', countryHandlers.deleteCountryById());
     router.get('/api/v1/countries', countryHandlers.getCountries());

@@ -5,7 +5,7 @@
 // TODO: Undersök om alla parametrar till kommandot ng serve kan definieras här (host och port är intressantast)
 export const environment = {
   production: false,
-  apiUrl: 'http://192.168.1.65:3000',
+  apiUrl: '',
   proxyUrl: 'http://192.168.1.65:3001'
 };
 
