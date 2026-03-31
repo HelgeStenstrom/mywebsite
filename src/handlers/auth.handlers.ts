@@ -55,8 +55,15 @@ export class AuthHandlers {
     register() {
         return async (req: Request, res: Response) => {
             const {email, password, memberId} = req.body;
-            const user = await this.orm.users.create({email, password, memberId: memberId ?? null});
-            return res.status(201).json({id: user.id, email: user.email, memberId: user.memberId});
+            try {
+                const user = await this.orm.users.create({email, password, memberId: memberId ?? null});
+                return res.status(201).json({id: user.id, email: user.email, memberId: user.memberId});
+            } catch (error:any) {
+                if (error.name === 'SequelizeUniqueConstraintError') {
+                    return res.status(409).json({status: 409, message: 'Email already exists'});
+                }
+                throw error;
+            }
         };
     }
 }

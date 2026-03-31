@@ -93,4 +93,17 @@ describe('AuthHandlers', () => {
 
         expect(logoutResponse.status).toBe(204);
     });
+
+    test('POST /auth/register returns 409 when email already exists', async () => {
+        await request(app)
+            .post('/api/v1/auth/register')
+            .send({email: 'helge@example.com', password: 'secret', memberId: null})
+            .expect(201);
+
+        const response = await request(app)
+            .post('/api/v1/auth/register')
+            .send({email: 'helge@example.com', password: 'secret', memberId: null});
+
+        expect(response.status).toBe(409);
+    });
 });
