@@ -1,24 +1,28 @@
 import express from "express";
-import {createTestApp} from "../../testUtils";
+import {createTestApp, loginAs} from "../../testUtils";
 import request from "supertest";
 
 describe('WineGrape handler tests', () => {
 
     let app: express.Express;
+    let cookie: string;
 
     beforeEach(async () => {
         app = await createTestApp();
+        cookie = await loginAs(app, 'test@example.com', 'secret');
     });
 
     async function postAWine() {
         const country = await request(app)
             .post('/api/v1/countries')
             .send({name: 'Sverige'})
+            .set('Cookie', cookie)
             .expect(201);
 
         const wineType = await request(app)
             .post('/api/v1/wine-types')
             .send({name: 'rött'})
+            .set('Cookie', cookie)
             .expect(201);
 
         return await request(app)
@@ -29,6 +33,7 @@ describe('WineGrape handler tests', () => {
                 wineTypeId: wineType.body.id,
                 isNonVintage: false,
             })
+            .set('Cookie', cookie)
             .expect(201);
     }
 
@@ -36,6 +41,7 @@ describe('WineGrape handler tests', () => {
         return await request(app)
             .post('/api/v1/grapes')
             .send({name: 'Pinot Noir', color: 'blå'})
+            .set('Cookie', cookie)
             .expect(201);
     }
 
@@ -49,6 +55,7 @@ describe('WineGrape handler tests', () => {
                 grapeId: grape.body.id,
                 percentage: 75.5,
             })
+            .set('Cookie', cookie)
             .expect(201);
 
         expect(res.body).toEqual({
@@ -69,10 +76,12 @@ describe('WineGrape handler tests', () => {
                 grapeId: grape.body.id,
                 percentage: 75.5,
             })
+            .set('Cookie', cookie)
             .expect(201);
 
         const res = await request(app)
             .get(`/api/v1/wines/${wine.body.id}/grapes`)
+            .set('Cookie', cookie)
             .expect(200);
 
         expect(res.body).toEqual([{
@@ -90,6 +99,7 @@ describe('WineGrape handler tests', () => {
         const res = await request(app)
             .post(`/api/v1/wines/${wine.body.id}/grapes`)
             .send({grapeId: grape.body.id})
+            .set('Cookie', cookie)
             .expect(201);
 
         expect(res.body.percentage).toBeNull();
@@ -100,6 +110,7 @@ describe('WineGrape handler tests', () => {
 
         await request(app)
             .delete(`/api/v1/wines/${wineWithoutGrapes.body.id}/grapes/99999`)
+            .set('Cookie', cookie)
             .expect(404);
     });
 
@@ -113,10 +124,12 @@ describe('WineGrape handler tests', () => {
                 grapeId: grape.body.id,
                 percentage: 75.5,
             })
+            .set('Cookie', cookie)
             .expect(201);
 
         await request(app)
             .delete(`/api/v1/wines/${wine.body.id}/grapes/${res.body.id}`)
+            .set('Cookie', cookie)
             .expect(204);
     });
 
@@ -129,17 +142,19 @@ describe('WineGrape handler tests', () => {
                 grapeId: grape.body.id,
                 percentage: 75.5,
             })
+            .set('Cookie', cookie)
             .expect(201);
 
-        const res = await request(app)
+        await request(app)
             .delete(`/api/v1/wines/${wine.body.id}/grapes/${wineGrape.body.id}`)
+            .set('Cookie', cookie)
             .expect(204);
 
         const found = await request(app)
             .get(`/api/v1/wines/${wine.body.id}`)
+            .set('Cookie', cookie)
             .expect(200);
 
         expect(found.body.grapes).toEqual([]);
-
-    })
+    });
 });

@@ -1,13 +1,15 @@
 import express from "express";
-import {createTestApp} from "../../testUtils";
+import {createTestApp, loginAs} from "../../testUtils";
 import request from "supertest";
 
 describe('WineTastingHostHandlers', () => {
 
     let app: express.Express;
+    let cookie: string;
 
     beforeEach(async () => {
         app = await createTestApp();
+        cookie = await loginAs(app, 'test@example.com', 'secret');
     });
 
     test('POST /tastings/:id/hosts returns 201 with created host', async () => {
@@ -18,6 +20,7 @@ describe('WineTastingHostHandlers', () => {
                 notes: 'Några anteckningar',
                 tastingDate: '2024-01-15',
             })
+            .set('Cookie', cookie)
             .expect(201);
 
         const member = await request(app)
@@ -26,19 +29,19 @@ describe('WineTastingHostHandlers', () => {
                 given: 'Test',
                 surname: 'Testsson',
             })
+            .set('Cookie', cookie)
             .expect(201);
 
         const res = await request(app)
             .post(`/api/v1/tastings/${tasting.body.id}/hosts`)
-            .send({
-                memberId: member.body.id,
-            })
+            .send({memberId: member.body.id})
+            .set('Cookie', cookie)
             .expect(201);
 
         expect(res.body).toEqual({
             memberId: member.body.id,
         });
-    })
+    });
 
     test('GET /tastings/:id/hosts returns list of hosts', async () => {
         const tasting = await request(app)
@@ -48,6 +51,7 @@ describe('WineTastingHostHandlers', () => {
                 notes: 'Några anteckningar',
                 tastingDate: '2024-01-15',
             })
+            .set('Cookie', cookie)
             .expect(201);
 
         const member = await request(app)
@@ -56,56 +60,59 @@ describe('WineTastingHostHandlers', () => {
                 given: 'Test',
                 surname: 'Testsson',
             })
+            .set('Cookie', cookie)
             .expect(201);
 
         await request(app)
             .post(`/api/v1/tastings/${tasting.body.id}/hosts`)
-            .send({
-                memberId: member.body.id,
-            })
+            .send({memberId: member.body.id})
+            .set('Cookie', cookie)
             .expect(201);
 
         const res = await request(app)
             .get(`/api/v1/tastings/${tasting.body.id}/hosts`)
+            .set('Cookie', cookie)
             .expect(200);
 
-        expect(res.body).toEqual([{
-            memberId: member.body.id,
-        }]);
-
-    })
+        expect(res.body).toEqual([{memberId: member.body.id}]);
+    });
 
     test('PUT /tastings/:id/hosts replaces all hosts', async () => {
         const tasting = await request(app)
             .post('/api/v1/tastings')
-            .send({ title: 'Test tasting', notes: '', tastingDate: '2024-01-15' })
+            .send({title: 'Test tasting', notes: '', tastingDate: '2024-01-15'})
+            .set('Cookie', cookie)
             .expect(201);
 
         const member1 = await request(app)
             .post('/api/v1/members')
-            .send({ given: 'Test', surname: 'Testsson' })
+            .send({given: 'Test', surname: 'Testsson'})
+            .set('Cookie', cookie)
             .expect(201);
 
         const member2 = await request(app)
             .post('/api/v1/members')
-            .send({ given: 'Anna', surname: 'Andersson' })
+            .send({given: 'Anna', surname: 'Andersson'})
+            .set('Cookie', cookie)
             .expect(201);
 
         await request(app)
             .post(`/api/v1/tastings/${tasting.body.id}/hosts`)
-            .send({ memberId: member1.body.id })
+            .send({memberId: member1.body.id})
+            .set('Cookie', cookie)
             .expect(201);
 
         await request(app)
             .put(`/api/v1/tastings/${tasting.body.id}/hosts`)
-            .send([{ memberId: member2.body.id }])
+            .send([{memberId: member2.body.id}])
+            .set('Cookie', cookie)
             .expect(204);
 
         const res = await request(app)
             .get(`/api/v1/tastings/${tasting.body.id}/hosts`)
+            .set('Cookie', cookie)
             .expect(200);
 
-        expect(res.body).toEqual([{ memberId: member2.body.id }]);
+        expect(res.body).toEqual([{memberId: member2.body.id}]);
     });
-
-})
+});
