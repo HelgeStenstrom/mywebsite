@@ -16,14 +16,17 @@ export function defineUser(sequelize: Sequelize): ModelStatic<UserInstance> {
         passwordHash: {
             type: DataTypes.TEXT,
             allowNull: false,
+            field: 'password_hash',
         },
         memberId: {
             type: DataTypes.INTEGER,
             allowNull: true,
+            field: 'member_id',
         },
         createdAt: {
             type: DataTypes.DATE,
             allowNull: false,
+            field: 'created_at',
         },
     }, {
         tableName: 'users',
