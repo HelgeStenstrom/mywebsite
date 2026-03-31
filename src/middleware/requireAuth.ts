@@ -13,11 +13,6 @@ export function requireAuth(req: Request, res: Response, next: NextFunction) {
         return;
     }
 
-    if (token == 'invalid-token') {
-        res.status(401).json({status: 401, message: 'Invalid token'});
-        return;
-    }
-
     try {
         (req as any).user = jwt.verify(token, JWT_SECRET) as { id: number, email: string, memberId: number };
         next();
