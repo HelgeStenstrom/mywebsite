@@ -1,27 +1,27 @@
-import express from "express";
+import {NextFunction, Request, Response} from "express";
+import jwt from "jsonwebtoken";
 
+const JWT_SECRET = process.env.JWT_SECRET ?? 'dev-secret';
+const COOKIE_NAME = 'token';
 
-export function requireAuth(req: express.Request, res: express.Response, next: express.NextFunction) {
+export function requireAuth(req: Request, res: Response, next: NextFunction) {
 
-    const tokens = req.cookies;
+    const token = req.cookies?.[COOKIE_NAME];
 
-    if (!tokens.token) {
-        res.status(401);
+    if (!token) {
+        res.status(401).json({status: 401, message: 'Not logged in'});
         return;
     }
 
-    const token = tokens.token;
     if (token == 'invalid-token') {
-        res.status(401);
+        res.status(401).json({status: 401, message: 'Invalid token'});
         return;
     }
 
-    (req as any).user = {
-        email: "helge@example.com",
-        id:1,
-        memberId:3
+    try {
+        (req as any).user = jwt.verify(token, JWT_SECRET) as { id: number, email: string, memberId: number };
+        next();
+    } catch  {
+        res.status(401).json({status: 401, message: 'Invalid token'});
     }
-    next();
-
-
 }

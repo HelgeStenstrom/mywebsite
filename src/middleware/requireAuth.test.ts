@@ -40,6 +40,7 @@ describe('RequireAuth middleware', () => {
         requireAuth(req as Request, res as Response, next);
 
         expect(res.status).toHaveBeenCalledWith(401);
+        expect(res.json).toHaveBeenCalledWith({status: 401, message: 'Not logged in'});
         expect(next).not.toHaveBeenCalled();
     });
 
@@ -51,6 +52,7 @@ describe('RequireAuth middleware', () => {
         requireAuth(req as Request, res as Response, next);
 
         expect(res.status).toHaveBeenCalledWith(401);
+        expect(res.json).toHaveBeenCalledWith({status: 401, message: 'Invalid token'});
         expect(next).not.toHaveBeenCalled();
     });
 
