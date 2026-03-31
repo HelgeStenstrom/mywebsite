@@ -4,7 +4,7 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {RouterModule} from "@angular/router";
-import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from "@angular/common/http";
+import {provideHttpClient, withInterceptors} from "@angular/common/http";
 
 import {AppComponent} from './app.component';
 import {GrapesComponent} from './components/grapes/grapes.component';
@@ -28,7 +28,6 @@ import {TastingsComponent} from './components/tastings/tastings.component';
 import {TastingComponent} from './components/tastings/tasting/tasting.component';
 import {MembersComponent} from './components/about/members/members.component';
 import {WineEntryComponent} from './components/wine-entry/wine-entry.component';
-import {ExtraHeaderInterceptor} from "./services/interceptors/extra-header-interceptor";
 import {CountriesComponent} from './components/countries/countries.component';
 import {WineTypesComponent} from './components/wine-types/wine-types.component';
 import {CreateTastingComponent} from './components/tastings/create-tasting/create-tasting.component';
@@ -41,6 +40,7 @@ import {provideAnimationsAsync} from "@angular/platform-browser/animations/async
 import {ScoresComponent} from "./components/tastings/scores/scores.component";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tasting.component";
+import {credentialsInterceptor} from "./services/interceptors/credentials.interceptor";
 
 @NgModule({
   declarations: [
@@ -105,8 +105,7 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}},
     {provide: MatDialogRef, useValue: {}},
     {provide: MAT_DIALOG_DATA, useValue: {}},
-    {provide: HTTP_INTERCEPTORS, useClass: ExtraHeaderInterceptor, multi: true},
-    provideHttpClient(withInterceptorsFromDi()),
+    provideHttpClient(withInterceptors([credentialsInterceptor])),
     provideAnimationsAsync(),
   ]
 })

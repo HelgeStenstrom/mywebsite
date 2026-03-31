@@ -1,6 +1,6 @@
 import express, {Express} from "express";
 import "express-async-errors";
-import cors from "cors";
+import cors, {CorsOptions} from "cors";
 
 import {Orm} from "./orm";
 import {GrapeHandlers} from "./handlers/grape.handlers";
@@ -14,12 +14,17 @@ import {WineTastingHostHandlers} from "./handlers/wine-tasting-host.handlers";
 import {WineGrapeHandlers} from "./handlers/wine-grape.handlers";
 import {ScoreHandlers} from "./handlers/score.handlers";
 import {AuthHandlers} from "./handlers/auth.handlers";
-import {requireAuth} from "./middleware/requireAuth";
+import cookieParser from "cookie-parser";
 
 function getConfiguredApp(): Express {
     const app: Express = express();
-    app.use(cors());
+    const corsOptions: CorsOptions = {
+        origin: 'http://localhost:8080',
+        credentials: true,
+    };
+    app.use(cors(corsOptions));
     app.use(express.json());
+    app.use(cookieParser());
     return app;
 }
 
@@ -41,8 +46,9 @@ export function setupEndpoints(router: Express, orm: Orm) {
     const authHandlers = new AuthHandlers(orm);
 
 
-    router.use((req, res, next) => {
+    router.use((req : express.Request, res: express.Response, next) => {
         console.log(`${req.method} ${req.path}`);
+        console.log('cookies:', req.cookies);
         next();
     });
 
@@ -51,7 +57,7 @@ export function setupEndpoints(router: Express, orm: Orm) {
     router.post('/api/v1/auth/logout', authHandlers.logout());
     router.get('/api/v1/auth/me', authHandlers.me());
 
-    router.use(requireAuth);
+   // router.use(requireAuth);
 
     router.delete('/api/v1/countries/:id', countryHandlers.deleteCountryById());
     router.get('/api/v1/countries', countryHandlers.getCountries());
