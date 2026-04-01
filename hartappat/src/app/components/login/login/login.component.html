@@ -1,1 +1,23 @@
-<p>login works!</p>
+<h1>LoginComponent</h1>
+
+<input
+  type="email"
+  placeholder="user@example.com"
+  [(ngModel)]="email"
+  data-test="email-input">
+
+<input
+  type="password"
+  placeholder="password"
+  [(ngModel)]="password"
+  data-test="password-input">
+
+<button type="submit"
+        data-test="submit"
+        (click)="login()"
+>Login
+</button>
+
+@if (error) {
+  <p data-test="warning">Fel mailadress eller lösenord</p>
+}
