@@ -2,6 +2,7 @@ import {ModelStatic, Sequelize} from "sequelize";
 import {UserInstance} from "../../types/user";
 import {defineUser} from "../../orm/models/user.model";
 import {UserRepository} from "../../orm/repositories/user.repository";
+import bcrypt from "bcrypt";
 
 describe('UserRepository', () => {
 
@@ -21,16 +22,16 @@ describe('UserRepository', () => {
     });
 
     test('create stores a hashed password, not the plaintext password', async () => {
-        const user = await repository.create({email: 'helge@example.com', password: 'secret', memberId: null});
+        const user = await repository.create({email: 'user@example.com', password: 'secret', memberId: null});
         expect(user.passwordHash).not.toBe('secret');
         expect(user.passwordHash.length).toBeGreaterThan(0);
     });
 
     test('findByEmail returns the user with correct email', async () => {
-        await repository.create({email: 'helge@example.com', password: 'secret', memberId: null});
-        const result = await repository.findByEmail('helge@example.com');
+        await repository.create({email: 'user@example.com', password: 'secret', memberId: null});
+        const result = await repository.findByEmail('user@example.com');
         expect(result).not.toBeNull();
-        expect(result!.email).toBe('helge@example.com');
+        expect(result!.email).toBe('user@example.com');
     });
 
     test('findByEmail returns null when user does not exist', async () => {
@@ -39,7 +40,7 @@ describe('UserRepository', () => {
     });
 
     test('findById returns the user with correct id', async () => {
-        const created = await repository.create({email: 'helge@example.com', password: 'secret', memberId: null});
+        const created = await repository.create({email: 'user@example.com', password: 'secret', memberId: null});
         const result = await repository.findById(created.id);
         expect(result).not.toBeNull();
         expect(result!.id).toBe(created.id);
@@ -48,5 +49,13 @@ describe('UserRepository', () => {
     test('findById returns null when user does not exist', async () => {
         const result = await repository.findById(999);
         expect(result).toBeNull();
+    });
+
+    test('updatePassword allows login with new password', async () => {
+        const user = await repository.create({email: 'user@example.com', password: 'secret', memberId: null});
+        await repository.updatePassword(user.id, 'newSecret');
+        const updated = await repository.findById(user.id);
+        const valid = await bcrypt.compare('newSecret', updated!.passwordHash);
+        expect(valid).toBe(true);
     });
 });

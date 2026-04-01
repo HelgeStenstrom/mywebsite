@@ -57,8 +57,9 @@ export function setupEndpoints(router: Express, orm: Orm) {
     router.post('/api/v1/auth/logout', authHandlers.logout());
     router.get('/api/v1/auth/me', authHandlers.me());
 
-    router.use(requireAuth);
     router.post('/api/v1/auth/register', authHandlers.register());
+    router.use(requireAuth);
+    router.post('/api/v1/auth/change-password', authHandlers.changePassword());
 
     router.delete('/api/v1/countries/:id', countryHandlers.deleteCountryById());
     router.get('/api/v1/countries', countryHandlers.getCountries());

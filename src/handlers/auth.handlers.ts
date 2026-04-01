@@ -66,4 +66,23 @@ export class AuthHandlers {
             }
         };
     }
-}
+
+    changePassword() {
+        return async (req: Request, res: Response) => {
+            const {currentPassword, newPassword} = req.body;
+            const userId = (req as any).user?.id;
+            if (!userId) {
+                return res.status(401).json({status: 401, message: 'Not logged in'});
+            }
+            const user = await this.orm.users.findById(userId);
+            if (!user) {
+                return res.status(401).json({status: 401, message: 'Not logged in'});
+            }
+            const valid = await bcrypt.compare(currentPassword, user.passwordHash);
+            if (!valid) {
+                return res.status(403).json({status: 403, message: 'Current password is wrong'});
+            }
+            await this.orm.users.updatePassword(user.id, newPassword);
+            return res.status(200).send();
+        };
+    }}

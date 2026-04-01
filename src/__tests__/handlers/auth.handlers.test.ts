@@ -12,30 +12,30 @@ describe('AuthHandlers', () => {
 
     test('POST /auth/login returns 200 and sets cookie with valid credentials', async () => {
         await request(app).post('/api/v1/auth/register').send({
-            email: 'helge@example.com',
+            email: 'user@example.com',
             password: 'secret',
             memberId: null,
         });
 
         const response = await request(app)
             .post('/api/v1/auth/login')
-            .send({email: 'helge@example.com', password: 'secret'});
+            .send({email: 'user@example.com', password: 'secret'});
 
         expect(response.status).toBe(200);
-        expect(response.body.email).toBe('helge@example.com');
+        expect(response.body.email).toBe('user@example.com');
         expect(response.headers['set-cookie']).toBeDefined();
     });
 
     test('POST /auth/login returns 401 with invalid password', async () => {
         await request(app).post('/api/v1/auth/register').send({
-            email: 'helge@example.com',
+            email: 'user@example.com',
             password: 'secret',
             memberId: null,
         });
 
         const response = await request(app)
             .post('/api/v1/auth/login')
-            .send({email: 'helge@example.com', password: 'wrongpassword'});
+            .send({email: 'user@example.com', password: 'wrongpassword'});
 
         expect(response.status).toBe(401);
     });
@@ -50,14 +50,14 @@ describe('AuthHandlers', () => {
 
     test('GET /auth/me returns 200 with valid cookie', async () => {
         await request(app).post('/api/v1/auth/register').send({
-            email: 'helge@example.com',
+            email: 'user@example.com',
             password: 'secret',
             memberId: null,
         });
 
         const loginResponse = await request(app)
             .post('/api/v1/auth/login')
-            .send({email: 'helge@example.com', password: 'secret'});
+            .send({email: 'user@example.com', password: 'secret'});
 
         const cookie = loginResponse.headers['set-cookie'];
 
@@ -66,7 +66,7 @@ describe('AuthHandlers', () => {
             .set('Cookie', cookie);
 
         expect(meResponse.status).toBe(200);
-        expect(meResponse.body.email).toBe('helge@example.com');
+        expect(meResponse.body.email).toBe('user@example.com');
     });
 
     test('GET /auth/me returns 401 without cookie', async () => {
@@ -76,14 +76,14 @@ describe('AuthHandlers', () => {
 
     test('POST /auth/logout returns 204 and clears cookie', async () => {
         await request(app).post('/api/v1/auth/register').send({
-            email: 'helge@example.com',
+            email: 'user@example.com',
             password: 'secret',
             memberId: null,
         });
 
         const loginResponse = await request(app)
             .post('/api/v1/auth/login')
-            .send({email: 'helge@example.com', password: 'secret'});
+            .send({email: 'user@example.com', password: 'secret'});
 
         const cookie = loginResponse.headers['set-cookie'];
 
@@ -97,13 +97,82 @@ describe('AuthHandlers', () => {
     test('POST /auth/register returns 409 when email already exists', async () => {
         await request(app)
             .post('/api/v1/auth/register')
-            .send({email: 'helge@example.com', password: 'secret', memberId: null})
+            .send({email: 'user@example.com', password: 'secret', memberId: null})
             .expect(201);
 
         const response = await request(app)
             .post('/api/v1/auth/register')
-            .send({email: 'helge@example.com', password: 'secret', memberId: null});
+            .send({email: 'user@example.com', password: 'secret', memberId: null});
 
         expect(response.status).toBe(409);
     });
+
+    describe('Change password', () => {
+
+        test('POST /auth/change-password returns 200 with correct current password', async () => {
+            await request(app)
+                .post('/api/v1/auth/register')
+                .send({email: 'user@example.com', password: 'secret', memberId: null})
+                .expect(201);
+
+            const loginResponse = await request(app)
+                .post('/api/v1/auth/login')
+                .send({email: 'user@example.com', password: 'secret'})
+                .expect(200);
+
+            const cookie = loginResponse.headers['set-cookie'];
+
+            const response = await request(app)
+                .post('/api/v1/auth/change-password')
+                .set('Cookie', cookie)
+                .send({currentPassword: 'secret', newPassword: 'newSecret'});
+
+            expect(response.status).toBe(200);
+        });
+
+        test('POST /auth/change-password returns 403 with wrong current password', async () => {
+            await request(app)
+                .post('/api/v1/auth/register')
+                .send({email: 'user@example.com', password: 'secret', memberId: null});
+
+            const loginResponse = await request(app)
+                .post('/api/v1/auth/login')
+                .send({email: 'user@example.com', password: 'secret'});
+
+            const cookie = loginResponse.headers['set-cookie'];
+
+            const response = await request(app)
+                .post('/api/v1/auth/change-password')
+                .set('Cookie', cookie)
+                .send({currentPassword: 'wrongpassword', newPassword: 'newSecret'});
+
+            expect(response.status).toBe(403);
+        });
+
+        test('POST /auth/change-password allows login with new password after change', async () => {
+            await request(app)
+                .post('/api/v1/auth/register')
+                .send({email: 'user@example.com', password: 'secret', memberId: null});
+
+            const loginResponse = await request(app)
+                .post('/api/v1/auth/login')
+                .send({email: 'user@example.com', password: 'secret'});
+
+            const cookie = loginResponse.headers['set-cookie'];
+
+            await request(app)
+                .post('/api/v1/auth/change-password')
+                .set('Cookie', cookie)
+                .send({currentPassword: 'secret', newPassword: 'newSecret'})
+                .expect(200);
+
+            const newLoginResponse = await request(app)
+                .post('/api/v1/auth/login')
+                .send({email: 'user@example.com', password: 'newSecret'});
+
+            expect(newLoginResponse.status).toBe(200);
+        });
+    })
+
+
 });

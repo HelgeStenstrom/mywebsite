@@ -28,4 +28,10 @@ export class UserRepository {
         const instance = await this.user.findByPk(id);
         return instance ? instance.get() : null;
     }
+
+    async updatePassword(id: number, newSecret: string) {
+        const passwordHash = await bcrypt.hash(newSecret, 10);
+        await this.user.update({passwordHash}, {where: {id}});
+
+    }
 }
