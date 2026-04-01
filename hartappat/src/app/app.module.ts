@@ -41,6 +41,7 @@ import {ScoresComponent} from "./components/tastings/scores/scores.component";
 import {DragDropModule} from "@angular/cdk/drag-drop";
 import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tasting.component";
 import {credentialsInterceptor} from "./services/interceptors/credentials.interceptor";
+import {LoginComponent} from "./components/login/login/login.component";
 
 @NgModule({
   declarations: [
@@ -69,6 +70,7 @@ import {credentialsInterceptor} from "./services/interceptors/credentials.interc
       {path: 'countries', component: CountriesComponent},
       {path: 'wine-types', component: WineTypesComponent},
       {path: 'tests', component: TestbenchComponent},
+      {path: 'login', component: LoginComponent},
       {path: '**', component: NotFoundComponent},
     ]),
     NotFoundComponent,
