@@ -9,7 +9,8 @@ import {HttpClient} from "@angular/common/http";
 export class AuthService {
   public readonly apiBase = environment.apiUrl + '/api/v1';
 
-  constructor(private readonly http: HttpClient) {}
+  constructor(private readonly http: HttpClient) {
+  }
 
   login(email: string, password: string): Observable<any> {
     return this.http.post(`${this.apiBase}/auth/login`, {email, password});
@@ -19,7 +20,11 @@ export class AuthService {
     return this.http.post(`${this.apiBase}/auth/logout`, {});
   }
 
-  me(): Observable<any>  {
+  me(): Observable<any> {
     return this.http.get(`${this.apiBase}/auth/me`);
+  }
+
+  changePassword(currentPassword: string, newPassword: string): Observable<any> {
+    return this.http.post(`${this.apiBase}/auth/change-password`, {currentPassword, newPassword});
   }
 }

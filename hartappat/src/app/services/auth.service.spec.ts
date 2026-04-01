@@ -54,4 +54,15 @@ describe('AuthService', () => {
     req.flush({id: 1, email: 'user@example.com', memberId: null});
   });
 
+  test('changePassword posts currentPassword and newPassword', done => {
+    service.changePassword('oldPass', 'newPass').subscribe(() => {
+      done();
+    });
+
+    const req = httpTestingController.expectOne(`${url}/change-password`);
+    expect(req.request.method).toEqual('POST');
+    expect(req.request.body).toEqual({currentPassword: 'oldPass', newPassword: 'newPass'});
+    req.flush(null);
+  });
+
 });
