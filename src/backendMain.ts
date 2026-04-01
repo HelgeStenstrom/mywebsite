@@ -17,7 +17,10 @@ async function main(){
     const orm = new Orm('hartappat', 'appuser', 'appuserpass', mariaDbOptions);
     await orm.initialize();
 
-    app.use(devAutoLoginMiddleware(1));
+    const devUserId = process.env.DEV_AUTO_LOGIN_USER_ID;
+    if (devUserId) {
+        app.use(devAutoLoginMiddleware(Number(devUserId)));
+    }
 
     setupEndpoints(app, orm);
 

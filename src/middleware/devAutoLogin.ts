@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 const JWT_SECRET = process.env.JWT_SECRET ?? 'dev-secret';
 const COOKIE_NAME = 'token';
 
+// TODO: Take mail address from the database.
 export function devAutoLoginMiddleware(userId: number) {
     return (req: Request, res: Response, next: NextFunction): void => {
         if (!req.cookies?.[COOKIE_NAME]) {

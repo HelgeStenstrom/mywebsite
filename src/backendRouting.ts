@@ -47,18 +47,18 @@ export function setupEndpoints(router: Express, orm: Orm) {
     const authHandlers = new AuthHandlers(orm);
 
 
-    router.use((req : express.Request, res: express.Response, next) => {
+    router.use((req: express.Request, res: express.Response, next) => {
         console.log(`${req.method} ${req.path}`);
         console.log('cookies:', req.cookies);
         next();
     });
 
-    router.post('/api/v1/auth/register', authHandlers.register());
     router.post('/api/v1/auth/login', authHandlers.login());
     router.post('/api/v1/auth/logout', authHandlers.logout());
     router.get('/api/v1/auth/me', authHandlers.me());
 
-   router.use(requireAuth);
+    router.use(requireAuth);
+    router.post('/api/v1/auth/register', authHandlers.register());
 
     router.delete('/api/v1/countries/:id', countryHandlers.deleteCountryById());
     router.get('/api/v1/countries', countryHandlers.getCountries());
@@ -124,6 +124,6 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
 
     router.use((err: Error, req: express.Request, res: express.Response, next: express.NextFunction) => {
-        res.status(503).json({ error: 'Service temporarily unavailable' });
+        res.status(503).json({error: 'Service temporarily unavailable'});
     })
 }
