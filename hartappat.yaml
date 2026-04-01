@@ -1371,7 +1371,7 @@ components:
         email:
           type: string
           format: email
-          example: helge@example.com
+          example: user@example.com
         password:
           type: string
           example: secret
@@ -1386,7 +1386,7 @@ components:
         email:
           type: string
           format: email
-          example: helge@example.com
+          example: user@example.com
         password:
           type: string
           example: secret
