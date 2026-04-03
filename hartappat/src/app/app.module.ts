@@ -42,6 +42,7 @@ import {DragDropModule} from "@angular/cdk/drag-drop";
 import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tasting.component";
 import {credentialsInterceptor} from "./services/interceptors/credentials.interceptor";
 import {LoginComponent} from "./components/login/login/login.component";
+import {ChangePasswordComponent} from "./components/login/change-password/change-password.component";
 
 @NgModule({
   declarations: [
@@ -71,6 +72,7 @@ import {LoginComponent} from "./components/login/login/login.component";
       {path: 'wine-types', component: WineTypesComponent},
       {path: 'tests', component: TestbenchComponent},
       {path: 'login', component: LoginComponent},
+      {path: 'change-password', component: ChangePasswordComponent},
       {path: '**', component: NotFoundComponent},
     ]),
     NotFoundComponent,

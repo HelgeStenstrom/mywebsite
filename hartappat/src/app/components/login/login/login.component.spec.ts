@@ -60,7 +60,6 @@ describe('LoginComponent', () => {
   describe('Form use', () => {
 
     test('Clicking the login button calls login', () => {
-      authServiceMock.login.mockReturnValue(of({}));
       const spy = jest.spyOn(component, 'login');
       const submitButton = fixture.nativeElement.querySelector('[data-test="submit"]');
       submitButton.click();
@@ -74,13 +73,13 @@ describe('LoginComponent', () => {
       const emailInput = fixture.nativeElement.querySelector('[data-test="email-input"]');
       const passwordInput = fixture.nativeElement.querySelector('[data-test="password-input"]');
       const submitButton = fixture.nativeElement.querySelector('[data-test="submit"]');
-      emailInput.value = 'user@example.com';
+      emailInput.value = 'someone@example.com';
       passwordInput.value = 'secret';
       emailInput.dispatchEvent(new Event('input'));
       passwordInput.dispatchEvent(new Event('input'));
       submitButton.click();
       fixture.detectChanges();
-      expect(authServiceMock.login).toHaveBeenCalledWith('user@example.com', 'secret');
+      expect(authServiceMock.login).toHaveBeenCalledWith('someone@example.com', 'secret');
 
       const warningMessage = fixture.nativeElement.querySelector('[data-test="warning"]');
       expect(warningMessage).toBeFalsy();
