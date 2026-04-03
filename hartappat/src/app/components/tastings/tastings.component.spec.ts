@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TastingsComponent} from './tastings.component';
-import {provideHttpClientTesting} from "@angular/common/http/testing";
+import {HttpTestingController, provideHttpClientTesting} from "@angular/common/http/testing";
 import {TastingComponent} from "./tasting/tasting.component";
 import {of} from "rxjs";
 import {CreateTastingComponent} from "./create-tasting/create-tasting.component";
@@ -15,6 +15,7 @@ import {By} from "@angular/platform-browser";
 describe('TastingsComponent', () => {
   let component: TastingsComponent;
   let fixture: ComponentFixture<TastingsComponent>;
+  let httpTestingController: HttpTestingController;
   let mockTastingService: jest.Mocked<TastingService>;
 
   const tastings: WineTastingSummary[] = [
@@ -44,7 +45,12 @@ describe('TastingsComponent', () => {
 
     fixture = TestBed.createComponent(TastingsComponent);
     component = fixture.componentInstance;
+    httpTestingController = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   it('should create', () => {

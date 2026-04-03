@@ -4,7 +4,7 @@ import {AddGrapeComponent} from './add-grape.component';
 import {Observable, of} from "rxjs";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
-import {provideHttpClientTesting} from "@angular/common/http/testing";
+import {HttpTestingController, provideHttpClientTesting} from "@angular/common/http/testing";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Grape} from "../../../models/common.model";
 import {GrapeService} from "../../../services/backend/grape.service";
@@ -16,6 +16,7 @@ import {provideHttpClient} from "@angular/common/http";
 describe('AddGrapeComponent test with mock', () => {
   let component: AddGrapeComponent;
   let fixture: ComponentFixture<AddGrapeComponent>;
+  let httpTestingController: HttpTestingController;
 
   const cs: Grape = {id: 0, name: 'Cabernet Sauvignon', color: 'blå', isUsed: false};
   const grapeServiceStub: Partial<GrapeService> = {
@@ -37,7 +38,12 @@ describe('AddGrapeComponent test with mock', () => {
 
     fixture = TestBed.createComponent(AddGrapeComponent);
     component = fixture.componentInstance;
+    httpTestingController = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    httpTestingController.verify();
   });
 
   it('renders without errors', () => {

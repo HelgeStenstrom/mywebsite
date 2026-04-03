@@ -72,6 +72,7 @@ describe('ChangePasswordComponent', () => {
     })
 
     test('on submit, it calls changePassword', () => {
+      authServiceMock.changePassword.mockReturnValue(of({}));
       const spy = jest.spyOn(component, 'changePassword');
 
       const button = fixture.nativeElement.querySelector('button[type="submit"]');

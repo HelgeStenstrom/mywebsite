@@ -60,6 +60,7 @@ describe('LoginComponent', () => {
   describe('Form use', () => {
 
     test('Clicking the login button calls login', () => {
+     authServiceMock.login.mockReturnValue(of({}));
       const spy = jest.spyOn(component, 'login');
       const submitButton = fixture.nativeElement.querySelector('[data-test="submit"]');
       submitButton.click();

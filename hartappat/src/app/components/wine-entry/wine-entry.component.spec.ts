@@ -59,6 +59,10 @@ describe('WineEntryComponent', () => {
     component = fixture.componentInstance;
   });
 
+  afterEach(() => {
+
+  })
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });

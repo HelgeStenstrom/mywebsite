@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import WinesComponent from './wines.component';
-import {provideHttpClientTesting} from "@angular/common/http/testing";
+import {HttpTestingController, provideHttpClientTesting} from "@angular/common/http/testing";
 import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {FormsModule} from "@angular/forms";
 import {CountryService} from "../../services/backend/country.service";
@@ -14,6 +14,7 @@ import {NO_ERRORS_SCHEMA} from "@angular/core";
 describe('WinesComponent', () => {
   let component: WinesComponent;
   let fixture: ComponentFixture<WinesComponent>;
+  let httpTestingController: HttpTestingController;
 
   let countryServiceMock: Partial<CountryService>;
   let wineTypeServiceMock: Partial<WineTypeService>;
@@ -50,8 +51,13 @@ describe('WinesComponent', () => {
 
     fixture = TestBed.createComponent(WinesComponent);
     component = fixture.componentInstance;
+    httpTestingController = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
   });
+
+  afterEach(() => {
+    httpTestingController.verify();
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy();

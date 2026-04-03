@@ -51,10 +51,7 @@ describe('WineDetailComponent', () => {
   });
 
   test('sets wineId from route parameter', () => {
-    const fixture = TestBed.createComponent(WineDetailComponent);
-    const component = fixture.componentInstance;
 
-    fixture.detectChanges();
 
     expect(component.wineId).toBe(42);
   });
