@@ -15,7 +15,7 @@ import {MatIcon} from "@angular/material/icon";
 })
 export class NavbarComponent {
 
-  constructor(private readonly authService: AuthService,
+  constructor(protected readonly authService: AuthService,
               private readonly router: Router,
               ) {}
 

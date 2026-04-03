@@ -14,14 +14,24 @@
   <a class="nav1" routerLinkActive="active current" routerLink="/wine-types">Vintyper</a>
   <a class="nav1" routerLinkActive="active current" routerLink="/tests">Sajttester</a>
   <a class="nav1" routerLinkActive="active current" routerLink="/change-password">Byt lösenord</a>
-  <a class="nav1" routerLinkActive="active current" routerLink="/login">Logga in</a>
-  <button
-    mat-stroked-button
-    (click)="logout()"
-    data-test="logout-button"
-  >
-    <mat-icon>logout</mat-icon>
-    Logga ut</button>
+
+
+
+  @if (authService.currentUser()) {
+   <button
+     mat-stroked-button
+     (click)="logout()"
+     data-test="logout-button"
+   >
+     <mat-icon>logout</mat-icon>
+     Logga ut</button>
+
+ } @else {
+    <a class="nav1" routerLinkActive="active current" routerLink="/login">
+      <mat-icon>login</mat-icon>
+      Logga in</a>
+  }
+
 </div>
 
 

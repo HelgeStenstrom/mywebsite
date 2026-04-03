@@ -14,10 +14,10 @@ export class AuthService {
   constructor(private readonly http: HttpClient) {
   }
 
-  login(email: string, password: string): Observable<any> {
+  login(email: string, password: string): Observable<AuthUser> {
     return this.http
-      .post(`${this.apiBase}/auth/login`, {email, password})
-      .pipe(tap(user => this.currentUser.set(user as AuthUser)));
+      .post<AuthUser>(`${this.apiBase}/auth/login`, {email, password})
+      .pipe(tap(user => this.currentUser.set(user)));
   }
 
   logout(): Observable<any> {
@@ -28,16 +28,16 @@ export class AuthService {
       );
   }
 
-  me(): Observable<any> {
-    return this.http.get(`${this.apiBase}/auth/me`);
+  me(): Observable<AuthUser> {
+    return this.http.get<AuthUser>(`${this.apiBase}/auth/me`);
   }
 
   changePassword(currentPassword: string, newPassword: string): Observable<any> {
     return this.http.post(`${this.apiBase}/auth/change-password`, {currentPassword, newPassword});
   }
 
-  fetchCurrentUser(): Observable<any> {
+  fetchCurrentUser(): Observable<AuthUser> {
     return this.me().pipe(
-      tap(user => this.currentUser.set(user as AuthUser))
+      tap(user => this.currentUser.set(user))
     );
   }}

@@ -3,8 +3,9 @@ import {NavbarComponent} from './navbar.component';
 import {Router, RouterModule} from "@angular/router";
 import {AuthService} from "../../services/auth.service";
 import {of} from "rxjs";
-import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {NO_ERRORS_SCHEMA, signal} from "@angular/core";
 import {LoginComponent} from "../login/login/login.component";
+import {AuthUser} from "../../models/auth-user.model";
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
@@ -12,6 +13,7 @@ describe('NavbarComponent', () => {
 
   const authServiceMock = {
     logout: jest.fn(),
+    currentUser: signal<AuthUser | null>(null),
   };
 
 
@@ -31,6 +33,24 @@ describe('NavbarComponent', () => {
     fixture.detectChanges();
   });
 
+  function getLoginLink() {
+    return fixture.nativeElement.querySelector('[routerLink="/login"]');
+  }
+
+  function getLogoutButton() {
+    return fixture.nativeElement.querySelector('[data-test="logout-button"]');
+  }
+
+  function beLoggedIn() {
+    authServiceMock.currentUser.set({id: 1, email: 'user@example.com', memberId: null});
+    fixture.detectChanges();
+  }
+
+  function beNotLoggedIn() {
+    authServiceMock.currentUser.set(null);
+    fixture.detectChanges();
+  }
+
   test('should create', () => {
     expect(component).toBeTruthy();
   });
@@ -44,7 +64,9 @@ describe('NavbarComponent', () => {
   });
 
   test('logout calls AuthService.logout and navigates to /login', () => {
+    beLoggedIn();
     authServiceMock.logout.mockReturnValue(of(null));
+
     const router = TestBed.inject(Router);
     const navigateSpy = jest.spyOn(router, 'navigate');
 
@@ -58,4 +80,37 @@ describe('NavbarComponent', () => {
     expect(navigateSpy).toHaveBeenCalled();
     expect(navigateSpy).toHaveBeenCalledWith(['/login']);
   });
+
+  describe('Template parts', () => {
+
+
+    test('it should show a login button when not logged in', () => {
+      beNotLoggedIn();
+      const loginButton = getLoginLink();
+      expect(loginButton).toBeTruthy();
+    })
+
+
+    test('it should show a logout button when logged in', () => {
+      beLoggedIn();
+      const logoutButton = getLogoutButton();
+      expect(logoutButton).toBeTruthy();
+    })
+
+
+    test('It should not show a login button when logged in', () => {
+      beLoggedIn();
+      const loginButton = getLoginLink();
+
+      expect(loginButton).toBeFalsy();
+
+    })
+
+
+    test('It should not show a logout button when not logged in', () => {
+      beNotLoggedIn();
+      expect(getLogoutButton()).toBeFalsy();
+    });
+
+  })
 });
