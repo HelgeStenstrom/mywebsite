@@ -65,4 +65,47 @@ describe('AuthService', () => {
     req.flush(null);
   });
 
+  describe('Current user', () => {
+
+    test('currentUser is null initially', () => {
+      expect(service.currentUser()).toBeNull();
+    });
+
+    test('currentUser is set after successful login', done => {
+      const authUser = { id: 1, email: 'user@example.com', memberId: null };
+      service.login('user@example.com', 'secret').subscribe(() => {
+        expect(service.currentUser()).toEqual(authUser);
+        done();
+      });
+
+      const req = httpTestingController.expectOne(`${url}/login`);
+      req.flush(authUser);
+    });
+
+    test('currentUser is null after logout', done => {
+      service.currentUser.set({ id: 1, email: 'user@example.com', memberId: null });
+
+      service.logout().subscribe(() => {
+        expect(service.currentUser()).toBeNull();
+        done();
+      });
+
+      const req = httpTestingController.expectOne(`${url}/logout`);
+      req.flush(null);
+    });
+
+    test('fetchCurrentUser sets currentUser', done => {
+      const authUser = { id: 1, email: 'user@example.com', memberId: null };
+
+      service.fetchCurrentUser().subscribe(() => {
+        expect(service.currentUser()).toEqual(authUser);
+        done();
+      });
+
+      const req = httpTestingController.expectOne(`${url}/me`);
+      req.flush(authUser);
+    });
+
+  })
+
 });
