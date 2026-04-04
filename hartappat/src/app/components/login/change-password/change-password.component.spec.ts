@@ -254,7 +254,5 @@ describe('ChangePasswordComponent', () => {
 
     });
 
-    test.todo('On 400, a message is shown about invalid new password');
-
   })
 });
