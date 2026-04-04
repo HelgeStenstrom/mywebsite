@@ -35,6 +35,10 @@ describe('LoginComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  })
+
   test('should create', () => {
     expect(component).toBeTruthy();
   });

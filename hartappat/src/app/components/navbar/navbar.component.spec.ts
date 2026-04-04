@@ -33,6 +33,10 @@ describe('NavbarComponent', () => {
     fixture.detectChanges();
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  })
+
   function getLoginLink() {
     return fixture.nativeElement.querySelector('[routerLink="/login"]');
   }

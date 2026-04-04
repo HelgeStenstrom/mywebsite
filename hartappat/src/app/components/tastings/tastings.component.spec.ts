@@ -1,21 +1,16 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TastingsComponent} from './tastings.component';
-import {HttpTestingController, provideHttpClientTesting} from "@angular/common/http/testing";
-import {TastingComponent} from "./tasting/tasting.component";
 import {of} from "rxjs";
-import {CreateTastingComponent} from "./create-tasting/create-tasting.component";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {TastingService} from "../../services/backend/tasting.service";
 import {WineTastingSummary} from "../../models/tasting.model";
-import {provideHttpClient} from "@angular/common/http";
 import {provideRouter} from "@angular/router";
 import {By} from "@angular/platform-browser";
 
 describe('TastingsComponent', () => {
   let component: TastingsComponent;
   let fixture: ComponentFixture<TastingsComponent>;
-  let httpTestingController: HttpTestingController;
   let mockTastingService: jest.Mocked<TastingService>;
 
   const tastings: WineTastingSummary[] = [
@@ -32,12 +27,10 @@ describe('TastingsComponent', () => {
     } as unknown as jest.Mocked<TastingService>;
 
     await TestBed.configureTestingModule({
-      imports: [CreateTastingComponent,TastingComponent,TastingsComponent],
+      imports: [TastingsComponent],
       providers: [
         {provide: TastingService, useValue: mockTastingService},
         provideRouter([]),
-        provideHttpClient(),
-        provideHttpClientTesting(),
       ],
       schemas: [NO_ERRORS_SCHEMA]
     })
@@ -45,12 +38,11 @@ describe('TastingsComponent', () => {
 
     fixture = TestBed.createComponent(TastingsComponent);
     component = fixture.componentInstance;
-    httpTestingController = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
   });
 
   afterEach(() => {
-    httpTestingController.verify();
+    jest.clearAllMocks();
   });
 
   it('should create', () => {

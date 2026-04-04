@@ -4,19 +4,16 @@ import {AddGrapeComponent} from './add-grape.component';
 import {Observable, of} from "rxjs";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {By} from "@angular/platform-browser";
-import {HttpTestingController, provideHttpClientTesting} from "@angular/common/http/testing";
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 import {Grape} from "../../../models/common.model";
 import {GrapeService} from "../../../services/backend/grape.service";
 import {WineService} from "../../../services/backend/wine.service";
-import {provideHttpClient} from "@angular/common/http";
 
 // Informative: https://testing-angular.com/testing-components-with-children/
 
 describe('AddGrapeComponent test with mock', () => {
   let component: AddGrapeComponent;
   let fixture: ComponentFixture<AddGrapeComponent>;
-  let httpTestingController: HttpTestingController;
 
   const cs: Grape = {id: 0, name: 'Cabernet Sauvignon', color: 'blå', isUsed: false};
   const grapeServiceStub: Partial<GrapeService> = {
@@ -29,7 +26,7 @@ describe('AddGrapeComponent test with mock', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [AddGrapeComponent],
-      providers: [provideHttpClient(), provideHttpClientTesting(),
+      providers: [
         {provide: GrapeService, useValue: grapeServiceStub},
         {provide: MAT_DIALOG_DATA, useValue: {}},
         {provide: MatDialogRef, useValue: {}}],
@@ -38,12 +35,11 @@ describe('AddGrapeComponent test with mock', () => {
 
     fixture = TestBed.createComponent(AddGrapeComponent);
     component = fixture.componentInstance;
-    httpTestingController = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
   });
 
   afterEach(() => {
-    httpTestingController.verify();
+    jest.clearAllMocks();
   });
 
   it('renders without errors', () => {

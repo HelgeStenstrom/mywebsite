@@ -63,6 +63,10 @@ describe('EditTastingComponent', () => {
     await fixture.whenStable();
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  })
+
   it('should create', () => {
     expect(component).toBeTruthy();
   });

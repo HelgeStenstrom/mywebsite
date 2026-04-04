@@ -5,7 +5,9 @@ import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {ActivatedRoute, convertToParamMap} from "@angular/router";
 import {WineService} from "../../../services/backend/wine.service";
 import {of} from "rxjs";
-import {WineGrapesComponent} from "../../wine-grapes/wine-grapes.component";
+import {CountryService} from "../../../services/backend/country.service";
+import {WineTypeService} from "../../../services/backend/wine-type.service";
+import {GrapeService} from "../../../services/backend/grape.service";
 
 describe('WineDetailComponent', () => {
   let component: WineDetailComponent;
@@ -13,7 +15,7 @@ describe('WineDetailComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [WineDetailComponent, WineGrapesComponent],
+      imports: [WineDetailComponent],
       providers: [
         {
           provide: ActivatedRoute,
@@ -38,6 +40,10 @@ describe('WineDetailComponent', () => {
             getWineGrapes: jest.fn().mockReturnValue(of([])),
           },
         },
+        { provide: CountryService, useValue: { getCountries: jest.fn().mockReturnValue(of([])) } },
+        { provide: WineTypeService, useValue: { getWineTypes: jest.fn().mockReturnValue(of([])) } },
+        { provide: GrapeService, useValue: { getGrapes: jest.fn().mockReturnValue(of([])) } },
+
       ],
       schemas: [NO_ERRORS_SCHEMA],
     });
@@ -45,6 +51,10 @@ describe('WineDetailComponent', () => {
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
+
+  afterEach(() => {
+    jest.clearAllMocks();
+  })
 
   it('should create', () => {
     expect(component).toBeTruthy();

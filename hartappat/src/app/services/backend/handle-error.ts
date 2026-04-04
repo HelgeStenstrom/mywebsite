@@ -2,6 +2,9 @@ import {HttpErrorResponse} from "@angular/common/http";
 import {Observable, throwError} from "rxjs";
 
 export function handleError(error: HttpErrorResponse): Observable<never> { // From https://angular.io/guide/http#getting-error-details
+  console.trace('handleError anropad');
+  console.error('URL:', error.url);
+
   if (error.status === 0) {
   // A client-side or network error occurred. Handle it accordingly.
   console.error('An error occurred:', error.error);

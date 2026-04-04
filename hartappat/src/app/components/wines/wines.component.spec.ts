@@ -1,20 +1,16 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import WinesComponent from './wines.component';
-import {HttpTestingController, provideHttpClientTesting} from "@angular/common/http/testing";
-import {WineEntryComponent} from "../wine-entry/wine-entry.component";
 import {FormsModule} from "@angular/forms";
 import {CountryService} from "../../services/backend/country.service";
 import {of} from "rxjs";
 import {WineTypeService} from "../../services/backend/wine-type.service";
 import {WineService} from "../../services/backend/wine.service";
-import {provideHttpClient} from "@angular/common/http";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 
 describe('WinesComponent', () => {
   let component: WinesComponent;
   let fixture: ComponentFixture<WinesComponent>;
-  let httpTestingController: HttpTestingController;
 
   let countryServiceMock: Partial<CountryService>;
   let wineTypeServiceMock: Partial<WineTypeService>;
@@ -39,8 +35,8 @@ describe('WinesComponent', () => {
     }
 
     await TestBed.configureTestingModule({
-      imports: [FormsModule, WineEntryComponent, WinesComponent],
-      providers: [provideHttpClient(), provideHttpClientTesting(),
+      imports: [FormsModule, WinesComponent],
+      providers: [
         {provide: CountryService, useValue: countryServiceMock},
         {provide: WineTypeService, useValue: wineTypeServiceMock},
         {provide: WineService, useValue: wineServiceMock},
@@ -51,12 +47,11 @@ describe('WinesComponent', () => {
 
     fixture = TestBed.createComponent(WinesComponent);
     component = fixture.componentInstance;
-    httpTestingController = TestBed.inject(HttpTestingController);
     fixture.detectChanges();
   });
 
   afterEach(() => {
-    httpTestingController.verify();
+    jest.clearAllMocks();
   })
 
   it('should create', () => {
