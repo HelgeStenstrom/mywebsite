@@ -12,12 +12,13 @@ import {MatIconModule} from "@angular/material/icon";
 import {AddWineToTastingComponent} from "./add-wine-to-tasting/add-wine-to-tasting.component";
 import {FormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
+import {ScatterPlotComponent} from "../../scatter-plot/scatter-plot.component";
 
 @Component({
   selector: 'app-tasting',
   templateUrl: './tasting.component.html',
   styleUrls: ['./tasting.component.css'],
-  imports: [AsyncPipe, MatIconModule, FormsModule, DatePipe, RouterModule, AddWineToTastingComponent, CdkDropList, CdkDrag, CdkDragHandle, MatButton, MatIconButton]
+  imports: [AsyncPipe, MatIconModule, FormsModule, DatePipe, RouterModule, AddWineToTastingComponent, CdkDropList, CdkDrag, CdkDragHandle, MatButton, MatIconButton, ScatterPlotComponent]
 })
 export class TastingComponent implements OnInit {
 
