@@ -13,6 +13,7 @@ import {AddWineToTastingComponent} from "./add-wine-to-tasting/add-wine-to-tasti
 import {FormsModule} from "@angular/forms";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {ScatterPlotComponent} from "../../scatter-plot/scatter-plot.component";
+import {ScatterPoint} from "../../../models/graphics.model";
 
 @Component({
   selector: 'app-tasting',
@@ -32,6 +33,21 @@ export class TastingComponent implements OnInit {
   allWines: WineView[] = [];
   filteredWines: WineView[] = [];
   currentWines: WineTastingWine[] = [];
+  protected testPoints: ScatterPoint[] = [
+    {position: 1, price: 100, score: 12},
+    {position: 2, price: 200, score: 15},
+    {position: 3, price: 350, score: 18},
+  ];
+
+  protected scatterPoints(): ScatterPoint[] {
+    return this.currentWines
+      .filter(w => w.purchasePrice != null && w.averageScore != null && w.position != null)
+      .map(w => ({
+        position: w.position!,
+        price: w.purchasePrice!,
+        score: w.averageScore!,
+      }));
+  }
 
   constructor(
     private readonly service: TastingService,

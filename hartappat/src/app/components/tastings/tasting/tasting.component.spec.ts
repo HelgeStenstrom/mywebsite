@@ -11,6 +11,17 @@ import {WineApi, WineView} from "../../../models/wine.model";
 import {provideRouter} from "@angular/router";
 import {CdkDragDrop} from "@angular/cdk/drag-drop";
 
+jest.mock('chart.js/auto', () => ({
+  default: jest.fn().mockImplementation(() => ({
+    destroy: jest.fn(),
+    update: jest.fn(),
+    data: {
+      datasets: [{data: []}]
+    }
+  })),
+  __esModule: true,
+}));
+
 describe('TastingComponent', () => {
   let component: TastingComponent;
   let fixture: ComponentFixture<TastingComponent>;
