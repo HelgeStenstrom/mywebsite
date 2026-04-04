@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, effect, signal} from '@angular/core';
 import {interval} from "rxjs";
 import {map} from "rxjs/operators";
 import {AsyncPipe} from "@angular/common";
@@ -6,6 +6,8 @@ import {Router, RouterModule} from "@angular/router";
 import {MatButton} from "@angular/material/button";
 import {AuthService} from "../../services/auth.service";
 import {MatIcon} from "@angular/material/icon";
+import {Member} from "../../models/common.model";
+import {MemberService} from "../../services/backend/member.service";
 
 @Component({
   selector: 'app-navbar',
@@ -13,13 +15,28 @@ import {MatIcon} from "@angular/material/icon";
   styleUrls: ['./navbar.component.css'],
   imports: [AsyncPipe, RouterModule, MatButton, MatIcon],
 })
-export class NavbarComponent {
+export class NavbarComponent  {
+  protected readonly currentMember = signal<Member | null>(null);
 
   constructor(protected readonly authService: AuthService,
               private readonly router: Router,
-              ) {}
+              private readonly memberService: MemberService,
+              ) {
+    effect(() => {
+      const user = this.authService.currentUser();
+      if (user?.memberId) {
+        this.memberService.getMemberById(user.memberId).subscribe(
+          member => {
+            this.currentMember.set(member);
+          }
+        )
+      } else {
+        this.currentMember.set(null);
+      }
+    })
 
-  // This class had both a constructor() and an ngOnInit(). Now removed.
+  }
+
 
   protected readonly statusText = interval(1000)
     .pipe(

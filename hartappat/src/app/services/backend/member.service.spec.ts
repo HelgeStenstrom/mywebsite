@@ -60,7 +60,21 @@ describe('MemberService', () => {
     const req = httpTestingController.expectOne(`${url}/1`);
     expect(req.request.method).toEqual('DELETE');
     req.flush(null);
-  })
+  });
+
+  test('it gets member by id', done => {
+    const member:Member = {id: 1, given: 'Nomen', surname: 'Nescio'};
+
+    service.getMemberById(1).subscribe(result => {
+      expect(result).toEqual(member);
+      done();
+    });
+
+    const req = httpTestingController.expectOne(`${url}/1`);
+    expect(req.request.method).toEqual('GET');
+    req.flush(member);
+
+  });
 
 
 });

@@ -1,6 +1,11 @@
 <!-- ESLINT ska inte testa första raden! -->
 
 <span data-test="logo">Härtappat!</span>
+
+@if (currentMember()) {
+  <span data-test="given-name"> <strong> Hej {{ currentMember()!.given }}!</strong></span>
+}
+
 <div>{{statusText | async}}</div>
 <div data-test="menu">
   <a class="nav1" [routerLinkActiveOptions]="{ exact: true }" routerLinkActive="active current"

@@ -6,10 +6,15 @@ import {of} from "rxjs";
 import {NO_ERRORS_SCHEMA, signal} from "@angular/core";
 import {LoginComponent} from "../login/login/login.component";
 import {AuthUser} from "../../models/auth-user.model";
+import {MemberService} from "../../services/backend/member.service";
 
 describe('NavbarComponent', () => {
   let component: NavbarComponent;
   let fixture: ComponentFixture<NavbarComponent>;
+
+  const memberServiceMock = {
+    getMemberById: jest.fn(),
+  };
 
   const authServiceMock = {
     logout: jest.fn(),
@@ -24,6 +29,7 @@ describe('NavbarComponent', () => {
       imports: [NavbarComponent, RouterModule.forRoot([{path: 'login', component: LoginComponent}])],
       providers: [
         {provide: AuthService, useValue: authServiceMock},
+        {provide: MemberService, useValue: memberServiceMock},
       ],
       schemas: [NO_ERRORS_SCHEMA],
     }).compileComponents();
@@ -114,6 +120,28 @@ describe('NavbarComponent', () => {
     test('It should not show a logout button when not logged in', () => {
       beNotLoggedIn();
       expect(getLogoutButton()).toBeFalsy();
+    });
+
+  })
+
+  describe('Member information', () => {
+
+    test('shows given name when logged in with memberId', () => {
+      memberServiceMock.getMemberById.mockReturnValue(of({id: 1, given: 'Nomen', surname: 'Nescio'}));
+      authServiceMock.currentUser.set({id: 1, email: 'user@example.com', memberId: 1});
+      fixture.detectChanges();
+
+      const givenName = fixture.nativeElement.querySelector('[data-test="given-name"]');
+      expect(givenName).toBeTruthy();
+      expect(givenName.textContent).toContain('Nomen');
+    });
+
+    test('does not show given name when logged in without memberId', () => {
+      authServiceMock.currentUser.set({ id: 1, email: 'user@example.com', memberId: null });
+      fixture.detectChanges();
+
+      const givenName = fixture.nativeElement.querySelector('[data-test="given-name"]');
+      expect(givenName).toBeFalsy();
     });
 
   })

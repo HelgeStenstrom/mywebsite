@@ -36,4 +36,12 @@ export class MemberService {
     const url: string = this.apiBase + `/members/${id}`;
     return this.http.delete<void>(url);
   }
+
+  getMemberById(id: number) {
+
+    const url =  `${this.apiBase}/members/${id}`;
+
+    return this.http.get<Member>(url);
+
+  }
 }
