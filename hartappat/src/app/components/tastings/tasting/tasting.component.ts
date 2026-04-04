@@ -34,9 +34,9 @@ export class TastingComponent implements OnInit {
   filteredWines: WineView[] = [];
   currentWines: WineTastingWine[] = [];
   protected testPoints: ScatterPoint[] = [
-    {position: 1, price: 100, score: 12},
-    {position: 2, price: 200, score: 15},
-    {position: 3, price: 350, score: 18},
+    {position: 1, price: 100, score: 12, label:'billigt'},
+    {position: 2, price: 200, score: 15, label: 'halvdyrt'},
+    {position: 3, price: 350, score: 18, label: 'dyrt'},
   ];
 
   protected scatterPoints(): ScatterPoint[] {
@@ -46,6 +46,7 @@ export class TastingComponent implements OnInit {
         position: w.position!,
         price: w.purchasePrice!,
         score: w.averageScore!,
+        label: this.allWines.find(wine => wine.id === w.wineId)?.name ?? String(w.position),
       }));
   }
 
