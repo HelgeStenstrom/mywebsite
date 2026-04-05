@@ -10,6 +10,7 @@ import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {WineApi, WineView} from "../../../models/wine.model";
 import {provideRouter} from "@angular/router";
 import {CdkDragDrop} from "@angular/cdk/drag-drop";
+import {By} from "@angular/platform-browser";
 
 jest.mock('chart.js/auto', () => ({
   default: jest.fn().mockImplementation(() => ({
@@ -287,6 +288,61 @@ describe('TastingComponent', () => {
         { id: 2, position: 1 },
       ]);
     });
+
+  })
+
+  describe('Refetching the wine list', () => {
+
+
+
+    test('should reload tasting when wineAdded event is emitted', async () => {
+      tastingServiceMock.getTasting.mockClear();
+
+      const addWineComponent = fixture.debugElement.query(
+        By.css('app-add-wine-to-tasting')
+      );
+      addWineComponent.triggerEventHandler('wineAdded', null);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(tastingServiceMock.getTasting).toHaveBeenCalledTimes(1);
+    });
+
+
+    test('should display newly added wine after wineAdded event', async () => {
+      const newWine = { id: 99, wineId: 7, position: 3, purchasePrice: null, averageScore: null, scoreStdDev: null };
+      tastingServiceMock.getTasting.mockReturnValueOnce(of({
+        ...mockTasting,
+        wines: [...mockTasting.wines!, newWine],
+      }));
+
+      const addWineComponent = fixture.debugElement.query(By.css('app-add-wine-to-tasting'));
+      addWineComponent.triggerEventHandler('wineAdded', null);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const wineRows = fixture.debugElement.queryAll(By.css('[data-test="tasting-wine-row"]'));
+      expect(wineRows.length).toBe(mockTasting.wines!.length + 1);
+    });
+
+    test('should remove wine from display after deleting it', async () => {
+      const wineToDelete = mockTasting.wines![0];
+      tastingServiceMock.getTasting.mockReturnValueOnce(of({
+        ...mockTasting,
+        wines: mockTasting.wines!.filter(w => w.id !== wineToDelete.id),
+      }));
+
+      const deleteButton = fixture.debugElement.queryAll(
+        By.css('[data-test="delete-tasting-wine-button"]')
+      )[0];
+      deleteButton.nativeElement.click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const wineRows = fixture.debugElement.queryAll(By.css('[data-test="tasting-wine-row"]'));
+      expect(wineRows.length).toBe(mockTasting.wines!.length - 1);
+    });
+
 
   })
 

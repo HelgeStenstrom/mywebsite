@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {WineTasting, WineTastingWine} from "../../../models/tasting.model";
-import {Observable, of} from "rxjs";
+import {BehaviorSubject, of} from "rxjs";
 import {ActivatedRoute, RouterModule} from "@angular/router";
 import {TastingService} from "../../../services/backend/tasting.service";
 import {MemberService} from "../../../services/backend/member.service";
@@ -24,7 +24,8 @@ import {ScatterPoint} from "../../../models/graphics.model";
 export class TastingComponent implements OnInit {
 
   @Input() tasting?: WineTasting;
-  fullTasting$!: Observable<WineTasting>;
+  private readonly tastingSubject = new BehaviorSubject<WineTasting | null>(null);
+  fullTasting$ = this.tastingSubject.asObservable();
   memberNames: Map<number, string> = new Map();
   wineMap: Map<number, WineApi> = new Map();
   editingId: number | null = null;
@@ -39,6 +40,13 @@ export class TastingComponent implements OnInit {
     {position: 3, price: 350, score: 18, label: 'dyrt'},
   ];
 
+  constructor(
+    private readonly service: TastingService,
+    private readonly memberService: MemberService,
+    private readonly wineService: WineService,
+    private readonly route: ActivatedRoute,
+  ) {}
+
   protected scatterPoints(): ScatterPoint[] {
     return this.currentWines
       .filter(w => w.purchasePrice != null && w.averageScore != null && w.position != null)
@@ -50,21 +58,15 @@ export class TastingComponent implements OnInit {
       }));
   }
 
-  constructor(
-    private readonly service: TastingService,
-    private readonly memberService: MemberService,
-    private readonly wineService: WineService,
-    private readonly route: ActivatedRoute,
-  ) {
-  }
-
   ngOnInit(): void {
     const id = this.tasting?.id ?? Number(this.route.snapshot.paramMap.get('id'));
-    this.fullTasting$ = this.service.getTasting(id);
+    this.loadTasting(id);
 
     this.fullTasting$.subscribe(tasting => {
-      this.currentWines = tasting.wines ?? [];
-      this.updateWineMap(tasting);
+      if (tasting) {
+        this.currentWines = tasting.wines ?? [];
+        this.updateWineMap(tasting);
+      }
     });
 
     this.memberService.getMembers().subscribe(members => {
@@ -73,8 +75,15 @@ export class TastingComponent implements OnInit {
 
     this.wineService.getWines().subscribe(wines => {
       this.allWines = wines;
-    })
+    });
   }
+
+
+  onWineAdded(): void {
+    const id = this.tasting?.id ?? Number(this.route.snapshot.paramMap.get('id'));
+    this.loadTasting(id);
+  }
+
 
   private updateWineMap(tasting: WineTasting) {
     this.wineMap.clear();
@@ -85,16 +94,11 @@ export class TastingComponent implements OnInit {
     });
   }
 
-  onWineAdded(): void {
-    const id = this.tasting?.id ?? Number(this.route.snapshot.paramMap.get('id'));
-    this.fullTasting$ = this.service.getTasting(id);
-  }
-
 
   protected deleteWine(id: number) {
     const tastingId = this.tasting?.id ?? Number(this.route.snapshot.paramMap.get('id'));
     this.service.deleteWineFromTasting(tastingId, id).subscribe(() => {
-      this.fullTasting$ = this.service.getTasting(tastingId);
+      this.loadTasting(tastingId);
     });
   }
 
@@ -162,6 +166,10 @@ export class TastingComponent implements OnInit {
       this.currentWines = tasting.wines ?? [];
       this.updateWineMap(tasting);
     });
+  }
+
+  private loadTasting(id: number): void {
+    this.service.getTasting(id).subscribe(t => this.tastingSubject.next(t));
   }
 
 

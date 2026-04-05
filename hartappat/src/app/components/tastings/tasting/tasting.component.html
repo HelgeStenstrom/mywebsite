@@ -40,7 +40,7 @@
       </tr>
       <tbody cdkDropList (cdkDropListDropped)="onDrop($event)">
         @for (w of sortedWines(); track w.id) {
-          <tr cdkDrag>
+          <tr cdkDrag data-test="tasting-wine-row">
             <td cdkDragHandle style="cursor: grab">
               <mat-icon>drag_indicator</mat-icon>
             </td>
