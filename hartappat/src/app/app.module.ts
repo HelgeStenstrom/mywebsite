@@ -60,7 +60,7 @@ import {ChangePasswordComponent} from "./components/login/change-password/change
       {path: 'grapes/:add-grape', component: AddGrapeComponent},
       {path: 'grapes', component: GrapesComponent},
       {path: 'viner', component: WinesComponent},
-      {path: 'resor', component: TravelsComponent},
+      {path: 'travels', component: TravelsComponent},
       {path: 'about', component: AboutComponent},
       {path: 'tastings/new', component: CreateTastingComponent},
       {path: 'tastings/:id', component: TastingComponent},
