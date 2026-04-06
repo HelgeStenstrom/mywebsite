@@ -288,4 +288,71 @@ describe('WineTastingWine handler tests', () => {
         expect(pos.get(tw1.body.id)).toBe(2);
         expect(pos.get(tw2.body.id)).toBe(1);
     });
+
+    test('GET /tastings/:id/wines/:tastingWineId returns 200 with the tasting wine', async () => {
+        const tasting = await createTasting(app, cookie);
+        const country = await createCountry(app, cookie);
+        const wineType = await createWineType(app, cookie);
+
+        const wine = await request(app)
+            .post('/api/v1/wines')
+            .send({name: 'Testvin', countryId: country.body.id, wineTypeId: wineType.body.id})
+            .set('Cookie', cookie)
+            .expect(201);
+
+        const tastingWine = await request(app)
+            .post(`/api/v1/tastings/${tasting.body.id}/wines`)
+            .send({wineId: wine.body.id, position: 1, purchasePrice: 129})
+            .set('Cookie', cookie)
+            .expect(201);
+
+        const res = await request(app)
+            .get(`/api/v1/tastings/${tasting.body.id}/wines/${tastingWine.body.id}`)
+            .set('Cookie', cookie)
+            .expect(200);
+
+        expect(res.body).toEqual({
+            id: tastingWine.body.id,
+            wineId: wine.body.id,
+            position: 1,
+            purchasePrice: 129,
+            averageScore: null,
+            scoreStdDev: null,
+        });
+    });
+
+    test("GET /tastings/:id/wines/:tastingWineId returns 404 when :ids are bad", async () => {
+        const tasting = await createTasting(app, cookie);
+        const country = await createCountry(app, cookie);
+        const wineType = await createWineType(app, cookie);
+
+        const wine = await request(app)
+            .post('/api/v1/wines')
+            .send({name: 'Testvin', countryId: country.body.id, wineTypeId: wineType.body.id})
+            .set('Cookie', cookie)
+            .expect(201);
+
+        const tastingWine = await request(app)
+            .post(`/api/v1/tastings/${tasting.body.id}/wines`)
+            .send({wineId: wine.body.id, position: 1, purchasePrice: 129})
+            .set('Cookie', cookie)
+            .expect(201);
+
+
+        const invalidWineId = 7777;
+        const res = await request(app)
+            .get(`/api/v1/tastings/${tasting.body.id}/wines/${invalidWineId}`)
+            .set('Cookie', cookie)
+            .expect(404);
+
+
+        const invalidTastingId = 9999;
+        await request(app)
+            .get(`/api/v1/tastings/${invalidTastingId}/wines/${tastingWine.body.id}`)
+            .set('Cookie', cookie)
+            .expect(404);
+
+
+
+    });
 });

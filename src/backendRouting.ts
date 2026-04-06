@@ -48,8 +48,8 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
 
     router.use((req: express.Request, res: express.Response, next) => {
-        console.log(`${req.method} ${req.path}`);
-        console.log('cookies:', req.cookies);
+        // console.log(`${req.method} ${req.path}`);
+        // console.log('cookies:', req.cookies);
         next();
     });
 
@@ -80,6 +80,7 @@ export function setupEndpoints(router: Express, orm: Orm) {
 
     router.delete('/api/v1/tastings/:id/wines/:tastingWineId', wineTastingWineHandlers.deleteTastingWine());
     router.patch('/api/v1/tastings/:id/wines/:tastingWineId', wineTastingWineHandlers.patchTastingWine());
+    router.get('/api/v1/tastings/:id/wines/:tastingWineId', wineTastingWineHandlers.getTastingWine());
 
     router.put('/api/v1/tastings/:id/wines/positions', wineTastingWineHandlers.putWinePositions());
 

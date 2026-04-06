@@ -1,5 +1,5 @@
 import {Orm} from "../orm";
-import {WineTastingWineCreateDto} from "../types/wine-tasting";
+import {WineTastingWineCreateDto, WineTastingWineDto} from "../types/wine-tasting";
 import {errorResponse} from "./handlerUtils";
 
 export class WineTastingWineHandlers {
@@ -48,6 +48,31 @@ export class WineTastingWineHandlers {
 
     }
 
+    getTastingWine() {
+        return async (req, res) => {
+            const tastingId = Number(req.params.id);
+            const tastingWineId = Number(req.params.tastingWineId);
+
+            const wines = await this.orm.tastingWines.findByTastingId(tastingId);
+            const tastingWine = wines.find(w => w.id === tastingWineId);
+
+            if (!tastingWine) {
+                res.status(404).json({ status: 404, message: 'Tasting wine not found' });
+                return;
+            }
+
+            const result: WineTastingWineDto = {
+                id: tastingWineId,
+                wineId: tastingWine.wineId,
+                position: tastingWine.position,
+                averageScore: tastingWine.averageScore,
+                purchasePrice: tastingWine.purchasePrice,
+                scoreStdDev: tastingWine.scoreStdDev,
+            };
+            res.status(200).json(result);
+        };
+    }
+
     patchTastingWine() {
         return async (req, res) => {
             const tastingId = Number(req.params.id);
@@ -82,4 +107,5 @@ export class WineTastingWineHandlers {
             await this.orm.tastingWines.updatePositions(tastingId, positions);
             res.status(204).send();
         };
-    }}
+    }
+}
