@@ -2,15 +2,21 @@ import {createTestApp, loginAs} from "../../testUtils";
 import express from "express";
 import {test} from "@jest/globals";
 import request from "supertest";
+import {Orm} from "../../orm";
 
 describe('GrapeHandlers', () => {
 
     let app: express.Express;
+    let orm: Orm;
     let cookie: string;
 
     beforeEach(async () => {
-        app = await createTestApp();
+        ({ app, orm } = await createTestApp());
         cookie = await loginAs(app, 'test@example.com', 'secret');
+    });
+
+    afterEach(async () => {
+        await orm.close();
     });
 
     test('POST followed by GET returns the same Grape data', async () => {

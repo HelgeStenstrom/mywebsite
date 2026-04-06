@@ -68,6 +68,7 @@ export class Orm {
         connectTastingAndTastingWine(tasting, wineTastingWine);
         connectWineAndWineTastingWine(wine, wineTastingWine);
         connectWineAndWineGrape(wine, wineGrape);
+        connectTastingAndScore(tasting, score);
 
         this.grapes = new GrapeRepository(grape, wineGrape);
         this.tastings = new TastingRepository(tasting, tastingHost, member, wineTastingWine, score);
@@ -96,6 +97,10 @@ export class Orm {
 
     async initialize(): Promise<void> {
         await runMigrations(this.sequelize, path.join(__dirname, './migrations'));
+    }
+
+    async close(): Promise<void> {
+        await this.sequelize.close();
     }
 
 }
@@ -158,6 +163,19 @@ export function connectTastingAndTastingWine(
     wineTastingWine.belongsTo(tasting, {
         foreignKey: 'wine_tasting_id',
         as: 'wineTasting'
+    });
+}
+
+export function connectTastingAndScore(
+    tasting: ModelStatic<WineTastingInstance>,
+    score: ModelStatic<ScoreInstance>) {
+    tasting.hasMany(score, {
+        foreignKey: 'tasting_id',
+        as: 'scores'
+    });
+    score.belongsTo(tasting, {
+        foreignKey: 'tasting_id',
+        as: 'tasting'
     });
 }
 

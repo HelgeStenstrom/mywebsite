@@ -27,6 +27,10 @@ export function defineWineTastingWine(sequelize: Sequelize): ModelStatic<WineTas
                 type: DataTypes.DECIMAL(4, 2),
                 field: 'average_score',
                 allowNull: true,
+                get() {
+                    const value = this.getDataValue('averageScore');
+                    return value === null ? null : Number.parseFloat(value as unknown as string);
+                },
             },
         },
         {

@@ -50,14 +50,46 @@ export class TastingRepository {
     }
 
     private toTastingSummaryDto(t: WineTastingInstance): WineTastingSummaryDto {
+        const wines = t.wineTastingWines ?? [];
+        const scores = t.scores ?? [];
+
+        const winePositionCount = wines.filter(w => w.position !== null).length;
+        const scorePositionCount = new Set(scores.map(s => s.position)).size;
+        const positionsMatch = winePositionCount === scorePositionCount;
+        const activeScores = positionsMatch ? scores : [];
+
+        const resolvedScores = wines.map(w => {
+            const relevantScores = activeScores.filter(s => s.position === w.position);
+            const scoreValues = relevantScores.map(s => Number(s.score));
+            const hasScores = scoreValues.length > 0;
+            return {
+                wineId: w.wineId,
+                averageScore: hasScores
+                    ? scoreValues.reduce((a, b) => a + b, 0) / scoreValues.length
+                    : (w.averageScore ?? null),
+            };
+        });
+
+        const maxScore = resolvedScores.reduce(
+            (max, w) => w.averageScore !== null && w.averageScore > max ? w.averageScore : max,
+            -Infinity
+        );
+
+        const winningWines = maxScore === -Infinity ? [] : resolvedScores
+            .filter(w => w.averageScore === maxScore)
+            .map(w => ({
+                wineId: w.wineId,
+                wineName: '',
+                averageScore: maxScore,
+            }));
+
         return {
             id: t.id,
             title: t.title,
             notes: t.notes,
             tastingDate: t.tastingDate,
-            hosts: (t.wineTastingHosts ?? []).map(h => ({
-                memberId: h.memberId,
-            })),
+            hosts: (t.wineTastingHosts ?? []).map(h => ({memberId: h.memberId})),
+            winningWines,
         };
     }
 
@@ -85,11 +117,20 @@ export class TastingRepository {
     async findAll(): Promise<WineTastingSummaryDto[]> {
         const tastings = await this.Tasting.findAll(
             {
-                include: [{
-                    model: this.TastingHost,
-                    as: 'wineTastingHosts',
-                    include: [{model: this.Member, as: 'member'}]
-                }
+                include: [
+                    {
+                        model: this.TastingHost,
+                        as: 'wineTastingHosts',
+                        include: [{model: this.Member, as: 'member'}]
+                    },
+                    {
+                        model: this.WineTastingWine,
+                        as: 'wineTastingWines',
+                    },
+                    {
+                        model: this.Score,
+                        as: 'scores',
+                    }
                 ]
             }
         );

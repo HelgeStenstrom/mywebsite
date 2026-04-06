@@ -1,15 +1,21 @@
 import express from "express";
 import {createTestApp, loginAs} from "../../testUtils";
 import request from "supertest";
+import {Orm} from "../../orm";
 
 describe('WineTastingHostHandlers', () => {
 
     let app: express.Express;
+    let orm: Orm;
     let cookie: string;
 
     beforeEach(async () => {
-        app = await createTestApp();
+        ({ app, orm } = await createTestApp());
         cookie = await loginAs(app, 'test@example.com', 'secret');
+    });
+
+    afterEach(async () => {
+        await orm.close();
     });
 
     test('POST /tastings/:id/hosts returns 201 with created host', async () => {

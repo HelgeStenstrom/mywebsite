@@ -1,4 +1,5 @@
 import {Model} from "sequelize";
+import {ScoreInstance} from "./score";
 
 export type WineTastingDto = {
     id: number;
@@ -15,6 +16,7 @@ export type WineTastingSummaryDto = {
     notes: string;
     tastingDate: Date;
     hosts: WineTastingHostDto[];
+    winningWines: WinningWineDto[];
 }
 
 export type WineTastingCreateDto = {
@@ -51,6 +53,7 @@ export interface WineTastingHostInstance
 export interface WineTastingInstance extends Model<WineTastingAttributes>, WineTastingAttributes {
     wineTastingHosts?: WineTastingHostInstance[];
     wineTastingWines?: WineTastingWineInstance[];
+    scores?: ScoreInstance[];
 }
 
 
@@ -89,4 +92,10 @@ export type WineTastingWineUpdateDto = {
     wineId?: number;
     purchasePrice?: number | null;
     averageScore?: number | null;
+}
+
+export type WinningWineDto = {
+    wineId: number;
+    wineName: string;
+    averageScore: number;
 }

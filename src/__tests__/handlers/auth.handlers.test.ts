@@ -1,13 +1,19 @@
 import express from "express";
 import {createTestApp} from "../../testUtils";
 import request from "supertest";
+import {Orm} from "../../orm";
 
 describe('AuthHandlers', () => {
 
     let app: express.Express;
+    let orm: Orm;
 
     beforeEach(async () => {
-        app = await createTestApp();
+        ({ app, orm } = await createTestApp());
+    });
+
+    afterEach(async () => {
+        await orm.close();
     });
 
     test('POST /auth/login returns 200 and sets cookie with valid credentials', async () => {

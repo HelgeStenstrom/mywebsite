@@ -1,15 +1,21 @@
 import {createTestApp, loginAs} from "../../testUtils";
 import express from "express";
 import request from "supertest";
+import {Orm} from "../../orm";
 
 describe('TastingHandlers', () => {
 
     let app: express.Express;
+    let orm: Orm;
     let cookie: string;
 
     beforeEach(async () => {
-        app = await createTestApp();
+        ({ app, orm } = await createTestApp());
         cookie = await loginAs(app, 'test@example.com', 'secret');
+    });
+
+    afterEach(async () => {
+        await orm.close();
     });
 
     async function storeATasting() {
@@ -43,6 +49,7 @@ describe('TastingHandlers', () => {
             notes: 'Några anteckningar',
             tastingDate: '2024-01-15',
             hosts: [],
+            winningWines: [],
         });
     });
 

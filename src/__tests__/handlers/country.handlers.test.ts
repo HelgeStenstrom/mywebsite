@@ -3,15 +3,21 @@ import {createTestApp, loginAs} from "../../testUtils";
 import {test} from "@jest/globals";
 import request from "supertest";
 import {CountryDto} from "../../types/country";
+import {Orm} from "../../orm";
 
 describe('CountryHandlers', () => {
 
     let app: express.Express;
+    let orm: Orm;
     let cookie: string;
 
     beforeEach(async () => {
-        app = await createTestApp();
+        ({ app, orm } = await createTestApp());
         cookie = await loginAs(app, 'test@example.com', 'secret');
+    });
+
+    afterEach(async () => {
+        await orm.close();
     });
 
     test('Countries: POST followed by GET returns the same data', async () => {

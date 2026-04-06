@@ -1,6 +1,7 @@
 import express from "express";
 import {createTestApp, loginAs} from "../../testUtils";
 import request from "supertest";
+import {Orm} from "../../orm";
 
 async function createTasting(app: express.Express, cookie: string, title = 'Provning') {
     return await request(app)
@@ -29,11 +30,16 @@ function createWineType(app: express.Express, cookie: string, name = 'Rött') {
 describe('WineTastingWine handler tests', () => {
 
     let app: express.Express;
+    let orm: Orm;
     let cookie: string;
 
     beforeEach(async () => {
-        app = await createTestApp();
+        ({ app, orm } = await createTestApp());
         cookie = await loginAs(app, 'test@example.com', 'secret');
+    });
+
+    afterEach(async () => {
+        await orm.close();
     });
 
     test('POST /tastings/:id/wines returns 201 with created wine', async () => {

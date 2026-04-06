@@ -3,6 +3,7 @@ import request from "supertest";
 import {WineDto} from "../types/wine";
 import {test} from "@jest/globals";
 import {createTestApp, loginAs} from "../testUtils";
+import {Orm} from "../orm";
 
 // TODO: Klargör syftet med denna fil, eller ta bort den. Se till att den uppfyller sitt syfte.
 
@@ -11,11 +12,16 @@ import {createTestApp, loginAs} from "../testUtils";
 
 describe('Table endpoints', () => {
     let app: express.Express;
+    let orm: Orm;
     let cookie: string;
 
     beforeEach(async () => {
-        app = await createTestApp();
+        ({ app, orm } = await createTestApp());
         cookie = await loginAs(app, 'test@example.com', 'secret');
+    });
+
+    afterEach(async () => {
+        await orm.close();
     });
 
     describe('WineTypes', () => {
@@ -154,6 +160,7 @@ describe('Table endpoints', () => {
                 notes: 'Mycket trevligt',
                 tastingDate: "2022-01-01",
                 hosts: [],
+                winningWines: [],
             }]);
         });
 
@@ -188,6 +195,7 @@ describe('Table endpoints', () => {
                 notes: 'Mycket trevligt',
                 tastingDate: "2023-07-20",
                 hosts: [{memberId}],
+                winningWines: [],
             }]);
         });
     });

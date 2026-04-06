@@ -3,7 +3,7 @@ import {defineTasting} from '../../orm/models/tasting.model';
 import {TastingRepository} from '../../orm/repositories/tasting.repository';
 import {defineWineTastingHost} from "../../orm/models/wine-tasting-host.model";
 import {defineMember} from "../../orm/models/member.model";
-import {connectTastingAndTastingHost, connectTastingAndTastingWine} from "../../orm";
+import {connectTastingAndScore, connectTastingAndTastingHost, connectTastingAndTastingWine} from "../../orm";
 import {WineTastingHostInstance, WineTastingInstance, WineTastingWineInstance} from "../../types/wine-tasting";
 import {MemberInstance} from "../../types/member";
 import {defineWineTastingWine} from "../../orm/models/wine-tasting-wine.model";
@@ -30,6 +30,7 @@ describe('TastingRepository', () => {
 
         connectTastingAndTastingHost(wineTastingDefinition, memberDefinition, wineTastingHostDefinition,);
         connectTastingAndTastingWine(wineTastingDefinition, wineTastingWineDefinition);
+        connectTastingAndScore(wineTastingDefinition, scoreDefinition);
 
         await sequelize.sync({force: true});
 
@@ -65,6 +66,7 @@ describe('TastingRepository', () => {
             notes: 'Some notes',
             tastingDate: '2023-07-20',
             hosts: [],
+            winningWines: [],
         });
     });
 
@@ -100,6 +102,7 @@ describe('TastingRepository', () => {
             notes: 'Some notes',
             tastingDate: '2023-07-20',
             hosts: [{memberId: member.id}],
+            winningWines: [],
         });
     });
 
@@ -154,5 +157,178 @@ describe('TastingRepository', () => {
 
             expect(result?.wines?.[0].averageScore).toBeCloseTo(15);
         });
+
+        test('returns the winning wine when average score is stored as a decimal string', async () => {
+            // arrange
+            const tasting = await wineTastingDefinition.create({
+                title: 'Test tasting',
+                notes: 'Some notes',
+                tastingDate: new Date('2023-07-20'),
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 1,
+                position: 1,
+                averageScore: 13.40,
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 2,
+                position: 2,
+                averageScore: 12.00,
+            });
+
+            // act
+            const result = await tastingRepository.findAll();
+
+            // assert
+            expect(result[0].winningWines).toHaveLength(1);
+            expect(result[0].winningWines[0].wineId).toBe(1);
+            expect(result[0].winningWines[0].averageScore).toBe(13.40);
+        });
+
+        test('returns the winning wine when average score is a decimal string', async () => {
+            // arrange
+            const tasting = await wineTastingDefinition.create({
+                title: 'Test tasting',
+                notes: 'Some notes',
+                tastingDate: new Date('2023-07-20'),
+            });
+
+            const wine1 = await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 1,
+                position: 1,
+                averageScore: 13.40,
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 2,
+                position: 2,
+                averageScore: 12.00,
+            });
+
+            // Simulate MariaDB returning DECIMAL as string
+            jest.spyOn(wine1, 'get').mockReturnValue('13.40' as any);
+            (wine1 as any).averageScore = '13.40';
+
+            // act
+            const result = await tastingRepository.findAll();
+
+            // assert
+            expect(result[0].winningWines).toHaveLength(1);
+            expect(result[0].winningWines[0].wineId).toBe(1);
+        });
+
+        test('uses dynamic average score from scores table when determining winning wine', async () => {
+            // arrange
+            const tasting = await wineTastingDefinition.create({
+                title: 'Test tasting',
+                notes: 'Some notes',
+                tastingDate: new Date('2023-07-20'),
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 1,
+                position: 1,
+                averageScore: 15, // inskriven poäng är högst...
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 2,
+                position: 2,
+                averageScore: 12,
+            });
+
+            // ...men dynamiska poäng gör vin 2 till vinnare
+            await scoreDefinition.create({ tastingId: tasting.id, position: 1, memberId: 1, score: 10 });
+            await scoreDefinition.create({ tastingId: tasting.id, position: 2, memberId: 2, score: 14 });
+
+            // act
+            const result = await tastingRepository.findAll();
+
+            // assert
+            expect(result[0].winningWines).toHaveLength(1);
+            expect(result[0].winningWines[0].wineId).toBe(2);
+            expect(result[0].winningWines[0].averageScore).toBe(14);
+        });
+
+    })
+
+    describe('Winning wine', () => {
+
+        test('returns the winning wine in summary when one wine has the highest average score', async () => {
+            // arrange
+            const tasting = await wineTastingDefinition.create({
+                title: 'Test tasting',
+                notes: 'Some notes',
+                tastingDate: new Date('2023-07-20'),
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 1,
+                position: 1,
+                averageScore: 15,
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 2,
+                position: 2,
+                averageScore: 12,
+            });
+
+            // act
+            const result = await tastingRepository.findAll();
+
+            // assert
+            expect(result[0].winningWines).toHaveLength(1);
+            expect(result[0].winningWines[0].wineId).toBe(1);
+            expect(result[0].winningWines[0].averageScore).toBe(15);
+        });
+
+        test('returns all wines when multiple wines share the highest average score', async () => {
+            // arrange
+            const tasting = await wineTastingDefinition.create({
+                title: 'Test tasting',
+                notes: 'Some notes',
+                tastingDate: new Date('2023-07-20'),
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 1,
+                position: 1,
+                averageScore: 15,
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 2,
+                position: 2,
+                averageScore: 15,
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: 3,
+                position: 3,
+                averageScore: 12,
+            });
+
+            // act
+            const result = await tastingRepository.findAll();
+
+            // assert
+            expect(result[0].winningWines).toHaveLength(2);
+            expect(result[0].winningWines.map(w => w.wineId)).toEqual(expect.arrayContaining([1, 2]));
+        });
+
     })
 });
