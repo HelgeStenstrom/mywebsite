@@ -740,6 +740,22 @@ paths:
         schema:
           type: integer
           format: int64
+    get:
+      summary: Get a wine in a tasting
+      description: Returns a single wine entry in a tasting, identified by its id
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WineTastingWine'
+        '404':
+          description: Wine isn't found in tasting
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       summary: Delete a wine from a tasting
       description: Deletes a wine from an existing tasting
