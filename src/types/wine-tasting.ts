@@ -85,6 +85,7 @@ interface WineTastingWineAttributes {
 export interface WineTastingWineInstance
     extends Model<WineTastingWineAttributes>, WineTastingWineAttributes {
     wineTasting?: { tastingDate: string };
+    wine?: { name: string };
 }
 
 export type WineTastingWineUpdateDto = {

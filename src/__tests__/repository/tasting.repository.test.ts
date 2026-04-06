@@ -3,12 +3,19 @@ import {defineTasting} from '../../orm/models/tasting.model';
 import {TastingRepository} from '../../orm/repositories/tasting.repository';
 import {defineWineTastingHost} from "../../orm/models/wine-tasting-host.model";
 import {defineMember} from "../../orm/models/member.model";
-import {connectTastingAndScore, connectTastingAndTastingHost, connectTastingAndTastingWine} from "../../orm";
+import {
+    connectTastingAndScore,
+    connectTastingAndTastingHost,
+    connectTastingAndTastingWine,
+    connectWineAndWineTastingWine
+} from "../../orm";
 import {WineTastingHostInstance, WineTastingInstance, WineTastingWineInstance} from "../../types/wine-tasting";
 import {MemberInstance} from "../../types/member";
 import {defineWineTastingWine} from "../../orm/models/wine-tasting-wine.model";
 import {ScoreInstance} from "../../types/score";
 import {defineScore} from "../../orm/models/score.model";
+import {WineInstance} from "../../types/wine";
+import {defineWine} from "../../orm/models/wine.model";
 
 describe('TastingRepository', () => {
     let sequelize: Sequelize;
@@ -18,6 +25,7 @@ describe('TastingRepository', () => {
     let wineTastingWineDefinition: ModelStatic<WineTastingWineInstance>;
     let memberDefinition: ModelStatic<MemberInstance>;
     let scoreDefinition: ModelStatic<ScoreInstance>;
+    let wineDefinition: ModelStatic<WineInstance>;
 
     beforeEach(async () => {
         sequelize = new Sequelize('test', 'test', 'test', {dialect: "sqlite", logging: false});
@@ -27,10 +35,12 @@ describe('TastingRepository', () => {
         memberDefinition = defineMember(sequelize);
         wineTastingWineDefinition = defineWineTastingWine(sequelize);
         scoreDefinition = defineScore(sequelize);
+        wineDefinition = defineWine(sequelize);
 
         connectTastingAndTastingHost(wineTastingDefinition, memberDefinition, wineTastingHostDefinition,);
         connectTastingAndTastingWine(wineTastingDefinition, wineTastingWineDefinition);
         connectTastingAndScore(wineTastingDefinition, scoreDefinition);
+        connectWineAndWineTastingWine(wineDefinition, wineTastingWineDefinition);
 
         await sequelize.sync({force: true});
 
@@ -38,13 +48,24 @@ describe('TastingRepository', () => {
             wineTastingDefinition,
             wineTastingHostDefinition,
             memberDefinition,
-            wineTastingWineDefinition, scoreDefinition);
+            wineTastingWineDefinition,
+            scoreDefinition,
+            wineDefinition,);
 
     });
 
     afterEach(async () => {
         await sequelize.close();
     });
+
+    async function createWine(wineId?: number): Promise<WineInstance> {
+        return wineDefinition.create({
+            id: wineId,
+            name: 'Château Vadeau',
+            countryId: 1,
+            wineTypeId: 1,
+        });
+    }
 
     it('returns WineTastingDto with an empty hosts array', async () => {
         // arrange
@@ -142,9 +163,10 @@ describe('TastingRepository', () => {
                 tastingDate: new Date('2024-01-01'),
             });
 
+            const wine = await createWine();
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 1,
+                wineId: wine.id,
                 position: 1,
             });
 
@@ -168,14 +190,14 @@ describe('TastingRepository', () => {
 
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 1,
+                wineId: (await createWine()).id,
                 position: 1,
                 averageScore: 13.40,
             });
 
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 2,
+                wineId: (await createWine()).id,
                 position: 2,
                 averageScore: 12.00,
             });
@@ -199,14 +221,14 @@ describe('TastingRepository', () => {
 
             const wine1 = await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 1,
+                wineId: (await createWine()).id,
                 position: 1,
                 averageScore: 13.40,
             });
 
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 2,
+                wineId: (await createWine()).id,
                 position: 2,
                 averageScore: 12.00,
             });
@@ -233,14 +255,14 @@ describe('TastingRepository', () => {
 
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 1,
+                wineId: (await createWine()).id,
                 position: 1,
                 averageScore: 15, // inskriven poäng är högst...
             });
 
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 2,
+                wineId: (await createWine()).id,
                 position: 2,
                 averageScore: 12,
             });
@@ -272,14 +294,14 @@ describe('TastingRepository', () => {
 
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 1,
+                wineId: (await createWine()).id,
                 position: 1,
                 averageScore: 15,
             });
 
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 2,
+                wineId: (await createWine()).id,
                 position: 2,
                 averageScore: 12,
             });
@@ -303,21 +325,21 @@ describe('TastingRepository', () => {
 
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 1,
+                wineId: (await createWine()).id,
                 position: 1,
                 averageScore: 15,
             });
 
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 2,
+                wineId: (await createWine()).id,
                 position: 2,
                 averageScore: 15,
             });
 
             await wineTastingWineDefinition.create({
                 wineTastingId: tasting.id,
-                wineId: 3,
+                wineId: (await createWine()).id,
                 position: 3,
                 averageScore: 12,
             });
@@ -328,6 +350,28 @@ describe('TastingRepository', () => {
             // assert
             expect(result[0].winningWines).toHaveLength(2);
             expect(result[0].winningWines.map(w => w.wineId)).toEqual(expect.arrayContaining([1, 2]));
+        });
+
+        test('returns the wine name of the winning wine', async () => {
+            // arrange
+            const tasting = await wineTastingDefinition.create({
+                title: 'Test tasting',
+                notes: 'Some notes',
+                tastingDate: new Date('2023-07-20'),
+            });
+
+            await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: (await createWine()).id,
+                position: 1,
+                averageScore: 15,
+            });
+
+            // act
+            const result = await tastingRepository.findAll();
+
+            // assert
+            expect(result[0].winningWines[0].wineName).toBe('Château Vadeau');
         });
 
     })

@@ -11,6 +11,7 @@ import {BadRequestError} from "../../errors/bad-request-error";
 import {MemberInstance} from "../../types/member";
 import {ScoreInstance} from "../../types/score";
 import {WineTastingWineRepository} from "./wine-tasting-wine.repository";
+import {WineInstance} from "../../types/wine";
 
 export class TastingRepository {
 
@@ -22,6 +23,7 @@ export class TastingRepository {
         private readonly Member: ModelStatic<MemberInstance>,
         private readonly WineTastingWine: ModelStatic<WineTastingWineInstance>,
         private readonly Score: ModelStatic<ScoreInstance>,
+        private readonly Wine: ModelStatic<WineInstance>,
         ) {
         this.tastingWines = new WineTastingWineRepository(this.WineTastingWine, this.Score);
     }
@@ -64,6 +66,7 @@ export class TastingRepository {
             const hasScores = scoreValues.length > 0;
             return {
                 wineId: w.wineId,
+                wineName: w.wine?.name ?? '',
                 averageScore: hasScores
                     ? scoreValues.reduce((a, b) => a + b, 0) / scoreValues.length
                     : (w.averageScore ?? null),
@@ -77,11 +80,13 @@ export class TastingRepository {
 
         const winningWines = maxScore === -Infinity ? [] : resolvedScores
             .filter(w => w.averageScore === maxScore)
-            .map(w => ({
-                wineId: w.wineId,
-                wineName: '',
-                averageScore: maxScore,
-            }));
+            .map(w => {
+                return ({
+                    wineId: w.wineId,
+                    wineName: w.wineName,
+                    averageScore: maxScore,
+                });
+            });
 
         return {
             id: t.id,
@@ -126,6 +131,10 @@ export class TastingRepository {
                     {
                         model: this.WineTastingWine,
                         as: 'wineTastingWines',
+                        include: [{
+                            model: this.Wine,
+                            as: 'wine',
+                        }]
                     },
                     {
                         model: this.Score,
