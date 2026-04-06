@@ -45,7 +45,7 @@ paths:
       summary: Get current user
       responses:
         '200':
-          description: Currently logged in user
+          description: Currently logged-in user
           content:
             application/json:
               schema:
@@ -111,11 +111,11 @@ paths:
         '200':
           description: The password was updated
         '400':
-          description: Bad request, for example too short new password
+          description: Bad request, for example, too short new password
         '401':
           description: Not authenticated
         '403' :
-          description: Current password is wrong
+          description: The current password is wrong
 
 
   /countries:
@@ -586,7 +586,7 @@ paths:
           format: int64
       - name: wineGrapeId
         in: path
-        description: ID of the grape to delette
+        description: ID of the grape to delete
         required: true
         schema:
           type: integer
@@ -747,7 +747,7 @@ paths:
         '204':
           description: Wine deleted successfully from tasting
         '404':
-          description: Wine not found in tasting
+          description: Wine isn't found in tasting
           content:
             application/json:
               schema:
@@ -769,7 +769,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/WineTastingWine'
         '404':
-          description: Wine not found in tasting
+          description: Wine isn't found in tasting
           content:
             application/json:
               schema:
@@ -903,7 +903,7 @@ paths:
         '204':
           description: Score deleted successfully from tasting
         '404':
-          description: Score not found in tasting
+          description: Score isn't found in tasting
           content:
             application/json:
               schema:
@@ -924,7 +924,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/Score'
         '404':
-          description: Score not found in tasting
+          description: Score isn't found in tasting
           content:
             application/json:
               schema:
@@ -1060,7 +1060,7 @@ components:
 
     WineTastingSummary:
       type: object
-      required: [ id, title, notes, tastingDate ]
+      required: [ id, title, notes, tastingDate, wineTastingHosts, winningWines ]
       properties:
         id:
           type: integer
@@ -1080,6 +1080,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/WineTastingHost'
+        winningWines:
+          type: array
+          items:
+            $ref: '#/components/schemas/WinningWine'
 
 
     WineTasting:
@@ -1142,7 +1146,7 @@ components:
           nullable: true
           description: >
             Average score for this position.
-            Calculated dynamically from the scores table if scores exist.
+            Calculated dynamically from the score table if scores exist.
             Falls back to the manually entered average_score from the database.
             Null if neither exists.
         scoreStdDev:
@@ -1151,8 +1155,8 @@ components:
           nullable: true
           description: >
             Standard deviation of scores for this position.
-            Calculated dynamically from the scores table if scores exist.
-            Null if no scores exist in the scores table.
+            Calculated dynamically from the score table if scores exist.
+            Null if no scores exist in the score table.
 
     WineTastingWineCreate:
       type: object
@@ -1183,6 +1187,21 @@ components:
           type: number
           format: float
           nullable: true
+
+    WinningWine:
+      type: object
+      required: [ wineId, wineName, averageScore ]
+      properties:
+        wineId:
+          type: integer
+          example: 1
+        wineName:
+          type: string
+          example: 'Château Vadeau'
+        averageScore:
+          type: number
+          format: float
+          example: 15.5
 
     Wine:
       type: object
