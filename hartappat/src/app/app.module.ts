@@ -43,6 +43,7 @@ import {EditTastingComponent} from "./components/tastings/edit-tasting/edit-tast
 import {credentialsInterceptor} from "./services/interceptors/credentials.interceptor";
 import {LoginComponent} from "./components/login/login/login.component";
 import {ChangePasswordComponent} from "./components/login/change-password/change-password.component";
+import {TastingWineComponent} from "./components/tasting-wine/tasting-wine.component";
 
 @NgModule({
   declarations: [
@@ -63,9 +64,10 @@ import {ChangePasswordComponent} from "./components/login/change-password/change
       {path: 'travels', component: TravelsComponent},
       {path: 'about', component: AboutComponent},
       {path: 'tastings/new', component: CreateTastingComponent},
-      {path: 'tastings/:id', component: TastingComponent},
       {path: 'tastings/:id/scores', component: ScoresComponent},
       {path: 'tastings/:id/edit', component: EditTastingComponent},
+      {path: 'tastings/:id/wines/:tastingWineId', component: TastingWineComponent},
+      {path: 'tastings/:id', component: TastingComponent},
       {path: 'wines/:id', component: WineDetailComponent},
       {path: 'tastings', component: TastingsComponent},
       {path: 'countries', component: CountriesComponent},

@@ -99,4 +99,9 @@ export class TastingService {
     return this.http.put<void>(url, memberIds.map(id => ({ memberId: id }))).pipe(catchError(handleError));
   }
 
+  getTastingWine(tastingId: number, tastingWineId: number): Observable<WineTastingWine> {
+    const url = `${this.apiBase}/tastings/${tastingId}/wines/${tastingWineId}`;
+    return this.http.get<WineTastingWine>(url).pipe(catchError(handleError));
+  }
+
 }
