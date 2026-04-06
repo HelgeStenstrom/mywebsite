@@ -14,9 +14,9 @@ describe('TastingsComponent', () => {
   let mockTastingService: jest.Mocked<TastingService>;
 
   const tastings: WineTastingSummary[] = [
-    { id: 1, title: 'Testprovning 1', notes: 'Noter', tastingDate: '2024-01-15' },
-    { id: 2, title: 'Testprovning 2', notes: 'Noter', tastingDate: '2024-02-20' },
-    { id: 3, title: 'Testprovning 3', notes: 'Noter', tastingDate: '2024-03-25' },
+    { id: 1, title: 'Testprovning 1', notes: 'Noter', tastingDate: '2024-01-15', winningWines: [] },
+    { id: 2, title: 'Testprovning 2', notes: 'Noter', tastingDate: '2024-02-20', winningWines: [] },
+    { id: 3, title: 'Testprovning 3', notes: 'Noter', tastingDate: '2024-03-25', winningWines: [] },
   ];
 
   beforeEach(async () => {
@@ -132,6 +132,53 @@ describe('TastingsComponent', () => {
 
 
   });
+
+  describe('Winning wines', () => {
+
+    test('displays winning wine name in tasting row', async () => {
+      const tastingsWithWinner: WineTastingSummary[] = [
+        {
+          id: 1,
+          title: 'Testprovning 1',
+          notes: 'Noter',
+          tastingDate: '2024-01-15',
+          winningWines: [{ wineId: 7, wineName: 'Château Vadeau', averageScore: 15 }],
+        },
+      ];
+      mockTastingService.getTastings.mockReturnValue(of(tastingsWithWinner));
+
+      fixture = TestBed.createComponent(TastingsComponent);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const winnerCell = fixture.debugElement.query(By.css('[data-test="winning-wine"]'));
+      expect(winnerCell.nativeElement.textContent).toContain('Château Vadeau');
+    });
+
+    test('displays multiple winning wines separated by commas', async () => {
+      const tastingsWithWinner: WineTastingSummary[] = [
+        {
+          id: 1,
+          title: 'Testprovning 1',
+          notes: 'Noter',
+          tastingDate: '2024-01-15',
+          winningWines: [
+            { wineId: 7, wineName: 'Château Vadeau', averageScore: 15 },
+            { wineId: 8, wineName: 'Villa Testino', averageScore: 15 },
+          ],
+        },
+      ];
+      mockTastingService.getTastings.mockReturnValue(of(tastingsWithWinner));
+
+      fixture = TestBed.createComponent(TastingsComponent);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const winnerCell = fixture.debugElement.query(By.css('[data-test="winning-wine"]'));
+      expect(winnerCell.nativeElement.textContent).toContain('Château Vadeau, Villa Testino');
+    });
+
+  })
 
 });
 

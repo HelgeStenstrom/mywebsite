@@ -24,7 +24,11 @@
       <td>{{t.tastingDate| date:'yyyy-MM-dd'}}</td>
       <td><a (click)="openTasting(t.id)" style="cursor:pointer">{{t.title}}</a></td>
       <td>{{t.notes}}</td>
-      <td>(placeholder)</td>
+      <td data-test="winning-wine">
+        @for (w of t.winningWines; track w.wineId; let last = $last) {
+          <span>{{ w.wineName }}{{ last ? '' : ', ' }}</span>
+        }
+      </td>
       @if (advanced) {
         <td><input type="checkbox"
                    data-test="delete-checkbox"

@@ -62,6 +62,7 @@ export class TastingService {
           notes: t.notes,
           tastingDate: t.tastingDate,
           hosts: t.hosts,
+          winningWines: t.winningWines,
         }))
       )
     );

@@ -19,6 +19,7 @@ export type WineTastingSummary = {
   notes?: string;
   tastingDate: string;
   hosts?: WineTastingHost[];
+  winningWines: WinningWine[];
 };
 
 
@@ -58,4 +59,10 @@ export type WineTastingWineUpdate = {
   position?: number  | null;
   purchasePrice?: number | null;
   averageScore?: number | null;
+};
+
+export type WinningWine = {
+  wineId: number;
+  wineName: string;
+  averageScore: number;
 };
