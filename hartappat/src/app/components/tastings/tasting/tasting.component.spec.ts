@@ -346,5 +346,13 @@ describe('TastingComponent', () => {
 
   })
 
+  describe('Wine link to presentation page', ()  => {
+    test('wine name is a link to tasting wine page', () => {
+      const link = fixture.nativeElement.querySelector('[data-test="wine-name"] a');
+      expect(link).not.toBeNull();
+      expect(link.getAttribute('href')).toBe('/tastings/1/wines/1');
+    });
+  })
+
 });
 

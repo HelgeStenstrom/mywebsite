@@ -58,7 +58,9 @@
               }
             </td>
             @if (!isEditing(w.id)) {
-              <td data-test="wine-name">{{ wineMap.get(w.wineId)?.name }}</td>
+              <td data-test="wine-name">
+                <a [routerLink]="['/tastings', tasting.id, 'wines', w.id]">{{ wineMap.get(w.wineId)?.name }}</a>
+              </td>
             }
             @if (isEditing(w.id)) {
               <td>
