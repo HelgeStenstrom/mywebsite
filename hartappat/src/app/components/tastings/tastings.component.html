@@ -26,7 +26,7 @@
       <td>{{t.notes}}</td>
       <td data-test="winning-wine">
         @for (w of t.winningWines; track w.wineId; let last = $last) {
-          <span>{{ w.wineName }}{{ last ? '' : ', ' }}</span>
+          <a [routerLink]="['/tastings', t.id, 'wines', w.tastingWineId]">{{ w.wineName }}{{ last ? '' : ', ' }}</a>
         }
       </td>
       @if (advanced) {

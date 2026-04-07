@@ -62,6 +62,7 @@ export type WineTastingWineUpdate = {
 };
 
 export type WinningWine = {
+  tastingWineId: number;
   wineId: number;
   wineName: string;
   averageScore: number;

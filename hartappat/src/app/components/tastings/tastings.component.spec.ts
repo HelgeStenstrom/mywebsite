@@ -142,7 +142,7 @@ describe('TastingsComponent', () => {
           title: 'Testprovning 1',
           notes: 'Noter',
           tastingDate: '2024-01-15',
-          winningWines: [{ wineId: 7, wineName: 'Château Vadeau', averageScore: 15 }],
+          winningWines: [{ wineId: 7, wineName: 'Château Vadeau', averageScore: 15, tastingWineId: -1 }],
         },
       ];
       mockTastingService.getTastings.mockReturnValue(of(tastingsWithWinner));
@@ -163,8 +163,8 @@ describe('TastingsComponent', () => {
           notes: 'Noter',
           tastingDate: '2024-01-15',
           winningWines: [
-            { wineId: 7, wineName: 'Château Vadeau', averageScore: 15 },
-            { wineId: 8, wineName: 'Villa Testino', averageScore: 15 },
+            { wineId: 7, wineName: 'Château Vadeau', averageScore: 15, tastingWineId: -1 },
+            { wineId: 8, wineName: 'Villa Testino', averageScore: 15, tastingWineId: -1 },
           ],
         },
       ];
@@ -178,15 +178,14 @@ describe('TastingsComponent', () => {
       expect(winnerCell.nativeElement.textContent).toContain('Château Vadeau, Villa Testino');
     });
 
-    // TODO: Vänta med implementationen tills backend returnerar WineTastingWineId med WinningWine.
-    test.skip('the winning wine name is a link to the tasting wine page', async () => {
+    test('the winning wine name is a link to the tasting wine page', async () => {
       const tastingsWithWinner: WineTastingSummary[] = [
         {
           id: 3,
           title: 'Testprovning',
           notes: 'Noter',
           tastingDate: '2024-01-15',
-          winningWines: [{wineId: 7, wineName: 'Château Vadeau', averageScore: 15}],
+          winningWines: [{wineId: 7, wineName: 'Château Vadeau', averageScore: 15, tastingWineId: 5}],
         },
       ];
       mockTastingService.getTastings.mockReturnValue(of(tastingsWithWinner));
