@@ -96,6 +96,7 @@ export type WineTastingWineUpdateDto = {
 }
 
 export type WinningWineDto = {
+    tastingWineId: number;
     wineId: number;
     wineName: string;
     averageScore: number;

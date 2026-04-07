@@ -65,6 +65,7 @@ export class TastingRepository {
             const scoreValues = relevantScores.map(s => Number(s.score));
             const hasScores = scoreValues.length > 0;
             return {
+                tastingWineId: w.id,
                 wineId: w.wineId,
                 wineName: w.wine?.name ?? '',
                 averageScore: hasScores
@@ -82,6 +83,7 @@ export class TastingRepository {
             .filter(w => w.averageScore === maxScore)
             .map(w => {
                 return ({
+                    tastingWineId: w.tastingWineId,
                     wineId: w.wineId,
                     wineName: w.wineName,
                     averageScore: maxScore,

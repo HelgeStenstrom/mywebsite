@@ -1206,8 +1206,12 @@ components:
 
     WinningWine:
       type: object
-      required: [ wineId, wineName, averageScore ]
+      required: [ tastingWineId, wineId, wineName, averageScore ]
       properties:
+        tastingWineId:
+          type: integer
+          example: 1
+          description: The ID of the tasting wine
         wineId:
           type: integer
           example: 1

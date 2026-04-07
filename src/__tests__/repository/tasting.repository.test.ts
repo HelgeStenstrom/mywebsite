@@ -374,5 +374,28 @@ describe('TastingRepository', () => {
             expect(result[0].winningWines[0].wineName).toBe('Château Vadeau');
         });
 
+        test('returns tastingWineId in winning wine', async () => {
+            // arrange
+            const tasting = await wineTastingDefinition.create({
+                title: 'Test tasting',
+                notes: 'Some notes',
+                tastingDate: new Date('2023-07-20'),
+            });
+
+            const wine = await createWine();
+            const tastingWine = await wineTastingWineDefinition.create({
+                wineTastingId: tasting.id,
+                wineId: wine.id,
+                position: 1,
+                averageScore: 15,
+            });
+
+            // act
+            const result = await tastingRepository.findAll();
+
+            // assert
+            expect(result[0].winningWines[0].tastingWineId).toBe(tastingWine.id);
+        });
+
     })
 });
