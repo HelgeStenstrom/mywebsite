@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <g transform="rotate(10 32 32)">
+
+    <!-- Glasets kupa -->
+    <path d="M20 8 Q32 4 44 8 Q46 22 32 30 Q18 22 20 8 Z"
+          fill="none" stroke="black" stroke-width="2"/>
+
+    <!-- Vin -->
+    <path d="M22 16 Q32 14 42 16 Q40 24 32 28 Q24 24 22 16 Z"
+          fill="#b3002d"/>
+
+    <!-- Stam -->
+    <line x1="32" y1="30" x2="32" y2="48"
+          stroke="black" stroke-width="2"/>
+
+    <!-- Fot -->
+    <ellipse cx="32" cy="52" rx="10" ry="3"
+             fill="none" stroke="black" stroke-width="2"/>
+
+  </g>
+</svg>
