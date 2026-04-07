@@ -7,10 +7,9 @@
 <table class="bordered">
   <caption>Våra provningar</caption>
   <tr>
-    <th></th>
     <th>ID</th>
-    <th>Datum</th>
     <th>Namn</th>
+    <th>Datum</th>
     <th>Noter</th>
     <th>Vinnande vin</th>
     @if (advanced) {
@@ -19,10 +18,9 @@
   </tr>
   @for (t of tastings$ | async; track t) {
     <tr data-test="tasting-row">
-      <td><button mat-button (click)="openTasting(t.id)">Öppna</button></td>
       <td>{{t.id}}</td>
-      <td>{{t.tastingDate| date:'yyyy-MM-dd'}}</td>
       <td><a (click)="openTasting(t.id)" style="cursor:pointer">{{t.title}}</a></td>
+      <td>{{t.tastingDate| date:'yyyy-MM-dd'}}</td>
       <td>{{t.notes}}</td>
       <td data-test="winning-wine">
         @for (w of t.winningWines; track w.wineId; let last = $last) {

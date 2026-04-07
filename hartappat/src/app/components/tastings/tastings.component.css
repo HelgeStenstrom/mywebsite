@@ -8,3 +8,9 @@
   border: #caa5a5 solid;
   padding: 5px;
 }
+
+[data-test="winning-wine"] a {
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+}
