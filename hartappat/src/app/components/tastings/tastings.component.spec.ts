@@ -178,6 +178,28 @@ describe('TastingsComponent', () => {
       expect(winnerCell.nativeElement.textContent).toContain('Château Vadeau, Villa Testino');
     });
 
+    // TODO: Vänta med implementationen tills backend returnerar WineTastingWineId med WinningWine.
+    test.skip('the winning wine name is a link to the tasting wine page', async () => {
+      const tastingsWithWinner: WineTastingSummary[] = [
+        {
+          id: 3,
+          title: 'Testprovning',
+          notes: 'Noter',
+          tastingDate: '2024-01-15',
+          winningWines: [{wineId: 7, wineName: 'Château Vadeau', averageScore: 15}],
+        },
+      ];
+      mockTastingService.getTastings.mockReturnValue(of(tastingsWithWinner));
+
+      fixture = TestBed.createComponent(TastingsComponent);
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      const link = fixture.nativeElement.querySelector('[data-test="winning-wine"] a');
+      expect(link).not.toBeNull();
+      expect(link.getAttribute('href')).toBe('/tastings/3/wines/5');
+    });
+
   })
 
 });
