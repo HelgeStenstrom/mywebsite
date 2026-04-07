@@ -5,7 +5,12 @@
 <table>
   <tr>
     <th scope="row">Vin</th>
-    <td>Châtau Vadeau</td>
+    <td data-test="wine-name">{{ wine.name }}</td>
+  </tr>
+
+  <tr>
+    <th scope="row">typ</th>
+    <td data-test="wine-type">{{wine.wineType.name}}</td>
   </tr>
 
   <tr>
@@ -16,12 +21,12 @@
 
   <tr>
     <th scope="row">Land</th>
-    <td >Frankrike</td>
+    <td data-test="wine-country" >{{ wine.country.name }}</td>
   </tr>
 
   <tr>
     <th  scope="row">Årgång</th>
-    <td>2023</td>
+    <td data-test="wine-vintage-year">{{ wine.vintageYear }}</td>
   </tr>
 
   <tr>
@@ -32,7 +37,20 @@
 
   <tr>
     <th scope="row">Medelpoäng</th>
-    <td>14,3</td>
+    <td data-test="average-score">{{ tastingWine.averageScore }}</td>
+  </tr>
+
+
+
+  <tr>
+    <th scope="row">Hos Systembolaget</th>
+    <td data-test="systembolaget">
+      <a
+        href="https://www.systembolaget.se/{{wine.systembolaget}}"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {{ wine.systembolaget }}</a></td>
   </tr>
 
 
