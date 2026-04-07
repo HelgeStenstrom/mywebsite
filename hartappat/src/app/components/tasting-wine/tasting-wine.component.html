@@ -9,6 +9,19 @@
   </tr>
 
   <tr>
+    <th scope="row">testat den</th>
+    <td data-test="tasting-date">{{ tasting.tastingDate }},
+
+      <a
+        data-test="tasting-title"
+        [routerLink]="['/tastings', tasting.id]"
+      >{{ tasting.title }}
+      </a>
+
+    </td>
+  </tr>
+
+  <tr>
     <th scope="row">typ</th>
     <td data-test="wine-type">{{wine.wineType.name}}</td>
   </tr>

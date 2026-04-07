@@ -1,7 +1,7 @@
 import {ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {TastingWineComponent} from './tasting-wine.component';
-import {WineTastingWine} from "../../models/tasting.model";
+import {WineTasting, WineTastingWine} from "../../models/tasting.model";
 import {ActivatedRoute, convertToParamMap, provideRouter} from "@angular/router";
 import {TastingService} from "../../services/backend/tasting.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
@@ -33,11 +33,16 @@ describe('TastingWineComponent', () => {
     systembolaget: 4711,
   };
 
+  const mockTasting: WineTasting = {
+    id: 42, tastingDate: "2024-01-01", title: "Mocked title"
+  }
+
   const wineServiceMock = {
     getWine: jest.fn().mockReturnValue(of(mockedWine)),
   };
   const tastingServiceMock = {
     getTastingWine: jest.fn().mockReturnValue(of(mockTastingWine)),
+    getTasting: jest.fn().mockReturnValue(of(mockTasting)),
   };
 
   beforeEach(async () => {
@@ -113,7 +118,22 @@ describe('TastingWineComponent', () => {
     const link = fixture.nativeElement.querySelector('[data-test="systembolaget"] a');
     expect(link).not.toBeNull();
     expect(link.getAttribute('href')).toBe('https://www.systembolaget.se/4711');
+  })
 
+  test('displays the tasting date', () => {
+    const element = fixture.nativeElement.querySelector('[data-test="tasting-date"]');
+    expect(element.textContent).toContain('2024-01-01');
+  })
+
+  test('displays the tasting title', () => {
+    const element = fixture.nativeElement.querySelector('[data-test="tasting-title"]');
+    expect(element.textContent).toContain('Mocked title');
+  })
+
+  test('the test title is a link', () => {
+    const link = fixture.nativeElement.querySelector('[data-test="tasting-title"]');
+    expect(link).not.toBeNull();
+    expect(link.getAttribute('href')).toBe('/tastings/42');
   })
 
 });
