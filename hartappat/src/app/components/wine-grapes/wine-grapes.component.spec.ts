@@ -70,6 +70,12 @@ describe('WineGrapesComponent', () => {
     expect(items).toHaveLength(2);
   });
 
+  test('displays grape names', () => {
+    const items = fixture.nativeElement.querySelectorAll('[data-test="wine-grape-item"]');
+    expect(items[0].textContent).toContain('Cabernet Sauvignon');
+    expect(items[1].textContent).toContain('Merlot');
+  });
+
   test('filters available grapes based on search term', () => {
     component.searchTerm = 'Mer';
     component.updateFilter();
