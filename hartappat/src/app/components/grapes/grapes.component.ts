@@ -5,12 +5,13 @@ import {Grape} from "../../models/common.model";
 import {GrapeService} from "../../services/backend/grape.service";
 import {MatIconModule} from "@angular/material/icon";
 import {MatIconButton} from "@angular/material/button";
+import {RouterLink} from "@angular/router";
 
 @Component({
   selector: 'app-grapes',
   templateUrl: './grapes.component.html',
   styleUrls: ['./grapes.component.css'],
-  imports: [AddGrapeComponent, MatDialogModule, MatIconModule, MatIconButton],
+  imports: [AddGrapeComponent, MatDialogModule, MatIconModule, MatIconButton, RouterLink],
 })
 export class GrapesComponent implements OnInit {
   grapes: Grape[] = [];

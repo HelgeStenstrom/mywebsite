@@ -17,7 +17,10 @@
   @for (grape of sortedGrapes(); track grape) {
     <tr>
       <td>{{ grape.id }}</td>
-      <td data-test="grape-name">{{ grape.name }}</td>
+      <td data-test="grape-name">
+        <a routerLink="/grapes/{{grape.id}}/info">
+          {{ grape.name }}</a>
+      </td>
       <td>{{ grape.color }}</td>
       <button mat-icon-button color="primary" (click)="editGrape(grape)">
         <mat-icon>edit</mat-icon>
