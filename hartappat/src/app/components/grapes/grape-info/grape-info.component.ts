@@ -1,11 +1,13 @@
 import {Component, OnInit} from '@angular/core';
 import {GrapeService} from "../../../services/backend/grape.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {WineApi} from "../../../models/wine.model";
 
 @Component({
   selector: 'app-grape-info',
-  imports: [],
+  imports: [
+    RouterLink
+  ],
   templateUrl: './grape-info.component.html',
   styleUrl: './grape-info.component.css',
 })

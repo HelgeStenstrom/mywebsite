@@ -6,7 +6,11 @@
 
 <ul>
   @for (wine of wines; track wine) {
-    <li data-test="wine-item">{{wine.name}}</li>
+    <li data-test="wine-item">
+      <a
+        routerLink="/wines/{{wine.id}}"
+      >{{ wine.name }}</a>
+    </li>
   }
 </ul>
 
