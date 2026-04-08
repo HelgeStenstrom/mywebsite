@@ -44,6 +44,7 @@ import {credentialsInterceptor} from "./services/interceptors/credentials.interc
 import {LoginComponent} from "./components/login/login/login.component";
 import {ChangePasswordComponent} from "./components/login/change-password/change-password.component";
 import {TastingWineComponent} from "./components/tasting-wine/tasting-wine.component";
+import {GrapeInfoComponent} from "./components/grapes/grape-info/grape-info.component";
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import {TastingWineComponent} from "./components/tasting-wine/tasting-wine.compo
     RouterModule.forRoot([
       {path: '', component: HomeComponent},
       {path: 'grapes/:add-grape', component: AddGrapeComponent, title: '🍷Lägg till druva'},
+      {path: 'grapes/:id/info', component: GrapeInfoComponent, title: '🍷🍇Druva'},
       {path: 'grapes', component: GrapesComponent, title: '🍷🍇Druvor'},
       {path: 'viner', component: WinesComponent, title: '🍷Viner'},
       {path: 'travels', component: TravelsComponent, title: '🍷Härtappat'},
