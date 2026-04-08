@@ -1,6 +1,7 @@
 import {Orm} from "../orm";
 import {GrapeCreateDto} from "../types/grape";
 import {errorResponse} from "./handlerUtils";
+import {WineDto} from "../types/wine";
 
 export class GrapeHandlers {
 
@@ -118,5 +119,29 @@ export class GrapeHandlers {
         }
     }
 
+     hasGrapeId(w: WineDto, id: number) {
+        const grapes = w.grapes;
+        return grapes.some(g => g.id === id);
+    }
 
+    getWinesByGrapeId() {
+
+        return async (rec, res) => {
+            const id = Number(rec.params.id);
+            const grape = await this.orm.grapes.findById(id);
+            if (!grape) {
+                return errorResponse(res, 404, 'Grape not found');
+            }
+
+            const allWines = await this.orm.wines.findAll();
+            console.log('allWines.length = ' + allWines.length);
+            const someWines = allWines
+                .filter(w => {
+                    console.log('w = ' + JSON.stringify(w));
+                    return this.hasGrapeId(w, id);
+                });
+
+            return res.status(200).json(someWines);
+        }
+    }
 }

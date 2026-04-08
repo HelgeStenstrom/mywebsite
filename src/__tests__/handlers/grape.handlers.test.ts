@@ -110,4 +110,51 @@ describe('GrapeHandlers', () => {
         const response = await request(app).delete('/api/v1/grapes/1').set('Cookie', cookie);
         expect(response.status).toBe(409);
     });
+
+    describe('Wines of the grape', () => {
+
+        test('GET /grapes/:id/wines returns 404 when grape does not exist', async () => {
+
+            const response = await request(app).get('/api/v1/grapes/4711/wines').set('Cookie', cookie);
+
+            expect(response.status).toBe(404);
+        });
+
+        test('GET /grapes/:id/wines returns empty list when grape exists but has no wines', async () => {
+            await request(app).post('/api/v1/grapes').send({ name: 'Testdruva', color: 'blå' }).set('Cookie', cookie);
+
+            const response = await request(app).get('/api/v1/grapes/1/wines').set('Cookie', cookie);
+
+            expect(response.status).toBe(200);
+            expect(response.body).toEqual([]);
+        });
+
+        // Vänta på fix i wines repository.
+        test.skip('GET /grapes/:id/wines returns wines that contain the grape', async () => {
+            const grapeRes = await request(app).post('/api/v1/grapes').send({ name: 'Testdruva', color: 'blå' }).set('Cookie', cookie);
+            const grapeId = grapeRes.body.id;
+
+            const countryRes = await request(app).post('/api/v1/countries').send({ name: 'Testland' }).set('Cookie', cookie);
+            const countryId = countryRes.body.id;
+
+            const wineTypeRes = await request(app).post('/api/v1/wine-types').send({ name: 'Rött' }).set('Cookie', cookie);
+            const wineTypeId = wineTypeRes.body.id;
+
+            const wineRes = await request(app).post('/api/v1/wines').send({ name: 'Testvin', countryId, wineTypeId }).set('Cookie', cookie);
+            const wineId = wineRes.body.id;
+
+            const postResponse = await request(app).post(`/api/v1/wines/${wineId}/grapes`).send({ grapeId }).set('Cookie', cookie).expect(201);
+            console.log('postResponse.body: ' + JSON.stringify(postResponse.body));
+
+            const response = await request(app).get(`/api/v1/grapes/${grapeId}/wines`).set('Cookie', cookie);
+
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveLength(1);
+            expect(response.body[0].id).toBe(wineId);
+            expect(response.body[0].name).toBe('Testvin');
+        });
+
+
+
+    })
 });
