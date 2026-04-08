@@ -45,6 +45,7 @@ import {LoginComponent} from "./components/login/login/login.component";
 import {ChangePasswordComponent} from "./components/login/change-password/change-password.component";
 import {TastingWineComponent} from "./components/tasting-wine/tasting-wine.component";
 import {GrapeInfoComponent} from "./components/grapes/grape-info/grape-info.component";
+import {WineInfoComponent} from "./components/wines/wine-info/wine-info.component";
 
 @NgModule({
   declarations: [
@@ -59,24 +60,26 @@ import {GrapeInfoComponent} from "./components/grapes/grape-info/grape-info.comp
     MatButtonModule,
     RouterModule.forRoot([
       {path: '', component: HomeComponent},
+      {path: 'about', component: AboutComponent, title: 'Om 🍷Härtappat'},
+      {path: 'change-password', component: ChangePasswordComponent, title: '🍷Byt lösenord'},
+      {path: 'countries', component: CountriesComponent, title: '🍷Länder'},
       {path: 'grapes/:add-grape', component: AddGrapeComponent, title: '🍷Lägg till druva'},
       {path: 'grapes/:id/info', component: GrapeInfoComponent, title: '🍷🍇Druva'},
       {path: 'grapes', component: GrapesComponent, title: '🍷🍇Druvor'},
-      {path: 'viner', component: WinesComponent, title: '🍷Viner'},
-      {path: 'travels', component: TravelsComponent, title: '🍷Härtappat'},
-      {path: 'about', component: AboutComponent, title: 'Om 🍷Härtappat'},
+      {path: 'login', component: LoginComponent, title: '🍷Logga in'},
       {path: 'tastings/new', component: CreateTastingComponent, title: '🍷Skapa vinprovning'},
-      {path: 'tastings/:id/scores', component: ScoresComponent, title: '🍷Omröstning'},
       {path: 'tastings/:id/edit', component: EditTastingComponent, title: '🍷Redigera provning'},
+      {path: 'tastings/:id/scores', component: ScoresComponent, title: '🍷Omröstning'},
       {path: 'tastings/:id/wines/:tastingWineId', component: TastingWineComponent, title: '🍷Provsmakat vin'},
       {path: 'tastings/:id', component: TastingComponent, title: '🍷Vinprovning'},
-      {path: 'wines/:id', component: WineDetailComponent, title: '🍷Detaljer om ett vin'},
       {path: 'tastings', component: TastingsComponent, title: '🍷Vinprovningar'},
-      {path: 'countries', component: CountriesComponent, title: '🍷Länder'},
-      {path: 'wine-types', component: WineTypesComponent, title: '🍷Vintyper'},
       {path: 'tests', component: TestbenchComponent, title: '🍷Testbänk'},
-      {path: 'login', component: LoginComponent, title: '🍷Logga in'},
-      {path: 'change-password', component: ChangePasswordComponent, title: '🍷Byt lösenord'},
+      {path: 'travels', component: TravelsComponent, title: '🍷Härtappat'},
+      {path: 'viner', component: WinesComponent, title: '🍷Viner'},
+      {path: 'wines/:id', component: WineDetailComponent, title: '🍷Detaljer om ett vin'},
+      {path: 'wines/:id/info', component: WineInfoComponent, title: '🍷Info om ett vin'},
+      {path: 'wines', component: WinesComponent, title: '🍷Viner'},
+      {path: 'wine-types', component: WineTypesComponent, title: '🍷Vintyper'},
       {path: '**', component: NotFoundComponent, title: '🍷Sidan saknas'},
     ]),
     NotFoundComponent,
