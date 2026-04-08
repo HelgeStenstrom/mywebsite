@@ -4,11 +4,16 @@ import {ActivatedRoute, RouterLink} from "@angular/router";
 import {TastingService} from "../../services/backend/tasting.service";
 import {WineApi} from "../../models/wine.model";
 import {WineService} from "../../services/backend/wine.service";
+import {GrapeService} from "../../services/backend/grape.service";
+import {forkJoin, Observable, of} from "rxjs";
+import {AsyncPipe} from "@angular/common";
+import {map} from "rxjs/operators";
 
 @Component({
   selector: 'app-tasting-wine',
   imports: [
-    RouterLink
+    RouterLink,
+    AsyncPipe
   ],
   templateUrl: './tasting-wine.component.html',
   styleUrl: './tasting-wine.component.css',
@@ -17,12 +22,14 @@ export class TastingWineComponent implements OnInit {
   protected tastingWine!: WineTastingWine;
   protected wine!: WineApi;
   protected tasting!: WineTasting;
+  protected grapeNames$!: Observable<string>;
 
 
   constructor(
     private readonly tastingService: TastingService,
     private readonly route: ActivatedRoute,
     private readonly wineService: WineService,
+    private readonly grapeService: GrapeService,
   ) {
   }
 
@@ -35,6 +42,10 @@ export class TastingWineComponent implements OnInit {
         this.tastingWine = tastingWine;
         this.wineService.getWine(tastingWine.wineId).subscribe(wine => {
           this.wine = wine;
+          const grapeRequests = (wine.grapes ?? []).map(g => this.grapeService.getGrape(g.grapeId));
+          this.grapeNames$ = grapeRequests.length > 0
+            ? forkJoin(grapeRequests).pipe(map(grapes => grapes.map(g => g.name).join(', ')))
+            : of('');
         })
       });
 
@@ -44,4 +55,6 @@ export class TastingWineComponent implements OnInit {
       }
     );
   }
+
+
 }

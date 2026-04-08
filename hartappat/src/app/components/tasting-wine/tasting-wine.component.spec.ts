@@ -7,11 +7,44 @@ import {TastingService} from "../../services/backend/tasting.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
 import {of} from "rxjs";
 import {WineService} from "../../services/backend/wine.service";
-import {WineApi} from "../../models/wine.model";
+import {WineApi, WineGrape} from "../../models/wine.model";
+import {Grape} from "../../models/common.model";
+import {GrapeService} from "../../services/backend/grape.service";
 
 describe('TastingWineComponent', () => {
   let component: TastingWineComponent;
   let fixture: ComponentFixture<TastingWineComponent>;
+
+  const mockedGrape: Grape = {
+    id: 7,
+    name: "Cabernet Sauvignon",
+    color: "",
+    isUsed: false,
+  }
+
+  const grapeServiceMock = {
+    getGrape: jest.fn().mockReturnValue(of(mockedGrape)),
+  }
+
+  const aGrape: WineGrape = {
+    grapeId: mockedGrape.id, id: 0, percentage: null, wineId: 0
+  }
+
+  const mockedWine: WineApi = {
+    id: 7,
+    name: 'Château Testvin',
+    grapes:[aGrape],
+    country: {id: 1, name: 'Frankrike'},
+    wineType: {id: 1, name: 'Rött'},
+    isNonVintage: false,
+    vintageYear: 2024,
+    isUsed: false,
+    systembolaget: 4711,
+  };
+
+  const wineServiceMock = {
+    getWine: jest.fn().mockReturnValue(of(mockedWine)),
+  };
 
   const mockTastingWine: WineTastingWine = {
     id: 5,
@@ -22,24 +55,11 @@ describe('TastingWineComponent', () => {
     scoreStdDev: null,
   };
 
-  const mockedWine: WineApi = {
-    id: 7,
-    name: 'Château Testvin',
-    country: {id: 1, name: 'Frankrike'},
-    wineType: {id: 1, name: 'Rött'},
-    isNonVintage: false,
-    vintageYear: 2024,
-    isUsed: false,
-    systembolaget: 4711,
-  };
-
   const mockTasting: WineTasting = {
-    id: 42, tastingDate: "2024-01-01", title: "Mocked title"
+    id: 42, tastingDate: "2024-01-01",
+    title: "Mocked title",
+    wines: [mockTastingWine],
   }
-
-  const wineServiceMock = {
-    getWine: jest.fn().mockReturnValue(of(mockedWine)),
-  };
   const tastingServiceMock = {
     getTastingWine: jest.fn().mockReturnValue(of(mockTastingWine)),
     getTasting: jest.fn().mockReturnValue(of(mockTasting)),
@@ -52,6 +72,7 @@ describe('TastingWineComponent', () => {
         provideRouter([]),
         {provide: TastingService, useValue: tastingServiceMock},
         {provide: WineService, useValue: wineServiceMock},
+        {provide: GrapeService, useValue: grapeServiceMock},
         {provide: ActivatedRoute, useValue: {snapshot: {paramMap: convertToParamMap({id: '3', tastingWineId: '5'})}}},
       ],
       schemas: [NO_ERRORS_SCHEMA],
@@ -135,5 +156,10 @@ describe('TastingWineComponent', () => {
     expect(link).not.toBeNull();
     expect(link.getAttribute('href')).toBe('/tastings/42');
   })
+
+  test('displays grape names for the wine', () => {
+    const element = fixture.nativeElement.querySelector('[data-test="wine-grapes"]');
+    expect(element.textContent).toContain('Cabernet Sauvignon');
+  });
 
 });

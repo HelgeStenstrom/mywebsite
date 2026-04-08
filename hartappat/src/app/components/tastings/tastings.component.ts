@@ -7,7 +7,6 @@ import {CreateTastingComponent} from "./create-tasting/create-tasting.component"
 import {AsyncPipe, DatePipe} from "@angular/common";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {FormsModule} from "@angular/forms";
-import {MatButton} from "@angular/material/button";
 import {map} from "rxjs/operators";
 
 @Component({
@@ -19,7 +18,6 @@ import {map} from "rxjs/operators";
     AsyncPipe,
     DatePipe,
     FormsModule,
-    MatButton,
     MatSlideToggleModule,
     RouterLink,
   ],

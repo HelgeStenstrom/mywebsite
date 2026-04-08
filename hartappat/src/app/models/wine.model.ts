@@ -24,6 +24,7 @@ export type WineCreate = {
 };
 
 export type WineApi = {
+  grapes: WineGrape[];
   id: number;
   name: string;
   country: {
