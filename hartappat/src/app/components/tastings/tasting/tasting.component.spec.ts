@@ -27,24 +27,26 @@ describe('TastingComponent', () => {
   let component: TastingComponent;
   let fixture: ComponentFixture<TastingComponent>;
 
-  const mockWine10 = {
+  const mockWine10: WineApi = {
+    grapes: [],
     id: 10,
     name: 'Château Margaux',
     country: { id: 1, name: 'Frankrike' },
     wineType: { id: 1, name: 'Rött' },
     vintageYear: 2020,
     isNonVintage: false,
-    isUsed: false,
+    isUsed: false
   };
 
-  const mockWine11 = {
+  const mockWine11: WineApi = {
+    grapes: [],
     id: 11,
     name: 'Testvin',
     country: { id: 1, name: 'Frankrike' },
     wineType: { id: 1, name: 'Rött' },
     vintageYear: 2020,
     isNonVintage: false,
-    isUsed: false,
+    isUsed: false
   };
 
   const mockAllWines: WineView[] = [

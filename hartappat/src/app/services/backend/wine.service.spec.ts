@@ -12,13 +12,14 @@ describe('WineService', () => {
   let url: string;
 
   const aWineApi: WineApi = {
+    grapes: [],
     id: 1,
     name: 'Testvin',
     country: {id: 1, name: 'Sverige'},
     wineType: {id: 1, name: 'Rött'},
     vintageYear: 2020,
     isNonVintage: false,
-    isUsed: false,
+    isUsed: false
   };
   const aWineCreate: WineCreate = {
     name: 'Testvin',
