@@ -276,8 +276,8 @@ describe('WineRepository', () => {
             });
 
             test('findAll includes lastTastingId from most recent tasting', async () => {
-                const country = await countryDefinition.create({ name: 'Frankrike' });
-                const wineType = await wineTypeDefinition.create({ name: 'Rött' });
+                const country = await countryDefinition.create({name: 'Frankrike'});
+                const wineType = await wineTypeDefinition.create({name: 'Rött'});
 
                 const wine = await wineRepository.create({
                     name: 'Testvin',
@@ -298,14 +298,44 @@ describe('WineRepository', () => {
                     tastingDate: new Date('2024-06-01'),
                 });
 
-                await wineTastingWineDefinition.create({ wineTastingId: tasting1.id, wineId: wine.id, position: 1 });
-                await wineTastingWineDefinition.create({ wineTastingId: tasting2.id, wineId: wine.id, position: 1 });
+                await wineTastingWineDefinition.create({wineTastingId: tasting1.id, wineId: wine.id, position: 1});
+                await wineTastingWineDefinition.create({wineTastingId: tasting2.id, wineId: wine.id, position: 1});
 
                 const result = await wineRepository.findAll();
 
                 expect(result[0].lastTastingId).toBe(tasting2.id);
             });
 
+        })
+
+        describe('findAll', () => {
+
+            test('findAll includes grapes', async () => {
+                const country = await countryDefinition.create({ name: 'Frankrike' });
+                const wineType = await wineTypeDefinition.create({ name: 'Rött' });
+
+                const wine = await wineRepository.create({
+                    name: 'Testvin',
+                    countryId: country.id,
+                    wineTypeId: wineType.id,
+                    isNonVintage: false,
+                });
+
+                await wineGrapeDefinition.create({
+                    wineId: wine.id,
+                    grapeId: 42,
+                    percentage: 75.5,
+                });
+
+                const result = await wineRepository.findAll();
+
+                expect(result[0].grapes).toEqual([{
+                    id: expect.any(Number),
+                    wineId: wine.id,
+                    grapeId: 42,
+                    percentage: 75.5,
+                }]);
+            });
         })
 
 

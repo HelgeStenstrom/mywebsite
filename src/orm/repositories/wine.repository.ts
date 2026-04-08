@@ -102,7 +102,8 @@ export class WineRepository {
                             attributes: ['tastingDate'],
                             required: false,
                         }]
-                    }
+                    },
+                    {model: this.WineGrape, as: 'wineGrapes'},
                 ]
             }
         );
