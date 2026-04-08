@@ -130,7 +130,7 @@ describe('GrapeHandlers', () => {
         });
 
         // Vänta på fix i wines repository.
-        test.skip('GET /grapes/:id/wines returns wines that contain the grape', async () => {
+        test('GET /grapes/:id/wines returns wines that contain the grape', async () => {
             const grapeRes = await request(app).post('/api/v1/grapes').send({ name: 'Testdruva', color: 'blå' }).set('Cookie', cookie);
             const grapeId = grapeRes.body.id;
 

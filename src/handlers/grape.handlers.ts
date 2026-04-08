@@ -134,10 +134,8 @@ export class GrapeHandlers {
             }
 
             const allWines = await this.orm.wines.findAll();
-            console.log('allWines.length = ' + allWines.length);
-            const someWines = allWines
+            const someWines: WineDto[] = allWines
                 .filter(w => {
-                    console.log('w = ' + JSON.stringify(w));
                     return this.hasGrapeId(w, id);
                 });
 
