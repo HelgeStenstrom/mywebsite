@@ -129,7 +129,6 @@ describe('GrapeHandlers', () => {
             expect(response.body).toEqual([]);
         });
 
-        // Vänta på fix i wines repository.
         test('GET /grapes/:id/wines returns wines that contain the grape', async () => {
             const grapeRes = await request(app).post('/api/v1/grapes').send({ name: 'Testdruva', color: 'blå' }).set('Cookie', cookie);
             const grapeId = grapeRes.body.id;
@@ -154,7 +153,28 @@ describe('GrapeHandlers', () => {
             expect(response.body[0].name).toBe('Testvin');
         });
 
+        test('GET /grapes/:id/wines does not confuse grape id with wine-grape row id', async () => {
+            const countryRes = await request(app).post('/api/v1/countries').send({ name: 'Testland' }).set('Cookie', cookie);
+            const wineTypeRes = await request(app).post('/api/v1/wine-types').send({ name: 'Rött' }).set('Cookie', cookie);
 
+            // Create enough grapes so that the target grape id differs from the wine-grape row id
+            for (let i = 0; i < 4; i++) {
+                await request(app).post('/api/v1/grapes').send({ name: `Druva ${i}`, color: 'blå' }).set('Cookie', cookie);
+            }
+            const grapeRes = await request(app).post('/api/v1/grapes').send({ name: 'Måldruva', color: 'blå' }).set('Cookie', cookie);
+            const grapeId = grapeRes.body.id;
+
+            const wineRes = await request(app).post('/api/v1/wines').send({ name: 'Testvin', countryId: countryRes.body.id, wineTypeId: wineTypeRes.body.id }).set('Cookie', cookie);
+            const wineId = wineRes.body.id;
+
+            await request(app).post(`/api/v1/wines/${wineId}/grapes`).send({ grapeId }).set('Cookie', cookie);
+
+            const response = await request(app).get(`/api/v1/grapes/${grapeId}/wines`).set('Cookie', cookie);
+
+            expect(response.status).toBe(200);
+            expect(response.body).toHaveLength(1);
+            expect(response.body[0].id).toBe(wineId);
+        });
 
     })
 });

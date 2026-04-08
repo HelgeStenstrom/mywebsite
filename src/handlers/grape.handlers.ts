@@ -103,25 +103,9 @@ export class GrapeHandlers {
         };
     }
 
-    putGrapeById() {
-        return async (req, res) => {
-
-            try {
-                const id = Number(req.params.id);
-                console.log('putGrapeById() called with id = ' + id);
-                await this.orm.grapes.update(id, req.body as GrapeCreateDto);
-                console.log('Sending 204, no content');
-                res.status(204).end();
-            } catch (e) {
-                console.error(e);
-                res.status(404).json({ status: 404, message: e.message });
-            }
-        }
-    }
-
      hasGrapeId(w: WineDto, id: number) {
         const grapes = w.grapes;
-        return grapes.some(g => g.id === id);
+        return grapes.some(g => g.grapeId === id);
     }
 
     getWinesByGrapeId() {
