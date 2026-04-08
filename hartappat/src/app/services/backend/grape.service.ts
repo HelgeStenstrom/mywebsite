@@ -43,5 +43,10 @@ export class GrapeService {
     return this.http.delete<Grape>(url);
   }
 
+  getGrape(id: number): Observable<Grape> {
+    const url = `${this.apiBase}/grapes/${id}`;
+    return this.http.get<Grape>(url).pipe(catchError(handleError));
+  }
+
 
 }

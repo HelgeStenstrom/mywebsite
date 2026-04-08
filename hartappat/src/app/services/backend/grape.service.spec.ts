@@ -38,6 +38,19 @@ describe('GrapeService', () => {
     req.flush([aGrape]);
   });
 
+  test('It gets a grape by id', done => {
+    service.getGrape(17)
+    .subscribe(result => {
+      expect(result).toEqual(aGrape);
+      done();
+    });
+
+    const req = httpTestingController.expectOne(`${url}/17`);
+    expect(req.request.method).toEqual('GET');
+    req.flush(aGrape);
+
+  })
+
   test('It adds a grape', done => {
     service.addGrape(aGrapeCreate)
       .subscribe(result => {
