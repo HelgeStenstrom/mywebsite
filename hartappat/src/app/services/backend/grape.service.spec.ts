@@ -3,6 +3,7 @@ import {GrapeService} from "./grape.service";
 import {TestBed} from "@angular/core/testing";
 import {Grape, GrapeCreate} from "../../models/common.model";
 import {provideHttpClient} from "@angular/common/http";
+import {WineApi} from "../../models/wine.model";
 
 describe('GrapeService', () => {
 
@@ -88,5 +89,31 @@ describe('GrapeService', () => {
     req.flush(aGrape);
 
   })
+
+  test('It gets wines by grape id', done => {
+    const aWine: WineApi = {
+      id: 17,
+      name: 'Testvin',
+      grapes: [],
+      isUsed: false,
+      isNonVintage: false,
+      systembolaget: undefined,
+      volume: undefined,
+      vintageYear: null,
+      createdAt: undefined,
+      country: {id: 1, name: 'Testland'},
+      wineType: {id: 1, name: 'Rött'}
+    };
+
+    service.getWinesByGrapeId(42)
+      .subscribe(result => {
+        expect(result).toEqual([aWine]);
+        done();
+      });
+
+    const req = httpTestingController.expectOne(`${url}/42/wines`);
+    expect(req.request.method).toEqual('GET');
+    req.flush([aWine]);
+  });
 
 })

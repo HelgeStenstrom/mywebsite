@@ -5,6 +5,7 @@ import {Grape, GrapeCreate} from "../../models/common.model";
 import {Observable} from "rxjs";
 import {catchError} from "rxjs/operators";
 import {handleError} from "./handle-error";
+import {WineApi} from "../../models/wine.model";
 
 
 @Injectable({
@@ -49,4 +50,8 @@ export class GrapeService {
   }
 
 
+  getWinesByGrapeId(id: number) {
+    const url = `${this.apiBase}/grapes/${id}/wines`;
+    return this.http.get<[WineApi]>(url).pipe(catchError(handleError));
+  }
 }

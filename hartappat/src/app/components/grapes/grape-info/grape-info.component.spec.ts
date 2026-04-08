@@ -20,6 +20,10 @@ describe('GrapeInfoComponent', () => {
 
   const grapeServiceMock = {
     getGrape: jest.fn().mockReturnValue(of(mockedGrape)),
+    getWinesByGrapeId: jest.fn().mockReturnValue(of([
+      { id: 17, name: 'Vin ett' },
+      { id: 42, name: 'Vin två' },
+    ])),
   }
 
   beforeEach(async () => {
@@ -45,12 +49,24 @@ describe('GrapeInfoComponent', () => {
     expect(component).toBeTruthy();
   });
 
-  describe('Grape name', () => {
+  describe('Grape name and wine list', () => {
 
     test('The title displays the grape name', () => {
       const element = fixture.nativeElement.querySelector('[data-test="grape-title"]');
       expect(element.textContent).toContain('Test grape');
     })
+
+    test('wine-count displays the number of wines', () => {
+      const element = fixture.nativeElement.querySelector('[data-test="wine-count"]');
+      expect(element.textContent).toContain('2');
+    });
+
+    test('wine list displays wine names', () => {
+      const items = fixture.nativeElement.querySelectorAll('[data-test="wine-item"]');
+      expect(items).toHaveLength(2);
+      expect(items[0].textContent).toContain('Vin ett');
+      expect(items[1].textContent).toContain('Vin två');
+    });
 
   })
 
