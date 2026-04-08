@@ -8,3 +8,8 @@ body {
   background-color: ghostwhite;
 }
 
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

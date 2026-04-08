@@ -8,26 +8,27 @@
 <h2>Omröstning för provning {{tastingId}}: {{ tastingTitle }}</h2>
 <p>Datum: {{tastingDate}}</p>
 
-<h3>Antal viner</h3>
-<input type="number" min="1" max="20" [(ngModel)]="numberOfPositions">
+<span  class="no-print">
+  <h3>Antal viner</h3>
+  <input type="number" min="1" max="20" [(ngModel)]="numberOfPositions">
 
-@if (wineCount !== numberOfPositions) {
-  <p data-test="wine-count-warning" style="background-color: #fff3cd; padding: 8px; border-radius: 4px;">
-    <mat-icon style="vertical-align: middle; color: #f57c00;">warning</mat-icon>
-    Provningen har {{ wineCount }} viner med position, men omröstningen har {{ numberOfPositions }} positioner.
-  </p>
-}
-<h3>Välj deltagare</h3>
+  @if (wineCount !== numberOfPositions) {
+    <p data-test="wine-count-warning" style="background-color: #fff3cd; padding: 8px; border-radius: 4px;">
+      <mat-icon style="vertical-align: middle; color: #f57c00;">warning</mat-icon>
+      Provningen har {{ wineCount }} viner med position, men omröstningen har {{ numberOfPositions }} positioner.
+    </p>
+  }
+  <h3>Välj deltagare</h3>
 
-@for (member of members; track member.id) {
-  <label style="display: block">
-    <input type="checkbox"
-           [checked]="isSelected(member.id)"
-           (change)="toggleMember(member.id)">
-    {{ member.given }} {{ member.surname }}
-  </label>
-}
-
+  @for (member of members; track member.id) {
+    <label style="display: block">
+      <input type="checkbox"
+             [checked]="isSelected(member.id)"
+             (change)="toggleMember(member.id)">
+      {{ member.given }} {{ member.surname }}
+    </label>
+  }
+</span>
 
 <h3>Poäng</h3>
 
