@@ -46,6 +46,20 @@ export class ScatterPlotComponent implements OnInit, OnChanges {
               return this.points[context.dataIndex].label;
             }
           }
+        },
+        scales: {
+          x: {
+            title: {
+              display: true,
+              text: 'Pris/flaska'
+            }
+          },
+          y: {
+            title: {
+              display: true,
+              text: 'Medelpoäng'
+            }
+          }
         }
       }
     });
