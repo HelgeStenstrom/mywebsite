@@ -2,7 +2,10 @@
 
 
 @if (fullTasting$ | async; as tasting ) {
-  <button mat-button routerLink="/tastings/{{ tasting.id }}/edit">
+  <button
+    mat-button
+    class="no-print"
+    routerLink="/tastings/{{ tasting.id }}/edit">
     <mat-icon>edit</mat-icon>
     Redigera provning
   </button>
@@ -21,11 +24,13 @@
         </li>
       }
     </ul>
-    <h2>Omröstning</h2>
-    <button mat-button routerLink="/tastings/{{ tasting.id }}/scores">
-      <mat-icon>how_to_vote</mat-icon>
-      Gå till omröstning
-    </button>
+    <span class="no-print">
+      <h2>Omröstning</h2>
+      <button mat-button routerLink="/tastings/{{ tasting.id }}/scores">
+        <mat-icon>how_to_vote</mat-icon>
+        Gå till omröstning
+      </button>
+    </span>
     <h2>Viner:</h2>
     <table class="bordered">
       <tr>
@@ -124,6 +129,7 @@
         }</tbody>
     </table>
     <app-add-wine-to-tasting
+      class="no-print"
       [tastingId]="tasting.id"
       (wineAdded)="onWineAdded()">
     </app-add-wine-to-tasting>
