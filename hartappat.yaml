@@ -255,6 +255,34 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 
+  /grapes/{id}/wines:
+    parameters:
+      - name: id
+        in: path
+        description: ID of the grape
+        required: true
+        schema:
+          type: integer
+          format: int64
+    get:
+        summary: Get all wines for a grape
+        description: Returns a list of wines for a given grape
+        responses:
+          '200':
+            description: Successful response
+            content:
+              application/json:
+                schema:
+                  type: array
+                  items:
+                    $ref: '#/components/schemas/Wine'
+          '404':
+            description: Grape not found
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/ErrorResponse'
+
   /members:
     get:
       description: Returns a list of the club members.
