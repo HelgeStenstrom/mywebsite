@@ -94,7 +94,7 @@ describe('WineService', () => {
   });
 
   test('It deletes a wine', done => {
-    service.deleteWine(aWineView)
+    service.deleteWine(aWineView.id)
     .subscribe(() => {
         done();
       });

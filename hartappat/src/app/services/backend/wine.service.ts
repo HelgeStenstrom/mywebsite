@@ -37,10 +37,10 @@ export class WineService {
     return this.http.get<WineApi>(`${this.apiBase}/wines/${id}`);
   }
 
-  deleteWine(wine: WineView): Observable<WineView> {
-    const url: string = this.apiBase + `/wines/${wine.id}`;
+  deleteWine(id:number): Observable<void> {
+    const url: string = this.apiBase + `/wines/${id}`;
 
-    return this.http.delete<WineView>(url);
+    return this.http.delete<void>(url);
   }
 
 

@@ -52,7 +52,7 @@ class WinesComponent implements OnInit {
   }
 
   delete(w: WineView) {
-    this.wineService.deleteWine(w).subscribe(() => {
+    this.wineService.deleteWine(w.id).subscribe(() => {
       this.wineService.getWines().subscribe(wines => {
         this.wines = wines;
       });
