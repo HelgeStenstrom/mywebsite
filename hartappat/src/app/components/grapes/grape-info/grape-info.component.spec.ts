@@ -71,8 +71,8 @@ describe('GrapeInfoComponent', () => {
     test('wine list items are links to the wine page', () => {
       const links = fixture.nativeElement.querySelectorAll('[data-test="wine-item"] a');
       expect(links).toHaveLength(2);
-      expect(links[0].getAttribute('href')).toBe('/wines/17');
-      expect(links[1].getAttribute('href')).toBe('/wines/42');
+      expect(links[0].getAttribute('href')).toBe('/wines/17/info');
+      expect(links[1].getAttribute('href')).toBe('/wines/42/info');
     });
 
   })

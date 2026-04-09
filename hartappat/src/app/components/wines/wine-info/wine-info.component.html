@@ -1,5 +1,9 @@
 <p>WineInfoComponent!</p>
 
+<a routerLink="..">
+  <mat-icon>edit</mat-icon>
+  Redigera vinet!</a>
+
 <h1 data-test="wine-title"
 >{{ wine.name }}</h1>
 
@@ -27,3 +31,23 @@
     }
   </table>
 }
+
+
+<h2>Systembolaget</h2>
+
+@if(!wine.systembolaget) {
+  <p data-test="systembolaget-paragraph">Vinet saknas i Systembolagets sortiment</p>
+}
+@else {
+  <p data-test="systembolaget-paragraph">
+    Produktnummer:
+    <a
+      href="https://www.systembolaget.se/{{wine.systembolaget}}"
+      target="_blank"
+      rel="noopener noreferrer"
+    >{{ wine.systembolaget }}</a>
+  </p>
+
+
+}
+

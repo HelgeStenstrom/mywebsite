@@ -1,14 +1,18 @@
 import {Component, OnInit} from '@angular/core';
 import {WineService} from "../../../services/backend/wine.service";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, RouterLink} from "@angular/router";
 import {WineApi} from "../../../models/wine.model";
 import {Title} from "@angular/platform-browser";
 import {GrapeService} from "../../../services/backend/grape.service";
+import {MatIcon} from "@angular/material/icon";
 
 
 @Component({
   selector: 'app-wine-info',
-  imports: [],
+  imports: [
+    RouterLink,
+    MatIcon
+  ],
   templateUrl: './wine-info.component.html',
   styleUrl: './wine-info.component.css',
 })
