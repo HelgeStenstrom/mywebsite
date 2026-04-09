@@ -6,6 +6,24 @@
 <p data-test="first-sentence">
   {{ wine.name }} är ett {{ wine.wineType.name }} vin som kommer från {{ wine.country.name }}. </p>
 
-@if(wine.grapes.length > 0) {
-<p data-test="it-contains">Det innehåller druvan {{ grapeNames[0] }}.</p>
+@if(grapeInfos.length > 0) {
+<p data-test="it-contains">Det innehåller druvan {{ grapeInfos[0].name }}.</p>
+
+  <h2>Druvor</h2>
+  <table>
+    <tr>
+      <th>Druva</th>
+      <th>%</th>
+      <th>färg</th>
+    </tr>
+
+    @for (grape of grapeInfos; track grape) {
+
+      <tr data-test="grape-row">
+        <td>{{ grape.name }}</td>
+        <td>{{ grape.percentage }} %  </td>
+        <td>{{ grape.color }}</td>
+      </tr>
+    }
+  </table>
 }

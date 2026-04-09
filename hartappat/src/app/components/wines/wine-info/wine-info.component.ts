@@ -14,31 +14,41 @@ import {GrapeService} from "../../../services/backend/grape.service";
 })
 export class WineInfoComponent implements OnInit {
   protected wine!: WineApi;
-  protected grapeNames: string[] = [];
+  protected grapeInfos: WineGrapeInfo[] = [];
 
   constructor(
     private readonly wineService: WineService,
     private readonly grapeService: GrapeService,
     private readonly route: ActivatedRoute,
     private readonly titleService: Title,
-  ) { }
+  ) {
+  }
 
-    ngOnInit(): void {
+  ngOnInit(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.wineService.getWine(id).subscribe(wine => {
       this.wine = wine;
       const name = wine.name;
       this.titleService.setTitle(name);
+
       this.wine.grapes.forEach(wg => {
         this.grapeService
           .getGrape(wg.grapeId)
           .subscribe(g => {
-            this.grapeNames.push(g.name);
-          })
+            this.grapeInfos.push({
+              name: g.name,
+              color: g.color,
+              percentage: wg.percentage,
+            })
+          });
       })
     })
-    }
+  }
+}
 
 
-
+interface WineGrapeInfo {
+  name: string;
+  color: string;
+  percentage: number | null;
 }

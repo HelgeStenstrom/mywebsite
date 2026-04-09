@@ -38,7 +38,9 @@ describe('WineInfoComponent', () => {
     }
     grapeServiceMock = {
        getGrapes: jest.fn().mockReturnValue(of([mockedGrape1, mockedGrape2])),
-       getGrape: jest.fn().mockReturnValue(of(mockedGrape1)),
+       getGrape: jest.fn()
+         .mockReturnValueOnce(of(mockedGrape1))
+         .mockReturnValueOnce(of(mockedGrape2)),
     }
 
 
@@ -97,6 +99,15 @@ describe('WineInfoComponent', () => {
       expect(element.textContent).toContain('Test grape 1');
     }
   )
+
+  test('displays a table row for each grape with name, color and percentage', () => {
+    const rows = fixture.nativeElement.querySelectorAll('[data-test="grape-row"]');
+    expect(rows).toHaveLength(2);
+    expect(rows[0].textContent).toContain('Test grape 1');
+    expect(rows[0].textContent).toContain('gul');
+    expect(rows[1].textContent).toContain('Test grape 2');
+    expect(rows[1].textContent).toContain('lila');
+  });
 
   describe('when wine has no grapes', () => {
     beforeEach(async () => {
