@@ -7,6 +7,7 @@ import {of} from "rxjs";
 import {WineTypeService} from "../../services/backend/wine-type.service";
 import {WineService} from "../../services/backend/wine.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
+import {provideRouter} from "@angular/router";
 
 describe('WinesComponent', () => {
   let component: WinesComponent;
@@ -37,6 +38,7 @@ describe('WinesComponent', () => {
     await TestBed.configureTestingModule({
       imports: [FormsModule, WinesComponent],
       providers: [
+        provideRouter([]),
         {provide: CountryService, useValue: countryServiceMock},
         {provide: WineTypeService, useValue: wineTypeServiceMock},
         {provide: WineService, useValue: wineServiceMock},
@@ -125,6 +127,22 @@ describe('WinesComponent', () => {
       expect(nameHeader.textContent).toContain('arrow_downward');
     });
 
+
+  })
+
+  describe('links to wine details page', () => {
+
+    test('wine name is a link to wine details page', () => {
+      const wineName = fixture.nativeElement.querySelector('[data-test="wine-name"]');
+      expect(wineName.textContent.trim()).toBe('Riesling Auslese');
+      expect(wineName.querySelector('a')).toBeTruthy();
+    });
+
+    test('wine name link goes to wine details page', () => {
+      const link = fixture.nativeElement.querySelector('[data-test="wine-name"] a');
+      expect(link).not.toBeNull();
+      expect(link.getAttribute('href')).toBe('/wines/2/info');
+    })
 
   })
 

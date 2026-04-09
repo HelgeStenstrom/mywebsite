@@ -21,7 +21,11 @@
   @for (w of sortedWines(); track w) {
     <tr>
       <td>{{ w.id }}</td>
-      <td data-test="wine-name">{{ w.name }}</td>
+      <td data-test="wine-name">
+        <a
+          routerLink="/wines/{{w.id}}/info"
+        >{{ w.name }}</a>
+      </td>
       <td data-test="wine-country">{{ w.country }}</td>
       <td>{{ w.wineType }}</td>
       <td>{{ w.vintage }}</td>
