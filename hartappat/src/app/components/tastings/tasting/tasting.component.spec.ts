@@ -159,12 +159,6 @@ describe('TastingComponent', () => {
     expect(cells[0].textContent).toContain('Frankrike');
   });
 
-
-  test('displays type for each tasting wine', () => {
-    const cells = fixture.nativeElement.querySelectorAll('[data-test="wine-type"]');
-    expect(cells[0].textContent).toContain('Rött');
-  });
-
   test('deletes a wine from tasting and refreshes', () => {
     const firstWine = mockTasting.wines?.[0];
     const secondWine = mockTasting.wines?.[1];

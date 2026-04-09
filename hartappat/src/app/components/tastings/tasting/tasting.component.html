@@ -39,7 +39,6 @@
         <th>Position</th>
         <th>Vin</th>
         <th>Land</th>
-        <th>Typ</th>
         <th>Pris</th>
         <th>Medelbetyg</th>
       </tr>
@@ -84,7 +83,6 @@
               </td>
             }
             <td data-test="wine-country">{{ wineMap.get(w.wineId)?.country?.name }}</td>
-            <td data-test="wine-type">{{ wineMap.get(w.wineId)?.wineType?.name }}</td>
             <td>
               @if (!isEditing(w.id)) {
                 <span> {{ w.purchasePrice }}</span>
