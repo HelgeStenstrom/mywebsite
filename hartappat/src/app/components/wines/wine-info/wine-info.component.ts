@@ -1,4 +1,10 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {WineService} from "../../../services/backend/wine.service";
+import {ActivatedRoute} from "@angular/router";
+import {WineApi} from "../../../models/wine.model";
+import {Title} from "@angular/platform-browser";
+import {GrapeService} from "../../../services/backend/grape.service";
+
 
 @Component({
   selector: 'app-wine-info',
@@ -6,6 +12,33 @@ import {Component} from '@angular/core';
   templateUrl: './wine-info.component.html',
   styleUrl: './wine-info.component.css',
 })
-export class WineInfoComponent {
+export class WineInfoComponent implements OnInit {
+  protected wine!: WineApi;
+  protected grapeNames: string[] = [];
+
+  constructor(
+    private readonly wineService: WineService,
+    private readonly grapeService: GrapeService,
+    private readonly route: ActivatedRoute,
+    private readonly titleService: Title,
+  ) { }
+
+    ngOnInit(): void {
+    const id = Number(this.route.snapshot.paramMap.get('id'));
+    this.wineService.getWine(id).subscribe(wine => {
+      this.wine = wine;
+      const name = wine.name;
+      this.titleService.setTitle(name);
+      this.wine.grapes.forEach(wg => {
+        this.grapeService
+          .getGrape(wg.grapeId)
+          .subscribe(g => {
+            this.grapeNames.push(g.name);
+          })
+      })
+    })
+    }
+
+
 
 }

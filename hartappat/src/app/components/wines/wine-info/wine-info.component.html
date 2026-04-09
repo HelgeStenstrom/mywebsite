@@ -1,1 +1,11 @@
-<p>wine-info works!</p>
+<p>WineInfoComponent!</p>
+
+<h1 data-test="wine-title"
+>{{ wine.name }}</h1>
+
+<p data-test="first-sentence">
+  {{ wine.name }} är ett {{ wine.wineType.name }} vin som kommer från {{ wine.country.name }}. </p>
+
+@if(wine.grapes.length > 0) {
+<p data-test="it-contains">Det innehåller druvan {{ grapeNames[0] }}.</p>
+}
