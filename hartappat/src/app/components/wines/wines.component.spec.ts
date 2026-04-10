@@ -21,8 +21,8 @@ describe('WinesComponent', () => {
 
     wineServiceMock = {
       getWines: jest.fn().mockReturnValue(of([
-        { id: 2, name: 'Riesling Auslese', country: 'Tyskland', wineType: 'Vitt', isUsed: false },
-        { id: 1, name: 'Château Margaux', country: 'Frankrike', wineType: 'Rött', isUsed: false },
+        { id: 2, name: 'Riesling Auslese', country: 'Tyskland', wineType: 'Vitt', isUsed: false, grapes: ['Riesling', 'Gewürztraminer']  },
+        { id: 1, name: 'Château Margaux', country: 'Frankrike', wineType: 'Rött', isUsed: false, grapes:[] },
       ])),
       addWine: jest.fn().mockReturnValue(of(void 1)),
     }
@@ -143,6 +143,15 @@ describe('WinesComponent', () => {
       expect(link).not.toBeNull();
       expect(link.getAttribute('href')).toBe('/wines/2/info');
     })
+
+  })
+
+  describe('Introduction of WineSummary and WineDetails', () => {
+
+    test('shows grape names for a wine with two grapes', () => {
+      const grapeCell = fixture.nativeElement.querySelector('[data-test="wine-grapes"]');
+      expect(grapeCell.textContent.trim()).toBe('Riesling, Gewürztraminer');
+    });
 
   })
 

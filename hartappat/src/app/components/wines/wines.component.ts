@@ -27,9 +27,10 @@ class WinesComponent implements OnInit {
     {key: 'name', label: 'Namn'},
     {key: 'country', label: 'Land'},
     {key: 'wineType', label: 'Typ'},
+    {key: 'grapes', label: 'Druvor'},
     {key: 'vintage', label: 'Årgång'},
-    {key: 'volume', label: 'Volym'},
-    {key: 'createdAt', label: 'Datum'},
+  //  {key: 'volume', label: 'Volym'},
+  //  {key: 'createdAt', label: 'Datum'},
     {key: 'lastTasted', label: 'Senast provat'},
     {key: 'systembolaget', label: 'Systembolaget'},
   ];

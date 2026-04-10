@@ -4,9 +4,10 @@ export type WineView = {
   name: string;
   country: string;
   wineType: string;
+  grapes: string[]
   systembolaget?: number;
-  volume?: number;
-  createdAt?: string;
+  //volume?: number;
+  //createdAt?: string;
   vintage?: string;
   isUsed: boolean;
   lastTastingId?: number;

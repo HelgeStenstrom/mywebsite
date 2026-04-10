@@ -28,9 +28,10 @@
       </td>
       <td data-test="wine-country">{{ w.country }}</td>
       <td>{{ w.wineType }}</td>
+      <td data-test="wine-grapes">{{ w.grapes.join(', ') }}</td>
       <td>{{ w.vintage }}</td>
-      <td>{{ w.volume }}</td>
-      <td>{{ w.createdAt| date:'yyyy-MM-dd' }}</td>
+<!--      <td>{{ w.volume }}</td>-->
+<!--      <td>{{ w.createdAt| date:'yyyy-MM-dd' }}</td>-->
       <td>
         @if (w.lastTasted) {
           <a routerLink="/tastings/{{ w.lastTastingId }}">

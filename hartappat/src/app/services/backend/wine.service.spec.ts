@@ -30,12 +30,13 @@ describe('WineService', () => {
   };
 
   const aWineView: WineView = {
+    grapes: [],
     id: 1,
     name: 'Testvin',
     country: 'Sverige',
     wineType: 'Rött',
     vintage: '2020',
-    isUsed: false,
+    isUsed: false
   };
 
   beforeEach(() => {

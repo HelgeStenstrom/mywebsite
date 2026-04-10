@@ -55,19 +55,20 @@ export class WineService {
       ? wine.vintageYear.toString()
       : undefined;
     return {
+      grapes: [],
       id: wine.id,
       name: wine.name,
       country: wine.country.name,
       wineType: wine.wineType.name,
       systembolaget: wine.systembolaget,
-      volume: wine.volume,
-      createdAt: wine.createdAt,
+     // volume: wine.volume,
+      //createdAt: wine.createdAt,
       vintage: wine.isNonVintage
         ? 'NV'
         : maybeVintage,
       isUsed: wine.isUsed,
       lastTastingId: wine.lastTastingId ?? undefined,
-      lastTasted: wine.lastTasted ?? undefined,
+      lastTasted: wine.lastTasted ?? undefined
     };
   }
 
