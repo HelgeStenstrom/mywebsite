@@ -7,7 +7,7 @@ import {TastingService} from "../../../services/backend/tasting.service";
 import {MemberService} from "../../../services/backend/member.service";
 import {WineService} from "../../../services/backend/wine.service";
 import {NO_ERRORS_SCHEMA} from "@angular/core";
-import {WineApi, WineView} from "../../../models/wine.model";
+import {WineView} from "../../../models/wine.model";
 import {provideRouter} from "@angular/router";
 import {CdkDragDrop} from "@angular/cdk/drag-drop";
 import {By} from "@angular/platform-browser";
@@ -27,32 +27,15 @@ describe('TastingComponent', () => {
   let component: TastingComponent;
   let fixture: ComponentFixture<TastingComponent>;
 
-  const mockWine10: WineApi = {
-    grapes: [],
-    id: 10,
-    name: 'Château Margaux',
-    country: { id: 1, name: 'Frankrike' },
-    wineType: { id: 1, name: 'Rött' },
-    vintageYear: 2020,
-    isNonVintage: false,
-    isUsed: false
-  };
 
-  const mockWine11: WineApi = {
-    grapes: [],
-    id: 11,
-    name: 'Testvin',
-    country: { id: 1, name: 'Frankrike' },
-    wineType: { id: 1, name: 'Rött' },
-    vintageYear: 2020,
-    isNonVintage: false,
-    isUsed: false
-  };
+  const mockWineView10: WineView = { id: 10, name: 'Château Margaux', country: 'Frankrike', wineType: 'Rött', isUsed: false };
+  const mockWineView11: WineView = { id: 11, name: 'Testvin', country: 'Frankrike', wineType: 'Rött', isUsed: false };
+  const mockWineView12: WineView = { id: 12, name: 'Riesling Auslese', country: 'Tyskland', wineType: 'Vitt', isUsed: false };
 
   const mockAllWines: WineView[] = [
-   toWineView(mockWine10),
-    toWineView(mockWine11),
-    { id: 12, name: 'Riesling Auslese', country: 'Tyskland', wineType: 'Vitt', isUsed: false },
+    mockWineView10,
+    mockWineView11,
+    mockWineView12,
   ];
 
   const mockTasting: WineTasting = {
@@ -107,16 +90,6 @@ describe('TastingComponent', () => {
     }));
     wineServiceMock.getWines.mockReturnValue(of(mockAllWines));
     tastingServiceMock.putWinePositions.mockReturnValue(of(void 0));
-  }
-
-  function toWineView(wine: WineApi): WineView {
-    return {
-      ...wine,
-      country: wine.country.name,
-      wineType: wine.wineType.name,
-      lastTasted: wine.lastTasted ?? undefined,
-      lastTastingId: wine.lastTastingId ?? undefined,
-    };
   }
 
   beforeEach(async () => {
